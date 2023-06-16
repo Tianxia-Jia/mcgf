@@ -1,0 +1,15 @@
+Package: mcgf
+Title: Simulate (Regime-Switching) Markov Chain Gaussian Field Over a Lattice.
+Version: 0.0.0.1000
+Authors@R: 
+    person("Tianxia", "Jia", , "tianxia.jia@ucalgary.ca", 
+    role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0001-5430-5019"))
+Description: A package to simulate samples for Markov chain Gaussian fields 
+    with covariance functions of the Gneiting class by simple kriging. User 
+    defined covariance functions are supported. Simple kriging is used for 
+    simulation.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
