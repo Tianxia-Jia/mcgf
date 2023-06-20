@@ -1,4 +1,4 @@
-#' Calculate fully symmetric correlation
+#' Calculate correlation for fully symmetric model
 #'
 #' @param c Scale parameter of `cor_exp`, \eqn{c>0}.
 #' @param gamma Smooth parameter of `cor_exp`, \eqn{\gamma\in(0, 1/2]}.
@@ -35,7 +35,7 @@
     return(corr)
 }
 
-#' Calculate fully symmetric correlation
+#' Calculate correlation for fully symmetric model
 #'
 #' @param c Scale parameter of `cor_exp`, \eqn{c>0}.
 #' @param gamma Smooth parameter of `cor_exp`, \eqn{\gamma\in(0, 1/2]}.
@@ -76,14 +76,14 @@
 #' Space–Time Data, Journal of the American Statistical Association, 97:458,
 #' 590-600.
 #'
-#' @seealso [cor_exp], [cor_cauchy], [cor_lagr_tri]
+#' @seealso [cor_exp], [cor_cauchy], [cor_sep], [cor_lagr_tri]
 cor_fs <- function(nugget = 0, c, gamma = 1 / 2, a, alpha, beta = 0, h, u) {
 
-    stopifnot(nugget >= 0 && nugget <= 1)
+    stopifnot(nugget >= 0 & nugget <= 1)
     stopifnot(c > 0)
-    stopifnot(gamma > 0 && gamma <= 1 / 2)
+    stopifnot(gamma > 0 & gamma <= 1 / 2)
     stopifnot(a > 0)
-    stopifnot(alpha > 0 && alpha <= 1)
+    stopifnot(alpha > 0 & alpha <= 1)
 
     if (any(h < 0))
         stop("invalid negative distance in 'h'.")

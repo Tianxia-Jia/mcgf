@@ -1,35 +1,91 @@
 #' Calculate general stationary correlation.
 #'
-#' @param base Matrix or array of correlations.
-#' @param dist List of distance matrices or arrays.
-#' @param lag_max Maximum lag considered for the Lagrangian term.
-#' @param par List of parameters for the Lagrangian term.
-#' @param lambda
-#' @param asymm_model
+#' @param par_base Parameters for the base model (symmetric), used only when
+#' `base_fixed = FALSE`.
+#' @param par_lagr Parameters for the Lagrangian model.
+#' @param base Base model, `sep` or `fs` for now. Or correlation matrix/array.
+#' @param lagrangian Lagrangian model, `lagr_tri` for now.
+#' @param base_fixed Logical; if TRUE, `base` is the correlation.
 #'
-#' @return
-#' @export
+#' @keywords internal
+#' @return Correlations for the general stationary model. Same dimension of
+#' `base` if `base_fixed = FALSE`.
 #'
-#' @examples
-.corr_stat <- function(base, dist, lag_max, par, lambda,
-                       asymm_model = c("none", "lagr_tri")){
-
-    asymm_model <- match.arg(asymm_model)
-
-    if (asymm_model == "none") {
-
-        return(base)
-
-    } else if (asymm_model == "lagr_tri") {
-
-        corr_lagr <- cor_lagr_tri(v1 = par$v1, v2 = par$v2, h1 = dist$h1,
-                                  h2 = dist$h2, u = lag_max)
-        corr <- (1 - lambda) * base + lambda * corr_lagr
-
-        return(corr)
+#' @details The general station model, a convex combination of a base model
+#' and a Lagrangian model, has the form
+#' \deqn{C(\mathbf{h}, u)=(1-\lambda)C_{\text{Base}}(\mathbf{h}, u)+
+#' \lambda C_{\text{Lagr}}(\mathbf{h}, u),}
+#' where \eqn{\lambda} is the weight of the Lagrangian term.
+#'
+#' If `base_fixed = TRUE`, then the correlation is of the form
+#' \deqn{C(\mathbf{h}, u)=(1-\lambda)\text{Base}+
+#' \lambda C_{\text{Lagr}}(\mathbf{h}, u).}
+.corr_stat <- function(par_base,
+                       par_lagr,
+                       base,
+                       lagrangian,
+                       base_fixed = FALSE) {
+    if (base_fixed) {
+        fit_base <- base
+    } else {
+        fit_base <- do.call(paste0("cor_", base), par_base)
     }
+
+    fit_lagr <- do.call(paste0("cor_", lagrangian))
+
+    stopifnot(dim(fit_base) == dim(fit_lagr))
+    corr <- (1 - par_lagr$lambda) * base + par_lagr$lambda * lagrangian
+
+    return(corr)
 }
 
-corr_stat <- function() {
+#' Calculate general stationary correlation.
+#'
+#' @param par_base Parameters for the base model (symmetric), used only when
+#' `base_fixed = FALSE`.
+#' @param par_lagr Parameters for the Lagrangian model.
+#' @param h Euclidean distance matrix or array.
+#' @param h1 Horizontal distance matrix or array, same dimension as `h`.
+#' @param h2 Vertical distance matrix or array, same dimension as `h`.
+#' @param u Time lag, same dimension as `h`.
+#' @param base Base model, `sep` or `fs` for now. Or correlation matrix/array.
+#' @param lagrangian Lagrangian model, `lagr_tri` for now.
+#' @param base_fixed Logical; if TRUE, `base` is the correlation.
+#'
+#' @return Correlations for the general stationary model. Same dimension of
+#' `base` if `base_fixed = FALSE`.
+#' @export
+#'
+#' @details The general station model, a convex combination of a base model
+#' and a Lagrangian model, has the form
+#' \deqn{C(\mathbf{h}, u)=(1-\lambda)C_{\text{Base}}(\mathbf{h}, u)+
+#' \lambda C_{\text{Lagr}}(\mathbf{h}, u),}
+#' where \eqn{\lambda} is the weight of the Lagrangian term.
+#'
+#' If `base_fixed = TRUE`, then the correlation is of the form
+#' \deqn{C(\mathbf{h}, u)=(1-\lambda)\text{Base}+
+#' \lambda C_{\text{Lagr}}(\mathbf{h}, u).}
+#'
+#' @examples
+corr_stat <- function(par_base,
+                      par_lagr,
+                      h,
+                      h1,
+                      h2,
+                      u,
+                      base = c("sep", "fs"),
+                      lagrangian = c("lagr_tri"),
+                      base_fixed = FALSE) {
+    if (base_fixed) {
+        fit_base <- base
+    } else {
+        fit_base <- do.call(paste0("cor_", base), par_base)
+    }
 
+    fit_lagr <- do.call(paste0("cor_", lagrangian))
+
+    stopifnot(dim(fit_base) == dim(fit_lagr))
+    corr <- (1 - par_lagr$lambda) * base + par_lagr$lambda * lagrangian
+
+    return(corr)
 }

@@ -33,10 +33,10 @@ and smooth parameter \eqn{\gamma} has the form
 }
 \examples{
 x <- matrix(c(0, 5, 5, 0), nrow = 2)
-cor_exp(x, c = 1, gamma = 0.5)
+cor_exp(x, c = 0.01, gamma = 0.5)
 
 x <- matrix(c(0, 5, 5, 0), nrow = 2)
-cor_exp(x, c = 1, gamma = 0.5, nugget = 0.3, is.dist = TRUE)
+cor_exp(x, c = 0.01, gamma = 0.5, nugget = 0.3, is.dist = TRUE)
 
 }
 \references{
@@ -45,5 +45,5 @@ Geostatistics. Journal of the Royal Statistical Society. Series C (Applied
 Statistics), 47(3), 299–350.
 }
 \seealso{
-\link{cor_cauchy}, \link{cor_fs}, \link{cor_lagr_tri}
+\link{cor_cauchy}, \link{cor_fs}, \link{cor_sep}, \link{cor_lagr_tri}
 }

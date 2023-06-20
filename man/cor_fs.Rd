@@ -2,7 +2,7 @@
 % Please edit documentation in R/cor_fs.R
 \name{cor_fs}
 \alias{cor_fs}
-\title{Calculate fully symmetric correlation}
+\title{Calculate correlation for fully symmetric model}
 \usage{
 cor_fs(nugget = 0, c, gamma = 1/2, a, alpha, beta = 0, h, u)
 }
@@ -27,7 +27,7 @@ cor_fs(nugget = 0, c, gamma = 1/2, a, alpha, beta = 0, h, u)
 Correlations of the same dimension as \code{h} and \code{u}.
 }
 \description{
-Calculate fully symmetric correlation
+Calculate correlation for fully symmetric model
 }
 \details{
 The fully symmetric correlation function with interaction parameter
@@ -58,5 +58,5 @@ Space–Time Data, Journal of the American Statistical Association, 97:458,
 590-600.
 }
 \seealso{
-\link{cor_exp}, \link{cor_cauchy}, \link{cor_lagr_tri}
+\link{cor_exp}, \link{cor_cauchy}, \link{cor_sep}, \link{cor_lagr_tri}
 }

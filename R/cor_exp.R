@@ -42,26 +42,26 @@
 #'
 #' @examples
 #' x <- matrix(c(0, 5, 5, 0), nrow = 2)
-#' cor_exp(x, c = 1, gamma = 0.5)
+#' cor_exp(x, c = 0.01, gamma = 0.5)
 #'
 #' x <- matrix(c(0, 5, 5, 0), nrow = 2)
-#' cor_exp(x, c = 1, gamma = 0.5, nugget = 0.3, is.dist = TRUE)
+#' cor_exp(x, c = 0.01, gamma = 0.5, nugget = 0.3, is.dist = TRUE)
 #'
 #' @references
 #' Diggle, P. J., Tawn, J. A., & Moyeed, R. A. (1998). Model-Based
 #' Geostatistics. Journal of the Royal Statistical Society. Series C (Applied
 #' Statistics), 47(3), 299–350.
 #'
-#' @seealso [cor_cauchy], [cor_fs], [cor_lagr_tri]
+#' @seealso [cor_cauchy], [cor_fs], [cor_sep], [cor_lagr_tri]
 cor_exp <- function(x, c, gamma = 1 / 2, nugget = 0, is.dist = FALSE) {
 
-    stopifnot(nugget >= 0 && nugget <= 1)
+    stopifnot(nugget >= 0 & nugget <= 1)
     stopifnot(c > 0)
-    stopifnot(gamma > 0 && gamma <= 1 / 2)
+    stopifnot(gamma > 0 & gamma <= 1 / 2)
 
     corr <- .cor_exp(c = c, gamma = gamma, x = x)
 
-    if (nugget > 0 & is.dist == F)
+    if (nugget > 0 && is.dist == F)
         stop("nugget effect used only when 'is.dist = TRUE'.")
 
     if (is.dist) {

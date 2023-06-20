@@ -52,17 +52,17 @@
 #' Gneiting, T., and Schlather, M. (2004). Stochastic Models That Separate
 #' Fractal Dimension and the Hurst Effect. SIAM Review, 46(2), 269–282.
 #'
-#' @seealso [cor_exp], [cor_fs], [cor_lagr_tri]
+#' @seealso [cor_exp], [cor_fs], [cor_sep], [cor_lagr_tri]
 cor_cauchy <- function(x, a, alpha, nu = 1, nugget = 0, is.dist = FALSE) {
 
-    stopifnot(nugget >= 0 && nugget <= 1)
+    stopifnot(nugget >= 0 & nugget <= 1)
     stopifnot(a > 0)
-    stopifnot(alpha > 0 && alpha <= 1)
+    stopifnot(alpha > 0 & alpha <= 1)
     stopifnot(nu > 0)
 
     corr <- .cor_cauchy(a = a, alpha = alpha, nu = nu, x = x)
 
-    if (nugget > 0 & is.dist == F)
+    if (nugget > 0 && is.dist == F)
         stop("nugget effect used only when 'is.dist = TRUE'.")
 
     if (is.dist) {
