@@ -56,7 +56,7 @@
 #' Space–Time Data, Journal of the American Statistical Association, 97:458,
 #' 590-600.
 #'
-#' @seealso [cor_exp], [cor_cauchy], [cor_fs], [cor_lagr_tri]
+#' @seealso [cor_exp], [cor_cauchy], [cor_fs], [cor_lagr_tri], [cor_stat]
 cor_sep <- function(par_s,
                     par_t,
                     h,
@@ -67,13 +67,32 @@ cor_sep <- function(par_s,
     spatial <- match.arg(spatial)
     temporal <- match.arg(temporal)
 
+    if (any(h < 0))
+        stop("invalid negative distance in 'h'.")
+
+    if (!(length(dim(h)) %in% 2:3))
+        stop("'h' must be a matrix or 3-d array")
+
+    if (length(dim(h)) == 2 && !isSymmetric.matrix(h))
+        stop("Distance matrix 'h' is not symmetric.")
+
+    if (length(dim(h)) == 3) {
+        for (i in 1:dim(h)[3])
+            if (!isSymmetric.matrix(h[,,i]))
+                stop("Distance array 'h' is not symmetric")
+    }
+
     if (any(dim(h) != dim(u)))
         stop("'u' must be of the same dimension as 'h' in 'dist'")
 
+    nugget <- par_s[["nugget"]]
+    par_s[["nugget"]] <- NULL
     par_s <- append(par_s, list(x = h, is.dist = TRUE))
     par_t <- append(par_t, list(x = u, is.dist = FALSE))
 
     corr <- .cor_sep(par_s = par_s, par_t = par_t, spatial = spatial,
                      temporal = temporal)
+    if (nugget > 0)
+        corr <- add_nugget(x = corr, nugget = nugget)
     return(corr)
 }

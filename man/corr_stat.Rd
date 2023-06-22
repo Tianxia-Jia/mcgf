@@ -11,6 +11,7 @@ corr_stat(
   h1,
   h2,
   u,
+  lambda,
   base = c("sep", "fs"),
   lagrangian = c("lagr_tri"),
   base_fixed = FALSE
@@ -22,13 +23,16 @@ corr_stat(
 
 \item{par_lagr}{Parameters for the Lagrangian model.}
 
-\item{h}{Euclidean distance matrix or array.}
+\item{h}{Euclidean distance matrix or array, used only when
+\code{base_fixed = FALSE}.}
 
 \item{h1}{Horizontal distance matrix or array, same dimension as \code{h}.}
 
 \item{h2}{Vertical distance matrix or array, same dimension as \code{h}.}
 
 \item{u}{Time lag, same dimension as \code{h}.}
+
+\item{lambda}{Weight of the Lagrangian term, \eqn{\lambda\in[0, 1]}.}
 
 \item{base}{Base model, \code{sep} or \code{fs} for now. Or correlation matrix/array.}
 
@@ -38,7 +42,7 @@ corr_stat(
 }
 \value{
 Correlations for the general stationary model. Same dimension of
-\code{base} if \code{base_fixed = FALSE}.
+\code{base} if \code{base_fixed = TRUE}.
 }
 \description{
 Calculate general stationary correlation.
@@ -51,6 +55,32 @@ and a Lagrangian model, has the form
 where \eqn{\lambda} is the weight of the Lagrangian term.
 
 If \code{base_fixed = TRUE}, then the correlation is of the form
-\deqn{C(\mathbf{h}, u)=(1-\lambda){\text{Base}}+
+\deqn{C(\mathbf{h}, u)=(1-\lambda)\text{Base}+
 \lambda C_{\text{Lagr}}(\mathbf{h}, u).}
+}
+\examples{
+par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5)
+par_t <- list(a = 1, alpha = 0.5)
+par_base <- list(par_s = par_s, par_t = par_t)
+par_lagr <- list(v1 = 5, v2 = 10)
+h1 <- matrix(c(0, 5, -5, 0), nrow = 2)
+h2 <- matrix(c(0, 8, -8, 0), nrow = 2)
+h <- sqrt(h1 ^ 2 + h2 ^ 2)
+u <- matrix(0.1, nrow = 2, ncol = 2)
+corr_stat(par_base = par_base, par_lagr = par_lagr, h = h, h1 = h1, h2 = h2,
+          u = u, lambda = 0.8, base = "sep", lagrangian = "lagr_tri")
+
+h1 <- array(c(0, 5, -5, 0), dim = c(2, 2, 3))
+h2 <- array(c(0, 8, -8, 0), dim = c(2, 2, 3))
+h <- sqrt(h1 ^ 2 + h2 ^ 2)
+u <- array(rep(c(0.1, 0.2, 0.3), each = 4), dim = c(2, 2, 3))
+fit_base <- cor_fs(nugget = 0.5, c = 0.01, gamma = 0.5, a = 1, alpha = 0.5,
+                   beta = 0.0, h = h, u = u)
+par_lagr <- list(v1 = 5, v2 = 10)
+corr_stat(par_lagr = par_lagr, h1 = h1, h2 = h2, u = u, lambda = 0.8,
+          base = fit_base, lagrangian = "lagr_tri", base_fixed = TRUE)
+
+}
+\seealso{
+\link{cor_exp}, \link{cor_cauchy}, \link{cor_sep}, \link{cor_lagr_tri}, \link{cor_stat}
 }

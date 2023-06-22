@@ -4,12 +4,14 @@
 \alias{cor_lagr_tri}
 \title{Calculate Lagrangian correlation of the triangular form}
 \usage{
-cor_lagr_tri(v1, v2, h1, h2, u)
+cor_lagr_tri(v1, v2, k = 2, h1, h2, u)
 }
 \arguments{
 \item{v1}{Prevailing wind, u-component.}
 
 \item{v2}{Prevailing wind, v-component.}
+
+\item{k}{Scale parameter of \eqn{\|\boldsymbol v\|}, \eqn{k>0}. Default is 2.}
 
 \item{h1}{Horizontal distance matrix or array.}
 
@@ -26,23 +28,24 @@ Calculate Lagrangian correlation of the triangular form
 \details{
 The Lagrangian correlation function of the triangular form with parameters
 \eqn{\boldsymbol v = (v_1, v_2)^\top} has the form
-\deqn{C(\mathbf{h}, u)=\left(1-\dfrac{1}{2\|\boldsymbol v\|}
+\deqn{C(\mathbf{h}, u)=\left(1-\dfrac{1}{k\|\boldsymbol v\|}
 \left|\dfrac{\mathbf{h}^\top\boldsymbol v}{\|\boldsymbol v\|}-
 u\|\boldsymbol v\|\right|\right)_+,}
-where \eqn{x_+=\max(x,0).}
+where \eqn{x_+=\max(x,0), \mathbf{h} = (h_1, h_2)^\top}, and \eqn{k > 0} is
+the scale parameter controls the magnitude of asymmetry in correlation.
 }
 \examples{
-h1 <- matrix(c(0, 5, -5, 0), nrow = 2)
-h2 <- matrix(c(0, 8, -8, 0), nrow = 2)
+h1 <- matrix(c(0, -5, 5, 0), nrow = 2)
+h2 <- matrix(c(0, -8, 8, 0), nrow = 2)
 u <- matrix(0.1, nrow = 2, ncol = 2)
-cor_lagr_tri(v1 = 5, v = 10, h1 = h1, h2 = h2, u = u)
+cor_lagr_tri(v1 = 5, v2 = 10, h1 = h1, h2 = h2, u = u)
 
-h1 <- array(c(0, 5, -5, 0), dim = c(2, 2, 3))
-h2 <- array(c(0, 8, -8, 0), dim = c(2, 2, 3))
-u <- array(rep(c(0.1, 0.2, 0.3), each = 4), dim = c(2, 2, 3))
-cor_lagr_tri(v1 = 5, v = 10, h1 = h1, h2 = h2, u = u)
+h1 <- array(c(0, -10, 10, 0), dim = c(2, 2, 3))
+h2 <- array(c(0, -10, 10, 0), dim = c(2, 2, 3))
+u <- array(rep(-c(1, 2, 3), each = 4), dim = c(2, 2, 3))
+cor_lagr_tri(v1 = 10, v2 = 10, h1 = h1, h2 = h2, u = u)
 
 }
 \seealso{
-\link{cor_exp}, \link{cor_cauchy}, \link{cor_fs}
+\link{cor_exp}, \link{cor_cauchy}, \link{cor_fs}, \link{cor_stat}
 }

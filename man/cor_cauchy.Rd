@@ -46,5 +46,5 @@ Gneiting, T., and Schlather, M. (2004). Stochastic Models That Separate
 Fractal Dimension and the Hurst Effect. SIAM Review, 46(2), 269–282.
 }
 \seealso{
-\link{cor_exp}, \link{cor_fs}, \link{cor_sep}, \link{cor_lagr_tri}
+\link{cor_exp}, \link{cor_fs}, \link{cor_sep}, \link{cor_lagr_tri}, \link{cor_stat}
 }

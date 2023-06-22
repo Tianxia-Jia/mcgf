@@ -52,7 +52,7 @@
 #' Geostatistics. Journal of the Royal Statistical Society. Series C (Applied
 #' Statistics), 47(3), 299–350.
 #'
-#' @seealso [cor_cauchy], [cor_fs], [cor_sep], [cor_lagr_tri]
+#' @seealso [cor_cauchy], [cor_fs], [cor_sep], [cor_lagr_tri], [cor_stat]
 cor_exp <- function(x, c, gamma = 1 / 2, nugget = 0, is.dist = FALSE) {
 
     stopifnot(nugget >= 0 & nugget <= 1)
@@ -69,6 +69,15 @@ cor_exp <- function(x, c, gamma = 1 / 2, nugget = 0, is.dist = FALSE) {
             stop("invalid negative distance in 'x'.")
         else if (!(length(dim(x)) %in% 2:3))
             stop("'x' must be a matrix or 3-d array")
+
+        if (length(dim(x)) == 2 && !isSymmetric.matrix(x))
+            stop("Distance matrix 'x' is not symmetric.")
+
+        if (length(dim(x)) == 3) {
+            for (i in 1:dim(x)[3])
+                if (!isSymmetric.matrix(x[,,i]))
+                    stop("Distance array 'x' is not symmetric")
+        }
 
         if (nugget > 0)
             corr <- add_nugget(x = corr, nugget = nugget)

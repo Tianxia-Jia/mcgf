@@ -45,5 +45,5 @@ Geostatistics. Journal of the Royal Statistical Society. Series C (Applied
 Statistics), 47(3), 299–350.
 }
 \seealso{
-\link{cor_cauchy}, \link{cor_fs}, \link{cor_sep}, \link{cor_lagr_tri}
+\link{cor_cauchy}, \link{cor_fs}, \link{cor_sep}, \link{cor_lagr_tri}, \link{cor_stat}
 }

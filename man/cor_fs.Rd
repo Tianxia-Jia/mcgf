@@ -45,11 +45,11 @@ model.
 \examples{
 h <- matrix(c(0, 5, 5, 0), nrow = 2)
 u <- matrix(0, nrow = 2, ncol = 2)
-cor_fs(c = 1, gamma = 0.5, a = 1, alpha = 0.5, beta = 0.5, h = h, u = u)
+cor_fs(c = 0.01, gamma = 0.5, a = 1, alpha = 0.5, beta = 0.5, h = h, u = u)
 
 h <- array(c(0, 5, 5, 0), dim = c(2, 2, 3))
 u <- array(rep(0:2, each = 4), dim = c(2, 2, 3))
-cor_fs(c = 1, gamma = 0.5, a = 1, alpha = 0.5, beta = 0.5, h = h, u = u)
+cor_fs(c = 0.01, gamma = 0.5, a = 1, alpha = 0.5, beta = 0.5, h = h, u = u)
 
 }
 \references{

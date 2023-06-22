@@ -65,11 +65,11 @@
 #' @examples
 #' h <- matrix(c(0, 5, 5, 0), nrow = 2)
 #' u <- matrix(0, nrow = 2, ncol = 2)
-#' cor_fs(c = 1, gamma = 0.5, a = 1, alpha = 0.5, beta = 0.5, h = h, u = u)
+#' cor_fs(c = 0.01, gamma = 0.5, a = 1, alpha = 0.5, beta = 0.5, h = h, u = u)
 #'
 #' h <- array(c(0, 5, 5, 0), dim = c(2, 2, 3))
 #' u <- array(rep(0:2, each = 4), dim = c(2, 2, 3))
-#' cor_fs(c = 1, gamma = 0.5, a = 1, alpha = 0.5, beta = 0.5, h = h, u = u)
+#' cor_fs(c = 0.01, gamma = 0.5, a = 1, alpha = 0.5, beta = 0.5, h = h, u = u)
 #'
 #' @references
 #' Gneiting, T. (2002). Nonseparable, Stationary Covariance Functions for
@@ -87,8 +87,18 @@ cor_fs <- function(nugget = 0, c, gamma = 1 / 2, a, alpha, beta = 0, h, u) {
 
     if (any(h < 0))
         stop("invalid negative distance in 'h'.")
+
     if (!(length(dim(h)) %in% 2:3))
         stop("'h' must be a matrix or 3-d array")
+
+    if (length(dim(h)) == 2 && !isSymmetric.matrix(h))
+        stop("Distance matrix 'h' is not symmetric.")
+
+    if (length(dim(h)) == 3) {
+        for (i in 1:dim(h)[3])
+            if (!isSymmetric.matrix(h[,,i]))
+                stop("Distance array 'h' is not symmetric")
+    }
 
     if (any(dim(h) != dim(u)))
         stop("'u' must be of the same dimension as 'h'")

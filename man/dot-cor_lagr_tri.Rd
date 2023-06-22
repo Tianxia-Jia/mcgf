@@ -4,12 +4,14 @@
 \alias{.cor_lagr_tri}
 \title{Calculate Lagrangian correlation of the triangular form}
 \usage{
-.cor_lagr_tri(v1, v2, h1, h2, u)
+.cor_lagr_tri(v1, v2, k = 2, h1, h2, u)
 }
 \arguments{
 \item{v1}{Prevailing wind, u-component.}
 
 \item{v2}{Prevailing wind, v-component.}
+
+\item{k}{Scale parameter of \eqn{\|\boldsymbol v\|}, \eqn{k>0}. Default is 2.}
 
 \item{h1}{Horizontal distance matrix or array.}
 
@@ -29,6 +31,7 @@ The Lagrangian correlation function of the triangular form with parameters
 \deqn{C(\mathbf{h}, u)=\left(1-\dfrac{1}{2\|\boldsymbol v\|}
 \left|\dfrac{\mathbf{h}^\top\boldsymbol v}{\|\boldsymbol v\|}-
 u\|\boldsymbol v\|\right|\right)_+,}
-where \eqn{x_+=\max(x,0).}
+where \eqn{x_+=\max(x,0), \mathbf{h} = (h_1, h_2)^\top}, and \eqn{k > 0} is
+the scale parameter controls the magnitude of asymmetry in correlation.
 }
 \keyword{internal}

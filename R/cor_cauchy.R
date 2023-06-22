@@ -52,7 +52,7 @@
 #' Gneiting, T., and Schlather, M. (2004). Stochastic Models That Separate
 #' Fractal Dimension and the Hurst Effect. SIAM Review, 46(2), 269–282.
 #'
-#' @seealso [cor_exp], [cor_fs], [cor_sep], [cor_lagr_tri]
+#' @seealso [cor_exp], [cor_fs], [cor_sep], [cor_lagr_tri], [cor_stat]
 cor_cauchy <- function(x, a, alpha, nu = 1, nugget = 0, is.dist = FALSE) {
 
     stopifnot(nugget >= 0 & nugget <= 1)
@@ -60,10 +60,10 @@ cor_cauchy <- function(x, a, alpha, nu = 1, nugget = 0, is.dist = FALSE) {
     stopifnot(alpha > 0 & alpha <= 1)
     stopifnot(nu > 0)
 
-    corr <- .cor_cauchy(a = a, alpha = alpha, nu = nu, x = x)
-
     if (nugget > 0 && is.dist == F)
         stop("nugget effect used only when 'is.dist = TRUE'.")
+
+    corr <- .cor_cauchy(x = x, a = a, alpha = alpha, nu = nu)
 
     if (is.dist) {
         if (any(x < 0))
@@ -71,6 +71,14 @@ cor_cauchy <- function(x, a, alpha, nu = 1, nugget = 0, is.dist = FALSE) {
         else if (!(length(dim(x)) %in% 2:3))
             stop("'x' must be a matrix or 3-d array")
 
+        if (length(dim(x)) == 2 && !isSymmetric.matrix(x))
+            stop("Distance matrix 'x' is not symmetric.")
+
+        if (length(dim(x)) == 3) {
+            for (i in 1:dim(x)[3])
+                if (!isSymmetric.matrix(x[,,i]))
+                    stop("Distance array 'x' is not symmetric")
+        }
         if (nugget > 0)
             corr <- add_nugget(x = corr, nugget = nugget)
     }

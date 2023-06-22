@@ -4,7 +4,14 @@
 \alias{.corr_stat}
 \title{Calculate general stationary correlation.}
 \usage{
-.corr_stat(par_base, par_lagr, base, lagrangian, base_fixed = FALSE)
+.corr_stat(
+  par_base = NULL,
+  par_lagr,
+  base,
+  lagrangian,
+  lambda = lambda,
+  base_fixed = FALSE
+)
 }
 \arguments{
 \item{par_base}{Parameters for the base model (symmetric), used only when
@@ -15,6 +22,8 @@
 \item{base}{Base model, \code{sep} or \code{fs} for now. Or correlation matrix/array.}
 
 \item{lagrangian}{Lagrangian model, \code{lagr_tri} for now.}
+
+\item{lambda}{Weight of the Lagrangian term, \eqn{\lambda\in[0, 1]}.}
 
 \item{base_fixed}{Logical; if TRUE, \code{base} is the correlation.}
 }
@@ -33,7 +42,7 @@ and a Lagrangian model, has the form
 where \eqn{\lambda} is the weight of the Lagrangian term.
 
 If \code{base_fixed = TRUE}, then the correlation is of the form
-\deqn{C(\mathbf{h}, u)=(1-\lambda)C_{\text{Base}}+
+\deqn{C(\mathbf{h}, u)=(1-\lambda)\text{Base}+
 \lambda C_{\text{Lagr}}(\mathbf{h}, u).}
 }
 \keyword{internal}
