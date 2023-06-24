@@ -71,7 +71,7 @@ cor_exp <- function(x, c, gamma = 1 / 2, nugget = 0, is.dist = FALSE) {
             stop("'x' must be a matrix or 3-d array")
 
         if (length(dim(x)) == 2 && !isSymmetric.matrix(x))
-            stop("Distance matrix 'x' is not symmetric.")
+            stop("distance matrix 'x' is not symmetric.")
 
         if (length(dim(x)) == 3) {
             for (i in 1:dim(x)[3])

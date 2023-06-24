@@ -74,12 +74,12 @@ cor_sep <- function(par_s,
         stop("'h' must be a matrix or 3-d array")
 
     if (length(dim(h)) == 2 && !isSymmetric.matrix(h))
-        stop("Distance matrix 'h' is not symmetric.")
+        stop("distance matrix 'h' is not symmetric.")
 
     if (length(dim(h)) == 3) {
         for (i in 1:dim(h)[3])
             if (!isSymmetric.matrix(h[,,i]))
-                stop("Distance array 'h' is not symmetric")
+                stop("distance array 'h' is not symmetric")
     }
 
     if (any(dim(h) != dim(u)))
