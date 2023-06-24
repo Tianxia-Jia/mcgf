@@ -60,5 +60,15 @@ horizon. \code{sd}, \code{mu_c}, \code{init}, and \code{mu_p} can be scalars.
 Simulate Markov chain Gaussian field
 }
 \examples{
-1
+par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5)
+par_t <- list(a = 1, alpha = 0.5)
+par_base <- list(par_s = par_s, par_t = par_t)
+par_lagr <- list(v1 = 5, v2 = 10)
+h1 <- matrix(c(0, 5, -5, 0), nrow = 2)
+h2 <- matrix(c(0, 8, -8, 0), nrow = 2)
+h <- sqrt(h1 ^ 2 + h2 ^ 2)
+dists <- list(h = h, h1 = h1, h2 = h2)
+X <- mcgf_sim(N = 1000, base = "sep", lagrangian = "lagr_tri",
+              par_base = par_base, par_lagr = par_lagr, dists = dists)
+# plot.ts(X)
 }

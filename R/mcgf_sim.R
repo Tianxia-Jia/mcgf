@@ -99,7 +99,10 @@
         X <- rbind(X, X_new)
     }
 
-    if (return_cov) {
+    rownames(X) <- 1:nrow(X)
+    colnames(X) <- colnames(dists$h)
+
+    if (return_all) {
         if (lagrangian == "lagr_tri") {
             par <- list(
                 cov_mat = cov_mat_joint,
@@ -143,7 +146,17 @@
 #' @export
 #'
 #' @examples
-#' 1
+#' par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5)
+#' par_t <- list(a = 1, alpha = 0.5)
+#' par_base <- list(par_s = par_s, par_t = par_t)
+#' par_lagr <- list(v1 = 5, v2 = 10)
+#' h1 <- matrix(c(0, 5, -5, 0), nrow = 2)
+#' h2 <- matrix(c(0, 8, -8, 0), nrow = 2)
+#' h <- sqrt(h1 ^ 2 + h2 ^ 2)
+#' dists <- list(h = h, h1 = h1, h2 = h2)
+#' X <- mcgf_sim(N = 1000, base = "sep", lagrangian = "lagr_tri",
+#'               par_base = par_base, par_lagr = par_lagr, dists = dists)
+#' # plot.ts(X)
 mcgf_sim <- function(N,
                      base = c("sep", "fs"),
                      lagrangian = c("none", "lagr_tri"),
@@ -177,7 +190,7 @@ mcgf_sim <- function(N,
     lagrangian <- match.arg(lagrangian)
 
     lag_max <- lag + horizon - 1
-    n_var <- nrow(dist$h)
+    n_var <- nrow(dists$h)
     n_block_row <- lag_max + 1
 
     if (length(sd) == 1) {
