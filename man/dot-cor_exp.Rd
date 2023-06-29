@@ -4,7 +4,7 @@
 \alias{.cor_exp}
 \title{Calculate exponential correlation}
 \usage{
-.cor_exp(x, c, gamma = 1/2)
+.cor_exp(x, c, gamma = 1/2, nugget = 0)
 }
 \arguments{
 \item{x}{A numeric vector, matrix, or array.}
@@ -12,6 +12,8 @@
 \item{c}{Smooth parameter, \eqn{c>0}.}
 
 \item{gamma}{Scale parameter, \eqn{\gamma\in(0, 1/2]}. Default is 1/2.}
+
+\item{nugget}{The nugget effect \eqn{\in[0, 1]}.}
 }
 \value{
 Correlations of the same dimension as \code{x}.
@@ -20,9 +22,10 @@ Correlations of the same dimension as \code{x}.
 Calculate exponential correlation
 }
 \details{
-The exponential correlation function with scale parameter \eqn{c} and
-smooth parameter \eqn{\gamma} has the form
-\deqn{C(x)=\exp(-c|x|^{2\gamma}).}
+The exponential correlation function with scale parameter \eqn{c}
+and smooth parameter \eqn{\gamma} has the form
+\deqn{C(x)=(1-\text{nugget})\exp(-c|x|^{2\gamma})+\text{nugget}\cdot
+\delta_{x=0},} where \eqn{\delta_{x=0}} is 1 when \eqn{x=0} and 0 otherwise.
 }
 \references{
 Diggle, P. J., Tawn, J. A., & Moyeed, R. A. (1998). Model-Based

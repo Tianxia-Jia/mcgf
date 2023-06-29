@@ -4,9 +4,11 @@
 \alias{.cor_fs}
 \title{Calculate correlation for fully symmetric model}
 \usage{
-.cor_fs(c, gamma = 1/2, a, alpha, beta = 0, h, u)
+.cor_fs(nugget, c, gamma = 1/2, a, alpha, beta = 0, h, u)
 }
 \arguments{
+\item{nugget}{The nugget effect \eqn{\in[0, 1]}.}
+
 \item{c}{Scale parameter of \code{cor_exp}, \eqn{c>0}.}
 
 \item{gamma}{Smooth parameter of \code{cor_exp}, \eqn{\gamma\in(0, 1/2]}.}
@@ -30,9 +32,14 @@ Calculate correlation for fully symmetric model
 \details{
 The fully symmetric correlation function with interaction parameter
 \eqn{\beta} has the form
-\deqn{\dfrac{1}{(a|u|^{2\alpha} + 1)}
-\exp\left(\dfrac{-c\|h\|^{2\gamma}}
-{(a|u|^{2\alpha}+1)^{\beta\gamma}}\right),}
+\deqn{C(\mathbf{h}, u)=\dfrac{1}{(a|u|^{2\alpha} + 1)}
+\left((1-\text{nugget})\exp\left(\dfrac{-c\|\mathbf{h}\|^{2\gamma}}
+{(a|u|^{2\alpha}+1)^{\beta\gamma}}\right)+
+\text{nugget}\cdot \delta_{\mathbf{h}=\boldsymbol 0}\right),}
+where \eqn{\|\cdot\|} is the Euclidean distance, and \eqn{\delta_{x=0}} is 1
+when \eqn{x=0} and 0 otherwise. Here \eqn{\mathbf{h}\in\mathbb{R}^2} and
+\eqn{u\in\mathbb{R}}. By default \code{beta = 0} and it reduce to the separable
+model.
 
 where \eqn{\|\cdot\|} is the Euclidean distance. By default \code{beta = 0} and
 it reduce to the separable model.

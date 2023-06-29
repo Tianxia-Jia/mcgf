@@ -4,7 +4,7 @@
 \alias{.cor_cauchy}
 \title{Calculate Cauchy correlation}
 \usage{
-.cor_cauchy(x, a, alpha, nu = 1)
+.cor_cauchy(x, a, alpha, nu = 1, nugget = 0)
 }
 \arguments{
 \item{x}{A numeric vector, matrix, or array.}
@@ -14,6 +14,8 @@
 \item{alpha}{Scale parameter, \eqn{\alpha\in(0, 1]}.}
 
 \item{nu}{Power parameter, \eqn{\nu>0}. Default is 1.}
+
+\item{nugget}{The nugget effect \eqn{\in[0, 1]}.}
 }
 \value{
 Correlations of the same dimension as \code{x}.
@@ -24,7 +26,8 @@ Calculate Cauchy correlation
 \details{
 The Cauchy correlation function with scale parameter \eqn{a} and
 smooth parameter \eqn{\alpha} has the form
-\deqn{C(x)=(a|x|^{2\alpha} + 1)^{-\nu}.}
+\deqn{C(x)=(1-\text{nugget})(a|x|^{2\alpha} + 1)^{-\nu}+\text{nugget}\cdot
+\delta_{x=0},} where \eqn{\delta_{x=0}} is 1 when \eqn{x=0} and 0 otherwise.
 }
 \references{
 Gneiting, T., and Schlather, M. (2004). Stochastic Models That Separate

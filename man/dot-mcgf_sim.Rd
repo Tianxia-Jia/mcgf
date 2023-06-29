@@ -14,8 +14,8 @@
   dists,
   sd,
   lag,
-  horizon,
-  init,
+  horizon = 1,
+  init = 0,
   mu_c,
   mu_p,
   return_all = FALSE
@@ -34,7 +34,7 @@
 
 \item{dists}{Distance matrices or arrays.}
 
-\item{sd}{Standard Deviation for each location.}
+\item{sd}{Standard deviation for each location.}
 
 \item{lag}{Time lag.}
 
@@ -42,7 +42,7 @@
 
 \item{init}{Initial samples, default is 0.}
 
-\item{mu_c, mu_p}{Mean of current and past.}
+\item{mu_c, mu_p}{Means of current and past.}
 
 \item{return_all}{Logical; if TRUE the joint covariance matrix, arrays of
 distances and time lag are returned.}
@@ -54,7 +54,7 @@ Simulated Markov chain Gaussian field with user-specified covariance
 structure. The simulation is done by kriging. The output data is in
 space-wide format. \code{dists} must contain \code{h} for symmetric models, and \code{h1}
 and \code{h2} for general stationary models. \code{horizon} controls forecasting
-horizon. \code{sd}, \code{mu_c}, \code{init}, and \code{mu_p} must be vectors of appropriate
+horizon. \code{sd}, \code{mu_c}, \code{mu_p}, and \code{init} must be vectors of appropriate
 sizes.
 }
 \description{

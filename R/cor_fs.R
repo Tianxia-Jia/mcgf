@@ -1,5 +1,6 @@
 #' Calculate correlation for fully symmetric model
 #'
+#' @param nugget The nugget effect \eqn{\in[0, 1]}.
 #' @param c Scale parameter of `cor_exp`, \eqn{c>0}.
 #' @param gamma Smooth parameter of `cor_exp`, \eqn{\gamma\in(0, 1/2]}.
 #' @param a Scale parameter of `cor_cauchy`, \eqn{a>0}.
@@ -15,9 +16,14 @@
 #' @details
 #' The fully symmetric correlation function with interaction parameter
 #' \eqn{\beta} has the form
-#' \deqn{\dfrac{1}{(a|u|^{2\alpha} + 1)}
-#' \exp\left(\dfrac{-c\|h\|^{2\gamma}}
-#' {(a|u|^{2\alpha}+1)^{\beta\gamma}}\right),}
+#' \deqn{C(\mathbf{h}, u)=\dfrac{1}{(a|u|^{2\alpha} + 1)}
+#' \left((1-\text{nugget})\exp\left(\dfrac{-c\|\mathbf{h}\|^{2\gamma}}
+#' {(a|u|^{2\alpha}+1)^{\beta\gamma}}\right)+
+#' \text{nugget}\cdot \delta_{\mathbf{h}=\boldsymbol 0}\right),}
+#' where \eqn{\|\cdot\|} is the Euclidean distance, and \eqn{\delta_{x=0}} is 1
+#' when \eqn{x=0} and 0 otherwise. Here \eqn{\mathbf{h}\in\mathbb{R}^2} and
+#' \eqn{u\in\mathbb{R}}. By default `beta = 0` and it reduce to the separable
+#' model.
 #'
 #' where \eqn{\|\cdot\|} is the Euclidean distance. By default `beta = 0` and
 #' it reduce to the separable model.
@@ -26,17 +32,17 @@
 #' Gneiting, T. (2002). Nonseparable, Stationary Covariance Functions for
 #' Space–Time Data, Journal of the American Statistical Association, 97:458,
 #' 590-600.
-.cor_fs <- function(c, gamma = 1 / 2, a, alpha, beta = 0, h, u) {
+.cor_fs <- function(nugget, c, gamma = 1 / 2, a, alpha, beta = 0, h, u) {
     c_cauchy <- .cor_cauchy(a = a, alpha = alpha, nu = 1, x = u)
     c_exp <- .cor_exp(c = c, gamma = gamma, x = h)
-
     corr <- c_cauchy * c_exp ^ (c_cauchy ^ (beta * gamma))
-
+    corr <- set_nugget(x = corr, nugget = nugget, set = c_cauchy)
     return(corr)
 }
 
 #' Calculate correlation for fully symmetric model
 #'
+#' @param nugget The nugget effect \eqn{\in[0, 1]}.
 #' @param c Scale parameter of `cor_exp`, \eqn{c>0}.
 #' @param gamma Smooth parameter of `cor_exp`, \eqn{\gamma\in(0, 1/2]}.
 #' @param a Scale parameter of `cor_cauchy`, \eqn{a>0}.
@@ -44,7 +50,6 @@
 #' @param beta Interaction parameter, \eqn{\beta\in[0, 1]}.
 #' @param h Euclidean distance matrix or array.
 #' @param u Time lag, same dimension as `h`.
-#' @param nugget The nugget effect \eqn{\in[0, 1]}.
 #'
 #' @return Correlations of the same dimension as `h` and `u`.
 #' @export
@@ -52,11 +57,10 @@
 #' @details
 #' The fully symmetric correlation function with interaction parameter
 #' \eqn{\beta} has the form
-#' \deqn{C(\mathbf{h}, u)=\dfrac{\text{nugget}}{(a|u|^{2\alpha} + 1)}
-#' \exp\left(\dfrac{-c\|\mathbf{h}\|^{2\gamma}}
+#' \deqn{C(\mathbf{h}, u)=\dfrac{1}{(a|u|^{2\alpha} + 1)}
+#' \left((1-\text{nugget})\exp\left(\dfrac{-c\|\mathbf{h}\|^{2\gamma}}
 #' {(a|u|^{2\alpha}+1)^{\beta\gamma}}\right)+
-#' \text{nugget}\cdot\delta_{\|\mathbf{h}\|=0},}
-#'
+#' \text{nugget}\cdot \delta_{\mathbf{h}=\boldsymbol 0}\right),}
 #' where \eqn{\|\cdot\|} is the Euclidean distance, and \eqn{\delta_{x=0}} is 1
 #' when \eqn{x=0} and 0 otherwise. Here \eqn{\mathbf{h}\in\mathbb{R}^2} and
 #' \eqn{u\in\mathbb{R}}. By default `beta = 0` and it reduce to the separable
@@ -79,34 +83,27 @@
 #' @seealso [cor_exp], [cor_cauchy], [cor_sep], [cor_lagr_tri]
 cor_fs <- function(nugget = 0, c, gamma = 1 / 2, a, alpha, beta = 0, h, u) {
 
-    stopifnot(nugget >= 0 & nugget <= 1)
-    stopifnot(c > 0)
-    stopifnot(gamma > 0 & gamma <= 1 / 2)
-    stopifnot(a > 0)
-    stopifnot(alpha > 0 & alpha <= 1)
+    if (!is_numeric_scalar(nugget) || nugget < 0 || nugget > 1)
+        stop('"nugget" must be in [0, 1].')
 
-    if (any(h < 0))
-        stop("invalid negative distance in 'h'.")
+    if (!is_numeric_scalar(c) || c <= 0)
+        stop('"c" must be positive.')
 
-    if (!(length(dim(h)) %in% 2:3))
-        stop("'h' must be a matrix or 3-d array")
+    if (!is_numeric_scalar(gamma) || gamma <= 0 || gamma > 1 / 2)
+        stop('"gamma" must be in (0, 1/2].')
 
-    if (length(dim(h)) == 2 && !isSymmetric.matrix(h))
-        stop("distance matrix 'h' is not symmetric.")
+    if (!is_numeric_scalar(a) || a <= 0)
+        stop('"a" must be positive.')
 
-    if (length(dim(h)) == 3) {
-        for (i in 1:dim(h)[3])
-            if (!isSymmetric.matrix(h[,,i]))
-                stop("distance array 'h' is not symmetric")
-    }
+    if (!is_numeric_scalar(alpha) || alpha <= 0 || alpha > 1)
+        stop('"alpha" must be in (0, 1].')
+
+    check_dist(x = h)
 
     if (any(dim(h) != dim(u)))
-        stop("'u' must be of the same dimension as 'h'")
+        stop("'u' must be of the same dimension as 'h'.")
 
-    corr <- .cor_fs(c = c, gamma = gamma, a = a, alpha = alpha, beta = beta,
-                    h = h, u = u)
-    if (nugget > 0)
-        corr <- add_nugget(x = corr, nugget = nugget)
-
+    corr <- .cor_fs(nugget = nugget, c = c, gamma = gamma, a = a, alpha = alpha,
+                    beta = beta, h = h, u = u)
     return(corr)
 }

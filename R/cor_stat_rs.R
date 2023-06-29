@@ -1,8 +1,8 @@
 #' Calculate general stationary correlation.
 #'
 #' @param n_regime Integer, number of regimes.
-#' @param base_ls List of base model, `sep` or `fs` for now.
-#' Or list of correlation matrices/arrays.
+#' @param base_ls List of base model, `sep` or `fs` for now. Or list of
+#' correlation matrices/arrays.
 #' @param lagrangian_ls List of Lagrangian model, `lagr_tri` for now.
 #' @param par_base_ls List of parameters for the base model, used only when
 #' `base_fixed = FALSE`.
@@ -71,15 +71,15 @@
 #'
 #' @seealso [cor_stat]
 cor_stat_rs <- function(n_regime,
+                        base_ls,
+                        lagrangian_ls,
                         par_base_ls,
                         par_lagr_ls,
+                        lambda_ls,
                         h_ls,
                         h1_ls,
                         h2_ls,
                         u_ls,
-                        lambda_ls,
-                        base_ls,
-                        lagrangian_ls,
                         base_fixed = FALSE) {
     args_stat <- names(formals(cor_stat))
     args_stat <- args_stat[1:(length(args_stat) - 1)]

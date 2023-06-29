@@ -32,11 +32,10 @@ Calculate correlation for fully symmetric model
 \details{
 The fully symmetric correlation function with interaction parameter
 \eqn{\beta} has the form
-\deqn{C(\mathbf{h}, u)=\dfrac{\text{nugget}}{(a|u|^{2\alpha} + 1)}
-\exp\left(\dfrac{-c\|\mathbf{h}\|^{2\gamma}}
+\deqn{C(\mathbf{h}, u)=\dfrac{1}{(a|u|^{2\alpha} + 1)}
+\left((1-\text{nugget})\exp\left(\dfrac{-c\|\mathbf{h}\|^{2\gamma}}
 {(a|u|^{2\alpha}+1)^{\beta\gamma}}\right)+
-\text{nugget}\cdot\delta_{\|\mathbf{h}\|=0},}
-
+\text{nugget}\cdot \delta_{\mathbf{h}=\boldsymbol 0}\right),}
 where \eqn{\|\cdot\|} is the Euclidean distance, and \eqn{\delta_{x=0}} is 1
 when \eqn{x=0} and 0 otherwise. Here \eqn{\mathbf{h}\in\mathbb{R}^2} and
 \eqn{u\in\mathbb{R}}. By default \code{beta = 0} and it reduce to the separable

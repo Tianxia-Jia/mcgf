@@ -5,15 +5,19 @@
 \title{Calculate correlation for separable model}
 \usage{
 cor_sep(
+  spatial = c("exp", "cauchy"),
+  temporal = c("exp", "cauchy"),
   par_s,
   par_t,
   h,
-  u,
-  spatial = c("exp", "cauchy"),
-  temporal = c("exp", "cauchy")
+  u
 )
 }
 \arguments{
+\item{spatial}{Pure spatial model, \code{exp} or \code{cauchy} for now.}
+
+\item{temporal}{Pure temporal model, \code{exp} or \code{cauchy} for now.}
+
 \item{par_s}{Parameters for the pure spatial model. Nugget effect supported.}
 
 \item{par_t}{Parameters for the pure temporal model.}
@@ -21,10 +25,6 @@ cor_sep(
 \item{h}{Euclidean distance matrix or array.}
 
 \item{u}{Time lag, same dimension as \code{h}.}
-
-\item{spatial}{Pure spatial model, \code{exp} or \code{cauchy} for now.}
-
-\item{temporal}{Pure temporal model, \code{exp} or \code{cauchy} for now.}
 }
 \value{
 Correlations of the same dimension as u
@@ -33,23 +33,29 @@ Correlations of the same dimension as u
 Calculate correlation for separable model
 }
 \details{
-The separable model is the product of a pure spatial model and pure temporal
-model. Now only exponential and Cauchy correlation models are available.
+The separable model is the product of a pure temporal model, \eqn{C_T(u)},
+and a pure spatial model, \eqn{C_S(\mathbf{h})}. It is of the form
+\deqn{C(\mathbf{h}, u)=C_{T}(u)
+\left[(1-\text{nugget})C_{S}(\mathbf{h})+\text{nugget}
+\delta_{\mathbf{h}=0}\right],}
+where \eqn{\delta_{x=0}} is 1 when \eqn{x=0} and 0 otherwise. Here
+\eqn{\mathbf{h}\in\mathbb{R}^2} and \eqn{u\in\mathbb{R}}. Now only
+exponential and Cauchy correlation models are available.
 }
 \examples{
 h <- matrix(c(0, 5, 5, 0), nrow = 2)
 par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5)
 u <- matrix(0, nrow = 2, ncol = 2)
 par_t <- list(a = 1, alpha = 0.5)
-cor_sep(par_s = par_s, par_t = par_t, h = h, u = u, spatial = "exp",
-        temporal = "cauchy")
+cor_sep(spatial = "exp", temporal = "cauchy", par_s = par_s, par_t = par_t,
+        h = h, u = u)
 
 h <- array(c(0, 5, 5, 0), dim = c(2, 2, 3))
 par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5)
 u <- array(rep(0:2, each = 4), dim = c(2, 2, 3))
 par_t <- list(a = 1, alpha = 0.5)
-cor_sep(par_s = par_s, par_t = par_t, h = h, u = u, spatial = "exp",
-        temporal = "cauchy")
+cor_sep(spatial = "exp", temporal = "cauchy", par_s = par_s, par_t = par_t,
+        h = h, u = u)
 
 }
 \references{

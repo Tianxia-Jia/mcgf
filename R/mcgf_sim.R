@@ -7,11 +7,11 @@
 #' @param par_lagr Parameters for the Lagrangian model.
 #' @param Weight of the Lagrangian term, \eqn{\lambda\in[0, 1]}.
 #' @param dists Distance matrices or arrays.
-#' @param sd Standard Deviation for each location.
+#' @param sd Standard deviation for each location.
 #' @param lag Time lag.
 #' @param horizon Forecast horizon, default is 1.
 #' @param init Initial samples, default is 0.
-#' @param mu_c,mu_p Mean of current and past.
+#' @param mu_c,mu_p Means of current and past.
 #' @param return_all Logical; if TRUE the joint covariance matrix, arrays of
 #' distances and time lag are returned.
 #'
@@ -21,7 +21,7 @@
 #' structure. The simulation is done by kriging. The output data is in
 #' space-wide format. `dists` must contain `h` for symmetric models, and `h1`
 #' and `h2` for general stationary models. `horizon` controls forecasting
-#' horizon. `sd`, `mu_c`, `init`, and `mu_p` must be vectors of appropriate
+#' horizon. `sd`, `mu_c`, `mu_p`, and `init` must be vectors of appropriate
 #' sizes.
 .mcgf_sim <- function(N,
                       base,
@@ -32,17 +32,16 @@
                       dists,
                       sd,
                       lag,
-                      horizon,
-                      init,
+                      horizon = 1,
+                      init = 0,
                       mu_c,
                       mu_p,
                       return_all = FALSE) {
-    lag_max <- lag + horizon - 1
 
+    lag_max <- lag + horizon - 1
     n_var <- nrow(dists$h)
     n_block_row <- lag_max + 1
 
-    stopifnot(N >= horizon + n_block_row)
     n_rounds <- ceiling((N - n_block_row) / horizon)
 
     u <- 0:lag_max
@@ -130,11 +129,11 @@
 #' @param par_lagr Parameters for the Lagrangian model.
 #' @param Weight of the Lagrangian term, \eqn{\lambda\in[0, 1]}.
 #' @param dists Distance matrices or arrays.
-#' @param sd Standard Deviation for each location.
+#' @param sd Standard deviation for each location.
 #' @param lag Time lag.
 #' @param horizon Forecast horizon, default is 1.
 #' @param init Initial samples, default is 0.
-#' @param mu_c,mu_p Mean of current and past.
+#' @param mu_c,mu_p Means of current and past.
 #' @param return_all Logical; if TRUE the joint covariance matrix, arrays of
 #' distances and time lag are returned.
 #'
@@ -142,7 +141,7 @@
 #' structure. The simulation is done by kriging. The output data is in
 #' space-wide format. `dists` must contain `h` for symmetric models and `h1`
 #' and `h2` for general stationary models. `horizon` controls forecasting
-#' horizon. `sd`, `mu_c`, `init`, and `mu_p` can be scalars.
+#' horizon. `sd`, `mu_c`, `mu_p`, and `init` can be scalars.
 #' @export
 #'
 #' @examples
@@ -176,27 +175,30 @@ mcgf_sim <- function(N,
         stop("'N' must be no less than 'horizon'")
 
     if (is.null(dists$h))
-        stop("missing 'h' is dists.")
+        stop("missing 'h' in dists.")
 
     if (lagrangian == "lagr_tri") {
 
         if (is.null(dists$h1))
-            stop("missing 'h1' is dists.")
+            stop("missing 'h1' in dists.")
         if (is.null(dists$h2))
-            stop("missing 'h2' is dists.")
+            stop("missing 'h2' in dists.")
     }
-
-    base <- match.arg(base)
-    lagrangian <- match.arg(lagrangian)
 
     lag_max <- lag + horizon - 1
     n_var <- nrow(dists$h)
     n_block_row <- lag_max + 1
 
+    if (N < horizon + n_block_row) {
+        warning("'N' must be no less than ", horizon + n_block_row)
+        N <- horizon + n_block_row
+    }
+
+
     if (length(sd) == 1) {
         sd <- rep(sd, n_var)
     } else {
-        if (length(sd) == n_var)
+        if (length(sd) != n_var)
             stop("length of 'sd' must be 1 or ", n_var)
     }
 
@@ -220,8 +222,6 @@ mcgf_sim <- function(N,
         if (length(mu_p) != n_var * lag)
             stop("length of 'mu_p' must be 1 or ", n_var * lag)
     }
-
-    n_rounds <- ceiling((N - n_block_row) / horizon)
 
     res <- .mcgf_sim(
         N = N,

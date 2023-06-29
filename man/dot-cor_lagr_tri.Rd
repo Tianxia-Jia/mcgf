@@ -28,7 +28,7 @@ Calculate Lagrangian correlation of the triangular form
 \details{
 The Lagrangian correlation function of the triangular form with parameters
 \eqn{\boldsymbol v = (v_1, v_2)^\top} has the form
-\deqn{C(\mathbf{h}, u)=\left(1-\dfrac{1}{2\|\boldsymbol v\|}
+\deqn{C(\mathbf{h}, u)=\left(1-\dfrac{1}{k\|\boldsymbol v\|}
 \left|\dfrac{\mathbf{h}^\top\boldsymbol v}{\|\boldsymbol v\|}-
 u\|\boldsymbol v\|\right|\right)_+,}
 where \eqn{x_+=\max(x,0), \mathbf{h} = (h_1, h_2)^\top}, and \eqn{k > 0} is

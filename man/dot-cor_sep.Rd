@@ -4,16 +4,16 @@
 \alias{.cor_sep}
 \title{Calculate correlation for separable model}
 \usage{
-.cor_sep(par_s, par_t, spatial, temporal)
+.cor_sep(spatial, temporal, par_s, par_t)
 }
 \arguments{
-\item{par_s}{Parameters for the pure spatial model. Nugget effect supported.}
-
-\item{par_t}{Parameters for the pure temporal model.}
-
 \item{spatial}{Pure spatial model, \code{exp} or \code{cauchy} for now.}
 
 \item{temporal}{Pure temporal model, \code{exp} or \code{cauchy} for now.}
+
+\item{par_s}{Parameters for the pure spatial model. Nugget effect supported.}
+
+\item{par_t}{Parameters for the pure temporal model.}
 }
 \value{
 Correlations for separable model.
@@ -22,7 +22,13 @@ Correlations for separable model.
 Calculate correlation for separable model
 }
 \details{
-The separable model is the product of a pure spatial model and pure temporal
-model. Now only exponential and Cauchy correlation models are available.
+The separable model is the product of a pure temporal model, \eqn{C_T(u)},
+and a pure spatial model, \eqn{C_S(\mathbf{h})}. It is of the form
+\deqn{C(\mathbf{h}, u)=C_{T}(u)
+\left[(1-\text{nugget})C_{S}(\mathbf{h})+\text{nugget}
+\delta_{\mathbf{h}=0}\right],}
+where \eqn{\delta_{x=0}} is 1 when \eqn{x=0} and 0 otherwise. Here
+\eqn{\mathbf{h}\in\mathbb{R}^2} and \eqn{u\in\mathbb{R}}. Now only
+exponential and Cauchy correlation models are available.
 }
 \keyword{internal}

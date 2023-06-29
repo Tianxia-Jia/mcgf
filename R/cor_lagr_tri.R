@@ -14,7 +14,7 @@
 #' @details
 #' The Lagrangian correlation function of the triangular form with parameters
 #' \eqn{\boldsymbol v = (v_1, v_2)^\top} has the form
-#' \deqn{C(\mathbf{h}, u)=\left(1-\dfrac{1}{2\|\boldsymbol v\|}
+#' \deqn{C(\mathbf{h}, u)=\left(1-\dfrac{1}{k\|\boldsymbol v\|}
 #' \left|\dfrac{\mathbf{h}^\top\boldsymbol v}{\|\boldsymbol v\|}-
 #' u\|\boldsymbol v\|\right|\right)_+,}
 #' where \eqn{x_+=\max(x,0), \mathbf{h} = (h_1, h_2)^\top}, and \eqn{k > 0} is
@@ -64,12 +64,17 @@
 #' @seealso [cor_exp], [cor_cauchy], [cor_fs], [cor_stat]
 cor_lagr_tri <- function(v1, v2, k = 2, h1, h2, u) {
 
-    if (!(length(dim(h1)) %in% 2:3))
-        stop("'h1' must be a matrix or 3-d array")
+    if (!is_numeric_scalar(k) || k <= 0)
+        stop('"k" must be positive.')
+
     if (any(dim(h1) != dim(h2)))
-        stop("'h2' must be of the same dimension as 'h1'")
+        stop("'h1' must be of the same dimension as 'h2'.")
+
     if (any(dim(h1) != dim(u)))
-        stop("'u' must be of the same dimension as 'h1'")
+        stop("'u' must be of the same dimension as 'h1'.")
+
+    check_dist_sign(h1)
+    check_dist_sign(h2)
 
     corr <- .cor_lagr_tri(v1 = v1, v2 = v2, k = k, h1 = h1, h2 = h2, u = u)
 

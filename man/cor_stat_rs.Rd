@@ -6,25 +6,33 @@
 \usage{
 cor_stat_rs(
   n_regime,
+  base_ls,
+  lagrangian_ls,
   par_base_ls,
   par_lagr_ls,
+  lambda_ls,
   h_ls,
   h1_ls,
   h2_ls,
   u_ls,
-  lambda_ls,
-  base_ls,
-  lagrangian_ls,
   base_fixed = FALSE
 )
 }
 \arguments{
 \item{n_regime}{Integer, number of regimes.}
 
+\item{base_ls}{List of base model, \code{sep} or \code{fs} for now. Or list of
+correlation matrices/arrays.}
+
+\item{lagrangian_ls}{List of Lagrangian model, \code{lagr_tri} for now.}
+
 \item{par_base_ls}{List of parameters for the base model, used only when
 \code{base_fixed = FALSE}.}
 
 \item{par_lagr_ls}{List of parameters for the Lagrangian model.}
+
+\item{lambda_ls}{List of weight of the Lagrangian term,
+\eqn{\lambda\in[0, 1]}.}
 
 \item{h_ls}{List of Euclidean distance matrix or array,
 used only when \code{base_fixed = FALSE}.}
@@ -36,14 +44,6 @@ used only when \code{base_fixed = FALSE}.}
 \code{h_ls}.}
 
 \item{u_ls}{List of time lag, same dimension as \code{h_ls}.}
-
-\item{lambda_ls}{List of weight of the Lagrangian term,
-\eqn{\lambda\in[0, 1]}.}
-
-\item{base_ls}{List of base model, \code{sep} or \code{fs} for now.
-Or list of correlation matrices/arrays.}
-
-\item{lagrangian_ls}{List of Lagrangian model, \code{lagr_tri} for now.}
 
 \item{base_fixed}{Logical; if TRUE, \code{base_ls} is the list of correlation.}
 }
