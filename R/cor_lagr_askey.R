@@ -1,4 +1,4 @@
-#' Calculate Lagrangian correlation of the triangular form
+#' Calculate Lagrangian correlation of the Askey form
 #'
 #' @param v1 Prevailing wind, u-component.
 #' @param v2 Prevailing wind, v-component.
@@ -11,44 +11,49 @@
 #' @return Correlations of the same dimension as `h1`.
 #'
 #' @details
-#' The Lagrangian correlation function of the triangular form with parameters
+#' The Lagrangian correlation function of the Askey form with parameters
 #' \eqn{\boldsymbol v = (v_1, v_2)^\top\in\mathbb{R}^2} has the form
 #' \deqn{C(\mathbf{h}, u)=\left(1-\dfrac{1}{k\|\boldsymbol v\|}
-#' \left|\dfrac{\mathbf{h}^\top\boldsymbol v}{\|\boldsymbol v\|}-
-#' u\|\boldsymbol v\|\right|\right)_+,}
+#' \left\|\mathbf{h}-u\boldsymbol v\right\|\right)^{3/2}_+,}
 #' where \eqn{\|\cdot\|} is the Euclidean distance, \eqn{x_+=\max(x,0),
 #' \mathbf{h} = (\mathrm{h}_1, \mathrm{h}_2)^\top\in\mathbb{R}^2},
 #' and \eqn{k > 0} is the scale parameter controlling the magnitude of
 #' asymmetry in correlation.
-.cor_lagr_tri <- function(v1, v2, k = 2, h1, h2, u) {
+#'
+#' @references
+#' Askey, R. (1973). Radial characteristic functions, Tech. Report No. 1262,
+#' Math. Research Center, University of Wisconsin-Madison.
+.cor_lagr_askey <- function(v1, v2, k = 2, h1, h2, u) {
     v_norm <- sqrt(v1 ^ 2 + v2 ^ 2)
 
-    lagr <- 1 - 1 / (k * v_norm) *
-        abs((h1 * v1 + h2 * v2) / v_norm - v_norm * u)
+    h_vu_norm <- sqrt((h1 - v1 * u) ^ 2 + (h2 - v2 * u) ^ 2)
+
+    lagr <- (1 - 1 / (k * v_norm) * h_vu_norm)
     lagr[lagr < 0] <- 0
+    lagr <- lagr ^ (3 / 2)
 
     return(lagr)
 }
 
-#' Calculate Lagrangian correlation of the triangular form
+#' Calculate Lagrangian correlation of the Askey form
 #'
-#' @inherit .cor_lagr_tri params details return references
+#' @inherit .cor_lagr_askey params details return references
 #'
 #' @export
 #' @examples
 #' h1 <- matrix(c(0, -5, 5, 0), nrow = 2)
 #' h2 <- matrix(c(0, -8, 8, 0), nrow = 2)
 #' u <- matrix(0.1, nrow = 2, ncol = 2)
-#' cor_lagr_tri(v1 = 5, v2 = 10, h1 = h1, h2 = h2, u = u)
+#' cor_lagr_askey(v1 = 5, v2 = 10, h1 = h1, h2 = h2, u = u)
 #'
 #' h1 <- array(c(0, -10, 10, 0), dim = c(2, 2, 3))
 #' h2 <- array(c(0, -10, 10, 0), dim = c(2, 2, 3))
 #' u <- array(rep(-c(1, 2, 3), each = 4), dim = c(2, 2, 3))
-#' cor_lagr_tri(v1 = 10, v2 = 10, h1 = h1, h2 = h2, u = u)
+#' cor_lagr_askey(v1 = 10, v2 = 10, h1 = h1, h2 = h2, u = u)
 #'
 #' @family {correlation functions}
 #' @family {Lagrangian correlation functions}
-cor_lagr_tri <- function(v1, v2, k = 2, h1, h2, u) {
+cor_lagr_askey <- function(v1, v2, k = 2, h1, h2, u) {
 
     if (!is_numeric_scalar(k) || k <= 0)
         stop('"k" must be positive.')
@@ -62,7 +67,7 @@ cor_lagr_tri <- function(v1, v2, k = 2, h1, h2, u) {
     check_dist_sign(h1)
     check_dist_sign(h2)
 
-    corr <- .cor_lagr_tri(v1 = v1, v2 = v2, k = k, h1 = h1, h2 = h2, u = u)
+    corr <- .cor_lagr_askey(v1 = v1, v2 = v2, k = k, h1 = h1, h2 = h2, u = u)
 
     return(corr)
 }

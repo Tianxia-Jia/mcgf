@@ -38,7 +38,7 @@ The fully symmetric correlation function with interaction parameter
 \text{nugget}\cdot \delta_{\mathbf{h}=\boldsymbol 0}\right),}
 where \eqn{\|\cdot\|} is the Euclidean distance, and \eqn{\delta_{x=0}} is 1
 when \eqn{x=0} and 0 otherwise. Here \eqn{\mathbf{h}\in\mathbb{R}^2} and
-\eqn{u\in\mathbb{R}}. By default \code{beta = 0} and it reduce to the separable
+\eqn{u\in\mathbb{R}}. By default \code{beta = 0} and it reduces to the separable
 model.
 }
 \examples{
@@ -57,5 +57,13 @@ Space–Time Data, Journal of the American Statistical Association, 97:458,
 590-600.
 }
 \seealso{
-\link{cor_exp}, \link{cor_cauchy}, \link{cor_sep}, \link{cor_lagr_tri}
+Other {correlation functions}: 
+\code{\link{cor_cauchy}()},
+\code{\link{cor_exp}()},
+\code{\link{cor_lagr_askey}()},
+\code{\link{cor_lagr_tri}()},
+\code{\link{cor_sep}()},
+\code{\link{cor_stat_rs}()},
+\code{\link{cor_stat}()}
 }
+\concept{{correlation functions}}

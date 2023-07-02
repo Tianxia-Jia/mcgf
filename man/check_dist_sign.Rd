@@ -16,8 +16,8 @@ check_dist_sign(x)
 Check if valid signed distance
 }
 \details{
-Check if input \code{x} is a valid signed distance vector, matrix or array. It
-errors if \code{x} in absolute value is not a symmetric matrix or an array of
+Check if \code{x} is a valid signed distance vector, matrix or array. It errors
+if \code{x} in absolute value is not a symmetric matrix or an array of
 symmetric matrices.
 }
 \keyword{internal}

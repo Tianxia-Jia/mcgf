@@ -31,4 +31,9 @@ where \eqn{\delta_{x=0}} is 1 when \eqn{x=0} and 0 otherwise. Here
 \eqn{\mathbf{h}\in\mathbb{R}^2} and \eqn{u\in\mathbb{R}}. Now only
 exponential and Cauchy correlation models are available.
 }
+\references{
+Gneiting, T. (2002). Nonseparable, Stationary Covariance Functions for
+Space–Time Data, Journal of the American Statistical Association, 97:458,
+590-600.
+}
 \keyword{internal}

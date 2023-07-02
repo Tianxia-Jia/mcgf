@@ -15,14 +15,13 @@ cor_cauchy(x, a, alpha, nu = 1, nugget = 0, is.dist = FALSE)
 
 \item{nu}{Power parameter, \eqn{\nu>0}. Default is 1.}
 
-\item{nugget}{The nugget effect \eqn{\in[0, 1]}. Used only when \code{is.dist} is
-TRUE.}
+\item{nugget}{The nugget effect \eqn{\in[0, 1]}.}
 
 \item{is.dist}{Logical; if TRUE, \code{x} is a distance matrix or an array of
 distance matrices.}
 }
 \value{
-Correlations with the same dimension as \code{x}.
+Correlations of the same dimension as \code{x}.
 }
 \description{
 Calculate Cauchy correlation
@@ -46,5 +45,13 @@ Gneiting, T., and Schlather, M. (2004). Stochastic Models That Separate
 Fractal Dimension and the Hurst Effect. SIAM Review, 46(2), 269–282.
 }
 \seealso{
-\link{cor_exp}, \link{cor_fs}, \link{cor_sep}, \link{cor_lagr_tri}, \link{cor_stat}
+Other {correlation functions}: 
+\code{\link{cor_exp}()},
+\code{\link{cor_fs}()},
+\code{\link{cor_lagr_askey}()},
+\code{\link{cor_lagr_tri}()},
+\code{\link{cor_sep}()},
+\code{\link{cor_stat_rs}()},
+\code{\link{cor_stat}()}
 }
+\concept{{correlation functions}}

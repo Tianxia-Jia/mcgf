@@ -25,7 +25,7 @@
 \arguments{
 \item{N}{Sample size.}
 
-\item{labels}{Vector regime labels of the same length as \code{N}.}
+\item{labels}{Vector of regime labels of the same length as \code{N}.}
 
 \item{base_ls}{List of base model, \code{sep} or \code{fs} for now.}
 
@@ -58,8 +58,9 @@ Simulated regime-switching Markov chain Gaussian field with
 user-specified covariance structure. The simulation is done by kriging.
 The output data is in space-wide format. Each element in \code{dists_ls} must
 contain \code{h} for symmetric models, and \code{h1} and \code{h2} for general stationary
-models. \code{horizon} controls forecasting horizon. \code{sd}, \code{init}, \code{mu_c}, and
-\code{mu_p} must be vectors of appropriate sizes.
+models. \code{horizon} controls forecasting horizon. \code{init} can be a scalar or a
+vector of appropriate size. List elements in \code{sd}, \code{mu_c}, and \code{mu_p} must
+be vectors of appropriate sizes.
 }
 \description{
 Simulate regime-switching Markov chain Gaussian field

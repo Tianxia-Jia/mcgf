@@ -27,7 +27,7 @@ cor_sep(
 \item{u}{Time lag, same dimension as \code{h}.}
 }
 \value{
-Correlations of the same dimension as u
+Correlations of the same dimension as \code{h} and \code{u}.
 }
 \description{
 Calculate correlation for separable model
@@ -64,5 +64,13 @@ Space–Time Data, Journal of the American Statistical Association, 97:458,
 590-600.
 }
 \seealso{
-\link{cor_exp}, \link{cor_cauchy}, \link{cor_fs}, \link{cor_lagr_tri}, \link{cor_stat}
+Other {correlation functions}: 
+\code{\link{cor_cauchy}()},
+\code{\link{cor_exp}()},
+\code{\link{cor_fs}()},
+\code{\link{cor_lagr_askey}()},
+\code{\link{cor_lagr_tri}()},
+\code{\link{cor_stat_rs}()},
+\code{\link{cor_stat}()}
 }
+\concept{{correlation functions}}

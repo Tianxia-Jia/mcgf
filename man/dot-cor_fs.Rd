@@ -24,7 +24,7 @@
 \item{u}{Time lag, same dimension as \code{h}.}
 }
 \value{
-Correlations of the same dimension as \code{x}.
+Correlations of the same dimension as \code{h} and \code{u}.
 }
 \description{
 Calculate correlation for fully symmetric model
@@ -38,11 +38,8 @@ The fully symmetric correlation function with interaction parameter
 \text{nugget}\cdot \delta_{\mathbf{h}=\boldsymbol 0}\right),}
 where \eqn{\|\cdot\|} is the Euclidean distance, and \eqn{\delta_{x=0}} is 1
 when \eqn{x=0} and 0 otherwise. Here \eqn{\mathbf{h}\in\mathbb{R}^2} and
-\eqn{u\in\mathbb{R}}. By default \code{beta = 0} and it reduce to the separable
+\eqn{u\in\mathbb{R}}. By default \code{beta = 0} and it reduces to the separable
 model.
-
-where \eqn{\|\cdot\|} is the Euclidean distance. By default \code{beta = 0} and
-it reduce to the separable model.
 }
 \references{
 Gneiting, T. (2002). Nonseparable, Stationary Covariance Functions for

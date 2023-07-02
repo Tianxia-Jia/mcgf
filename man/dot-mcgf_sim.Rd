@@ -32,6 +32,8 @@
 
 \item{par_lagr}{Parameters for the Lagrangian model.}
 
+\item{lambda}{Weight of the Lagrangian term, \eqn{\lambda\in[0, 1]}.}
+
 \item{dists}{Distance matrices or arrays.}
 
 \item{sd}{Standard deviation for each location.}
@@ -46,8 +48,6 @@
 
 \item{return_all}{Logical; if TRUE the joint covariance matrix, arrays of
 distances and time lag are returned.}
-
-\item{Weight}{of the Lagrangian term, \eqn{\lambda\in[0, 1]}.}
 }
 \value{
 Simulated Markov chain Gaussian field with user-specified covariance

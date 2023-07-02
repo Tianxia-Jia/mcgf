@@ -16,6 +16,6 @@ Logical.
 Check if numeric scalar
 }
 \details{
-Check if input \code{x} is a numeric  scalar.
+Check if \code{x} is a numeric scalar.
 }
 \keyword{internal}

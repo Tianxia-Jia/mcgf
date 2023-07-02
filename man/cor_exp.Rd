@@ -13,14 +13,13 @@ cor_exp(x, c, gamma = 1/2, nugget = 0, is.dist = FALSE)
 
 \item{gamma}{Scale parameter, \eqn{\gamma\in(0, 1/2]}. Default is 1/2.}
 
-\item{nugget}{The nugget effect \eqn{\in[0, 1]}. Used only when \code{is.dist} is
-TRUE.}
+\item{nugget}{The nugget effect \eqn{\in[0, 1]}.}
 
 \item{is.dist}{Logical; if TRUE, \code{x} is a distance matrix or an array of
 distance matrices.}
 }
 \value{
-Correlations with the same dimension as \code{x}.
+Correlations of the same dimension as \code{x}.
 }
 \description{
 Calculate exponential correlation
@@ -45,5 +44,13 @@ Geostatistics. Journal of the Royal Statistical Society. Series C (Applied
 Statistics), 47(3), 299–350.
 }
 \seealso{
-\link{cor_cauchy}, \link{cor_fs}, \link{cor_sep}, \link{cor_lagr_tri}, \link{cor_stat}
+Other {correlation functions}: 
+\code{\link{cor_cauchy}()},
+\code{\link{cor_fs}()},
+\code{\link{cor_lagr_askey}()},
+\code{\link{cor_lagr_tri}()},
+\code{\link{cor_sep}()},
+\code{\link{cor_stat_rs}()},
+\code{\link{cor_stat}()}
 }
+\concept{{correlation functions}}

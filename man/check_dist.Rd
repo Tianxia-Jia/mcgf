@@ -16,8 +16,8 @@ check_dist(x)
 Check if valid distance
 }
 \details{
-Check if input \code{x} is a valid distance vector, matrix or array. It errors if
-any elements in \code{x} is negative, or if \code{x} is not a symmetric matrix or an
+Check if \code{x} is a valid distance vector, matrix or array. It errors if any
+elements in \code{x} is negative, or if \code{x} is not a symmetric matrix or an
 array of symmetric matrices.
 }
 \keyword{internal}

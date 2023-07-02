@@ -4,24 +4,18 @@
 \alias{.cor_stat}
 \title{Calculate general stationary correlation.}
 \usage{
-.cor_stat(
-  base,
-  lagrangian,
-  par_base,
-  par_lagr,
-  lambda = lambda,
-  base_fixed = FALSE
-)
+.cor_stat(base, lagrangian, par_base, par_lagr, lambda, base_fixed = FALSE)
 }
 \arguments{
 \item{base}{Base model, \code{sep} or \code{fs} for now. Or correlation matrix/array.}
 
-\item{lagrangian}{Lagrangian model, \code{lagr_tri} for now.}
+\item{lagrangian}{Lagrangian model, \code{none}, \code{lagr_tri}, or \code{lagr_askey}.}
 
 \item{par_base}{Parameters for the base model (symmetric), used only when
 \code{base_fixed = FALSE}.}
 
-\item{par_lagr}{Parameters for the Lagrangian model.}
+\item{par_lagr}{Parameters for the Lagrangian model. Used only when
+\code{lagrangian} is not \code{none}.}
 
 \item{lambda}{Weight of the Lagrangian term, \eqn{\lambda\in[0, 1]}.}
 
@@ -46,5 +40,7 @@ If \code{base_fixed = TRUE}, the correlation is of the form
 \lambda C_{\text{Lagr}}(\mathbf{h}, u),}
 where \code{base} is a correlation matrix/array and \code{par_base} and \code{h} are not
 used.
+
+When \code{lagrangian = "none"}, \code{lambda} must be 0.
 }
 \keyword{internal}

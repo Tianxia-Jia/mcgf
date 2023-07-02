@@ -7,7 +7,6 @@
 #' @param nugget The nugget effect \eqn{\in[0, 1]}.
 #'
 #' @keywords internal
-#'
 #' @return Correlations of the same dimension as `x`.
 #'
 #' @details
@@ -28,24 +27,12 @@
 
 #' Calculate Cauchy correlation
 #'
-#' @param x A numeric vector, matrix, or array.
-#' @param a Smooth parameter, \eqn{a>0}.
-#' @param alpha Scale parameter, \eqn{\alpha\in(0, 1]}.
-#' @param nu Power parameter, \eqn{\nu>0}. Default is 1.
-#' @param nugget The nugget effect \eqn{\in[0, 1]}. Used only when `is.dist` is
-#' TRUE.
+#' @inherit .cor_cauchy params return details references
+#'
 #' @param is.dist Logical; if TRUE, `x` is a distance matrix or an array of
 #' distance matrices.
 #'
-#' @return Correlations with the same dimension as `x`.
 #' @export
-#'
-#' @details
-#' The Cauchy correlation function with scale parameter \eqn{a} and
-#' smooth parameter \eqn{\alpha} has the form
-#' \deqn{C(x)=(1-\text{nugget})(a|x|^{2\alpha} + 1)^{-\nu}+\text{nugget}\cdot
-#' \delta_{x=0},} where \eqn{\delta_{x=0}} is 1 when \eqn{x=0} and 0 otherwise.
-#'
 #' @examples
 #' x <- matrix(c(0, 5, 5, 0), nrow = 2)
 #' cor_cauchy(x, a = 1, alpha = 0.5)
@@ -53,11 +40,7 @@
 #' x <- matrix(c(0, 5, 5, 0), nrow = 2)
 #' cor_cauchy(x, a = 1, alpha = 0.5, nugget = 0.3, is.dist = TRUE)
 #'
-#' @references
-#' Gneiting, T., and Schlather, M. (2004). Stochastic Models That Separate
-#' Fractal Dimension and the Hurst Effect. SIAM Review, 46(2), 269–282.
-#'
-#' @seealso [cor_exp], [cor_fs], [cor_sep], [cor_lagr_tri], [cor_stat]
+#' @family {correlation functions}
 cor_cauchy <- function(x, a, alpha, nu = 1, nugget = 0, is.dist = FALSE) {
 
     if (!is_numeric_scalar(nugget) || nugget < 0 || nugget > 1)

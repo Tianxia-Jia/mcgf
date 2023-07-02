@@ -1,7 +1,7 @@
 #' Simulate regime-switching Markov chain Gaussian field
 #'
 #' @param N Sample size.
-#' @param labels Vector regime labels of the same length as `N`.
+#' @param labels Vector of regime labels of the same length as `N`.
 #' @param base_ls List of base model, `sep` or `fs` for now.
 #' @param lagrangian_ls List of Lagrangian model, "none" or `lagr_tri` for now.
 #' @param par_base_ls List of parameters for the base model.
@@ -23,8 +23,9 @@
 #' user-specified covariance structure. The simulation is done by kriging.
 #' The output data is in space-wide format. Each element in `dists_ls` must
 #' contain `h` for symmetric models, and `h1` and `h2` for general stationary
-#' models. `horizon` controls forecasting horizon. `sd`, `init`, `mu_c`, and
-#' `mu_p` must be vectors of appropriate sizes.
+#' models. `horizon` controls forecasting horizon. `init` can be a scalar or a
+#' vector of appropriate size. List elements in `sd_ls`, `mu_c_ls`, and
+#' `mu_p_ls` must be vectors of appropriate sizes.
 .mcgf_rs_sim <- function(N,
                          labels,
                          base_ls,
@@ -47,12 +48,54 @@
     n_var <- nrow(dists_ls[[1]]$h)
     n_block_row_ls <- lapply(lag_max_ls, function(x) x + 1)
 
+    u_ls <- lapply(lag_max_ls, function(x) 0:x)
+    dim_ar_ls <- lapply(u_ls, function(x) c(n_var, n_var, length(x)))
+    h_ar_ls <- Map(function(x, dim) array(x$h, dim = dim),
+                   dists_ls, dim_ar_ls)
+    u_ar_ls <- Map(function(x, dim)
+        array(rep(x, each = n_var * n_var), dim = dim),
+        u_ls, dim_ar_ls)
 
+    if (any(lagrangian_ls != "none")) {
+        h1_ar_ls <- Map(function(x, dim) array(x["h1"], dim = dim),
+                        dists_ls, dim_ar_ls)
+        h2_ar_ls <- Map(function(x, dim) array(x["h2"], dim = dim),
+                        dists_ls, dim_ar_ls)
 
-    u <- 0:lag_max
-    dim_ar <- c(n_var, n_var, length(u))
-    h_ar <- array(dists$h, dim = dim_ar)
-    u_ar <- array(rep(u, each = n_var * n_var), dim = dim_ar)
+        cov_ar_rs <- cor_stat_rs(
+            n_regime = n_regime,
+            base_ls = base_ls,
+            lagrangian_ls = lagrangian_ls,
+            par_base_ls = par_base_ls,
+            par_lagr_ls = par_lagr_ls,
+            lambda_ls = lambda_ls,
+            h_ls = h_ls,
+            h1_ls = h1_ls,
+            h2_ls = h2_ls,
+            u_ls = u_ls,
+            base_fixed = FALSE
+        )
+
+    } else {
+
+        cov_ar_rs <- cor_stat_rs(
+            n_regime = n_regime,
+            base_ls = base_ls,
+            lagrangian_ls = lagrangian_ls,
+            par_base_ls = par_base_ls,
+            lambda_ls = lambda_ls,
+            h_ls = h_ls,
+            u_ls = u_ls,
+            base_fixed = FALSE
+        )
+    }
+
+    for (k in 1:n_regime) {
+        for (i in 1:dim(cov_ar_rs[[k]])[3]) {
+            cov_ar_rs[[k]][, , i] <- cor2cov(cov_ar_rs[[k]][, , i], sd[[k]])
+        }
+    }
+
 
 
 
@@ -89,7 +132,7 @@ mcgf_rs_sim <- function(N,
 
     for (k in 1:length(lagrangian_ls)) {
 
-        if (lagrangian_ls[[k]] == "lagr_tri") {
+        if (lagrangian_ls[[k]] != "none") {
 
             if (is.null(dist_ls[[k]]$h1))
                 stop("missing 'h1' for regime ", k, " in dists_ls.")
@@ -97,7 +140,6 @@ mcgf_rs_sim <- function(N,
                 stop("missing 'h2' for regime ", k, " in dists_ls.")
         }
     }
-
 
     lag_max_ls <- lapply(lag_ls, function(x) x + horizon - 1)
     n_var <- nrow(dists_ls[[1]]$h)
@@ -109,43 +151,18 @@ mcgf_rs_sim <- function(N,
         N <- horizon + max(unlist(n_block_row_ls))
     }
 
-
-    for (k in length(sd_ls)) {
-        if (length(sd_ls[[k]]) == 1) {
-            sd_ls[[k]] <- rep(sd_ls[[k]], n_var)
-        } else {
-            if (length(sd_ls[[k]]) != n_var)
-                stop("length of 'sd_ls' must be 1 or ", n_var, " for regime ", k)
-        }
-    }
-
     if (length(init) == 1) {
         init <- matrix(init, nrow = max(unlist(n_block_row_ls)), ncol = n_var)
     } else {
         if (NROW(init) != max(unlist(n_block_row_ls)) || NCOL(init) !=  n_var)
             stop("dim of 'n_var' must be 1 or ", max(unlist(n_block_row_ls)),
-                 " x ", n_var)
+                 " x ", n_var, ".")
     }
 
-    for (k in length(mu_c_ls)) {
-        if (length(mu_c_ls[[k]]) == 1) {
-            mu_c_ls[[k]] <- rep(mu_c_ls[[k]], n_var * horizon)
-        } else {
-            if (length(mu_c_ls[[k]]) != n_var * horizon)
-                stop("length of 'mu_c_ls' must be 1 or ", n_var * horizon,
-                     " for regime ", k)
-        }
-    }
 
-    for (k in length(mu_p_ls)) {
-        if (length(mu_p_ls[[k]]) == 1) {
-            mu_p_ls[[k]] <- rep(mu_p_ls[[k]], n_var * lag_ls[[k]])
-        } else {
-            if (length(mu_p_ls[[k]]) != n_var * lag_ls[[k]])
-                stop("length of 'mu_p_ls' must be 1 or ", n_var * lag_ls[[k]],
-                     " for regime ", k)
-        }
-    }
+    sd_ls <- check_length_ls(sd_ls, n_var, "sd_ls")
+    mu_c_ls <- check_length_ls(mu_c_ls, n_var * horizon, "mu_c_ls")
+    mu_p_ls <- check_length_ls(mu_p_ls, n_var * horizon, "mu_p_ls")
 
     res <- .mcgf_rs_sim(
         N = N,

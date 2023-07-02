@@ -7,10 +7,10 @@
 mcgf_sim(
   N,
   base = c("sep", "fs"),
-  lagrangian = c("none", "lagr_tri"),
+  lagrangian = c("none", "lagr_tri", "lagr_askey"),
   par_base,
   par_lagr,
-  lambda = 0,
+  lambda,
   dists,
   sd = 1,
   lag = 1,
@@ -32,6 +32,8 @@ mcgf_sim(
 
 \item{par_lagr}{Parameters for the Lagrangian model.}
 
+\item{lambda}{Weight of the Lagrangian term, \eqn{\lambda\in[0, 1]}.}
+
 \item{dists}{Distance matrices or arrays.}
 
 \item{sd}{Standard deviation for each location.}
@@ -46,15 +48,14 @@ mcgf_sim(
 
 \item{return_all}{Logical; if TRUE the joint covariance matrix, arrays of
 distances and time lag are returned.}
-
-\item{Weight}{of the Lagrangian term, \eqn{\lambda\in[0, 1]}.}
 }
 \value{
 Simulated Markov chain Gaussian field with user-specified covariance
 structure. The simulation is done by kriging. The output data is in
-space-wide format. \code{dists} must contain \code{h} for symmetric models and \code{h1}
+space-wide format. \code{dists} must contain \code{h} for symmetric models, and \code{h1}
 and \code{h2} for general stationary models. \code{horizon} controls forecasting
-horizon. \code{sd}, \code{mu_c}, \code{mu_p}, and \code{init} can be scalars.
+horizon. \code{sd}, \code{mu_c}, \code{mu_p}, and \code{init} must be vectors of appropriate
+sizes.
 }
 \description{
 Simulate Markov chain Gaussian field
@@ -68,7 +69,9 @@ h1 <- matrix(c(0, 5, -5, 0), nrow = 2)
 h2 <- matrix(c(0, 8, -8, 0), nrow = 2)
 h <- sqrt(h1 ^ 2 + h2 ^ 2)
 dists <- list(h = h, h1 = h1, h2 = h2)
-X <- mcgf_sim(N = 1000, base = "sep", lagrangian = "lagr_tri",
+X <- mcgf_sim(N = 1000, base = "sep", lagrangian = "lagr_tri", lambda = 0.5,
               par_base = par_base, par_lagr = par_lagr, dists = dists)
 # plot.ts(X)
+
 }
+\concept{{simulations of Markov chain Gaussian fields}}

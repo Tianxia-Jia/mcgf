@@ -6,7 +6,7 @@
 \usage{
 cor_stat(
   base = c("sep", "fs"),
-  lagrangian = c("lagr_tri"),
+  lagrangian = c("none", "lagr_tri", "lagr_askey"),
   par_base,
   par_lagr,
   lambda,
@@ -20,21 +20,24 @@ cor_stat(
 \arguments{
 \item{base}{Base model, \code{sep} or \code{fs} for now. Or correlation matrix/array.}
 
-\item{lagrangian}{Lagrangian model, \code{lagr_tri} for now.}
+\item{lagrangian}{Lagrangian model, \code{none}, \code{lagr_tri}, or \code{lagr_askey}.}
 
 \item{par_base}{Parameters for the base model (symmetric), used only when
 \code{base_fixed = FALSE}.}
 
-\item{par_lagr}{Parameters for the Lagrangian model.}
+\item{par_lagr}{Parameters for the Lagrangian model. Used only when
+\code{lagrangian} is not \code{none}.}
 
 \item{lambda}{Weight of the Lagrangian term, \eqn{\lambda\in[0, 1]}.}
 
 \item{h}{Euclidean distance matrix or array, used only when
 \code{base_fixed = FALSE}.}
 
-\item{h1}{Horizontal distance matrix or array, same dimension as \code{h}.}
+\item{h1}{Horizontal distance matrix or array, same dimension as \code{h}. Used
+only when \code{lagrangian} is not \code{none}.}
 
-\item{h2}{Vertical distance matrix or array, same dimension as \code{h}.}
+\item{h2}{Vertical distance matrix or array, same dimension as \code{h}. Used
+only when \code{lagrangian} is not \code{none}.}
 
 \item{u}{Time lag, same dimension as \code{h}.}
 
@@ -42,7 +45,7 @@ cor_stat(
 }
 \value{
 Correlations for the general stationary model. Same dimension of
-\code{base} if \code{base_fixed = TRUE}.
+\code{base} if \code{base_fixed = FALSE}.
 }
 \description{
 Calculate general stationary correlation.
@@ -59,6 +62,8 @@ If \code{base_fixed = TRUE}, the correlation is of the form
 \lambda C_{\text{Lagr}}(\mathbf{h}, u),}
 where \code{base} is a correlation matrix/array and \code{par_base} and \code{h} are not
 used.
+
+When \code{lagrangian = "none"}, \code{lambda} must be 0.
 }
 \examples{
 par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5)
@@ -71,6 +76,7 @@ h <- sqrt(h1 ^ 2 + h2 ^ 2)
 u <- matrix(0.1, nrow = 2, ncol = 2)
 cor_stat(base = "sep", lagrangian = "lagr_tri", par_base = par_base,
          par_lagr = par_lagr, lambda = 0.8, h = h, h1 = h1, h2 = h2, u = u)
+
 h1 <- array(c(0, 5, -5, 0), dim = c(2, 2, 3))
 h2 <- array(c(0, 8, -8, 0), dim = c(2, 2, 3))
 h <- sqrt(h1 ^ 2 + h2 ^ 2)
@@ -78,10 +84,28 @@ u <- array(rep(c(0.1, 0.2, 0.3), each = 4), dim = c(2, 2, 3))
 fit_base <- cor_fs(nugget = 0.5, c = 0.01, gamma = 0.5, a = 1, alpha = 0.5,
                    beta = 0.0, h = h, u = u)
 par_lagr <- list(v1 = 5, v2 = 10)
-cor_stat(base = fit_base, lagrangian = "lagr_tri", par_lagr = par_lagr,
+cor_stat(base = fit_base, lagrangian = "lagr_askey", par_lagr = par_lagr,
          h1 = h1, h2 = h2, u = u, lambda = 0.8, base_fixed = TRUE)
 
 }
 \seealso{
-\link{cor_exp}, \link{cor_cauchy}, \link{cor_sep}, \link{cor_lagr_tri}, \link{cor_stat}
+Other {correlation functions}: 
+\code{\link{cor_cauchy}()},
+\code{\link{cor_exp}()},
+\code{\link{cor_fs}()},
+\code{\link{cor_lagr_askey}()},
+\code{\link{cor_lagr_tri}()},
+\code{\link{cor_sep}()},
+\code{\link{cor_stat_rs}()}
+
+Other {Lagrangian correlation functions}: 
+\code{\link{cor_lagr_askey}()},
+\code{\link{cor_lagr_tri}()},
+\code{\link{cor_stat_rs}()}
+
+Other {general stationary functions}: 
+\code{\link{cor_stat_rs}()}
 }
+\concept{{Lagrangian correlation functions}}
+\concept{{correlation functions}}
+\concept{{general stationary functions}}
