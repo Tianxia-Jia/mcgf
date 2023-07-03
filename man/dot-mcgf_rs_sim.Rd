@@ -59,8 +59,8 @@ user-specified covariance structure. The simulation is done by kriging.
 The output data is in space-wide format. Each element in \code{dists_ls} must
 contain \code{h} for symmetric models, and \code{h1} and \code{h2} for general stationary
 models. \code{horizon} controls forecasting horizon. \code{init} can be a scalar or a
-vector of appropriate size. List elements in \code{sd}, \code{mu_c}, and \code{mu_p} must
-be vectors of appropriate sizes.
+vector of appropriate size. List elements in \code{sd_ls}, \code{mu_c_ls}, and
+\code{mu_p_ls} must be vectors of appropriate sizes.
 }
 \description{
 Simulate regime-switching Markov chain Gaussian field

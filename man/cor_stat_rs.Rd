@@ -9,11 +9,11 @@ cor_stat_rs(
   base_ls,
   lagrangian_ls,
   par_base_ls,
-  par_lagr_ls = list(NULL),
-  lambda_ls = list(0),
+  par_lagr_ls,
+  lambda_ls,
   h_ls,
-  h1_ls = list(NULL),
-  h2_ls = list(NULL),
+  h1_ls,
+  h2_ls,
   u_ls,
   base_fixed = FALSE
 )
@@ -64,21 +64,25 @@ regimes. If \code{base_fixed = TRUE}, the base is a list of correlation and
 \code{par_base_ls} and \code{h_ls} are not used.
 }
 \examples{
-# Fit general stationary model with sep base and two Lagrangian models.
+# Fit general stationary model with sep base.
 par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5)
 par_t <- list(a = 1, alpha = 0.5)
 par_base <- list(par_s = par_s, par_t = par_t)
-h1 <- matrix(c(0, 5, -5, 0), nrow = 2)
-h2 <- matrix(c(0, 8, -8, 0), nrow = 2)
+h1 <- array(c(0, 5, -5, 0), dim = c(2, 2, 3))
+h2 <- array(c(0, 8, -8, 0), dim = c(2, 2, 3))
 h <- sqrt(h1 ^ 2 + h2 ^ 2)
-u <- matrix(1, nrow = 2, ncol = 2)
+u <- array(rep(c(1, 2, 3), each = 4), dim = c(2, 2, 3))
 cor_stat_rs(
     n_regime = 2,
-    par_base_ls = list(par_base),
-    h_ls = list(h),
-    u_ls = list(u),
     base_ls = list("sep"),
-    lagrangian_ls = list("none")
+    lagrangian_ls = list("none", "lagr_tri"),
+    par_base_ls = list(par_base),
+    par_lagr_ls = list(NULL, list(v1 = 10, v2 = 20)),
+    lambda_ls = list(NULL, 0.2),
+    h_ls = list(h),
+    h1_ls = list(NULL, h1),
+    h2_ls = list(NULL, h2),
+    u_ls = list(u, u + 1)
 )
 
 # Fit general stationary model given fs as the base model.

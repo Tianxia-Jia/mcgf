@@ -83,7 +83,6 @@
             base_ls = base_ls,
             lagrangian_ls = lagrangian_ls,
             par_base_ls = par_base_ls,
-            lambda_ls = lambda_ls,
             h_ls = h_ls,
             u_ls = u_ls,
             base_fixed = FALSE
@@ -96,9 +95,12 @@
         }
     }
 
+    cov_mat_joint_ls <- lapply(cov_ar_rs, cov_joint)
 
+    X <- init
+    while (nrow(X) <= N) {
 
-
+    }
 }
 
 mcgf_rs_sim <- function(N,
