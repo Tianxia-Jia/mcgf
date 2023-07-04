@@ -78,7 +78,7 @@ cor_stat_rs(
     lagrangian_ls = list("none", "lagr_tri"),
     par_base_ls = list(par_base),
     par_lagr_ls = list(NULL, list(v1 = 10, v2 = 20)),
-    lambda_ls = list(NULL, 0.2),
+    lambda_ls = list(0, 0.2),
     h_ls = list(h),
     h1_ls = list(NULL, h1),
     h2_ls = list(NULL, h2),

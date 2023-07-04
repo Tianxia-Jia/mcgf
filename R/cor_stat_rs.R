@@ -88,7 +88,7 @@ cor_stat_rs <- function(n_regime,
                         base_fixed = FALSE) {
 
     if (!is_numeric_scalar(n_regime)) {
-        stop("'n_regime' must be an integer.")
+        stop("'n_regime' must be an integer.", call. = FALSE)
     } else {
         n_regime <- as.integer(n_regime)
     }
@@ -102,19 +102,19 @@ cor_stat_rs <- function(n_regime,
 
         if (missing(par_lagr_ls) || length(par_lagr_ls) != n_regime)
             stop("length of 'par_lagr_ls' must be ", n_regime,
-                 " if 'par_lagr_ls' contains 'none'.")
+                 " if 'par_lagr_ls' contains 'none'.", call. = FALSE)
 
         if (missing(lambda_ls) || length(lambda_ls) != n_regime)
             stop("length of 'lambda_ls' must be ", n_regime,
-                 " if 'lambda_ls' contains 'none'.")
+                 " if 'lambda_ls' contains 'none'.", call. = FALSE)
 
         if (missing(h1_ls) || length(h1_ls) != n_regime)
             stop("length of 'h1_ls' must be ", n_regime,
-                 " if 'h1_ls' contains 'none'.")
+                 " if 'h1_ls' contains 'none'.", call. = FALSE)
 
         if (missing(h2_ls) || length(h2_ls) != n_regime)
             stop("length of 'h2_ls' must be ", n_regime,
-                 " if 'h2_ls' contains 'none'.")
+                 " if 'h2_ls' contains 'none'.", call. = FALSE)
     }
 
     args_stat <- c("base", "lagrangian", "par_base", "par_lagr", "lambda", "h",
@@ -133,21 +133,19 @@ cor_stat_rs <- function(n_regime,
         } else if (lenth_args_i == n_regime) {
             assign(args_stat_i[i], 1:n_regime)
         } else {
-            stop("length of '", args_stat_rs[i], "' must be 1 or 'n_regime'")
+            stop("length of '", args_stat_rs[i], "' must be 1 or 'n_regime'",
+                 call. = FALSE)
         }
     }
 
     corr_ls <- vector("list", n_regime)
 
     for (i in 1:n_regime) {
-        ind_i <- lapply(mget(args_stat_i), function(x)
-            x[[i]])
+        ind_i <- lapply(mget(args_stat_i), function(x) x[[i]])
         args_rs_i <- mget(args_stat_rs)
         names(args_rs_i) <- args_stat
-        args_i <- Map(function(x, ind)
-            x[[ind]], args_rs_i, ind_i)
-        corr_ls[[i]] <-
-            do.call(cor_stat, c(args_i, base_fixed = base_fixed))
+        args_i <- Map(function(x, ind) x[[ind]], args_rs_i, ind_i)
+        corr_ls[[i]] <- do.call(cor_stat, c(args_i, base_fixed = base_fixed))
     }
     return(corr_ls)
 }

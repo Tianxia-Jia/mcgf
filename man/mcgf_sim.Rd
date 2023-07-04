@@ -69,9 +69,15 @@ h1 <- matrix(c(0, 5, -5, 0), nrow = 2)
 h2 <- matrix(c(0, 8, -8, 0), nrow = 2)
 h <- sqrt(h1 ^ 2 + h2 ^ 2)
 dists <- list(h = h, h1 = h1, h2 = h2)
+
+set.seed(123)
 X <- mcgf_sim(N = 1000, base = "sep", lagrangian = "lagr_tri", lambda = 0.5,
               par_base = par_base, par_lagr = par_lagr, dists = dists)
 # plot.ts(X)
 
+}
+\seealso{
+Other {simulations of Markov chain Gaussian fields}: 
+\code{\link{mcgf_rs_sim}()}
 }
 \concept{{simulations of Markov chain Gaussian fields}}

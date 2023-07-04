@@ -15,10 +15,10 @@ cor2cov <- function(V, sd) {
     p <- (d <- dim(V))[1L]
 
     if (!is.numeric(V) || length(d) != 2L || p != d[2L])
-        stop("'V' is not a square numeric matrix")
+        stop("'V' is not a square numeric matrix", call. = FALSE)
 
     if (any(V < 0))
-        stop("'V' must be non-negative")
+        stop("'V' must be non-negative", call. = FALSE)
 
     stopifnot(dim(V) == c(length(sd), length(sd)))
 

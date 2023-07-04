@@ -4,7 +4,7 @@
 \alias{check_dist_sign}
 \title{Check if valid signed distance}
 \usage{
-check_dist_sign(x)
+check_dist_sign(x, name)
 }
 \arguments{
 \item{x}{Distance matrix or array.}

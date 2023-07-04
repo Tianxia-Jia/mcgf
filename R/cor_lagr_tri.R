@@ -54,13 +54,13 @@ cor_lagr_tri <- function(v1, v2, k = 2, h1, h2, u) {
         stop('"k" must be positive.')
 
     if (any(dim(h1) != dim(h2)))
-        stop("'h1' must be of the same dimension as 'h2'.")
+        stop("'h1' must be of the same dimension as 'h2'.", call. = FALSE)
 
     if (any(dim(h1) != dim(u)))
-        stop("'u' must be of the same dimension as 'h1'.")
+        stop("'u' must be of the same dimension as 'h1'.", call. = FALSE)
 
-    check_dist_sign(h1)
-    check_dist_sign(h2)
+    check_dist_sign(h1, name = "h1")
+    check_dist_sign(h2, name = "h2")
 
     corr <- .cor_lagr_tri(v1 = v1, v2 = v2, k = k, h1 = h1, h2 = h2, u = u)
 

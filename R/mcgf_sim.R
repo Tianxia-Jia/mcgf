@@ -87,20 +87,18 @@
     cov_mat_curr <- cov_mat_joint[ind_curr, ind_curr]
     cov_mat_curr_past <- cov_mat_joint[ind_curr, -ind_curr]
     cov_mat_past <- cov_mat_joint[-ind_curr, -ind_curr]
-    lse <- cov_mat_curr_past %*% solve(cov_mat_past)
+    LSE <- cov_mat_curr_past %*% solve(cov_mat_past)
+    X_new_cov <- cov_mat_curr - LSE %*% t(cov_mat_curr_past)
 
     X <- init
 
     for (n in 1:n_rounds) {
         X_past <- embed(tail(X, lag), lag)
-
-        X_new_mean <- mu_c + lse %*% t(X_past - mu_p)
-        X_new_cov <- cov_mat_curr - lse %*% t(cov_mat_curr_past)
+        X_new_mean <- mu_c + LSE %*% t(X_past - mu_p)
 
         X_new <- mvnfast::rmvn(1, X_new_mean, X_new_cov)
         X_new <- matrix(X_new, ncol = n_var, byrow = T)
         X_new <- X_new[horizon:1, ]
-
         X <- rbind(X, X_new)
     }
 
@@ -129,7 +127,7 @@
 #' Simulate Markov chain Gaussian field
 #'
 #' @inherit .mcgf_sim params details return
-
+#'
 #' @export
 #' @examples
 #' par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5)
@@ -140,6 +138,8 @@
 #' h2 <- matrix(c(0, 8, -8, 0), nrow = 2)
 #' h <- sqrt(h1 ^ 2 + h2 ^ 2)
 #' dists <- list(h = h, h1 = h1, h2 = h2)
+#'
+#' set.seed(123)
 #' X <- mcgf_sim(N = 1000, base = "sep", lagrangian = "lagr_tri", lambda = 0.5,
 #'               par_base = par_base, par_lagr = par_lagr, dists = dists)
 #' # plot.ts(X)
@@ -161,17 +161,17 @@ mcgf_sim <- function(N,
                      return_all = FALSE) {
 
     if (N < horizon)
-        stop("'N' must be no less than 'horizon'")
+        stop("'N' must be no less than 'horizon'", call. = FALSE)
 
     if (is.null(dists$h))
-        stop("missing 'h' in dists.")
+        stop("missing 'h' in dists.", call. = FALSE)
 
     if (lagrangian != "none") {
 
         if (is.null(dists$h1))
-            stop("missing 'h1' in dists.")
+            stop("missing 'h1' in dists.", call. = FALSE)
         if (is.null(dists$h2))
-            stop("missing 'h2' in dists.")
+            stop("missing 'h2' in dists.", call. = FALSE)
     }
 
     lag_max <- lag + horizon - 1
@@ -187,7 +187,8 @@ mcgf_sim <- function(N,
         init <- matrix(init, nrow = n_block_row, ncol = n_var)
     } else {
         if (NROW(init) != n_block_row || NCOL(init) !=  n_var)
-            stop("dim of 'n_var' must be 1 or ", n_block_row, " x ", n_var, ".")
+            stop("dim of 'n_var' must be 1 or ", n_block_row, " x ", n_var, ".",
+                 call. = FALSE)
     }
 
     sd <- check_length(x = sd, length = n_var, name = "sd")

@@ -67,8 +67,8 @@ cor_sep <- function(spatial = c("exp", "cauchy"),
     spatial <- match.arg(spatial)
     temporal <- match.arg(temporal)
 
-    if (any(dim(h) != dim(u)))
-        stop("'u' must be of the same dimension as 'h' in 'dist'.")
+    if (is.null(dim(h)) != is.null(dim(u)) || any(dim(h) != dim(u)))
+        stop("'u' must be of the same dimension as 'h'.", call. = FALSE)
 
     par_s <- append(par_s, list(x = h, is.dist = TRUE))
     par_t <- append(par_t, list(x = u, is.dist = FALSE))

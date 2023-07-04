@@ -4,7 +4,7 @@
 \alias{check_dist}
 \title{Check if valid distance}
 \usage{
-check_dist(x)
+check_dist(x, name = "x")
 }
 \arguments{
 \item{x}{Distance matrix or array.}
