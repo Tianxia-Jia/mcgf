@@ -101,10 +101,6 @@ cor_stat <- function(base = c("sep", "fs"),
 
     if (lagrangian == "none") {
 
-        if (lambda != 0)
-            stop("`lambda` must be 0 when `lagrangian = 'none'`.",
-                 call. = FALSE)
-
         if (base_fixed) {
             stop("cannot supply `base` when `lagragian = 'none'`",
                  call. = FALSE)
