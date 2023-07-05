@@ -102,11 +102,11 @@ cor_stat <- function(base = c("sep", "fs"),
     if (lagrangian == "none") {
 
         if (lambda != 0)
-            stop("'lambda' must be 0 when 'lagrangian' = 'none'.",
+            stop("`lambda` must be 0 when `lagrangian = 'none'`.",
                  call. = FALSE)
 
         if (base_fixed) {
-            stop("cannot supply 'base' when 'lagragian = \"none\"'",
+            stop("cannot supply `base` when `lagragian = 'none'`",
                  call. = FALSE)
 
         } else {
@@ -138,13 +138,13 @@ cor_stat <- function(base = c("sep", "fs"),
                            list(h1 = h1, h2 = h2, u = u))
 
         if (lambda < 0 || lambda > 1)
-            stop("'lambda' must be in [0, 1].",
+            stop("`lambda` must be in [0, 1].",
                  call. = FALSE)
 
         if (base_fixed) {
 
             if (any(dim(base) != dim(h1)))
-                stop("dimension of 'base' must be the same as 'h1'.",
+                stop("`base` must be of the same dimension as `h1`.",
                      call. = FALSE)
 
             corr <- .cor_stat(

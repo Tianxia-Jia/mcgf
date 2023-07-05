@@ -101,20 +101,20 @@ cor_stat_rs <- function(n_regime,
     } else if (any(lagrangian_ls == "none")) {
 
         if (missing(par_lagr_ls) || length(par_lagr_ls) != n_regime)
-            stop("length of 'par_lagr_ls' must be ", n_regime,
-                 " if 'par_lagr_ls' contains 'none'.", call. = FALSE)
+            stop("length of `par_lagr_ls` must be ", n_regime,
+                 " if `par_lagr_ls` contains 'none'.", call. = FALSE)
 
         if (missing(lambda_ls) || length(lambda_ls) != n_regime)
-            stop("length of 'lambda_ls' must be ", n_regime,
-                 " if 'lambda_ls' contains 'none'.", call. = FALSE)
+            stop("length of `lambda_ls` must be ", n_regime,
+                 " if `lambda_ls`` contains 'none'.", call. = FALSE)
 
         if (missing(h1_ls) || length(h1_ls) != n_regime)
-            stop("length of 'h1_ls' must be ", n_regime,
-                 " if 'h1_ls' contains 'none'.", call. = FALSE)
+            stop("length of `h1_ls` must be ", n_regime,
+                 " if `h1_ls`` contains 'none'.", call. = FALSE)
 
         if (missing(h2_ls) || length(h2_ls) != n_regime)
-            stop("length of 'h2_ls' must be ", n_regime,
-                 " if 'h2_ls' contains 'none'.", call. = FALSE)
+            stop("length of `h2_ls` must be ", n_regime,
+                 " if `h2_ls` contains 'none'.", call. = FALSE)
     }
 
     args_stat <- c("base", "lagrangian", "par_base", "par_lagr", "lambda", "h",
@@ -133,7 +133,7 @@ cor_stat_rs <- function(n_regime,
         } else if (lenth_args_i == n_regime) {
             assign(args_stat_i[i], 1:n_regime)
         } else {
-            stop("length of '", args_stat_rs[i], "' must be 1 or 'n_regime'",
+            stop("length of `", args_stat_rs[i], "` must be 1 or `n_regime`",
                  call. = FALSE)
         }
     }

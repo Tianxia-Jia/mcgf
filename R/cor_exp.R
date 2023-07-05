@@ -44,18 +44,18 @@
 cor_exp <- function(x, c, gamma = 1 / 2, nugget = 0, is.dist = FALSE) {
 
     if (!is_numeric_scalar(nugget) || nugget < 0 || nugget > 1)
-        stop('"nugget" must be in [0, 1].', call. = FALSE)
+        stop('`nugget` must be in [0, 1].', call. = FALSE)
 
     if (!is_numeric_scalar(c) || c <= 0)
-        stop('"c" must be positive.', call. = FALSE)
+        stop('`c` must be positive.', call. = FALSE)
 
     if (!is_numeric_scalar(gamma) || gamma <= 0 || gamma > 1 / 2)
-        stop('"gamma" must be in (0, 1/2].', call. = FALSE)
+        stop('`gamma` must be in (0, 1/2].', call. = FALSE)
 
     corr <- .cor_exp(c = c, gamma = gamma, x = x)
 
     if (nugget > 0 && is.dist == F)
-        stop("nugget effect used only when 'is.dist = TRUE'.", call. = FALSE)
+        stop("nugget effect used only when `is.dist = TRUE`.", call. = FALSE)
 
     if (is.dist) {
         check_dist(x = x)

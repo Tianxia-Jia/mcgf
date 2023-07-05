@@ -24,29 +24,29 @@ is_numeric_scalar <- function(x) {
 #' array of symmetric matrices.
 check_dist <- function(x, name = "x") {
     if (any(is.na(x))) {
-        stop("NA or NaN found in '", name, "'.", call. = FALSE)
+        stop("NA or NaN found in `", name, "`.", call. = FALSE)
     }
 
     if (any(x < 0)) {
-        stop("invalid negative distance in '", name, "'.", call. = FALSE)
+        stop("invalid negative distance in `", name, "`.", call. = FALSE)
     }
 
     if (!is_numeric_scalar(x)) {
         if (is.array(x)) {
             if (!(length(dim(x)) %in% 2:3)) {
-                stop("'", name, "' must be a matrix or 3-d array.",
+                stop("`", name, "` must be a matrix or 3-d array.",
                      call. = FALSE)
             }
 
             if (is.matrix(x)) {
                 if (!isSymmetric.matrix(x))
-                    stop("distance matrix '", name, "' is not symmetric.",
+                    stop("distance matrix `", name, "` is not symmetric.",
                          call. = FALSE)
             } else {
                 for (i in 1:dim(x)[3])
                     if (!isSymmetric.matrix(x[, , i]))
-                        stop("not all matrix slices in array '", name,
-                             "' is symmetric.", call. = FALSE)
+                        stop("not all matrix slices in array `", name,
+                             "` is symmetric.", call. = FALSE)
             }
         }
     }
@@ -66,26 +66,26 @@ check_dist <- function(x, name = "x") {
 #' symmetric matrices.
 check_dist_sign <- function(x, name) {
     if (any(is.na(x))) {
-        stop("NA or NaN found in '", name, "'.", call. = FALSE)
+        stop("NA or NaN found in `", name, "`.", call. = FALSE)
     }
 
         if (!is_numeric_scalar(x)) {
         if (is.array(x)) {
             if (!(length(dim(x)) %in% 2:3)) {
-                stop("'", name, "' must be a matrix or 3-d array.",
+                stop("`", name, "` must be a matrix or 3-d array.",
                      call. = FALSE)
             }
 
             if (is.matrix(x)) {
                 if (!isSymmetric.matrix(abs(x)))
-                    stop("distance matrix '", name,
-                         "' is not symmetric in absolute values.",
+                    stop("distance matrix `", name,
+                         "` is not symmetric in absolute values.",
                          call. = FALSE)
             } else {
                 for (i in 1:dim(x)[3])
                     if (!isSymmetric.matrix(abs(x)[, , i]))
-                        stop("not all matrix slices in array '", name,
-                             "' is symmetric in absolute values.",
+                        stop("not all matrix slices in array `", name,
+                             "`` is symmetric in absolute values.",
                              call. = FALSE)
             }
         }
@@ -111,7 +111,7 @@ check_length <- function(x, length, name) {
         x <- rep(x, length)
     } else {
         if (length(x) != length)
-            stop("length of '", name, "' must be 1 or ", length, ".",
+            stop("length of `", name, "` must be 1 or ", length, ".",
                  call. = FALSE)
     }
     return(x)
@@ -137,7 +137,7 @@ check_length_ls <- function(x_ls, length, name) {
             x_ls[[k]] <- rep(x_ls[[k]], length)
         } else {
             if (length(x_ls[[k]]) != length) {
-                stop("length of '", name, "' must be 1 or ", length,
+                stop("length of `", name, "` must be 1 or ", length,
                      " for regime ", k, ".", call. = FALSE)
             }
         }

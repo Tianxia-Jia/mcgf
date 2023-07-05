@@ -20,7 +20,7 @@ cov_joint <- function(cov) {
     n_var <- dim(cov)[1]
     lag_max <- dim(cov)[3] - 1
     n_block <- dim(cov)[3]
-    ind_toep <- toeplitz(0:lag_max)
+    ind_toep <- stats::toeplitz(0:lag_max)
 
     cov_all <- NULL
     for (i in 1:n_block) {

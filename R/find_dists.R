@@ -50,7 +50,7 @@
 #'
 #' @param locations A matrix of data.frame of 2D points, first column
 #' x/longitude, second column y/latitude.
-#' @param lonlat Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
+#' @param longlat Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
 #' if FALSE, Euclidean distance.
 #'
 #' @export
@@ -69,11 +69,11 @@
 find_dists <- function(locations, longlat = TRUE) {
 
     if (NCOL(locations) != 2)
-        stop("'locations' must contain 2 columns", call. = FALSE)
+        stop("`locations` must contain 2 columns", call. = FALSE)
 
     names <- rownames(locations)
     if (any(table(names) > 1))
-        stop("duplicate row names found in 'locations'", call. = FALSE)
+        stop("duplicate row names found in `locations`", call. = FALSE)
 
     dists_ls <- .find_dists(locations, name = names, longlat = longlat)
     return(dists_ls)

@@ -10,7 +10,7 @@ find_dists(locations, longlat = TRUE)
 \item{locations}{A matrix of data.frame of 2D points, first column
 x/longitude, second column y/latitude.}
 
-\item{lonlat}{Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
+\item{longlat}{Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
 if FALSE, Euclidean distance.}
 }
 \value{

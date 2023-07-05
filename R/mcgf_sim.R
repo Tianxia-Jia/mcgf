@@ -93,7 +93,7 @@
     X <- init
 
     for (n in 1:n_rounds) {
-        X_past <- embed(tail(X, lag), lag)
+        X_past <- stats::embed(utils::tail(X, lag), lag)
         X_new_mean <- mu_c + LSE %*% t(X_past - mu_p)
 
         X_new <- mvnfast::rmvn(1, X_new_mean, X_new_cov)
@@ -161,17 +161,17 @@ mcgf_sim <- function(N,
                      return_all = FALSE) {
 
     if (N < horizon)
-        stop("'N' must be no less than 'horizon'", call. = FALSE)
+        stop("`N` must be no less than `horizon`", call. = FALSE)
 
     if (is.null(dists$h))
-        stop("missing 'h' in dists.", call. = FALSE)
+        stop("missing 'h' in `dists`.", call. = FALSE)
 
     if (lagrangian != "none") {
 
         if (is.null(dists$h1))
-            stop("missing 'h1' in dists.", call. = FALSE)
+            stop("missing 'h1' in `dists`.", call. = FALSE)
         if (is.null(dists$h2))
-            stop("missing 'h2' in dists.", call. = FALSE)
+            stop("missing 'h2' in `dists`.", call. = FALSE)
     }
 
     lag_max <- lag + horizon - 1

@@ -45,6 +45,8 @@ mcgf_rs_sim(
 
 \item{init}{Initial samples, default is 0.}
 
+\item{mu_c_ls, mu_p_ls}{List of means of current and past.}
+
 \item{return_all}{Logical; if TRUE the joint covariance matrix, arrays of
 distances and time lag are returned.}
 }

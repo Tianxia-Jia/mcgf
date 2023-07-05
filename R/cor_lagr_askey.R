@@ -56,13 +56,13 @@
 cor_lagr_askey <- function(v1, v2, k = 2, h1, h2, u) {
 
     if (!is_numeric_scalar(k) || k <= 0)
-        stop('"k" must be positive.', call. = FALSE)
+        stop('`k` must be positive.', call. = FALSE)
 
     if (any(dim(h1) != dim(h2)))
-        stop("'h1' must be of the same dimension as 'h2'.", call. = FALSE)
+        stop("`h2` must be of the same dimension as `h1`.", call. = FALSE)
 
     if (any(dim(h1) != dim(u)))
-        stop("'u' must be of the same dimension as 'h1'.", call. = FALSE)
+        stop("`u` must be of the same dimension as `h1`.", call. = FALSE)
 
     check_dist_sign(h1, name = "h1")
     check_dist_sign(h2, name = "h2")

@@ -5,11 +5,14 @@ new_mcgf <- function(data, locations, dists) {
     if (!missing(locations)) {
         dists <- find_dists(locations)
     }
-        structure(.Data = data, dists = dists, class = c("data.frame", "mcgf"))
+        structure(.Data = data, dists = dists, class = c("mcgf", "data.frame"))
 }
 
 validate_mcgf <- function(x) {
-    x
+    if (any(names(attr(x, "dists")) != c("h", "h1", "h2"))) {
+        stop("invalid dists attribute in `x`")
+    }
+    return(x)
 }
 
 mcgf <- function(data, locations, dists, time) {
@@ -31,7 +34,7 @@ mcgf <- function(data, locations, dists, time) {
     n_var <- NCOL(data)
 
     if (missing(time))
-        warning("'time' not provided, row names of 'data' are used.")
+        cat("'time' not provided, assuming rows are equally spaced temporally.")
         time <- 1:NROW(data)
 
     if (length(time) != NROW(data)) {
@@ -112,4 +115,12 @@ mcgf <- function(data, locations, dists, time) {
         }
         return(validate_mcgf(new_mcgf(data = data, dists = dists)))
     }
+}
+
+dists <- function(x) {
+    UseMethod("dists")
+}
+
+dists.default <- function(x) {
+    print(attr(x, "dists"))
 }

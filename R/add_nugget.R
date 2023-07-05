@@ -54,7 +54,7 @@ set_nugget <- function(x, nugget, set) {
     } else if (length(dim_x) == 2) {
         diag(corr) <- diag(set)
     } else {
-        stop("invalid dimention for 'x'.")
+        stop("invalid dimention for `x`.")
     }
     return(corr)
 }

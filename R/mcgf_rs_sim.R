@@ -12,7 +12,7 @@
 #' @param sd_ls List of standard deviation for each location.
 #' @param lag_ls List of time lags.
 #' @param init Initial samples, default is 0.
-#' @param mu_c,mu_p List of means of current and past.
+#' @param mu_c_ls,mu_p_ls List of means of current and past.
 #' @param return_all Logical; if TRUE the joint covariance matrix, arrays of
 #' distances and time lag are returned.
 #'
@@ -111,7 +111,8 @@
     for (n in 1:N) {
         regime_n <- which(labels[n] == regime)
 
-        X_past <- embed(tail(X, lag_max_ls[[regime_n]]), lag_max_ls[[regime_n]])
+        X_past <- stats::embed(utils::tail(X, lag_max_ls[[regime_n]]),
+                               lag_max_ls[[regime_n]])
         X_new_mean <- mu_c_ls[[regime_n]] +
             LSE_ls[[regime_n]] %*% t(X_past - mu_p_ls[[regime_n]])
 
@@ -189,11 +190,11 @@ mcgf_rs_sim <- function(N,
     n_regime <- length(unique(labels))
 
     if (n_regime == 1)
-        cat("Only 1 regime found in 'labels'. Simulating for 1 regime only.")
+        cat("Only 1 regime found in `labels`. Simulating for 1 regime only.")
 
     for (k in 1:length(dists_ls)) {
         if (is.null(dists_ls[[k]]$h))
-            stop("missing 'h' for regime ", k, " in dists_ls.", call. = FALSE)
+            stop("missing 'h' for regime ", k, " in `dists_ls`.", call. = FALSE)
     }
 
     for (k in 1:length(lagrangian_ls)) {
@@ -201,10 +202,10 @@ mcgf_rs_sim <- function(N,
         if (lagrangian_ls[[k]] != "none") {
 
             if (is.null(dists_ls[[k]]$h1))
-                stop("missing 'h1' for regime ", k, " in dists_ls.",
+                stop("missing 'h1' for regime ", k, " in `dists_ls.`",
                      call. = FALSE)
             if (is.null(dists_ls[[k]]$h2))
-                stop("missing 'h2' for regime ", k, " in dists_ls.",
+                stop("missing 'h2' for regime ", k, " in `dists_ls.`",
                      call. = FALSE)
         }
     }
@@ -231,7 +232,7 @@ mcgf_rs_sim <- function(N,
         init <- matrix(init, nrow = max(unlist(n_block_row_ls)), ncol = n_var)
     } else {
         if (NROW(init) != max(unlist(n_block_row_ls)) || NCOL(init) !=  n_var)
-            stop("dim of 'n_var' must be 1 or ", max(unlist(n_block_row_ls)),
+            stop("dim of `init` must be 1 or ", max(unlist(n_block_row_ls)),
                  " x ", n_var, ".", call. = FALSE)
     }
 
