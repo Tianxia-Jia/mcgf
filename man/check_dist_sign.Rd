@@ -10,7 +10,7 @@ check_dist_sign(x, name)
 \item{x}{Distance matrix or array.}
 }
 \value{
-\code{x}.
+NULL.
 }
 \description{
 Check if valid signed distance

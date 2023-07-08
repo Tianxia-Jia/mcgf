@@ -48,7 +48,7 @@
 #'
 #' @inherit .find_dists return
 #'
-#' @param locations A matrix of data.frame of 2D points, first column
+#' @param locations A matrix or data.frame of 2D points, first column
 #' x/longitude, second column y/latitude.
 #' @param longlat Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
 #' if FALSE, Euclidean distance.

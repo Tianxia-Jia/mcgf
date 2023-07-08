@@ -7,7 +7,7 @@
 find_dists(locations, longlat = TRUE)
 }
 \arguments{
-\item{locations}{A matrix of data.frame of 2D points, first column
+\item{locations}{A matrix or data.frame of 2D points, first column
 x/longitude, second column y/latitude.}
 
 \item{longlat}{Logical, if TURE Great Circle (WGS84 ellipsoid) distance;

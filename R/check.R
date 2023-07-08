@@ -15,7 +15,7 @@ is_numeric_scalar <- function(x) {
 #'
 #' @param x Distance matrix or array.
 #'
-#' @return `x`.
+#' @return NULL.
 #' @keywords internal
 #'
 #' @details
@@ -57,7 +57,7 @@ check_dist <- function(x, name = "x") {
 #'
 #' @param x Distance matrix or array.
 #'
-#' @return `x`.
+#' @return NULL.
 #' @keywords internal
 #'
 #' @details
@@ -121,7 +121,7 @@ check_length <- function(x, length, name) {
 #'
 #' @param x_ls List of scaler or vector
 #' @param length_ls List of length of `x_ls`.
-#' @param name Mame of `x_ls`.
+#' @param name Name of `x_ls`.
 #'
 #' @return `x_ls`.
 #' @keywords internal
@@ -143,4 +143,73 @@ check_length_ls <- function(x_ls, length, name) {
         }
     }
     return(x_ls)
+}
+
+#' Check if valid dists attribute for an `mcgf` object
+#'
+#' @param dists List of scaler or vector
+#' @param n_var Scaler, number of variables.
+#' @param name names of `dists`.
+#'
+#' @return `dists`.
+#' @keywords internal
+#'
+#' @details
+#' Check if `dists` is a valid dists attribute for an `mcgf` object. It errors
+#' if 1) `dists` does not contain `h1` or `h2`, 2) if their dimensions do not
+#' match, 3) if it contains elements other than `h`, `h1` or `h2`. `h` will be
+#' computed if it is not given.
+check_dists <- function(dists, n_var, names, name_dists = "dists") {
+
+    if (!is.matrix(dists$h1))
+        stop("`h1` in `", name_dists, "` must be a matrix.", call. = FALSE)
+    if (!is.matrix(dists$h2))
+        stop("`h2` in `", name_dists, "` must be a matrix.", call. = FALSE)
+
+    if (any(dim(dists$h1) != c(n_var, n_var)))
+        stop("`h1` in `", name_dists, "` must be a matrix of dimension ",
+             n_var, " x ", n_var, ".", call. = FALSE)
+    if (any(dim(dists$h2) != c(n_var, n_var)))
+        stop("`h2` in `", name_dists, "` must be a matrix of dimension ",
+             n_var, " x ", n_var, ".", call. = FALSE)
+
+    check_dist_sign(dists$h1, name = "h1")
+    check_dist_sign(dists$h2, name = "h2")
+
+    if (is.null(rownames(dists$h1)))
+        rownames(dists$h1) <- names
+
+    if (is.null(colnames(dists$h1)))
+        colnames(dists$h1) <- names
+
+    if (is.null(rownames(dists$h2)))
+        rownames(dists$h2) <- names
+
+    if (is.null(colnames(dists$h2)))
+        colnames(dists$h2) <- names
+
+    if (!is.null(dists$h)) {
+        if (!is.matrix(dists$h))
+            stop("'h' in `", name_dists, "` must be a matrix.", call. = FALSE)
+
+        if (any(dim(dists$h) != c(n_var, n_var)))
+            stop("'h' in `", name_dists, "` must be a matrix of dimension ",
+                 n_var, " x ", n_var, ".", call. = FALSE)
+
+        check_dist(x = dists$h, "h")
+
+        if (is.null(rownames(dists$h)))
+            rownames(dists$h) <- names
+
+        if (is.null(colnames(dists$h)))
+            colnames(dists$h) <- names
+
+    } else {
+        dists$h <- sqrt(dists$h1 ^ 2 + dists$h2 ^ 2)
+    }
+
+    if (any(!names(dists) %in% c("h", "h1", "h2"))) {
+        stop("invalid dists attribute in `", name_dists, "`.")
+    }
+    return(dists)
 }

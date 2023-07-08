@@ -9,7 +9,7 @@ check_length_ls(x_ls, length, name)
 \arguments{
 \item{x_ls}{List of scaler or vector}
 
-\item{name}{Mame of \code{x_ls}.}
+\item{name}{Name of \code{x_ls}.}
 
 \item{length_ls}{List of length of \code{x_ls}.}
 }

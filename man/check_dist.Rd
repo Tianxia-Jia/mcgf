@@ -10,7 +10,7 @@ check_dist(x, name = "x")
 \item{x}{Distance matrix or array.}
 }
 \value{
-\code{x}.
+NULL.
 }
 \description{
 Check if valid distance
