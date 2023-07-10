@@ -1,5 +1,23 @@
 #' Calculate correlation for separable model
 #'
+#' @inherit .cor_fs params
+#'
+#' @keywords internal
+#' @return Correlations for separable model.
+#'
+#' @details
+#' This function is a special case of [`.cor_fs()`]. It is used inside
+#' [`fit_base()`].
+..cor_sep <- function(nugget, c, gamma = 1 / 2, a, alpha, h, u) {
+    c_cauchy <- .cor_cauchy(a = a, alpha = alpha, nu = 1, x = u)
+    c_exp <- .cor_exp(c = c, gamma = gamma, x = h)
+    corr <- c_cauchy * c_exp
+    corr <- set_nugget(x = corr, nugget = nugget, set = c_cauchy)
+    return(corr)
+}
+
+#' Calculate correlation for separable model
+#'
 #' @param spatial Pure spatial model, `exp` or `cauchy` for now.
 #' @param temporal Pure temporal model, `exp` or `cauchy` for now.
 #' @param par_s Parameters for the pure spatial model. Nugget effect supported.

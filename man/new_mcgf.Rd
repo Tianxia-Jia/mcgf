@@ -10,7 +10,8 @@ new_mcgf(data, locations, dists, time, longlat)
 \item{data}{Time series data set in space-wide format.}
 
 \item{locations}{A matrix of data.frame of 2D points, first column
-longitude, second column latitude. Required when \code{dists} is not supplied.}
+longitude, second column latitude, both in decimal degrees. Required when
+\code{dists} is not supplied.}
 
 \item{dists}{List of signed distance matrices. Required when \code{locations} is
 not supplied.}

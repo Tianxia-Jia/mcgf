@@ -2,7 +2,7 @@
 % Please edit documentation in R/acfs.R
 \name{add_acfs}
 \alias{add_acfs}
-\title{Generic function for calculating autocorrelation}
+\title{Generic function for calculating and adding autocorrelation}
 \usage{
 add_acfs(x, ...)
 }
@@ -12,16 +12,23 @@ add_acfs(x, ...)
 \item{...}{Additional parameters or attributes.}
 }
 \value{
-Mean of auto-correlations.
+\code{x} with mean of autocorrelations for each time lag.
 }
 \description{
-Generic function for calculating autocorrelation
+Generic function for calculating and adding autocorrelation
 }
 \seealso{
 Other {functions related to the class}: 
+\code{\link{acfs.mcgf}()},
+\code{\link{acfs}()},
 \code{\link{add_acfs.mcgf}()},
+\code{\link{add_ccfs.mcgf}()},
+\code{\link{add_ccfs}()},
+\code{\link{ccfs.mcgf}()},
+\code{\link{ccfs}()},
 \code{\link{dists.mcgf}()},
 \code{\link{dists}()},
+\code{\link{fit_base}()},
 \code{\link{mcgf}()},
 \code{\link{print.mcgf}()}
 }

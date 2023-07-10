@@ -2,7 +2,8 @@
 #'
 #' @param data Time series data set in space-wide format.
 #' @param locations  A matrix of data.frame of 2D points, first column
-#' longitude, second column latitude. Required when `dists` is not supplied.
+#' longitude, second column latitude, both in decimal degrees. Required when
+#' `dists` is not supplied.
 #' @param dists List of signed distance matrices. Required when `locations` is
 #' not supplied.
 #' @param time Optional, a vector of equally spaced time stamps.
@@ -61,12 +62,13 @@ validate_mcgf <- function(x) {
 #' For inputs, `data` must be in space-wide format where rows correspond to
 #' different time stamps and columns refer to spatial locations. Supply either
 #' `locations` or `dists`. `locations` is a matrix or data.frame of 2D points
-#' with first column longitude and second column latitude. Number of rows in
-#' `locations` must be the same as the number of columns of `data`. `dists` must
-#' be a list of signed distance matrices with names `h1`, `h2`, and `h`. If `h`
-#' is not given, it will be calculated as the Euclidean distance of `h1` and
-#' `h2`. `time` is a vector of equally spaced time stamps. If it is not supplied
-#' then `data` is assumed to be temporally equally spaced.
+#' with first column longitude and second column latitude. Both columns must be
+#' in decimal degrees. Number of rows in `locations` must be the same as the
+#' number of columns of `data`. `dists` must be a list of signed distance
+#' matrices with names `h1`, `h2`, and `h`. If `h` is not given, it will be
+#' calculated as the Euclidean distance of `h1` and `h2`. `time` is a vector of
+#' equally spaced time stamps. If it is not supplied then `data` is assumed to
+#' be temporally equally spaced.
 #'
 #' An `mcgf` object extends the S3 class `data.frame`, all methods remain valid
 #' to the `data` part of the object.
@@ -125,10 +127,14 @@ mcgf <- function(data, locations, dists, time) {
 
         if (ncol(data) != nrow(locations))
             stop("number of columns of `data` must be the same as the ",
-                 "number of rows of `stations`", call. = FALSE)
+                 "number of rows of `locations`", call. = FALSE)
+
+        if (!is.null(rownames(locations)))
+            locations <- locations[match(name_var, rownames(locations)), ]
+
         if (any(colnames(data) != rownames(locations))) {
-            warning("row names of `locations` are not the same as the column ",
-                    "names of `data`, the latter is used.", call. = FALSE)
+            stop("row names of `locations` are not the same as the column ",
+                 "names of `data`.", call. = FALSE)
             rownames(locations) <- colnames(data)
         }
         return(validate_mcgf(new_mcgf(data = data, locations = locations,

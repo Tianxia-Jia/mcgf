@@ -10,7 +10,8 @@ mcgf(data, locations, dists, time)
 \item{data}{Time series data set in space-wide format.}
 
 \item{locations}{A matrix of data.frame of 2D points, first column
-longitude, second column latitude. Required when \code{dists} is not supplied.}
+longitude, second column latitude, both in decimal degrees. Required when
+\code{dists} is not supplied.}
 
 \item{dists}{List of signed distance matrices. Required when \code{locations} is
 not supplied.}
@@ -31,12 +32,13 @@ An \code{mcgf} object extends the S3 class \code{data.frame}.
 For inputs, \code{data} must be in space-wide format where rows correspond to
 different time stamps and columns refer to spatial locations. Supply either
 \code{locations} or \code{dists}. \code{locations} is a matrix or data.frame of 2D points
-with first column longitude and second column latitude. Number of rows in
-\code{locations} must be the same as the number of columns of \code{data}. \code{dists} must
-be a list of signed distance matrices with names \code{h1}, \code{h2}, and \code{h}. If \code{h}
-is not given, it will be calculated as the Euclidean distance of \code{h1} and
-\code{h2}. \code{time} is a vector of equally spaced time stamps. If it is not supplied
-then \code{data} is assumed to be temporally equally spaced.
+with first column longitude and second column latitude. Both columns must be
+in decimal degrees. Number of rows in \code{locations} must be the same as the
+number of columns of \code{data}. \code{dists} must be a list of signed distance
+matrices with names \code{h1}, \code{h2}, and \code{h}. If \code{h} is not given, it will be
+calculated as the Euclidean distance of \code{h1} and \code{h2}. \code{time} is a vector of
+equally spaced time stamps. If it is not supplied then \code{data} is assumed to
+be temporally equally spaced.
 
 An \code{mcgf} object extends the S3 class \code{data.frame}, all methods remain valid
 to the \code{data} part of the object.
@@ -52,10 +54,17 @@ attr(obj, "locations")
 }
 \seealso{
 Other {functions related to the class}: 
+\code{\link{acfs.mcgf}()},
+\code{\link{acfs}()},
 \code{\link{add_acfs.mcgf}()},
 \code{\link{add_acfs}()},
+\code{\link{add_ccfs.mcgf}()},
+\code{\link{add_ccfs}()},
+\code{\link{ccfs.mcgf}()},
+\code{\link{ccfs}()},
 \code{\link{dists.mcgf}()},
 \code{\link{dists}()},
+\code{\link{fit_base}()},
 \code{\link{print.mcgf}()}
 }
 \concept{{functions related to the class}}

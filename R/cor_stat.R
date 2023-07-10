@@ -26,6 +26,12 @@
 #' used.
 #'
 #' When `lagrangian = "none"`, `lambda` must be 0.
+#'
+#' @references
+#'Gneiting, T., Genton, M., & Guttorp, P. (2006). Geostatistical Space-Time
+#'Models, Stationarity, Separability, and Full Symmetry. In C&amp;H/CRC
+#'Monographs on Statistics &amp; Applied Probability (pp. 151–175).
+#'Chapman and Hall/CRC.
 .cor_stat <- function(base,
                       lagrangian,
                       par_base,
