@@ -82,6 +82,6 @@ fit_base(wind_mcgf, lag = 3, model = "fs", optim_fn = "nlminb",
          c = 0.00128, gamma = 0.5))
 fit_base(wind_mcgf, lag = 3, model = "fs", optim_fn = "nlminb",
          par_init = list(beta = 0),
-         par_fixed = list(a = 0.747841458 , alpha = 0.747762836,
-         nugget = 0.064880862 , c = 0.001016796 , gamma = 0.5))
+         par_fixed = list(a = 0.808173954  , alpha = 0.818269388 ,
+         nugget = 0.048333797  , c = 0.001110266  , gamma = 0.5))
 }

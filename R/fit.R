@@ -109,51 +109,6 @@ fit_base.mcgf <- function(x,
         stop("`lag` + `horizon` must be no greater than ", length(acfs(x)),
              ", or recompute `acfs` and `ccfs` with greater `lag_max`.")
 
-    model_args <- switch(
-        model,
-        spatial = {
-            cor_fn <- ".cor_exp"
-            cor_emp <- ccfs(x)[, , 1]
-            par_fixed_other <- list(x = dists(x)$h)
-            list(cor_fn = cor_fn,
-                 cor_emp = cor_emp,
-                 par_fixed_other = par_fixed_other)
-
-        },
-        temporal = {
-            cor_fn <- ".cor_cauchy"
-            cor_emp <- acfs(x)[1:(lag_max + 1)]
-            par_fixed_other <<- list(x = 0:lag_max, nu = 1, nugget = 0)
-            list(cor_fn = cor_fn,
-                 cor_emp = cor_emp,
-                 par_fixed_other = par_fixed_other)
-        },
-        sep = {
-            cor_fn <- "..cor_sep"
-            cor_emp <- ccfs(x)[, , 1:(lag_max + 1)]
-            h_u_ar <-
-                to_ar(h = dists(x)$h, lag_max = lag_max)
-            par_fixed_other <-
-                list(h = h_u_ar$h_ar,
-                     u = h_u_ar$u_ar)
-            list(cor_fn = cor_fn,
-                 cor_emp = cor_emp,
-                 par_fixed_other = par_fixed_other)
-        },
-        fs = {
-            cor_fn <- ".cor_fs"
-            cor_emp <- ccfs(x)[, , 1:(lag_max + 1)]
-            h_u_ar <-
-                to_ar(h = dists(x)$h, lag_max = lag_max)
-            par_fixed_other <-
-                list(h = h_u_ar$h_ar,
-                     u = h_u_ar$u_ar)
-            list(cor_fn = cor_fn,
-                 cor_emp = cor_emp,
-                 par_fixed_other = par_fixed_other)
-        }
-    )
-
     model <- match.arg(model)
     par_model <- eval(as.name(paste0("par_", model)))
     lower_model <- eval(as.name(paste0("lower_", model)))
@@ -207,15 +162,122 @@ fit_base.mcgf <- function(x,
     }
 
     if (method == "wls") {
-        res <- optim_wls(par_init = par_init,
-                         optim_fn = optim_fn,
-                         cor_fn = model_args$cor_fn,
-                         cor_emp = model_args$cor_emp,
-                         par_fixed = c(par_fixed, model_args$par_fixed_other),
-                         lower = lower_model,
-                         upper = upper_model,
-                         ...)
-        return(res)
+
+        model_args <- switch(
+            model,
+            spatial = {
+                cor_fn <- ".cor_exp"
+                cor_emp <- ccfs(x)[, , 1]
+                par_fixed_other <- list(x = dists(x)$h)
+                list(cor_fn = cor_fn,
+                     cor_emp = cor_emp,
+                     par_fixed_other = par_fixed_other)
+
+            },
+            temporal = {
+                cor_fn <- ".cor_cauchy"
+                cor_emp <- acfs(x)[1:(lag_max + 1)]
+                par_fixed_other <<- list(x = 0:lag_max, nu = 1, nugget = 0)
+                list(cor_fn = cor_fn,
+                     cor_emp = cor_emp,
+                     par_fixed_other = par_fixed_other)
+            },
+            sep = {
+                cor_fn <- "..cor_sep"
+                cor_emp <- ccfs(x)[, , 1:(lag_max + 1)]
+                h_u_ar <-
+                    to_ar(h = dists(x)$h, lag_max = lag_max)
+                par_fixed_other <-
+                    list(h = h_u_ar$h_ar,
+                         u = h_u_ar$u_ar)
+                list(cor_fn = cor_fn,
+                     cor_emp = cor_emp,
+                     par_fixed_other = par_fixed_other)
+            },
+            fs = {
+                cor_fn <- ".cor_fs"
+                cor_emp <- ccfs(x)[, , 1:(lag_max + 1)]
+                h_u_ar <-
+                    to_ar(h = dists(x)$h, lag_max = lag_max)
+                par_fixed_other <-
+                    list(h = h_u_ar$h_ar,
+                         u = h_u_ar$u_ar)
+                list(cor_fn = cor_fn,
+                     cor_emp = cor_emp,
+                     par_fixed_other = par_fixed_other)
+            }
+        )
+
+        res_wls <- optim_wls(
+            par_init = par_init,
+            optim_fn = optim_fn,
+            cor_fn = model_args$cor_fn,
+            cor_emp = model_args$cor_emp,
+            par_fixed = c(par_fixed, model_args$par_fixed_other),
+            lower = lower_model,
+            upper = upper_model,
+            ...
+        )
+        return(c(res_wls, par_names = names(par_init)))
+
+    } else {
+
+        model_args <- switch(
+            model,
+            spatial = {
+                cor_fn <- ".cor_exp"
+                cor_emp <- ccfs(x)[, , 1]
+                par_fixed_other <- list(x = dists(x)$h)
+                list(cor_fn = cor_fn,
+                     cor_emp = cor_emp,
+                     par_fixed_other = par_fixed_other)
+
+            },
+            temporal = {
+                cor_fn <- ".cor_cauchy"
+                cor_emp <- acfs(x)[1:(lag_max + 1)]
+                par_fixed_other <<- list(x = 0:lag_max, nu = 1, nugget = 0)
+                list(cor_fn = cor_fn,
+                     cor_emp = cor_emp,
+                     par_fixed_other = par_fixed_other)
+            },
+            sep = {
+                cor_fn <- "..cor_sep"
+                cor_emp <- ccfs(x)[, , 1:(lag_max + 1)]
+                h_u_ar <-
+                    to_ar(h = dists(x)$h, lag_max = lag_max)
+                par_fixed_other <-
+                    list(h = h_u_ar$h_ar,
+                         u = h_u_ar$u_ar)
+                list(cor_fn = cor_fn,
+                     cor_emp = cor_emp,
+                     par_fixed_other = par_fixed_other)
+            },
+            fs = {
+                cor_fn <- ".cor_fs"
+                cor_emp <- ccfs(x)[, , 1:(lag_max + 1)]
+                h_u_ar <-
+                    to_ar(h = dists(x)$h, lag_max = lag_max)
+                par_fixed_other <-
+                    list(h = h_u_ar$h_ar,
+                         u = h_u_ar$u_ar)
+                list(cor_fn = cor_fn,
+                     cor_emp = cor_emp,
+                     par_fixed_other = par_fixed_other)
+            }
+        )
+
+        res_mle <- optim_mle(
+            par_init = par_init,
+            optim_fn = optim_fn,
+            cor_fn = model_args$cor_fn,
+            cor_emp = model_args$cor_emp,
+            par_fixed = c(par_fixed, model_args$par_fixed_other),
+            lower = lower_model,
+            upper = upper_model,
+            ...
+        )
+        return(c(res_mle, par_names = names(par_init)))
     }
 }
 
