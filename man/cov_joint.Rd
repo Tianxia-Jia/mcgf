@@ -2,27 +2,53 @@
 % Please edit documentation in R/cov_joint.R
 \name{cov_joint}
 \alias{cov_joint}
+\alias{cov_curr}
+\alias{cov_curr_past}
+\alias{cov_past_curr}
+\alias{cov_past}
 \title{Covariance for joint distribution}
 \usage{
 cov_joint(cov)
+
+cov_curr(cov, horizon)
+
+cov_curr_past(cov, lag)
+
+cov_past_curr(cov, lag)
+
+cov_past(cov, lag)
 }
 \arguments{
 \item{cov}{Array of covariance matrices.}
+
+\item{horizon}{Forecast horizon.}
+
+\item{lag}{Time lag.}
 }
 \value{
-A covariance matrix for the joint distribution of the current value
-and the past value for a Markov chain Gaussian field.
+A partition of the covariance matrix for the joint distribution of
+the current value and the past value for a Markov chain Gaussian field.
 }
 \description{
 Covariance for joint distribution
 }
 \details{
-The covariance matrix of the joint distribution has the block Toeplitz
+The covariance matrix of the joint distribution has the block toeplitz
 structure. Input \code{cov} is assumed to be an array of covariance matrices
-where the ith matrix slice correspond to the i-1 time lag. For example,
-\code{cov[, , 1]} is the covariance matrix for time lag 0. All matrices in \code{cov}
-are used to construct the joint covariance matrix.
+where the \eqn{i}th matrix slice correspond to the \eqn{(i-1)}th time lag. For
+example, \code{cov[, , 1]} is the covariance matrix for time lag 0. All matrices
+in \code{cov} are used to construct the joint covariance matrix.
+
+\code{cov_joint} gives the joint covariance matrix.
+
+\code{cov_curr} gives the covariance matrix for the current observations.
+
+\code{cov_curr_past} gives partition of the joint covariance for the current and
+past observations.
+
+\code{cov_past_current} gives partition of the joint covariance for the past and
+current observations.
+
+\code{cov_past} gives the covariance matrix for the past observations.
 }
-\examples{
-1
-}
+\keyword{internal}

@@ -32,7 +32,7 @@
     c_cauchy <- .cor_cauchy(a = a, alpha = alpha, nu = 1, x = u)
     c_exp <- .cor_exp(c = c, gamma = gamma, x = h)
     corr <- c_cauchy * c_exp ^ (c_cauchy ^ (beta * gamma))
-    corr <- set_nugget(x = corr, nugget = nugget, set = c_cauchy)
+    corr <- set_nugget(x = corr, nugget = nugget, set_to = c_cauchy)
     return(corr)
 }
 

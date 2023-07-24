@@ -144,9 +144,7 @@
     }
 }
 
-#' Title
-#'
-#' @inherit .mcgf_rs_sim params details return
+#' @inherit .mcgf_rs_sim title params details return
 #'
 #' @export
 #' @examples

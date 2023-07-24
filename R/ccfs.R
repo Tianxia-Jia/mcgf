@@ -162,17 +162,3 @@ add_ccfs.mcgf <- function(x, lag_max, ...) {
     attr(x, "sds") <- sds
     return(x)
 }
-
-#' @rdname add_ccfs.mcgf
-#' @param value A vector of standard deviations for all stations.
-#' @export
-`sds<-` <- function(x, value) {
-
-    if (!is.vector(x, mode = "numeric"))
-        stop("`value` must be a numeric vector.")
-
-    if (length(value) != ncol(x))
-        stop("length of `value` must be the same as number of columns.")
-
-    attr(x, "sds") <- value
-}

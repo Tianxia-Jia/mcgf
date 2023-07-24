@@ -31,6 +31,7 @@ Other {functions related to the class}:
 \code{\link{dists.mcgf}()},
 \code{\link{fit_base}()},
 \code{\link{mcgf}()},
-\code{\link{print.mcgf}()}
+\code{\link{print.mcgf}()},
+\code{\link{sds}()}
 }
 \concept{{functions related to the class}}

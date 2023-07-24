@@ -52,32 +52,6 @@ upper_fs <- c(upper_sep, 1)
 #'
 #' @details
 #' Additional details...
-#'
-#' @examples
-#' wind_sq <- sqrt(wind[, -1])
-#' time <- wind[, 1]
-#' wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
-#' wind_mcgf <- add_acfs(x = wind_mcgf, lag_max = 3)
-#' wind_mcgf <- add_ccfs(x = wind_mcgf, lag_max = 3)
-#' fit_base(wind_mcgf, lag = 3, model = "spatial", optim_fn = "nlminb",
-#'          par_init = list(nugget = 0.01, c = 0.001), par_fixed = list(gamma = 0.5))
-#' fit_base(wind_mcgf, lag = 3, model = "spatial", optim_fn = "optim",
-#'          par_init = list(nugget = 0.01, c = 0.001), par_fixed = list(gamma = 0.5))
-#' fit_base(wind_mcgf, lag = 3, model = "temporal", optim_fn = "optim",
-#'          par_init = list(a = 1, alpha = 0.8))
-#' fit_base(wind_mcgf, lag = 3, model = "temporal", optim_fn = "nlminb",
-#'          par_init = list(a = 1, alpha = 0.8))
-#' fit_base(wind_mcgf, lag = 3, model = "sep", optim_fn = "nlminb",
-#'          par_init = list(a = 1, alpha = 1, nugget = 0.02, c = 0.001),
-#'          par_fixed = list(gamma = 0.5))
-#' fit_base(wind_mcgf, lag = 3, model = "fs", optim_fn = "nlminb",
-#'          par_init = list(beta = 0),
-#'          par_fixed = list(a = 0.972, alpha = 0.834, nugget = 0.0415,
-#'          c = 0.00128, gamma = 0.5))
-#' fit_base(wind_mcgf, lag = 3, model = "fs", optim_fn = "nlminb",
-#'          par_init = list(beta = 0),
-#'          par_fixed = list(a = 0.808173954  , alpha = 0.818269388 ,
-#'          nugget = 0.048333797  , c = 0.001110266  , gamma = 0.5))
 fit_base.mcgf <- function(x,
                           lag,
                           horizon = 1,
@@ -110,6 +84,11 @@ fit_base.mcgf <- function(x,
              ", or recompute `acfs` and `ccfs` with greater `lag_max`.")
 
     model <- match.arg(model)
+    method <- match.arg(method)
+
+    if (method == "mle" && model %in% c("spatial", "temporal"))
+        stop("mle is available for `sep` and `fs` models only.")
+
     par_model <- eval(as.name(paste0("par_", model)))
     lower_model <- eval(as.name(paste0("lower_", model)))
     upper_model <- eval(as.name(paste0("upper_", model)))
@@ -153,7 +132,6 @@ fit_base.mcgf <- function(x,
     }
     par_init <- par_init[order(match(names(par_init), par_model))]
 
-    method <- match.arg(method)
     optim_fn <- match.arg(optim_fn)
     if (optim_fn == "other") {
         if (missing(other_optim_fn))
@@ -208,8 +186,9 @@ fit_base.mcgf <- function(x,
             }
         )
 
-        res_wls <- optim_wls(
+        res_wls <- estimate(
             par_init = par_init,
+            method = method,
             optim_fn = optim_fn,
             cor_fn = model_args$cor_fn,
             cor_emp = model_args$cor_emp,
@@ -218,113 +197,46 @@ fit_base.mcgf <- function(x,
             upper = upper_model,
             ...
         )
-        return(c(res_wls, par_names = names(par_init)))
+        return(c(res_wls, par_names = list(names(par_init))))
 
     } else {
 
         model_args <- switch(
             model,
-            spatial = {
-                cor_fn <- ".cor_exp"
-                cor_emp <- ccfs(x)[, , 1]
-                par_fixed_other <- list(x = dists(x)$h)
-                list(cor_fn = cor_fn,
-                     cor_emp = cor_emp,
-                     par_fixed_other = par_fixed_other)
-
-            },
-            temporal = {
-                cor_fn <- ".cor_cauchy"
-                cor_emp <- acfs(x)[1:(lag_max + 1)]
-                par_fixed_other <<- list(x = 0:lag_max, nu = 1, nugget = 0)
-                list(cor_fn = cor_fn,
-                     cor_emp = cor_emp,
-                     par_fixed_other = par_fixed_other)
-            },
             sep = {
                 cor_fn <- "..cor_sep"
-                cor_emp <- ccfs(x)[, , 1:(lag_max + 1)]
                 h_u_ar <-
                     to_ar(h = dists(x)$h, lag_max = lag_max)
                 par_fixed_other <-
                     list(h = h_u_ar$h_ar,
                          u = h_u_ar$u_ar)
                 list(cor_fn = cor_fn,
-                     cor_emp = cor_emp,
                      par_fixed_other = par_fixed_other)
             },
             fs = {
                 cor_fn <- ".cor_fs"
-                cor_emp <- ccfs(x)[, , 1:(lag_max + 1)]
                 h_u_ar <-
                     to_ar(h = dists(x)$h, lag_max = lag_max)
                 par_fixed_other <-
                     list(h = h_u_ar$h_ar,
                          u = h_u_ar$u_ar)
                 list(cor_fn = cor_fn,
-                     cor_emp = cor_emp,
                      par_fixed_other = par_fixed_other)
             }
         )
 
-        res_mle <- optim_mle(
+        res_mle <- estimate(
             par_init = par_init,
+            method = method,
             optim_fn = optim_fn,
             cor_fn = model_args$cor_fn,
-            cor_emp = model_args$cor_emp,
             par_fixed = c(par_fixed, model_args$par_fixed_other),
             lower = lower_model,
             upper = upper_model,
+            x = x,
+            lag = lag,
             ...
         )
-        return(c(res_mle, par_names = names(par_init)))
+        return(c(res_mle, par_names = list(names(par_init))))
     }
-}
-
-#' Compute the objective for wls method
-#'
-#' @param par Parameters of `cor_fn`.
-#' @param cor_fn Correlation function.
-#' @param cor_emp Empirical correlations.
-#' @param par_fixed Fixed parameters of `cor_fn`.
-#'
-#' @keywords internal
-#' @return The objective of weighted least squares.
-cor_wls <- function(par, cor_fn, cor_emp, par_fixed) {
-
-    fitted <- do.call(cor_fn, c(par, par_fixed))
-    summand <- ((cor_emp - fitted) / (1 - fitted)) ^ 2
-    summand[is.infinite(summand)] <- NA
-    wls <- sum(summand, na.rm = T)
-    return(wls)
-}
-
-#' Optimization for wls method
-#'
-#' @param par_init Initial values for parameters to be optimized.
-#' @param optim_fn Optimization function.
-#' @param cor_fn Correlation function.
-#' @param cor_emp Empirical correlations.
-#' @param par_fixed Fixed parameters of `cor_fn`.
-#' @param lower Lower bound.
-#' @param upper Upper bound.
-#' @param ... Additional arguments passed to `optim_fn`.
-#'
-#' @keywords internal
-#' @return A list outputted from optimization functions of `optim_fn`.
-optim_wls <- function(par_init, optim_fn, cor_fn, cor_emp, par_fixed, lower,
-                      upper, ...) {
-
-    args <- list(par_init,
-                 cor_wls,
-                 cor_fn = cor_fn,
-                 cor_emp = cor_emp,
-                 par_fixed = par_fixed,
-                 lower = lower,
-                 upper = upper,
-                 ...)
-
-    if (optim_fn == "optim") args <- c(args, method = "L-BFGS-B")
-
-    return(do.call(optim_fn, args))
 }

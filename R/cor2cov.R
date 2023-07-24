@@ -1,3 +1,9 @@
+.cor2cov <- function(V, sd) {
+
+    sd_mat <- as.matrix(sd)
+    return(V * sd_mat %*% t(sd_mat))
+}
+
 #' Convert correlation to covariance
 #'
 #' @param V A correlation matrix, usually positive semi-definite.
@@ -23,5 +29,5 @@ cor2cov <- function(V, sd) {
     stopifnot(dim(V) == c(length(sd), length(sd)))
 
     sd_mat <- as.matrix(sd)
-    return(V * sd_mat %*% t(sd_mat))
+    return(.cor2cov(V = V, sd = sd))
 }

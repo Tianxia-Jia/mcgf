@@ -107,10 +107,11 @@ mcgf <- function(data, locations, dists, time) {
 
     n_var <- NCOL(data)
 
-    if (missing(time))
+    if (missing(time)) {
         cat("`time` not provided, assuming rows are equally spaced temporally.",
             "\n")
         time <- 1:NROW(data)
+    }
 
     if (length(time) != NROW(data)) {
         stop("length of `time` must be the same as the number of rows of ",

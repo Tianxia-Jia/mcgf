@@ -2,7 +2,7 @@
 % Please edit documentation in R/mcgf_rs_sim.R
 \name{mcgf_rs_sim}
 \alias{mcgf_rs_sim}
-\title{Title}
+\title{Simulate regime-switching Markov chain Gaussian field}
 \usage{
 mcgf_rs_sim(
   N,
@@ -60,7 +60,7 @@ List elements in \code{sd_ls}, \code{mu_c_ls}, and \code{mu_p_ls} must be vector
 appropriate sizes.
 }
 \description{
-Title
+Simulate regime-switching Markov chain Gaussian field
 }
 \examples{
 par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5)

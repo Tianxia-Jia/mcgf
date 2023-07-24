@@ -3,7 +3,6 @@
 \docType{data}
 \name{wind}
 \alias{wind}
-\alias{`wind_loc`}
 \alias{wind_loc}
 \title{Ireland wind data, 1961-1978}
 \format{
@@ -19,12 +18,15 @@ wind_loc
 \description{
 Daily average wind speeds for 1961-1978 at 11 synoptic meteorological
 stations in the Republic of Ireland (Haslett and raftery 1989). Wind speeds
-are in m/s.
+are in m/s. De-trended data sets are also provided.
 }
 \details{
 The data were obtained from the \strong{gstat} package, and were modified so that
 the first column is the time stamps. Locations of the 11 stations are given
-in \code{wind_loc}.
+in \code{wind_loc}. \code{wind_train} and \code{wind_test} contain de-trended and
+square-root transformed train (1961-1970) and test (1971-1978) data sets.
+See Gneiting et al. (2006) for de-trending details. \code{wind_trend} contains
+the estimated annual trend and station-wise mean from the training dataset.
 }
 \references{
 Haslett, J. and Raftery, A. E. (1989). Space-time Modelling with Long-memory
