@@ -54,7 +54,6 @@
             base = base,
             lagrangian = lagrangian,
             par_base = par_base,
-            lambda = lambda,
             h = h_ar,
             u = u_ar,
             base_fixed = FALSE
@@ -89,15 +88,6 @@
     cov_mat_past_curr <- cov_mat_joint[-ind_curr, ind_curr]
     LSE <- cov_mat_curr_past %*% solve(cov_mat_past)
     X_new_cov <- cov_mat_curr - LSE %*% cov_mat_past_curr
-
-    # cov_mat_curr <- cov_curr(cov = cov_ar, horizon = horizon)
-    # cov_mat_curr_past <- cov_curr_past(cov = cov_ar, lag = lag)
-    # cov_mat_past_curr <- cov_past_curr(cov = cov_ar, lag = lag)
-    # cov_mat_past <- cov_past(cov = cov_ar, lag = lag)
-    # LSE <- cov_mat_curr_past %*% solve(cov_mat_past)
-    # X_new_cov <- cov_mat_curr - LSE %*% cov_mat_past_curr
-    # all.equal(LSE, LSE2)
-    # all.equal(X_new_cov, X_new_cov2)
 
     X <- init
 

@@ -101,10 +101,11 @@
         cov_mat_curr_k <- cov_mat_joint_ls[[k]][ind_curr, ind_curr]
         cov_mat_curr_past_k <- cov_mat_joint_ls[[k]][ind_curr, -ind_curr]
         cov_mat_past_k <- cov_mat_joint_ls[[k]][-ind_curr, -ind_curr]
+        cov_mat_past_curr_k <- cov_mat_joint_ls[[k]][-ind_curr, ind_curr]
 
         LSE_ls[[k]] <- cov_mat_curr_past_k %*% solve(cov_mat_past_k)
         X_new_cov_ls[[k]] <- cov_mat_curr_k -
-            LSE_ls[[k]] %*% t(cov_mat_curr_past_k)
+            LSE_ls[[k]] %*% cov_mat_past_curr_k
     }
 
     X <- init
