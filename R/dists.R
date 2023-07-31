@@ -59,3 +59,40 @@ dists.mcgf <- function(x, ...) {
     attr(x, "dists") <- value
     return(x)
 }
+
+#' Generate random distance matrices
+#'
+#' @param N Number of locations.
+#' @param names Names of locations.
+#' @param scale Scale of the distance matrices. Default is 100.
+#'
+#' @return List of signed distances.
+#' @export
+#'
+#' @details
+#' This function generates random distance matrices using `rnorm`. `scale`
+#' controls the scale of the distance matrices.
+#'
+#' @examples
+#' set.seed(123)
+#' rdists(10)
+#' rdists(10, scale = 1)
+#' rdists(10, names = LETTERS[1:10])
+rdists <- function(N, names, scale = 100) {
+    if (!is_numeric_scalar(N))
+        stop("`N` must be an integer.")
+
+    x <- stats::rnorm(N) * scale
+    y <- stats::rnorm(N) * scale
+    grid <- cbind(x, y)
+
+    if (!missing(names)) {
+        if (length(names) != N)
+            stop("Length of `names` must be `N`.")
+    } else {
+        names <- paste0("loc", 1:N)
+    }
+
+    dists <- .find_dists(grid, names = names, longlat = F)
+    return(dists)
+}

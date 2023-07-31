@@ -19,7 +19,7 @@
 #' @keywords internal
 #'
 #' @return Simulated regime-switching Markov chain Gaussian field with
-#' user-specified covariance structure. The simulation is done by kriging.
+#' user-specified covariance structures. The simulation is done by kriging.
 #' The output data is in space-wide format. Each element in `dists_ls` must
 #' contain `h` for symmetric models, and `h1` and `h2` for general stationary
 #' models. `init` can be a scalar or a vector of appropriate size.

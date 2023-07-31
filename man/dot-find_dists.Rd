@@ -4,13 +4,13 @@
 \alias{.find_dists}
 \title{Calculate (signed) distances between coordinates}
 \usage{
-.find_dists(grid, name = NULL, longlat = TRUE)
+.find_dists(grid, names = NULL, longlat = TRUE)
 }
 \arguments{
 \item{grid}{A matrix of 2D points, first column x/longitude, second column
 y/latitude.}
 
-\item{name}{Names of locations.}
+\item{names}{Names of locations.}
 
 \item{longlat}{Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
 if FALSE, Euclidean distance.}

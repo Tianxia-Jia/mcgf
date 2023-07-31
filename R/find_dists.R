@@ -2,26 +2,26 @@
 #'
 #' @param grid A matrix of 2D points, first column x/longitude, second column
 #' y/latitude.
-#' @param name Names of locations.
+#' @param names Names of locations.
 #' @param longlat Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
 #' if FALSE, Euclidean distance.
 #'
 #' @keywords internal
 #' @return List of signed distances.
-.find_dists <- function(grid, name = NULL, longlat = TRUE) {
+.find_dists <- function(grid, names = NULL, longlat = TRUE) {
 
     n_var <- nrow(grid)
 
     lat <- cbind(mean(grid[, 1]), grid[, 2])
     lat_dists <- sp::spDists(lat, longlat = longlat)
-    rownames(lat_dists) <- colnames(lat_dists) <- name
+    rownames(lat_dists) <- colnames(lat_dists) <- names
 
     lon <- cbind(grid[, 1], mean(grid[, 2]))
     lon_dists <- sp::spDists(lon, longlat = longlat)
-    rownames(lon_dists) <- colnames(lon_dists) <- name
+    rownames(lon_dists) <- colnames(lon_dists) <- names
 
     h <- sqrt(lon_dists ^ 2 + lat_dists ^ 2)
-    rownames(h) <- colnames(h) <- name
+    rownames(h) <- colnames(h) <- names
 
     h1 <- matrix(0, ncol = n_var, nrow = n_var)
     for(i in 1:n_var) {
@@ -30,7 +30,7 @@
                 lon_dists[i, j]
         }
     }
-    rownames(h1) <- colnames(h1) <- name
+    rownames(h1) <- colnames(h1) <- names
 
     h2 <- matrix(0, ncol = n_var, nrow = n_var)
     for(i in 1:n_var) {
@@ -39,7 +39,7 @@
                 lat_dists[i, j]
         }
     }
-    rownames(h2) <- colnames(h2) <- name
+    rownames(h2) <- colnames(h2) <- names
 
     return(list(h = h, h1 = h1, h2 = h2))
 }
@@ -75,6 +75,6 @@ find_dists <- function(locations, longlat = TRUE) {
     if (any(table(names) > 1))
         stop("duplicate row names found in `locations`", call. = FALSE)
 
-    dists_ls <- .find_dists(locations, name = names, longlat = longlat)
+    dists_ls <- .find_dists(locations, names = names, longlat = longlat)
     return(dists_ls)
 }

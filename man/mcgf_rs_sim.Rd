@@ -52,7 +52,7 @@ distances and time lag are returned.}
 }
 \value{
 Simulated regime-switching Markov chain Gaussian field with
-user-specified covariance structure. The simulation is done by kriging.
+user-specified covariance structures. The simulation is done by kriging.
 The output data is in space-wide format. Each element in \code{dists_ls} must
 contain \code{h} for symmetric models, and \code{h1} and \code{h2} for general stationary
 models. \code{init} can be a scalar or a vector of appropriate size.
