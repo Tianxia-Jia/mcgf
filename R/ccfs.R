@@ -5,7 +5,8 @@
 #'
 #' @return Cross-correlations.
 #' @export
-#' @family {functions related to the class}
+#'
+#' @family {functions related to the auto- and cross-correlations}
 ccfs <- function(x, ...) {
     UseMethod("ccfs")
 }
@@ -32,7 +33,8 @@ ccfs <- function(x, ...) {
 #' time <- wind[, 1]
 #' wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
 #' ccfs(x = wind_mcgf, lag_max = 3)
-#' @family {functions related to the class}
+#'
+#' @family {functions related to the auto- and cross-correlations}
 ccfs.mcgf <- function(x, lag_max, ...) {
 
     ccfs <- attr(x, "ccfs")
@@ -92,7 +94,8 @@ ccfs.mcgf <- function(x, lag_max, ...) {
 #'
 #' @return `x` with cross-correlations and standard deviations.
 #' @export
-#' @family {functions related to the class}
+#'
+#' @family {functions related to the auto- and cross-correlations}
 add_ccfs <- function(x, ...) {
     UseMethod("add_ccfs")
 }
@@ -124,7 +127,8 @@ add_ccfs <- function(x, ...) {
 #' wind_mcgf <- add_ccfs(x = wind_mcgf, lag_max = 3)
 #' print(wind_mcgf, "ccfs")
 #' print(wind_mcgf, "sds")
-#' @family {functions related to the class}
+#'
+#' @family {functions related to the auto- and cross-correlations}
 add_ccfs.mcgf <- function(x, lag_max, ...) {
 
     if (!is_numeric_scalar(lag_max))

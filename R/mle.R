@@ -13,41 +13,28 @@ obj_mle <- function(par, cor_fn, x, lag, par_fixed) {
     lag_max <- n_lag - 1
     horizon <- n_lag - lag
 
-    cov_mat_curr <- cov_curr(cov = fitted, horizon = horizon)
-    cov_mat_curr_past <- cov_curr_past(cov = fitted, lag = lag)
-    cov_mat_past_curr <- cov_past_curr(cov = fitted, lag = lag)
-    cov_mat_past <- cov_past(cov = fitted, lag = lag)
+    new_cov_par <- cov_par(cov = fitted, horizon = horizon)
+    det_cov_curr <- det(new_cov_par$cov_curr)
 
-    cov_mat_past_inv <- tryCatch({
-        solve(cov_mat_past)
-    },
-    error = function(e) {
-        MASS::ginv(cov_mat_past)
-    })
-
-    weights <- cov_mat_curr_past %*% cov_mat_past_inv
-    Sigma_c <- cov_mat_curr - weights %*% t(cov_mat_curr_past)
-
-    det_Sigma_c <- det(Sigma_c)
-
-    if (is.na(det_Sigma_c) | det_Sigma_c < 0) {
+    if (is.na(det_cov_curr) | det_cov_curr < 0) {
         return(Inf)
     } else {
         x_ts <- stats::embed(as.matrix(x), n_lag)
 
-        mu_c <- t(tcrossprod(weights, x_ts[, -c(1:(n_var * horizon))]))
+        mu_c <- t(tcrossprod(new_cov_par$weights,
+                             x_ts[, -c(1:(n_var * horizon))]))
         mu_diff <- x_ts[, 1:(n_var * horizon)] - mu_c
 
-        Sigma_c_inv <- tryCatch({
-            solve(Sigma_c)
-        },
-        error = function(e) {
-            MASS::ginv(Sigma_c)
-        })
+        cov_curr_inv <- mat_inv(new_cov_par$cov_curr)
 
-        llike <- - nrow(x_ts) * log(det_Sigma_c) -
-            sum(apply(mu_diff, 1, function(x, y) t(x) %*% y %*% x, Sigma_c_inv))
+        llike <- -nrow(x_ts) * log(det_cov_curr) -
+            sum(apply(mu_diff, 1, function(x, y)
+                t(x) %*% y %*% x, cov_curr_inv))
 
-        return(-llike)
+        if (is.infinite(llike)) {
+            return(0)
+        } else {
+            return(-llike)
+        }
     }
 }

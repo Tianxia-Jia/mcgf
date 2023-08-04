@@ -5,7 +5,7 @@
 #'
 #' @return Mean of autocorrelations for each time lag.
 #' @export
-#' @family {functions related to the class}
+#' @family {functions related to the auto- and cross-correlations}
 acfs <- function(x, ...) {
     UseMethod("acfs")
 }
@@ -31,7 +31,8 @@ acfs <- function(x, ...) {
 #' time <- wind[, 1]
 #' wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
 #' acfs(x = wind_mcgf, lag_max = 3)
-#' @family {functions related to the class}
+#'
+#' @family {functions related to the auto- and cross-correlations}
 acfs.mcgf <- function(x, lag_max, ...) {
     acfs <- attr(x, "acfs")
 
@@ -81,7 +82,8 @@ acfs.mcgf <- function(x, lag_max, ...) {
 #'
 #' @return `x` with mean of autocorrelations for each time lag.
 #' @export
-#' @family {functions related to the class}
+#'
+#' @family {functions related to the auto- and cross-correlations}
 add_acfs <- function(x, ...) {
     UseMethod("add_acfs")
 }
@@ -106,7 +108,8 @@ add_acfs <- function(x, ...) {
 #' wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
 #' wind_mcgf <- add_acfs(x = wind_mcgf, lag_max = 3)
 #' print(wind_mcgf, "acfs")
-#' @family {functions related to the class}
+#'
+#' @family {functions related to the auto- and cross-correlations}
 add_acfs.mcgf <- function(x, lag_max, ...) {
 
     acfs <- acfs.mcgf(x = x, lag_max = lag_max, ...)

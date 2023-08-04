@@ -76,26 +76,15 @@
         )
     }
 
-    for (i in 1:dim(cov_ar)[3]) {
-        cov_ar[, , i] <- cor2cov(cov_ar[, , i], sd)
-    }
-
-    cov_mat_joint <- cov_joint(cov = cov_ar)
-    ind_curr <- 1:(n_var * horizon)
-    cov_mat_curr <- cov_mat_joint[ind_curr, ind_curr]
-    cov_mat_curr_past <- cov_mat_joint[ind_curr, -ind_curr]
-    cov_mat_past <- cov_mat_joint[-ind_curr, -ind_curr]
-    cov_mat_past_curr <- cov_mat_joint[-ind_curr, ind_curr]
-    LSE <- cov_mat_curr_past %*% solve(cov_mat_past)
-    X_new_cov <- cov_mat_curr - LSE %*% cov_mat_past_curr
+    cov_ar <- cor2cov_ar(cov_ar, sd)
+    X_cov_par <- cov_par(cov = cov_ar, horizon = horizon)
 
     X <- init
-
     for (n in 1:n_rounds) {
         X_past <- stats::embed(utils::tail(X, lag), lag)
-        X_new_mean <- mu_c + LSE %*% t(X_past - mu_p)
+        X_new_mean <- mu_c + X_cov_par$weights %*% t(X_past - mu_p)
 
-        X_new <- mvnfast::rmvn(1, X_new_mean, X_new_cov)
+        X_new <- mvnfast::rmvn(1, X_new_mean, X_cov_par$cov_curr)
         X_new <- matrix(X_new, ncol = n_var, byrow = T)
         X_new <- X_new[horizon:1, ]
         X <- rbind(X, X_new)
@@ -105,18 +94,16 @@
     colnames(X) <- colnames(dists$h)
 
     if (return_all) {
+        cov_mat_joint <- cov_joint(cov = cov_ar)
+        par <- list(cov_mat = cov_mat_joint,
+                    dists = list(h = h_ar),
+                    u = u_ar)
+
         if (lagrangian == "lagr_tri") {
-            par <- list(
-                cov_mat = cov_mat_joint,
-                dists = list(
-                    h = h_ar,
-                    h1 = h1_ar,
-                    h2 = h2_ar
-                ),
-                u = u_ar
-            )
-            return(list(X = X, par = par))
+            par$dists = list(h = h_ar, h1 = h1_ar, h2 = h2_ar)
         }
+
+        return(list(X = X, par = par))
 
     } else {
         return(X = X)

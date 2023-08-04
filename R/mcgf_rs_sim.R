@@ -93,20 +93,9 @@
         }
     }
 
-    cov_mat_joint_ls <- lapply(cov_ar_rs, cov_joint)
-    LSE_ls <- X_new_cov_ls <- vector("list", n_regime)
+    # cov_ar_rs <- Map(function(), cov_ar_rs, sd_ls)
 
-    ind_curr <- 1:n_var
-    for (k in 1:n_regime) {
-        cov_mat_curr_k <- cov_mat_joint_ls[[k]][ind_curr, ind_curr]
-        cov_mat_curr_past_k <- cov_mat_joint_ls[[k]][ind_curr, -ind_curr]
-        cov_mat_past_k <- cov_mat_joint_ls[[k]][-ind_curr, -ind_curr]
-        cov_mat_past_curr_k <- cov_mat_joint_ls[[k]][-ind_curr, ind_curr]
-
-        LSE_ls[[k]] <- cov_mat_curr_past_k %*% solve(cov_mat_past_k)
-        X_new_cov_ls[[k]] <- cov_mat_curr_k -
-            LSE_ls[[k]] %*% cov_mat_past_curr_k
-    }
+    X_cov_par <- lapply(cov_ar_rs, cov_par)
 
     X <- init
     for (n in 1:N) {
@@ -115,9 +104,9 @@
         X_past <- stats::embed(utils::tail(X, lag_max_ls[[regime_n]]),
                                lag_max_ls[[regime_n]])
         X_new_mean <- mu_c_ls[[regime_n]] +
-            LSE_ls[[regime_n]] %*% t(X_past - mu_p_ls[[regime_n]])
+            X_cov_par[[regime_n]]$weights %*% t(X_past - mu_p_ls[[regime_n]])
 
-        X_new <- mvnfast::rmvn(1, X_new_mean, X_new_cov_ls[[k]])
+        X_new <- mvnfast::rmvn(1, X_new_mean, X_cov_par[[k]]$cov_curr)
         X_new <- matrix(X_new, ncol = n_var, byrow = T)
         X <- rbind(X, X_new)
     }
@@ -127,18 +116,16 @@
     X <- cbind(regime = c(rep(NA, NROW(init)), labels), X)
 
     if (return_all) {
+
+        cov_mat_joint_ls <- lapply(cov_ar_rs, cov_joint)
+        par <- list(cov_mat_ls = cov_mat_joint_ls,
+                    dists_ls = list(h = h_ar_ls),
+                    u = u_ar_ls)
+
         if (any(lagrangian_ls != "none")) {
-            par <- list(
-                cov_mat_ls = cov_mat_joint_ls,
-                dists_ls = list(
-                    h = h_ar_ls,
-                    h1 = h1_ar_ls,
-                    h2 = h2_ar_ls
-                ),
-                u = u_ar_ls
-            )
-            return(list(X = X, par = par))
+            par$dists_ls <- list(h = h_ar_ls, h1 = h1_ar_ls, h2 = h2_ar_ls)
         }
+        return(list(X = X, par = par))
 
     } else {
         return(X = X)

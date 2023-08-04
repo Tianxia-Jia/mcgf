@@ -12,15 +12,24 @@ sds <- function(x, ...) {
 
 #' @rdname ccfs.mcgf
 #' @param value Cross-correlations.
-sds.mcgf <- function(x) {
-    return(attr(x, "sds"))
+#' @export
+sds.mcgf <- function(x, ...) {
+    sds <- attr(x, "sds")
+
+    if (!is.null(sds)) {
+        return(sds)
+    } else {
+        sds <- apply(x, 2, stats::sd)
+        return(sds)
+    }
+
 }
 
 #' @rdname add_ccfs.mcgf
 #' @param value A vector of standard deviations for all stations.
 `sds<-` <- function(x, value) {
 
-    if (!is.vector(x, mode = "numeric"))
+    if (!is.vector(value, mode = "numeric"))
         stop("`value` must be a numeric vector.")
 
     if (length(value) != ncol(x))

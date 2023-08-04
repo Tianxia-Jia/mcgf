@@ -2,9 +2,12 @@
 % Please edit documentation in R/cor2cov.R
 \name{cor2cov}
 \alias{cor2cov}
+\alias{cor2cov_ar}
 \title{Convert correlation to covariance}
 \usage{
 cor2cov(V, sd)
+
+cor2cov_ar(V, sd)
 }
 \arguments{
 \item{V}{A correlation matrix, usually positive semi-definite.}
@@ -17,8 +20,14 @@ A correlation matrix.
 \description{
 Convert correlation to covariance
 }
+\details{
+\code{cor2cov} converts a matrix. \code{cor2cov_ar} converts an 3-D array.
+}
 \examples{
 V <- matrix(c(1, 0.5, 0.5, 1), ncol = 2)
 sd <- 1:2
 cor2cov(V, sd)
+
+V_ar <- array(c(1, 0.5, 0.5, 1), dim = c(2, 2, 2))
+cor2cov_ar(V_ar, sd)
 }

@@ -30,21 +30,16 @@ time <- wind[, 1]
 wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
 wind_mcgf <- add_acfs(x = wind_mcgf, lag_max = 3)
 print(wind_mcgf, "acfs")
+
 }
 \seealso{
-Other {functions related to the class}: 
+Other {functions related to the auto- and cross-correlations}: 
 \code{\link{acfs.mcgf}()},
 \code{\link{acfs}()},
 \code{\link{add_acfs}()},
 \code{\link{add_ccfs.mcgf}()},
 \code{\link{add_ccfs}()},
 \code{\link{ccfs.mcgf}()},
-\code{\link{ccfs}()},
-\code{\link{dists.mcgf}()},
-\code{\link{dists}()},
-\code{\link{fit_base}()},
-\code{\link{mcgf}()},
-\code{\link{print.mcgf}()},
-\code{\link{sds}()}
+\code{\link{ccfs}()}
 }
-\concept{{functions related to the class}}
+\concept{{functions related to the auto- and cross-correlations}}

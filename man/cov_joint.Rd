@@ -2,53 +2,36 @@
 % Please edit documentation in R/cov_joint.R
 \name{cov_joint}
 \alias{cov_joint}
-\alias{cov_curr}
-\alias{cov_curr_past}
-\alias{cov_past_curr}
-\alias{cov_past}
+\alias{cov_par}
 \title{Covariance for joint distribution}
 \usage{
 cov_joint(cov)
 
-cov_curr(cov, horizon)
-
-cov_curr_past(cov, lag)
-
-cov_past_curr(cov, lag)
-
-cov_past(cov, lag)
+cov_par(cov, horizon = 1, n_var, joint = FALSE)
 }
 \arguments{
 \item{cov}{Array of covariance matrices.}
 
-\item{horizon}{Forecast horizon.}
+\item{horizon}{Forecast horizon, default is 1.}
 
-\item{lag}{Time lag.}
+\item{n_var}{Number of locations.}
+
+\item{joint}{Logical; True if \code{cov} is the joint covariance matrix.}
 }
 \value{
-A partition of the covariance matrix for the joint distribution of
-the current value and the past value for a Markov chain Gaussian field.
+The joint covariance matrix for the joint distribution of the current
+values and the past values for a Markov chain Gaussian field.
 }
 \description{
 Covariance for joint distribution
 }
 \details{
 The covariance matrix of the joint distribution has the block toeplitz
-structure. Input \code{cov} is assumed to be an array of covariance matrices
-where the \eqn{i}th matrix slice correspond to the \eqn{(i-1)}th time lag. For
-example, \code{cov[, , 1]} is the covariance matrix for time lag 0. All matrices
-in \code{cov} are used to construct the joint covariance matrix.
+structure. Input \code{cov} is assumed to be an array of cross-covariance matrices
+where the \eqn{i}th matrix slice correspond to the \eqn{(i-1)}th time lag.
+For example, \code{cov[, , 1]} is the cross-covariance matrix for time lag 0. All
+matrices in \code{cov} are used to construct the joint covariance matrix.
 
-\code{cov_joint} gives the joint covariance matrix.
-
-\code{cov_curr} gives the covariance matrix for the current observations.
-
-\code{cov_curr_past} gives partition of the joint covariance for the current and
-past observations.
-
-\code{cov_past_current} gives partition of the joint covariance for the past and
-current observations.
-
-\code{cov_past} gives the covariance matrix for the past observations.
+\code{cov_par} gives weights and covariance matrix for the current values..
 }
 \keyword{internal}

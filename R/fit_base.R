@@ -5,7 +5,7 @@
 #'
 #' @return A vector of estimated parameters
 #' @export
-#' @family {functions related to the class}
+#' @family {functions related to model fitting}
 fit_base <- function(x, ...) {
     UseMethod("fit_base")
 }
@@ -51,7 +51,14 @@ upper_fs <- c(upper_sep, 1)
 #' @export
 #'
 #' @details
-#' Additional details...
+#' This function fits the separable and fully symmetric models using weighted
+#' least squares and maximum likelihood estimation. Optimization functions such
+#' as `nlminb` and `optim` are supported. Other functions are also supported by
+#' setting `optim_fn = "other"` and supplying `other_optim_fn`. `lower` and
+#' `upper` are lower and upper bounds of parameters in `par_init` and default
+#' bounds are used if they are not specified.
+#'
+#' @family {functions related to model fitting}
 fit_base.mcgf <- function(x,
                           lag,
                           horizon = 1,
@@ -197,7 +204,8 @@ fit_base.mcgf <- function(x,
             upper = upper_model,
             ...
         )
-        return(c(res_wls, par_names = list(names(par_init))))
+        return(c(res_wls, par_names = list(names(par_init)),
+                 list(par_fixed = par_fixed)))
 
     } else {
 
@@ -237,6 +245,7 @@ fit_base.mcgf <- function(x,
             lag = lag,
             ...
         )
-        return(c(res_mle, par_names = list(names(par_init))))
+        return(c(res_mle, par_names = list(names(par_init)),
+                 list(par_fixed = par_fixed)))
     }
 }

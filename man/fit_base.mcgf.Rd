@@ -57,5 +57,17 @@ A list outputted from optimization functions of \code{optim_fn}.
 Parameter estimation for symmetric correlation functions.
 }
 \details{
-Additional details...
+This function fits the separable and fully symmetric models using weighted
+least squares and maximum likelihood estimation. Optimization functions such
+as \code{nlminb} and \code{optim} are supported. Other functions are also supported by
+setting \code{optim_fn = "other"} and supplying \code{other_optim_fn}. \code{lower} and
+\code{upper} are lower and upper bounds of parameters in \code{par_init} and default
+bounds are used if they are not specified.
 }
+\seealso{
+Other {functions related to model fitting}: 
+\code{\link{add_base.mcgf}()},
+\code{\link{add_base}()},
+\code{\link{fit_base}()}
+}
+\concept{{functions related to model fitting}}

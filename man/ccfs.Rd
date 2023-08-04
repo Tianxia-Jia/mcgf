@@ -18,19 +18,13 @@ Cross-correlations.
 Generic function for calculating cross-autocorrelation
 }
 \seealso{
-Other {functions related to the class}: 
+Other {functions related to the auto- and cross-correlations}: 
 \code{\link{acfs.mcgf}()},
 \code{\link{acfs}()},
 \code{\link{add_acfs.mcgf}()},
 \code{\link{add_acfs}()},
 \code{\link{add_ccfs.mcgf}()},
 \code{\link{add_ccfs}()},
-\code{\link{ccfs.mcgf}()},
-\code{\link{dists.mcgf}()},
-\code{\link{dists}()},
-\code{\link{fit_base}()},
-\code{\link{mcgf}()},
-\code{\link{print.mcgf}()},
-\code{\link{sds}()}
+\code{\link{ccfs.mcgf}()}
 }
-\concept{{functions related to the class}}
+\concept{{functions related to the auto- and cross-correlations}}

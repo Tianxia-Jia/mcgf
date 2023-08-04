@@ -20,16 +20,7 @@ Generic function for calculating distance matrices
 }
 \seealso{
 Other {functions related to the class}: 
-\code{\link{acfs.mcgf}()},
-\code{\link{acfs}()},
-\code{\link{add_acfs.mcgf}()},
-\code{\link{add_acfs}()},
-\code{\link{add_ccfs.mcgf}()},
-\code{\link{add_ccfs}()},
-\code{\link{ccfs.mcgf}()},
-\code{\link{ccfs}()},
 \code{\link{dists.mcgf}()},
-\code{\link{fit_base}()},
 \code{\link{mcgf}()},
 \code{\link{print.mcgf}()},
 \code{\link{sds}()}
