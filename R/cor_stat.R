@@ -1,3 +1,29 @@
+#' Calculate correlation for the general stationary model
+#'
+#' @param cor_base An array of base cross-correlation matrices.
+#' @param lagrangian Lagrangian model, `none`, `lagr_tri`, or `lagr_askey`.
+#' @param lambda Weight of the Lagrangian term, \eqn{\lambda\in[0, 1]}.
+#' @param v1 Prevailing wind, u-component.
+#' @param v2 Prevailing wind, v-component.
+#' @param k Scale parameter of \eqn{\|\boldsymbol v\|}, \eqn{k>0}. Default is 2.
+#' @param h1 Horizontal distance matrix or array.
+#' @param h2 Vertical distance matrix or array, same dimension as `h1`.
+#' @param u Time lag, same dimension as `h1`.
+#'
+#' @keywords internal
+#' @return Correlations for the general stationary model.
+#'
+#' @details
+#' This function is a special case of [`.cor_stat()`]. It is used inside
+#' [`fit_lagr()`].
+..cor_stat <- function(cor_base, lagrangian, lambda, v1, v2, k = 2, h1, h2, u) {
+
+    par_lagr <- list(v1 = v1, v2 = v2, k = k, h1 = h1, h2 = h2, u = u)
+    fit_lagr <- do.call(paste0(".cor_", lagrangian), par_lagr)
+    corr <- (1 - lambda) * cor_base + lambda * fit_lagr
+    return(corr)
+}
+
 #' Calculate general stationary correlation.
 #'
 #' @param base Base model, `sep` or `fs` for now. Or correlation matrix/array.

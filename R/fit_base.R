@@ -1,4 +1,4 @@
-#' Fit correlation models
+#' Fit correlation base models
 #'
 #' @param x An **R** object.
 #' @param ... Additional parameters or attributes.
@@ -9,22 +9,6 @@
 fit_base <- function(x, ...) {
     UseMethod("fit_base")
 }
-
-par_spatial <- c("c", "gamma", "nugget")
-lower_spatial <- c(0, 0, 0)
-upper_spatial <- c(100, 0.5, 1)
-
-par_temporal <- c("a", "alpha")
-lower_temporal <- c(0, 0)
-upper_temporal <- c(100, 1)
-
-par_sep <- c(par_spatial, par_temporal)
-lower_sep <- c(lower_spatial, lower_temporal)
-upper_sep <- c(upper_spatial, upper_temporal)
-
-par_fs <- c(par_sep, "beta")
-lower_fs <- c(lower_sep, 0)
-upper_fs <- c(upper_sep, 1)
 
 #' Parameter estimation for symmetric correlation functions.
 #'
@@ -47,7 +31,7 @@ upper_fs <- c(upper_sep, 1)
 #' minimized respectively (same as that of `optim` and `nlminb`).
 #' @param ... Additional arguments passed to `optim_fn`.
 #'
-#' @return A list outputted from optimization functions of `optim_fn`.
+#' @return A list containing outputs from optimization functions of `optim_fn`.
 #' @export
 #'
 #' @details
@@ -72,6 +56,8 @@ fit_base.mcgf <- function(x,
                           other_optim_fn,
                           ...) {
 
+    dots <- list(...)
+
     if(!is_numeric_scalar(lag)) {
         stop("`lag` must be a positive number.")
     } else if (lag < 0) {
@@ -83,6 +69,22 @@ fit_base.mcgf <- function(x,
     } else if (horizon < 0) {
         stop("`horizon` must be a positive number.")
     }
+
+    par_spatial <- c("c", "gamma", "nugget")
+    lower_spatial <- c(0, 0, 0)
+    upper_spatial <- c(100, 0.5, 1)
+
+    par_temporal <- c("a", "alpha")
+    lower_temporal <- c(0, 0)
+    upper_temporal <- c(100, 1)
+
+    par_sep <- c(par_spatial, par_temporal)
+    lower_sep <- c(lower_spatial, lower_temporal)
+    upper_sep <- c(upper_spatial, upper_temporal)
+
+    par_fs <- c(par_sep, "beta")
+    lower_fs <- c(lower_sep, 0)
+    upper_fs <- c(upper_sep, 1)
 
     lag_max <- lag + horizon - 1
 
@@ -193,7 +195,7 @@ fit_base.mcgf <- function(x,
             }
         )
 
-        res_wls <- estimate(
+        res_base <- estimate(
             par_init = par_init,
             method = method,
             optim_fn = optim_fn,
@@ -204,9 +206,6 @@ fit_base.mcgf <- function(x,
             upper = upper_model,
             ...
         )
-        return(c(res_wls, par_names = list(names(par_init)),
-                 list(par_fixed = par_fixed)))
-
     } else {
 
         model_args <- switch(
@@ -233,7 +232,7 @@ fit_base.mcgf <- function(x,
             }
         )
 
-        res_mle <- estimate(
+        res_base <- estimate(
             par_init = par_init,
             method = method,
             optim_fn = optim_fn,
@@ -245,7 +244,15 @@ fit_base.mcgf <- function(x,
             lag = lag,
             ...
         )
-        return(c(res_mle, par_names = list(names(par_init)),
-                 list(par_fixed = par_fixed)))
     }
+    return(list(
+        model = model,
+        method = method,
+        optim_fn = optim_fn,
+        lag = lag,
+        horizon = horizon,
+        fit = res_base,
+        par_names = names(par_init),
+        par_fixed = par_fixed,
+        dots = dots))
 }

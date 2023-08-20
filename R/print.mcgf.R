@@ -15,7 +15,7 @@ print.mcgf <- function(x, attr = ".Data", ...) {
             "\n")
         return(invisible(NULL))
     } else {
-        print(attr(x, attr))
+        print(attr(x, attr, exact = TRUE))
         return(invisible(NULL))
     }
 }

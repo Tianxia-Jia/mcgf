@@ -37,12 +37,12 @@ ccfs <- function(x, ...) {
 #' @family {functions related to the auto- and cross-correlations}
 ccfs.mcgf <- function(x, lag_max, ...) {
 
-    ccfs <- attr(x, "ccfs")
+    ccfs <- attr(x, "ccfs", exact = TRUE)
 
     if (!is.null(ccfs)) {
         return(ccfs)
     } else {
-        acfs <- attr(x, "acfs")
+        acfs <- attr(x, "acfs", exact = TRUE)
         if (!is.null(acfs) && length(acfs) != lag_max + 1)
             warning("`lag_max` must be the same as that in `acfs`")
 

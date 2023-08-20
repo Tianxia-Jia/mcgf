@@ -5,14 +5,16 @@
 \alias{cor2cov_ar}
 \title{Convert correlation to covariance}
 \usage{
-cor2cov(V, sd)
+cor2cov(V, sd, empirical = FALSE)
 
-cor2cov_ar(V, sd)
+cor2cov_ar(V, sd, empirical = FALSE)
 }
 \arguments{
 \item{V}{A correlation matrix, usually positive semi-definite.}
 
 \item{sd}{A vector of standard deviations.}
+
+\item{empirical}{Logical; TRUE if V is empirical correlation.}
 }
 \value{
 A correlation matrix.

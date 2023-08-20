@@ -81,11 +81,12 @@ cov_par <- function(cov, horizon = 1, n_var, joint = FALSE) {
     cov_mat_curr <- cov_mat_joint[ind_curr, ind_curr]
     cov_mat_curr_past <- cov_mat_joint[ind_curr, -ind_curr]
     cov_mat_past <- cov_mat_joint[-ind_curr, -ind_curr]
+    cov_mat_past_curr <- cov_mat_joint[-ind_curr, ind_curr]
 
     cov_mat_past_inv <- mat_inv(cov_mat_past)
 
     weights <- cov_mat_curr_past %*% cov_mat_past_inv
-    cov_curr <- cov_mat_curr - weights %*% t(cov_mat_curr_past)
+    cov_curr <- cov_mat_curr - weights %*% cov_mat_past_curr
 
     return(list(weights = weights, cov_curr = cov_curr))
 }

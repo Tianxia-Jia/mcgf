@@ -4,12 +4,14 @@
 \alias{to_ar}
 \title{Convert to array}
 \usage{
-to_ar(h, lag_max)
+to_ar(h, lag_max, u = TRUE)
 }
 \arguments{
+\item{h}{Distance matrix.}
+
 \item{lag_max}{Maximum time lag.}
 
-\item{x}{Distance matrix.}
+\item{u}{Logical; TRUE if u_ar needs to be outputted.}
 }
 \value{
 A list of arrays of h and u.

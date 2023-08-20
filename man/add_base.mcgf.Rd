@@ -3,32 +3,49 @@
 \name{add_base.mcgf}
 \alias{add_base.mcgf}
 \alias{base<-}
-\title{Add base model outputted from \code{fit_base} to a mcgf object.}
+\title{Add base model outputted from \code{\link[=fit_base]{fit_base()}} to a mcgf object.}
 \usage{
-\method{add_base}{mcgf}(x, fit_base, ...)
+\method{add_base}{mcgf}(x, fit_base, fit_s, fit_t, sep = F, old = FALSE, ...)
 
 base(x) <- value
 }
 \arguments{
 \item{x}{An mcgf object.}
 
-\item{fit_base}{Output from the \code{fit_base} function.}
+\item{fit_base}{Output from the \code{\link[=fit_base]{fit_base()}} function.}
+
+\item{fit_s}{Pure spatial model outputted from the \code{\link[=fit_base]{fit_base()}} function.
+Used only when \code{sep = TRUE}.}
+
+\item{fit_t}{Pure temporal model outputted from the \code{\link[=fit_base]{fit_base()}} function.
+Used only when \code{sep = TRUE}.}
+
+\item{sep}{Logical; TRUE if spatial and temporal models are fitted
+separately.}
+
+\item{old}{Logical; TRUE if the old base model needs to be kept}
 
 \item{...}{Additional arguments. Not in use.}
 
 \item{value}{A list containing the base model as well as its parameters. It
-must contains \code{model}, \code{par_base}, \code{cov_base}, \code{lag_base}, and \code{horizon}.}
+must contains \code{model}, \code{par_base}, \code{cor_base}, \code{lag}, and \code{horizon}.}
 }
 \value{
 \code{x} with newly added attributes of the base model.
 }
 \description{
-Add base model outputted from \code{fit_base} to a mcgf object.
+Add base model outputted from \code{\link[=fit_base]{fit_base()}} to a mcgf object.
 }
 \seealso{
 Other {functions related to model fitting}: 
 \code{\link{add_base}()},
+\code{\link{add_lagr.mcgf}()},
+\code{\link{add_lagr}()},
 \code{\link{fit_base.mcgf}()},
-\code{\link{fit_base}()}
+\code{\link{fit_base}()},
+\code{\link{fit_lagr.mcgf}()},
+\code{\link{fit_lagr}()},
+\code{\link{model.mcgf}()},
+\code{\link{model}()}
 }
 \concept{{functions related to model fitting}}

@@ -20,7 +20,13 @@ Generic function for adding a base model
 \seealso{
 Other {functions related to model fitting}: 
 \code{\link{add_base.mcgf}()},
+\code{\link{add_lagr.mcgf}()},
+\code{\link{add_lagr}()},
 \code{\link{fit_base.mcgf}()},
-\code{\link{fit_base}()}
+\code{\link{fit_base}()},
+\code{\link{fit_lagr.mcgf}()},
+\code{\link{fit_lagr}()},
+\code{\link{model.mcgf}()},
+\code{\link{model}()}
 }
 \concept{{functions related to model fitting}}

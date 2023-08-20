@@ -40,10 +40,10 @@ dists <- function(x, ...) {
 #' @family {functions related to the class}
 dists.mcgf <- function(x, ...) {
 
-    dists <- attr(x, "dists")
+    dists <- attr(x, "dists", exact = TRUE)
 
     if (is.null(dists)) {
-        locations <- attr(x, "locations")
+        locations <- attr(x, "locations", exact = TRUE)
         dists <- find_dists(locations, ...)
     }
     return(dists)

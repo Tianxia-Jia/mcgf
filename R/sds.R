@@ -14,7 +14,7 @@ sds <- function(x, ...) {
 #' @param value Cross-correlations.
 #' @export
 sds.mcgf <- function(x, ...) {
-    sds <- attr(x, "sds")
+    sds <- attr(x, "sds", exact = TRUE)
 
     if (!is.null(sds)) {
         return(sds)
