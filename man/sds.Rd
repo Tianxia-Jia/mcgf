@@ -11,17 +11,9 @@ sds(x, ...)
 
 \item{...}{Additional parameters or attributes.}
 }
-\value{
-Standard deviations.
-}
 \description{
 Generic function for standard deviations for each column
 }
-\seealso{
-Other {functions related to the class}: 
-\code{\link{dists.mcgf}()},
-\code{\link{dists}()},
-\code{\link{mcgf}()},
-\code{\link{print.mcgf}()}
+\details{
+Refer to \code{\link[=sds.mcgf]{sds.mcgf()}} for more details.
 }
-\concept{{functions related to the class}}

@@ -69,7 +69,7 @@ check_dist_sign <- function(x, name) {
         stop("NA or NaN found in `", name, "`.", call. = FALSE)
     }
 
-        if (!is_numeric_scalar(x)) {
+    if (!is_numeric_scalar(x)) {
         if (is.array(x)) {
             if (!(length(dim(x)) %in% 2:3)) {
                 stop("`", name, "` must be a matrix or 3-d array.",

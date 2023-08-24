@@ -10,9 +10,9 @@
 #'
 #' @keywords internal
 #' @return An S3 object of class `mcgf`. As it inherits and extends the
-#' `data.frame` class, all methods remain valid to the `data` part of the object.
-#' Additional attributes may be assigned and extracted.
-new_mcgf <- function(data, locations, dists, time, longlat) {
+#' `data.frame` class, all methods remain valid to the `data` part of the
+#' object. Additional attributes may be assigned and extracted.
+new_mcgf <- function(data, locations, dists, time) {
 
     data <- as.data.frame(data)
     rownames(data) <- time
@@ -34,13 +34,14 @@ new_mcgf <- function(data, locations, dists, time, longlat) {
 #' @return An S3 object of class `mcgf`.
 #'
 #' @details
-#' It validates an `mcgf` object by checking if the locations
+#' It validates an `mcgf` object by checking if `dists` contains valid
+#' distance matrics/arrays.
 validate_mcgf <- function(x) {
 
     data <- x
     n_var <- ncol(x)
-    locations <- attr(x, "locations")
-    dists <- attr(x, "dists")
+    locations <- attr(x, "locations", exact = TRUE)
+    dists <- attr(x, "dists", exact = TRUE)
 
     if (!is.null(dists)) {
         dists <- check_dists(dists = dists, n_var = n_var,
@@ -79,7 +80,7 @@ validate_mcgf <- function(x) {
 #' lat <- c(50, 55, 60)
 #' locations <- cbind(lon, lat)
 #' obj <- mcgf(data, locations)
-#' attr(obj, "locations")
+#' print(obj, "locations")
 #'
 #' @family {functions related to the class}
 mcgf <- function(data, locations, dists, time) {
@@ -150,4 +151,14 @@ mcgf <- function(data, locations, dists, time) {
 
         return(validate_mcgf(new_mcgf(data = data, dists = dists, time = time)))
     }
+}
+
+#' Check if an object is an `mcgf` object.
+#'
+#' @param x An Object.
+#'
+#' @return Logical; TRUE if `x` is of the `mcgf` class
+#' @export
+is.mcgf <- function(x){
+    inherits(x, "mcgf")
 }

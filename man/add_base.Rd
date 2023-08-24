@@ -11,22 +11,9 @@ add_base(x, ...)
 
 \item{...}{Additional parameters or attributes.}
 }
-\value{
-Base model and its parameter
-}
 \description{
 Generic function for adding a base model
 }
-\seealso{
-Other {functions related to model fitting}: 
-\code{\link{add_base.mcgf}()},
-\code{\link{add_lagr.mcgf}()},
-\code{\link{add_lagr}()},
-\code{\link{fit_base.mcgf}()},
-\code{\link{fit_base}()},
-\code{\link{fit_lagr.mcgf}()},
-\code{\link{fit_lagr}()},
-\code{\link{model.mcgf}()},
-\code{\link{model}()}
+\details{
+Refer to \code{\link[=add_base.mcgf]{add_base.mcgf()}} for more details.
 }
-\concept{{functions related to model fitting}}

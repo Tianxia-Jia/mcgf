@@ -20,7 +20,6 @@ Print an \code{mcgf} object.
 Other {functions related to the class}: 
 \code{\link{dists.mcgf}()},
 \code{\link{dists}()},
-\code{\link{mcgf}()},
-\code{\link{sds}()}
+\code{\link{mcgf}()}
 }
 \concept{{functions related to the class}}

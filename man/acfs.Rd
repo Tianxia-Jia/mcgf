@@ -11,20 +11,9 @@ acfs(x, ...)
 
 \item{...}{Additional parameters or attributes.}
 }
-\value{
-Mean of autocorrelations for each time lag.
-}
 \description{
 Generic function for calculating autocorrelation
 }
-\seealso{
-Other {functions related to the auto- and cross-correlations}: 
-\code{\link{acfs.mcgf}()},
-\code{\link{add_acfs.mcgf}()},
-\code{\link{add_acfs}()},
-\code{\link{add_ccfs.mcgf}()},
-\code{\link{add_ccfs}()},
-\code{\link{ccfs.mcgf}()},
-\code{\link{ccfs}()}
+\details{
+Refer to \code{\link[=acfs.mcgf]{acfs.mcgf()}} for more details.
 }
-\concept{{functions related to the auto- and cross-correlations}}

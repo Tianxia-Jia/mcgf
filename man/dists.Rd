@@ -13,7 +13,7 @@ dists(x, ...)
 }
 \value{
 A list of signed distance matrices: \code{h} (Euclidean), \code{h1}
-(horizontal), and \code{h2} (vertical).
+(horizontal), and \code{h2} (vertical) with the same dimensions.
 }
 \description{
 Generic function for calculating distance matrices
@@ -22,7 +22,6 @@ Generic function for calculating distance matrices
 Other {functions related to the class}: 
 \code{\link{dists.mcgf}()},
 \code{\link{mcgf}()},
-\code{\link{print.mcgf}()},
-\code{\link{sds}()}
+\code{\link{print.mcgf}()}
 }
 \concept{{functions related to the class}}

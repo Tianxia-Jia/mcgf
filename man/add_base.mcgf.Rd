@@ -3,14 +3,15 @@
 \name{add_base.mcgf}
 \alias{add_base.mcgf}
 \alias{base<-}
-\title{Add base model outputted from \code{\link[=fit_base]{fit_base()}} to a mcgf object.}
+\title{Add base model outputted from \code{\link[=fit_base]{fit_base()}} to an \code{mcgf} or \code{mcgf_rs}
+object.}
 \usage{
 \method{add_base}{mcgf}(x, fit_base, fit_s, fit_t, sep = F, old = FALSE, ...)
 
 base(x) <- value
 }
 \arguments{
-\item{x}{An mcgf object.}
+\item{x}{An \code{mcgf} or \code{mcgf_rs} object.}
 
 \item{fit_base}{Output from the \code{\link[=fit_base]{fit_base()}} function.}
 
@@ -23,7 +24,7 @@ Used only when \code{sep = TRUE}.}
 \item{sep}{Logical; TRUE if spatial and temporal models are fitted
 separately.}
 
-\item{old}{Logical; TRUE if the old base model needs to be kept}
+\item{old}{Logical; TRUE if the old base model needs to be kept.}
 
 \item{...}{Additional arguments. Not in use.}
 
@@ -34,11 +35,17 @@ must contains \code{model}, \code{par_base}, \code{cor_base}, \code{lag}, and \c
 \code{x} with newly added attributes of the base model.
 }
 \description{
-Add base model outputted from \code{\link[=fit_base]{fit_base()}} to a mcgf object.
+Add base model outputted from \code{\link[=fit_base]{fit_base()}} to an \code{mcgf} or \code{mcgf_rs}
+object.
+}
+\details{
+After fitting the base model by \code{\link[=fit_base]{fit_base()}}, the results can be added to
+\code{x} by \code{\link[=add_base]{add_base()}}. To supply the base model directly, use \code{\link{base<-}} to
+add the base model; the value must contain \code{model}, \code{par_base}, \code{cor_base},
+\code{lag}, and \code{horizon}.
 }
 \seealso{
 Other {functions related to model fitting}: 
-\code{\link{add_base}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{add_lagr}()},
 \code{\link{fit_base.mcgf}()},

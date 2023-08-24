@@ -2,7 +2,7 @@
 % Please edit documentation in R/ccfs.R
 \name{ccfs}
 \alias{ccfs}
-\title{Generic function for calculating cross-autocorrelation}
+\title{Generic function for calculating cross-correlation}
 \usage{
 ccfs(x, ...)
 }
@@ -11,20 +11,9 @@ ccfs(x, ...)
 
 \item{...}{Additional parameters or attributes.}
 }
-\value{
-Cross-correlations.
-}
 \description{
-Generic function for calculating cross-autocorrelation
+Generic function for calculating cross-correlation
 }
-\seealso{
-Other {functions related to the auto- and cross-correlations}: 
-\code{\link{acfs.mcgf}()},
-\code{\link{acfs}()},
-\code{\link{add_acfs.mcgf}()},
-\code{\link{add_acfs}()},
-\code{\link{add_ccfs.mcgf}()},
-\code{\link{add_ccfs}()},
-\code{\link{ccfs.mcgf}()}
+\details{
+Refer to \code{\link[=ccfs.mcgf]{ccfs.mcgf()}} for more details.
 }
-\concept{{functions related to the auto- and cross-correlations}}

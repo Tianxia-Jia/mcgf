@@ -43,7 +43,6 @@ obj
 Other {functions related to the class}: 
 \code{\link{dists}()},
 \code{\link{mcgf}()},
-\code{\link{print.mcgf}()},
-\code{\link{sds}()}
+\code{\link{print.mcgf}()}
 }
 \concept{{functions related to the class}}

@@ -2,33 +2,51 @@
 % Please edit documentation in R/acfs.R
 \name{acfs.mcgf}
 \alias{acfs.mcgf}
-\alias{`acfs<-`}
+\alias{acfs.mcgf_rs}
 \alias{acfs<-}
-\title{Calculating mean autocorrelations for an \code{mcgf} object}
+\alias{add_acfs}
+\title{Extract, calculate, or assign mean auto-correlations for an \code{mcgf} or
+\code{mcgf_rs} object}
 \usage{
 \method{acfs}{mcgf}(x, lag_max, ...)
 
+\method{acfs}{mcgf_rs}(x, lag_max, ...)
+
 acfs(x) <- value
+
+add_acfs(x, lag_max, ...)
 }
 \arguments{
-\item{x}{An \code{mcgf} object.}
+\item{x}{An \code{mcgf} or \code{mcgf_rs} object.}
 
 \item{lag_max}{Maximum lag at which to calculate the acf.}
 
 \item{...}{Additional parameters or attributes.}
 
-\item{value}{A Vector of mean of autocorrelations for time lags starting
+\item{value}{A Vector of mean of auto-correlations for time lags starting
 from 0.}
 }
 \value{
-Mean autocorrelations.attribute \code{acfs}.
+\code{\link[=acfs]{acfs()}} returns (regime-switching) mean auto-correlations.
+\code{\link[=add_acfs]{add_acfs()}} returns the same object with additional attributes of
+(regime-switching) mean auto-correlations.
 }
 \description{
-Calculating mean autocorrelations for an \code{mcgf} object
+Extract, calculate, or assign mean auto-correlations for an \code{mcgf} or
+\code{mcgf_rs} object
 }
 \details{
-It computes mean autocorrelations for each time lag across locations. Use
-\code{\link[=add_acfs]{add_acfs()}} to add \code{acfs} to \code{x}.
+For \code{mcgf} objects, \code{\link[=acfs]{acfs()}} computes mean auto-correlations for each time
+lag across locations. The output is a vector of acfs.
+
+For \code{mcgf} objects, \code{\link[=acfs]{acfs()}} computes regime-switching mean
+auto-correlations for each time lag across locations. The output is a list of
+vectors of acfs, where each vector in the list corresponds to the acfs for
+a regime.
+
+\code{\link{acfs<-}} assigns \code{acfs} to \code{x}.
+
+\code{\link[=add_acfs]{add_acfs()}} adds \code{acfs} to \code{x}.
 }
 \examples{
 wind_sq <- sqrt(wind[, -1])
@@ -36,15 +54,19 @@ time <- wind[, 1]
 wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
 acfs(x = wind_mcgf, lag_max = 3)
 
+wind_sq <- sqrt(wind[, -1])
+time <- wind[, 1]
+wind_mcgf <- mcgf_rs(data = wind_sq, locations = wind_loc, time = time,
+label = c(rep(1,3574), rep(2, 3000)))
+acfs(x = wind_mcgf, lag_max = 3)
+wind_sq <- sqrt(wind[, -1])
+time <- wind[, 1]
+wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
+wind_mcgf <- add_acfs(x = wind_mcgf, lag_max = 3)
+print(wind_mcgf, "acfs")
 }
 \seealso{
 Other {functions related to the auto- and cross-correlations}: 
-\code{\link{acfs}()},
-\code{\link{add_acfs.mcgf}()},
-\code{\link{add_acfs}()},
-\code{\link{add_ccfs.mcgf}()},
-\code{\link{add_ccfs}()},
-\code{\link{ccfs.mcgf}()},
-\code{\link{ccfs}()}
+\code{\link{ccfs.mcgf}()}
 }
 \concept{{functions related to the auto- and cross-correlations}}

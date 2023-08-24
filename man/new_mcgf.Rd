@@ -4,7 +4,7 @@
 \alias{new_mcgf}
 \title{Create an mcgf object}
 \usage{
-new_mcgf(data, locations, dists, time, longlat)
+new_mcgf(data, locations, dists, time)
 }
 \arguments{
 \item{data}{Time series data set in space-wide format.}
@@ -20,8 +20,8 @@ not supplied.}
 }
 \value{
 An S3 object of class \code{mcgf}. As it inherits and extends the
-\code{data.frame} class, all methods remain valid to the \code{data} part of the object.
-Additional attributes may be assigned and extracted.
+\code{data.frame} class, all methods remain valid to the \code{data} part of the
+object. Additional attributes may be assigned and extracted.
 }
 \description{
 Create an mcgf object

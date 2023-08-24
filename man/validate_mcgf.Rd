@@ -16,6 +16,7 @@ An S3 object of class \code{mcgf}.
 Validate an mcgf object
 }
 \details{
-It validates an \code{mcgf} object by checking if the locations
+It validates an \code{mcgf} object by checking if \code{dists} contains valid
+distance matrics/arrays.
 }
 \keyword{internal}

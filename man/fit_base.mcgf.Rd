@@ -16,6 +16,7 @@
   lower,
   upper,
   other_optim_fn,
+  dists_base = NULL,
   ...
 )
 }
@@ -48,6 +49,9 @@ When \code{optim_fn = other}, supply \code{other_optim_fn}.}
 arguments must be initial values for the parameters and a function to be
 minimized respectively (same as that of \code{optim} and \code{nlminb}).}
 
+\item{dists_base}{List of distance matrices. If missing, \code{dists(x)} is used.
+Must be a matrix or an array of distance matrice(s).}
+
 \item{...}{Additional arguments passed to \code{optim_fn}.}
 }
 \value{
@@ -67,7 +71,6 @@ bounds are used if they are not specified.
 \seealso{
 Other {functions related to model fitting}: 
 \code{\link{add_base.mcgf}()},
-\code{\link{add_base}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{add_lagr}()},
 \code{\link{fit_base}()},

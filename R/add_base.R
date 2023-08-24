@@ -3,18 +3,20 @@
 #' @param x An **R** object.
 #' @param ... Additional parameters or attributes.
 #'
-#' @return Base model and its parameter
+#' @details
+#' Refer to [`add_base.mcgf()`] for more details.
+#'
 #' @export
-#' @family {functions related to model fitting}
 add_base <- function(x, ...) {
     UseMethod("add_base")
 }
 
-#' Add base model outputted from [`fit_base()`] to a mcgf object.
+#' Add base model outputted from [`fit_base()`] to an `mcgf` or `mcgf_rs`
+#' object.
 #'
 #' @name add_base.mcgf
 #'
-#' @param x An mcgf object.
+#' @param x An `mcgf` or `mcgf_rs` object.
 #' @param fit_base Output from the [`fit_base()`] function.
 #' @param fit_s Pure spatial model outputted from the [`fit_base()`] function.
 #' Used only when `sep = TRUE`.
@@ -22,11 +24,18 @@ add_base <- function(x, ...) {
 #' Used only when `sep = TRUE`.
 #' @param sep Logical; TRUE if spatial and temporal models are fitted
 #' separately.
-#' @param old Logical; TRUE if the old base model needs to be kept
+#' @param old Logical; TRUE if the old base model needs to be kept.
 #' @param ... Additional arguments. Not in use.
 #'
 #' @return `x` with newly added attributes of the base model.
 #' @export
+#'
+#' @details
+#' After fitting the base model by [`fit_base()`], the results can be added to
+#' `x` by [`add_base()`]. To supply the base model directly, use [`base<-`] to
+#' add the base model; the value must contain `model`, `par_base`, `cor_base`,
+#' `lag`, and `horizon`.
+#'
 #' @family {functions related to model fitting}
 add_base.mcgf <-
     function(x,
@@ -127,6 +136,8 @@ add_base.mcgf <-
             par_fixed = fit_base$par_fixed,
             dots = fit_base$dots
         )
+        dists_base <- fit_base$dists_base
+        base_res <- c(base_res, dists_base = dists_base)
 
         attr(x, "base") <- fit_base$model
         attr(x, "base_res") <- base_res
@@ -160,6 +171,8 @@ add_base.mcgf <-
         par_fixed = value$par_fixed,
         dots = value$dots
     )
+    dists_base <- value$dists_base
+    base_res <- c(base_res, dists_base = dists_base)
 
     attr(x, "base") <- value$model
     attr(x, "base_res") <- base_res

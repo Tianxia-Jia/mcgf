@@ -30,6 +30,8 @@ fit_base <- function(x, ...) {
 #' arguments must be initial values for the parameters and a function to be
 #' minimized respectively (same as that of `optim` and `nlminb`).
 #' @param ... Additional arguments passed to `optim_fn`.
+#' @param dists_base List of distance matrices. If missing, `dists(x)` is used.
+#' Must be a matrix or an array of distance matrice(s).
 #'
 #' @return A list containing outputs from optimization functions of `optim_fn`.
 #' @export
@@ -54,6 +56,7 @@ fit_base.mcgf <- function(x,
                           lower,
                           upper,
                           other_optim_fn,
+                          dists_base = NULL,
                           ...) {
 
     dots <- list(...)
@@ -148,6 +151,29 @@ fit_base.mcgf <- function(x,
         optim_fn = other_optim_fn
     }
 
+    if (missing(dists_base)) {
+        dists_h <- dists(x)$h
+    } else{
+        if (model != "temporal") {
+            check_dist(dists_base)
+
+            if (is.matrix(dists_base)) {
+                dists_h <- dists_base
+            } else {
+                if (model != "spatial") {
+                    if (dim(dists_base)[3] < lag_max + 1)
+                        stop("third dim in `dists_base` must be greater or ",
+                             "equal to ",
+                             lag_max + 1,
+                             ".")
+                    dists_h <- dists_base[, , 1:(lag_max + 1)]
+                } else {
+                    dists_h <- dists_base[, , 1]
+                }
+            }
+        }
+    }
+
     if (method == "wls") {
 
         model_args <- switch(
@@ -155,7 +181,7 @@ fit_base.mcgf <- function(x,
             spatial = {
                 cor_fn <- ".cor_exp"
                 cor_emp <- ccfs(x)[, , 1]
-                par_fixed_other <- list(x = dists(x)$h)
+                par_fixed_other <- list(x = dists_h)
                 list(cor_fn = cor_fn,
                      cor_emp = cor_emp,
                      par_fixed_other = par_fixed_other)
@@ -173,7 +199,7 @@ fit_base.mcgf <- function(x,
                 cor_fn <- "..cor_sep"
                 cor_emp <- ccfs(x)[, , 1:(lag_max + 1)]
                 h_u_ar <-
-                    to_ar(h = dists(x)$h, lag_max = lag_max)
+                    to_ar(h = dists_h, lag_max = lag_max)
                 par_fixed_other <-
                     list(h = h_u_ar$h_ar,
                          u = h_u_ar$u_ar)
@@ -185,7 +211,7 @@ fit_base.mcgf <- function(x,
                 cor_fn <- ".cor_fs"
                 cor_emp <- ccfs(x)[, , 1:(lag_max + 1)]
                 h_u_ar <-
-                    to_ar(h = dists(x)$h, lag_max = lag_max)
+                    to_ar(h = dists_h, lag_max = lag_max)
                 par_fixed_other <-
                     list(h = h_u_ar$h_ar,
                          u = h_u_ar$u_ar)
@@ -213,7 +239,7 @@ fit_base.mcgf <- function(x,
             sep = {
                 cor_fn <- "..cor_sep"
                 h_u_ar <-
-                    to_ar(h = dists(x)$h, lag_max = lag_max)
+                    to_ar(h = dists_h, lag_max = lag_max)
                 par_fixed_other <-
                     list(h = h_u_ar$h_ar,
                          u = h_u_ar$u_ar)
@@ -223,7 +249,7 @@ fit_base.mcgf <- function(x,
             fs = {
                 cor_fn <- ".cor_fs"
                 h_u_ar <-
-                    to_ar(h = dists(x)$h, lag_max = lag_max)
+                    to_ar(h = dists_h, lag_max = lag_max)
                 par_fixed_other <-
                     list(h = h_u_ar$h_ar,
                          u = h_u_ar$u_ar)
@@ -254,5 +280,6 @@ fit_base.mcgf <- function(x,
         fit = res_base,
         par_names = names(par_init),
         par_fixed = par_fixed,
+        dists_base = dists_base,
         dots = dots))
 }

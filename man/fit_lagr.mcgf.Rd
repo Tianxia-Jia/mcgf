@@ -61,7 +61,6 @@ used if they are not specified.
 \seealso{
 Other {functions related to model fitting}: 
 \code{\link{add_base.mcgf}()},
-\code{\link{add_base}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{add_lagr}()},
 \code{\link{fit_base.mcgf}()},
