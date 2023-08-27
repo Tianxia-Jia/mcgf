@@ -9,7 +9,7 @@ acf_rs(x, label, lag_max, demean = TRUE)
 \arguments{
 \item{x}{A univariate numeric time series.}
 
-\item{label}{A vector of regime labels.}
+\item{label}{A factor of regime labels.}
 
 \item{lag_max}{Maximum lag at which to calculate the acf.}
 

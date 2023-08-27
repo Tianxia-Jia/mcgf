@@ -11,7 +11,7 @@ to_ar <- function(h, lag_max, u = TRUE) {
 
     if (length(dim(h)) == 3) {
         if (any(dim_ar != dim(h)))
-            stop('unmatching dimension of h.')
+            stop('unmatching dimension of h.', call. = FALSE)
         h_ar <- h
     } else {
         h_ar <- array(h, dim = dim_ar)

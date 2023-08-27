@@ -2,7 +2,8 @@
 % Please edit documentation in R/fit_base.R
 \name{fit_base.mcgf}
 \alias{fit_base.mcgf}
-\title{Parameter estimation for symmetric correlation functions.}
+\title{Parameter estimation for symmetric correlation functions for an \code{mcgf}
+object.}
 \usage{
 \method{fit_base}{mcgf}(
   x,
@@ -11,11 +12,11 @@
   model = c("spatial", "temporal", "sep", "fs"),
   method = c("wls", "mle"),
   optim_fn = c("nlminb", "optim", "other"),
-  par_fixed,
+  par_fixed = NULL,
   par_init,
-  lower,
-  upper,
-  other_optim_fn,
+  lower = NULL,
+  upper = NULL,
+  other_optim_fn = NULL,
   dists_base = NULL,
   ...
 )
@@ -41,16 +42,16 @@ When \code{optim_fn = other}, supply \code{other_optim_fn}.}
 
 \item{par_init}{Initial values for parameters to be optimized.}
 
-\item{lower}{Optional; lower bound of parameters.}
+\item{lower}{Optional; lower bounds of parameters.}
 
-\item{upper}{Optional: upper bound of parameters.}
+\item{upper}{Optional: upper bounds of parameters.}
 
 \item{other_optim_fn}{Optional, other optimization functions. The first two
 arguments must be initial values for the parameters and a function to be
 minimized respectively (same as that of \code{optim} and \code{nlminb}).}
 
-\item{dists_base}{List of distance matrices. If missing, \code{dists(x)} is used.
-Must be a matrix or an array of distance matrice(s).}
+\item{dists_base}{List of distance matrices. If NULL, \code{dists(x)} is used.
+Must be a matrix or an array of distance matrices.}
 
 \item{...}{Additional arguments passed to \code{optim_fn}.}
 }
@@ -58,7 +59,8 @@ Must be a matrix or an array of distance matrice(s).}
 A list containing outputs from optimization functions of \code{optim_fn}.
 }
 \description{
-Parameter estimation for symmetric correlation functions.
+Parameter estimation for symmetric correlation functions for an \code{mcgf}
+object.
 }
 \details{
 This function fits the separable and fully symmetric models using weighted
@@ -70,9 +72,11 @@ bounds are used if they are not specified.
 }
 \seealso{
 Other {functions related to model fitting}: 
+\code{\link{add_base.mcgf_rs}()},
 \code{\link{add_base.mcgf}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{add_lagr}()},
+\code{\link{fit_base.mcgf_rs}()},
 \code{\link{fit_base}()},
 \code{\link{fit_lagr.mcgf}()},
 \code{\link{fit_lagr}()},

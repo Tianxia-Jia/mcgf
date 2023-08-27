@@ -10,7 +10,8 @@ fit_base <- function(x, ...) {
     UseMethod("fit_base")
 }
 
-#' Parameter estimation for symmetric correlation functions.
+#' Parameter estimation for symmetric correlation functions for an `mcgf`
+#' object.
 #'
 #' @param x An `mcgf` object containing attributes `dists`, `acfs`, `ccfs`, and
 #' `sds`.
@@ -24,14 +25,14 @@ fit_base <- function(x, ...) {
 #' When `optim_fn = other`, supply `other_optim_fn`.
 #' @param par_fixed Fixed parameters.
 #' @param par_init Initial values for parameters to be optimized.
-#' @param lower Optional; lower bound of parameters.
-#' @param upper Optional: upper bound of parameters.
+#' @param lower Optional; lower bounds of parameters.
+#' @param upper Optional: upper bounds of parameters.
 #' @param other_optim_fn Optional, other optimization functions. The first two
 #' arguments must be initial values for the parameters and a function to be
 #' minimized respectively (same as that of `optim` and `nlminb`).
 #' @param ... Additional arguments passed to `optim_fn`.
-#' @param dists_base List of distance matrices. If missing, `dists(x)` is used.
-#' Must be a matrix or an array of distance matrice(s).
+#' @param dists_base List of distance matrices. If NULL, `dists(x)` is used.
+#' Must be a matrix or an array of distance matrices.
 #'
 #' @return A list containing outputs from optimization functions of `optim_fn`.
 #' @export
@@ -51,26 +52,26 @@ fit_base.mcgf <- function(x,
                           model = c("spatial", "temporal", "sep", "fs"),
                           method = c("wls", "mle"),
                           optim_fn = c("nlminb", "optim", "other"),
-                          par_fixed,
+                          par_fixed = NULL,
                           par_init,
-                          lower,
-                          upper,
-                          other_optim_fn,
+                          lower = NULL,
+                          upper = NULL,
+                          other_optim_fn = NULL,
                           dists_base = NULL,
                           ...) {
 
     dots <- list(...)
 
     if(!is_numeric_scalar(lag)) {
-        stop("`lag` must be a positive number.")
+        stop("`lag` must be a positive number.", call. = FALSE)
     } else if (lag < 0) {
-        stop("`lag` must be a positive number.")
+        stop("`lag` must be a positive number.", call. = FALSE)
     }
 
     if(!is_numeric_scalar(horizon)) {
-        stop("`horizon` must be a positive number.")
+        stop("`horizon` must be a positive number.", call. = FALSE)
     } else if (horizon < 0) {
-        stop("`horizon` must be a positive number.")
+        stop("`horizon` must be a positive number.", call. = FALSE)
     }
 
     par_spatial <- c("c", "gamma", "nugget")
@@ -93,35 +94,38 @@ fit_base.mcgf <- function(x,
 
     if (lag_max + 1 > length(acfs(x)))
         stop("`lag` + `horizon` must be no greater than ", length(acfs(x)),
-             ", or recompute `acfs` and `ccfs` with greater `lag_max`.")
+             ", or recompute `acfs` and `ccfs` with greater `lag_max`.",
+             call. = FALSE)
 
     model <- match.arg(model)
     method <- match.arg(method)
 
     if (method == "mle" && model %in% c("spatial", "temporal"))
-        stop("mle is available for `sep` and `fs` models only.")
+        stop("mle is available for `sep` and `fs` models only.", call. = FALSE)
 
     par_model <- eval(as.name(paste0("par_", model)))
     lower_model <- eval(as.name(paste0("lower_", model)))
     upper_model <- eval(as.name(paste0("upper_", model)))
 
-    if (!missing(par_fixed)) {
+    if (!is.null(par_fixed)) {
         par_fixed_nm <- names(par_fixed)
-        if (is.null(par_fixed_nm) || any(!par_fixed_nm %in% par_model))
-            stop("unknow parameters in `par_fixed`.")
+        if (any(!par_fixed_nm %in% par_model))
+            stop("unknow parameters in `par_fixed`.", call. = FALSE)
 
         ind_not_fixed <- which(!par_model %in% par_fixed_nm)
         par_model <- par_model[ind_not_fixed]
-        if (!missing(lower)) {
+        if (!is.null(lower)) {
             if (length(lower) != length(par_model))
-                stop("`lower` must be of length ", length(par_model), ".")
+                stop("`lower` must be of length ", length(par_model), ".",
+                     call. = FALSE)
             lower_model <- lower
         }
         lower_model <- lower_model[ind_not_fixed]
 
-        if (!missing(upper)) {
+        if (!is.null(upper)) {
             if (length(upper) != length(par_model))
-                stop("`upper` must be of length ", length(par_model), ".")
+                stop("`upper` must be of length ", length(par_model), ".",
+                     call. = FALSE)
             upper_model <- upper
         }
         upper_model <- upper_model[ind_not_fixed]
@@ -130,28 +134,28 @@ fit_base.mcgf <- function(x,
     }
 
     if (missing(par_init))
-        stop("must provide `par_init`.")
+        stop("must provide `par_init`.", call. = FALSE)
 
     par_init_nm <- names(par_init)
-    if (is.null(par_init_nm) || any(!par_init_nm %in% par_model))
-            stop("unknow parameters in `par_init`.")
+    if (any(!par_init_nm %in% par_model))
+            stop("unknow parameters in `par_init`.", call. = FALSE)
 
     if (any(!par_model %in% par_init_nm)) {
         par_missing <- par_model[which(!par_model %in% par_init_nm)]
         stop("initial value(s) for ",
-             paste0('`', par_init_nm, "`", collapse = ", "),
-             " not found.")
+             paste0('`', par_missing, "`", collapse = ", "),
+             " not found.", call. = FALSE)
     }
     par_init <- par_init[order(match(names(par_init), par_model))]
 
     optim_fn <- match.arg(optim_fn)
     if (optim_fn == "other") {
-        if (missing(other_optim_fn))
-            stop("specify a optimization function.")
+        if (is.null(other_optim_fn))
+            stop("specify a optimization function.", call. = FALSE)
         optim_fn = other_optim_fn
     }
 
-    if (missing(dists_base)) {
+    if (is.null(dists_base)) {
         dists_h <- dists(x)$h
     } else{
         if (model != "temporal") {
@@ -165,7 +169,7 @@ fit_base.mcgf <- function(x,
                         stop("third dim in `dists_base` must be greater or ",
                              "equal to ",
                              lag_max + 1,
-                             ".")
+                             ".", call. = FALSE)
                     dists_h <- dists_base[, , 1:(lag_max + 1)]
                 } else {
                     dists_h <- dists_base[, , 1]
@@ -283,3 +287,125 @@ fit_base.mcgf <- function(x,
         dists_base = dists_base,
         dots = dots))
 }
+
+#' Parameter estimation for symmetric correlation functions for an `mcgf_rs`
+#' object.
+#'
+#' @param x An `mcgf_rs` object containing attributes `dists`, `acfs`, `ccfs`,
+#' and `sds`.
+#' @param lag_ls List of integer time lags.
+#' @param horizon Integer forecast horizon.
+#' @param model_ls List of base models, each element must be one of `spatial`,
+#' `temporal`, `sep`, `fs`. Only `sep` and `fs` are supported when `mle` is used
+#' in `model_ls`.
+#' @param method_ls List of parameter estimation methods, weighted least square
+#' (`wls`) or maximum likelihood estimation (`mle`).
+#' @param optim_fn_ls List of optimization functions, each element must be one
+#' of `nlminb`, `optim`, `other`. When use `other`, supply `other_optim_fn_ls`.
+#' @param par_fixed_ls List of fixed parameters.
+#' @param par_init_ls List of initial values for parameters to be optimized.
+#' @param lower_ls Optional; list of lower bounds of parameters.
+#' @param upper_ls Optional: list of upper bounds of parameters.
+#' @param other_optim_fn_ls Optional, list of other optimization functions. The
+#' first two arguments must be initial values for the parameters and a function
+#' to be minimized respectively (same as that of `optim` and `nlminb`).
+#' @param ... Additional arguments passed to all `optim_fn_ls`.
+#' @param dists_base_ls List of lists of distance matrices. If NULL, `dists(x)`
+#' is used. Each element must be a matrix or an array of distance matrices.
+#' @param rs Logical; if TRUE `x` is treated as a regime-switching, FALSE if the
+#' parameters need to be estimated in a non-regime-switching setting.
+#'
+#' @return A list containing outputs from optimization functions of `optim_fn`
+#' for each regime.
+#' @export
+#'
+#' @details
+#' This functions is the regime-switching variant of [`fit_base.mcgf()`].
+#' Arguments are in lists. The length of each arguement ends in `_ls` must be 1
+#' or the same as the number of regimes in `x`. If the length of an argument is
+#' 1, then it is set the same for all regimes. Refer to [`fit_base.mcgf()`] for
+#' more details of the arguments.
+#' @family {functions related to model fitting}
+fit_base.mcgf_rs <- function(x,
+                             lag_ls,
+                             horizon = 1,
+                             model_ls,
+                             method_ls = "wls",
+                             optim_fn_ls = "nlminb",
+                             par_fixed_ls = list(NULL),
+                             par_init_ls,
+                             lower_ls = list(NULL),
+                             upper_ls = list(NULL),
+                             other_optim_fn_ls = list(NULL),
+                             dists_base_ls = list(NULL),
+                             rs = TRUE,
+                             ...) {
+
+    args_ls <- c("lag", "model", "method", "optim_fn", "par_fixed",
+                 "par_init", "lower", "upper", "other_optim_fn",
+                 "dists_base")
+    args_i <- paste0("i_", args_ls)
+    args_rs <- paste0(args_ls, "_ls")
+
+    if (rs) {
+        lvs <- levels((attr(x, "label", exact = TRUE)))
+        n_regime <- length(lvs)
+        res_base_ls <- vector("list", n_regime)
+
+        for (i in 1:length(args_rs)) {
+            length_args_i <- length(eval(as.name(args_rs[i])))
+
+            if (length_args_i == 1) {
+                assign(args_i[i], rep(1L, n_regime))
+
+            } else if (length_args_i == n_regime) {
+                assign(args_i[i], 1:n_regime)
+            } else {
+                stop("length of `", args_rs[i], "` must be 1 or ", n_regime,
+                     ".", call. = FALSE)
+            }
+        }
+
+        res_base_ls <- vector("list", n_regime)
+        fit_base_fixed <- list(horizon = horizon, ...)
+
+        for (n in 1:n_regime) {
+            ind_n <- lapply(mget(args_i), function(x) x[[n]])
+            args_rs_n <- mget(args_rs)
+            names(args_rs_n) <- args_ls
+            args_n <- Map(function(x, ind) x[[ind]], args_rs_n, ind_n)
+
+            x_n <- x
+            acfs(x_n) <- acfs(x)$acfs_rs[[n]]
+            ccfs(x_n) <- ccfs(x)$ccfs_rs[[n]]
+            sds(x_n) <- sds(x)$sds_rs[[n]]
+            fit_base_fixed_n <- c(fit_base_fixed, list(x = x_n))
+            res_base_ls[[n]] <- do.call(fit_base.mcgf,
+                                        c(args_n, fit_base_fixed_n))
+        }
+        names(res_base_ls) <- paste0("Regime ", lvs)
+        res_base_ls <- c(res_base_ls, rs = rs)
+        return(res_base_ls)
+
+    } else {
+
+        for (i in 1:length(args_rs)) {
+            value_args_i <- eval(as.name(args_rs[i]))[[1]]
+            assign(args_ls[i], value_args_i)
+        }
+
+        args_no_rs <- mget(args_ls)
+        names(args_no_rs) <- args_ls
+
+        x_no_rs <- x
+        acfs(x_no_rs) <- acfs(x)$acfs
+        ccfs(x_no_rs) <- ccfs(x)$ccfs
+        sds(x_no_rs) <- sds(x)$sds
+        fit_base_fixed <- c(horizon = horizon, list(x = x_no_rs))
+        res_base_ls <- do.call(fit_base.mcgf,
+                               c(args_no_rs, fit_base_fixed))
+        res_base_ls <- c(list(res_base_ls), rs = rs)
+        return(res_base_ls)
+    }
+}
+

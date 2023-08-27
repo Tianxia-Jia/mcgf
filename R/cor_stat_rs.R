@@ -125,16 +125,16 @@ cor_stat_rs <- function(n_regime,
     if (base_fixed) par_base_ls <- h_ls <- list(NULL)
 
     for (i in 1:length(args_stat_rs)) {
-        lenth_args_i <- length(eval(as.name(args_stat_rs[i])))
+        length_args_i <- length(eval(as.name(args_stat_rs[i])))
 
-        if (lenth_args_i == 1) {
+        if (length_args_i == 1) {
             assign(args_stat_i[i], rep(1L, n_regime))
 
-        } else if (lenth_args_i == n_regime) {
+        } else if (length_args_i == n_regime) {
             assign(args_stat_i[i], 1:n_regime)
         } else {
-            stop("length of `", args_stat_rs[i], "` must be 1 or `n_regime`",
-                 call. = FALSE)
+            stop("length of `", args_stat_rs[i], "` must be 1 or ", n_regime,
+                 ".", call. = FALSE)
         }
     }
 

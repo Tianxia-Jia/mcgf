@@ -1,7 +1,7 @@
 #' Simulate regime-switching Markov chain Gaussian field
 #'
 #' @param N Sample size.
-#' @param labels Vector of regime labels of the same length as `N`.
+#' @param label Vector of regime labels of the same length as `N`.
 #' @param base_ls List of base model, `sep` or `fs` for now.
 #' @param lagrangian_ls List of Lagrangian model, "none" or `lagr_tri` for now.
 #' @param par_base_ls List of parameters for the base model.
@@ -26,7 +26,7 @@
 #' List elements in `sd_ls`, `mu_c_ls`, and `mu_p_ls` must be vectors of
 #' appropriate sizes.
 .mcgf_rs_sim <- function(N,
-                         labels,
+                         label,
                          base_ls,
                          lagrangian_ls,
                          par_base_ls,
@@ -40,8 +40,8 @@
                          mu_p_ls,
                          return_all = FALSE) {
 
-    n_regime <- length(unique(labels))
-    regime <- sort(unique(labels))
+    n_regime <- length(unique(label))
+    regime <- sort(unique(label))
 
     lag_max_ls <- lag_ls
     n_var <- nrow(dists_ls[[1]]$h)
@@ -93,13 +93,11 @@
         }
     }
 
-    # cov_ar_rs <- Map(function(), cov_ar_rs, sd_ls)
-
     X_cov_par <- lapply(cov_ar_rs, cov_par)
 
     X <- init
     for (n in 1:N) {
-        regime_n <- which(labels[n] == regime)
+        regime_n <- which(label[n] == regime)
 
         X_past <- stats::embed(utils::tail(X, lag_max_ls[[regime_n]]),
                                lag_max_ls[[regime_n]])
@@ -113,7 +111,7 @@
 
     rownames(X) <- 1:nrow(X)
     colnames(X) <- colnames(dists_ls[[1]]$h)
-    X <- cbind(regime = c(rep(NA, NROW(init)), labels), X)
+    X <- cbind(regime = c(rep(NA, NROW(init)), label), X)
 
     if (return_all) {
 
@@ -146,9 +144,9 @@
 #' dists <- list(h = h, h1 = h1, h2 = h2)
 #'
 #' set.seed(123)
-#' labels <- sample(1:2, 1000, replace = TRUE)
+#' label <- sample(1:2, 1000, replace = TRUE)
 #' X <- mcgf_rs_sim(N = 1000,
-#'                  labels = labels,
+#'                  label = label,
 #'                  base_ls = list("sep"),
 #'                  lagrangian_ls = list("none", "lagr_tri"),
 #'                  lambda_ls = list(0, 0.5),
@@ -159,7 +157,7 @@
 #'
 #' @family {simulations of Markov chain Gaussian fields}
 mcgf_rs_sim <- function(N,
-                        labels,
+                        label,
                         base_ls,
                         lagrangian_ls,
                         par_base_ls,
@@ -173,10 +171,10 @@ mcgf_rs_sim <- function(N,
                         mu_p_ls = list(0),
                         return_all = FALSE) {
 
-    n_regime <- length(unique(labels))
+    n_regime <- length(unique(label))
 
     if (n_regime == 1)
-        cat("Only 1 regime found in `labels`. Simulating for 1 regime only.")
+        cat("Only 1 regime found in `label`. Simulating for 1 regime only.\n")
 
     for (k in 1:length(dists_ls)) {
         if (is.null(dists_ls[[k]]$h))
@@ -188,10 +186,10 @@ mcgf_rs_sim <- function(N,
         if (lagrangian_ls[[k]] != "none") {
 
             if (is.null(dists_ls[[k]]$h1))
-                stop("missing 'h1' for regime ", k, " in `dists_ls.`",
+                stop("missing 'h1' for regime ", k, " in `dists_ls`.",
                      call. = FALSE)
             if (is.null(dists_ls[[k]]$h2))
-                stop("missing 'h2' for regime ", k, " in `dists_ls.`",
+                stop("missing 'h2' for regime ", k, " in `dists_ls`.",
                      call. = FALSE)
         }
     }
@@ -238,7 +236,7 @@ mcgf_rs_sim <- function(N,
 
     res <- .mcgf_rs_sim(
         N = N,
-        labels = labels,
+        label = label,
         base_ls = base_ls,
         lagrangian_ls = lagrangian_ls,
         par_base_ls = par_base_ls,

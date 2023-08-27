@@ -57,7 +57,7 @@ ccfs.mcgf <- function(x, lag_max, ncores = 1,  ...) {
         return(ccfs)
     } else {
         acfs <- attr(x, "acfs", exact = TRUE)
-        if (!is.null(acfs) && length(acfs) != lag_max + 1)
+        if (!is.null(acfs) && !is.mcgf_rs(x) && length(acfs) != lag_max + 1)
             warning("`lag_max` must be the same as that in `acfs`")
 
         if (!is_numeric_scalar(lag_max))
@@ -147,7 +147,7 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, ...) {
     } else {
         label <- attr(x, "label", exact = TRUE)
         acfs <- attr(x, "acfs", exact = TRUE)
-        if (!is.null(acfs) && length(acfs) != lag_max + 1)
+        if (!is.null(acfs) && length(acfs$acfs) != lag_max + 1)
             warning("`lag_max` must be the same as that in `acfs`")
 
         if (!is_numeric_scalar(lag_max))
@@ -164,15 +164,15 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, ...) {
             cat("Large dataset, this may take a while. Set `ncores` > 1 to",
                 "speed up.\n")
 
-        ccfs <- array(
+        ccfs_rs <- array(
             NA,
             dim = c(n_var, n_var, lag_max + 1),
             dimnames = list(colnames(data),
                             colnames(data),
                             paste0("lag", 0:lag_max))
         )
-        ccfs <- rep(list(ccfs), n_regime)
-        names(ccfs) <- paste0("Regime ", levels(label))
+        ccfs_rs <- rep(list(ccfs_rs), n_regime)
+        names(ccfs_rs) <- paste0("Regime ", levels(label))
 
         if (ncores == 1) {
             for (i in 1:n_var) {
@@ -182,7 +182,7 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, ...) {
                                        label = label,
                                        lag_max = lag_max)
                     for (k in 1:n_regime) {
-                        ccfs[[k]][i, j, ] <- ccfs_i_j[[k]][-c(1:lag_max)]
+                        ccfs_rs[[k]][i, j, ] <- ccfs_i_j[[k]][-c(1:lag_max)]
                     }
                 }
             }
@@ -220,20 +220,22 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, ...) {
             for (i in 1:n_var) {
                 for (j in 1:n_var) {
                     for (k in 1:n_regime) {
-                        ccfs[[k]][i, j,] <-
+                        ccfs_rs[[k]][i, j,] <-
                             ccfs_ls[[i]][[j]][[k]][-c(1:lag_max)]
                     }
                 }
             }
         }
-        return(ccfs)
+
+        ccfs <- ccfs.mcgf(x, lag_max = lag_max, ncores = ncores)
+        return(list(ccfs = ccfs, ccfs_rs = ccfs_rs))
     }
 }
 
 #' Calculate regime-switching cross-correlation
 #'
 #' @param x,y A univariate numeric time series.
-#' @param label A vector of regime labels.
+#' @param label A factor of regime labels.
 #' @param lag_max Maximum lag at which to calculate the ccf.
 #'
 #' @return Cross-correlations for each group in `label`.
@@ -248,6 +250,7 @@ ccf_rs <- function(x, y, label, lag_max) {
 
     n_reg <- length(unique(label))
     n_x <- length(x)
+    lvs <- levels(label)
 
     lag_max <- ifelse(lag_max >= n_x, n_x - 1, lag_max)
 
@@ -260,15 +263,15 @@ ccf_rs <- function(x, y, label, lag_max) {
 
     for(k in 1:n_reg) {
 
-        x_k <- x[label == k]
-        y_k <- y[label == k]
+        x_k <- x[label == lvs[k]]
+        y_k <- y[label == lvs[k]]
         denom <- sqrt(sum(x_k ^ 2) * sum(y_k ^ 2))
 
         for (u in 0:lag_max) {
             y.u <- stats::lag(y, -u)
             x_x_u <- (x * y.u)
             label_u <- label[(1 + u):n_x]
-            numer <- x_x_u[label_u == k]
+            numer <- x_x_u[label_u == lvs[k]]
 
             if(length(numer) == 0) {
                 ccf_ls[[k]][lag_max + u + 1] <- NA
@@ -282,7 +285,7 @@ ccf_rs <- function(x, y, label, lag_max) {
 
             x_x_u <- (x * y.u)
             label_u <- label[(1 + u):n_x]
-            numer <- x_x_u[label_u == k]
+            numer <- x_x_u[label_u == lvs[k]]
 
             if(length(numer) == 0) {
                 ccf_ls[[k]][lag_max + 1 - u] <- NA
@@ -296,6 +299,7 @@ ccf_rs <- function(x, y, label, lag_max) {
         names(x) <- paste0(-lag_max:lag_max)
         x
     })
+    names(ccf_ls) <- paste0("Regime ", lvs)
     return(ccf_ls)
 }
 

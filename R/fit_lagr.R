@@ -21,8 +21,8 @@ fit_lagr <- function(x, ...) {
 #' When `optim_fn = other`, supply `other_optim_fn`.
 #' @param par_fixed Fixed parameters.
 #' @param par_init Initial values for parameters to be optimized.
-#' @param lower Optional; lower bound of parameters.
-#' @param upper Optional: upper bound of parameters.
+#' @param lower Optional; lower bounds of parameters.
+#' @param upper Optional: upper bounds of parameters.
 #' @param other_optim_fn Optional, other optimization functions. The first two
 #' arguments must be initial values for the parameters and a function to be
 #' minimized respectively (same as that of `optim` and `nlminb`).

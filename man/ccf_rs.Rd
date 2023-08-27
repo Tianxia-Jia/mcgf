@@ -9,7 +9,7 @@ ccf_rs(x, y, label, lag_max)
 \arguments{
 \item{x, y}{A univariate numeric time series.}
 
-\item{label}{A vector of regime labels.}
+\item{label}{A factor of regime labels.}
 
 \item{lag_max}{Maximum lag at which to calculate the ccf.}
 }

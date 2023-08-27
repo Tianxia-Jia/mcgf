@@ -6,7 +6,7 @@
 \usage{
 .mcgf_rs_sim(
   N,
-  labels,
+  label,
   base_ls,
   lagrangian_ls,
   par_base_ls,
@@ -24,7 +24,7 @@
 \arguments{
 \item{N}{Sample size.}
 
-\item{labels}{Vector of regime labels of the same length as \code{N}.}
+\item{label}{Vector of regime labels of the same length as \code{N}.}
 
 \item{base_ls}{List of base model, \code{sep} or \code{fs} for now.}
 

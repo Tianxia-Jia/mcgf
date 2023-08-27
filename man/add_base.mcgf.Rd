@@ -3,15 +3,14 @@
 \name{add_base.mcgf}
 \alias{add_base.mcgf}
 \alias{base<-}
-\title{Add base model outputted from \code{\link[=fit_base]{fit_base()}} to an \code{mcgf} or \code{mcgf_rs}
-object.}
+\title{Add base model outputted from \code{\link[=fit_base]{fit_base()}} to an \code{mcgf} object.}
 \usage{
-\method{add_base}{mcgf}(x, fit_base, fit_s, fit_t, sep = F, old = FALSE, ...)
+\method{add_base}{mcgf}(x, fit_base, fit_s, fit_t, sep = FALSE, old = FALSE, ...)
 
 base(x) <- value
 }
 \arguments{
-\item{x}{An \code{mcgf} or \code{mcgf_rs} object.}
+\item{x}{An \code{mcgf} object.}
 
 \item{fit_base}{Output from the \code{\link[=fit_base]{fit_base()}} function.}
 
@@ -29,14 +28,14 @@ separately.}
 \item{...}{Additional arguments. Not in use.}
 
 \item{value}{A list containing the base model as well as its parameters. It
-must contains \code{model}, \code{par_base}, \code{cor_base}, \code{lag}, and \code{horizon}.}
+must contains the same output as \code{\link[=add_base.mcgf]{add_base.mcgf()}} or
+\code{\link[=add_base.mcgf_rs]{add_base.mcgf_rs()}}.}
 }
 \value{
 \code{x} with newly added attributes of the base model.
 }
 \description{
-Add base model outputted from \code{\link[=fit_base]{fit_base()}} to an \code{mcgf} or \code{mcgf_rs}
-object.
+Add base model outputted from \code{\link[=fit_base]{fit_base()}} to an \code{mcgf} object.
 }
 \details{
 After fitting the base model by \code{\link[=fit_base]{fit_base()}}, the results can be added to
@@ -46,8 +45,10 @@ add the base model; the value must contain \code{model}, \code{par_base}, \code{
 }
 \seealso{
 Other {functions related to model fitting}: 
+\code{\link{add_base.mcgf_rs}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{add_lagr}()},
+\code{\link{fit_base.mcgf_rs}()},
 \code{\link{fit_base.mcgf}()},
 \code{\link{fit_base}()},
 \code{\link{fit_lagr.mcgf}()},

@@ -13,6 +13,7 @@ new_mcgf_rs <- function(x, label) {
 
     data <- as.data.frame(x)
     label <- as.factor(label)
+
     return(structure(.Data = data, label = label,
                   class = c("mcgf_rs", "mcgf", "data.frame")))
 }

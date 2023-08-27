@@ -6,7 +6,7 @@
 \usage{
 mcgf_rs_sim(
   N,
-  labels,
+  label,
   base_ls,
   lagrangian_ls,
   par_base_ls,
@@ -24,7 +24,7 @@ mcgf_rs_sim(
 \arguments{
 \item{N}{Sample size.}
 
-\item{labels}{Vector of regime labels of the same length as \code{N}.}
+\item{label}{Vector of regime labels of the same length as \code{N}.}
 
 \item{base_ls}{List of base model, \code{sep} or \code{fs} for now.}
 
@@ -73,9 +73,9 @@ h <- sqrt(h1 ^ 2 + h2 ^ 2)
 dists <- list(h = h, h1 = h1, h2 = h2)
 
 set.seed(123)
-labels <- sample(1:2, 1000, replace = TRUE)
+label <- sample(1:2, 1000, replace = TRUE)
 X <- mcgf_rs_sim(N = 1000,
-                 labels = labels,
+                 label = label,
                  base_ls = list("sep"),
                  lagrangian_ls = list("none", "lagr_tri"),
                  lambda_ls = list(0, 0.5),

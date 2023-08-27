@@ -9,7 +9,7 @@
 \usage{
 \method{sds}{mcgf}(x, ...)
 
-\method{sds}{mcgf_rs}(x, ...)
+\method{sds}{mcgf_rs}(x, replace = FALSE, ...)
 
 sds(x) <- value
 }
@@ -18,7 +18,10 @@ sds(x) <- value
 
 \item{...}{Additional parameters or attributes. Not in use.}
 
-\item{value}{A vector of standard deviations for all stations.}
+\item{replace}{Logical; if TRUE, \code{sds} are recalculated.}
+
+\item{value}{A vector (or list of vectors) of standard deviations for all
+stations (under each regime and combined).}
 }
 \value{
 \code{\link[=sds]{sds()}} returns empirical (regime-switching) standard deviations.

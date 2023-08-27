@@ -19,8 +19,10 @@ Generic function for adding a Lagrangian model
 }
 \seealso{
 Other {functions related to model fitting}: 
+\code{\link{add_base.mcgf_rs}()},
 \code{\link{add_base.mcgf}()},
 \code{\link{add_lagr.mcgf}()},
+\code{\link{fit_base.mcgf_rs}()},
 \code{\link{fit_base.mcgf}()},
 \code{\link{fit_base}()},
 \code{\link{fit_lagr.mcgf}()},

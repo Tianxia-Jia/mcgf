@@ -25,79 +25,160 @@ model <- function(x, ...) {
 model.mcgf <- function(x, model = c("all", "base", "lagrangian"), old = FALSE,
                        print_model = TRUE, ...) {
 
-        model <- match.arg(model)
+    model <- match.arg(model)
 
-        if (print_model) {
+    if (print_model) {
+        cat('----------------------------------------\n')
+        cat('                 Model\n')
+        cat('----------------------------------------\n')
+        cat("- Time lag:", attr(x, "lag", exact = TRUE), "\n")
+        cat("- Forecast horizon:",
+            attr(x, "horizon", exact = TRUE),
+            "\n")
+    }
+
+    if (model == "base") {
+        cat('----------------------------------------\n')
+        cat('                 Base\n')
+        cat('----------------------------------------\n')
+        cat("- Base model:", attr(x, "base", exact = TRUE), "\n")
+
+        cat("- Parameters:\n")
+        print(unlist(attr(x, "base_res", exact = TRUE)$par_base))
+        cat("\n- Fixed parameters:\n")
+        print(unlist(attr(x, "base_res", exact = TRUE)$par_fixed))
+        cat(
+            "\n- Parameter estimation method:",
+            attr(x, "base_res", exact = TRUE)$method_base,
+            "\n"
+        )
+        cat("\n- Optimization function:",
+            attr(x, "base_res", exact = TRUE)$optim_fn,
+            "\n")
+    } else if (model == "lagrangian") {
+        cat('----------------------------------------\n')
+        cat('              Lagrangian\n')
+        cat('----------------------------------------\n')
+        cat("- Lagrangian model:", attr(x, "lagr", exact = TRUE), "\n")
+        cat("- Parameters:\n")
+        print(unlist(attr(x, "lagr_res", exact = TRUE)$par_lagr))
+        cat("\n- Fixed parameters:\n")
+        print(unlist(attr(x, "lagr_res", exact = TRUE)$par_fixed))
+        cat(
+            "\n- Parameter estimation method:",
+            attr(x, "lagr_res", exact = TRUE)$method_lagr,
+            "\n"
+        )
+        cat("\n- Optimization function:",
+            attr(x, "lagr_res", exact = TRUE)$optim_fn,
+            "\n")
+    } else {
+        if (old) {
             cat('----------------------------------------\n')
-            cat('                 Model\n')
+            cat('            Old - not in use\n')
             cat('----------------------------------------\n')
-            cat("- Time lag:", attr(x, "lag", exact = TRUE), "\n")
-            cat("- Forecast horizon:",
-                attr(x, "horizon", exact = TRUE),
+            cat("- Base-old model:",
+                attr(x, "base_old", exact = TRUE),
                 "\n")
-        }
-
-        if (model == "base") {
-            cat('----------------------------------------\n')
-            cat('                 Base\n')
-            cat('----------------------------------------\n')
-            cat("- Base model:", attr(x, "base", exact = TRUE), "\n")
-
             cat("- Parameters:\n")
-            print(unlist(attr(x, "base_res", exact = TRUE)$par_base))
+            print(unlist(attr(x, "base_res_old", exact = TRUE)$par_base))
             cat("\n- Fixed parameters:\n")
-            print(unlist(attr(x, "base_res", exact = TRUE)$par_fixed))
+            print(unlist(attr(x, "base_res_old", exact = TRUE)$par_fixed))
             cat(
                 "\n- Parameter estimation method:",
-                attr(x, "base_res", exact = TRUE)$method_base,
+                attr(x, "base_res_old", exact = TRUE)$method_base,
                 "\n"
             )
-            cat("\n- Optimization function:",
-                attr(x, "base_res", exact = TRUE)$optim_fn,
-                "\n")
-        } else if (model == "lagrangian") {
-            cat('----------------------------------------\n')
-            cat('              Lagrangian\n')
-            cat('----------------------------------------\n')
-            cat("- Lagrangian model:", attr(x, "lagr", exact = TRUE), "\n")
-            cat("- Parameters:\n")
-            print(unlist(attr(x, "lagr_res", exact = TRUE)$par_lagr))
-            cat("\n- Fixed parameters:\n")
-            print(unlist(attr(x, "lagr_res", exact = TRUE)$par_fixed))
             cat(
-                "\n- Parameter estimation method:",
-                attr(x, "lagr_res", exact = TRUE)$method_lagr,
+                "\n- Optimization function:",
+                attr(x, "base_res_old", exact = TRUE)$optim_fn,
                 "\n"
             )
-            cat("\n- Optimization function:",
-                attr(x, "lagr_res", exact = TRUE)$optim_fn,
-                "\n")
-        } else {
-            if (old) {
-                cat('----------------------------------------\n')
-                cat('            Old - not in use\n')
-                cat('----------------------------------------\n')
-                cat("- Base-old model:",
-                    attr(x, "base_old", exact = TRUE),
-                    "\n")
-                cat("- Parameters:\n")
-                print(unlist(attr(x, "base_res_old", exact = TRUE)$par_base))
-                cat("\n- Fixed parameters:\n")
-                print(unlist(attr(x, "base_res_old", exact = TRUE)$par_fixed))
-                cat(
-                    "\n- Parameter estimation method:",
-                    attr(x, "base_res_old", exact = TRUE)$method_base,
-                    "\n"
-                )
-                cat(
-                    "\n- Optimization function:",
-                    attr(x, "base_res_old", exact = TRUE)$optim_fn,
-                    "\n"
-                )
-            }
-
-            model.mcgf(x, "base", print_model = FALSE)
-            model.mcgf(x, "lagrangian", print_model = FALSE)
         }
-        invisible(NULL)
+
+        model.mcgf(x, "base", print_model = FALSE)
+        model.mcgf(x, "lagrangian", print_model = FALSE)
+    }
+    invisible(NULL)
 }
+
+model.mcgf_rs <- function(x, model = c("all", "base", "lagrangian"),
+                          old = FALSE, print_model = TRUE, ...) {
+
+    model <- match.arg(model)
+
+    if (print_model) {
+        cat('----------------------------------------\n')
+        cat('                 Model\n')
+        cat('----------------------------------------\n')
+        cat("- Time lag:", attr(x, "lag", exact = TRUE), "\n")
+        cat("- Forecast horizon:",
+            attr(x, "horizon", exact = TRUE),
+            "\n")
+    }
+
+    if (model == "base") {
+        cat('----------------------------------------\n')
+        cat('                 Base\n')
+        cat('----------------------------------------\n')
+        cat("- Base model:", attr(x, "base", exact = TRUE), "\n")
+
+        cat("- Parameters:\n")
+        print(unlist(attr(x, "base_res", exact = TRUE)$par_base))
+        cat("\n- Fixed parameters:\n")
+        print(unlist(attr(x, "base_res", exact = TRUE)$par_fixed))
+        cat(
+            "\n- Parameter estimation method:",
+            attr(x, "base_res", exact = TRUE)$method_base,
+            "\n"
+        )
+        cat("\n- Optimization function:",
+            attr(x, "base_res", exact = TRUE)$optim_fn,
+            "\n")
+    } else if (model == "lagrangian") {
+        cat('----------------------------------------\n')
+        cat('              Lagrangian\n')
+        cat('----------------------------------------\n')
+        cat("- Lagrangian model:", attr(x, "lagr", exact = TRUE), "\n")
+        cat("- Parameters:\n")
+        print(unlist(attr(x, "lagr_res", exact = TRUE)$par_lagr))
+        cat("\n- Fixed parameters:\n")
+        print(unlist(attr(x, "lagr_res", exact = TRUE)$par_fixed))
+        cat(
+            "\n- Parameter estimation method:",
+            attr(x, "lagr_res", exact = TRUE)$method_lagr,
+            "\n"
+        )
+        cat("\n- Optimization function:",
+            attr(x, "lagr_res", exact = TRUE)$optim_fn,
+            "\n")
+    } else {
+        if (old) {
+            cat('----------------------------------------\n')
+            cat('            Old - not in use\n')
+            cat('----------------------------------------\n')
+            cat("- Base-old model:",
+                attr(x, "base_old", exact = TRUE),
+                "\n")
+            cat("- Parameters:\n")
+            print(unlist(attr(x, "base_res_old", exact = TRUE)$par_base))
+            cat("\n- Fixed parameters:\n")
+            print(unlist(attr(x, "base_res_old", exact = TRUE)$par_fixed))
+            cat(
+                "\n- Parameter estimation method:",
+                attr(x, "base_res_old", exact = TRUE)$method_base,
+                "\n"
+            )
+            cat(
+                "\n- Optimization function:",
+                attr(x, "base_res_old", exact = TRUE)$optim_fn,
+                "\n"
+            )
+        }
+
+        model.mcgf(x, "base", print_model = FALSE)
+        model.mcgf(x, "lagrangian", print_model = FALSE)
+    }
+    invisible(NULL)
+}
+

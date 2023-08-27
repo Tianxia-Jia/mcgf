@@ -33,9 +33,9 @@ When \code{optim_fn = other}, supply \code{other_optim_fn}.}
 
 \item{par_init}{Initial values for parameters to be optimized.}
 
-\item{lower}{Optional; lower bound of parameters.}
+\item{lower}{Optional; lower bounds of parameters.}
 
-\item{upper}{Optional: upper bound of parameters.}
+\item{upper}{Optional: upper bounds of parameters.}
 
 \item{other_optim_fn}{Optional, other optimization functions. The first two
 arguments must be initial values for the parameters and a function to be
@@ -60,9 +60,11 @@ used if they are not specified.
 }
 \seealso{
 Other {functions related to model fitting}: 
+\code{\link{add_base.mcgf_rs}()},
 \code{\link{add_base.mcgf}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{add_lagr}()},
+\code{\link{fit_base.mcgf_rs}()},
 \code{\link{fit_base.mcgf}()},
 \code{\link{fit_base}()},
 \code{\link{fit_lagr}()},

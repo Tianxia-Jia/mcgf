@@ -1,7 +1,7 @@
 #' Calculate regime-switching auto-correlation
 #'
 #' @param x A univariate numeric time series.
-#' @param label A vector of regime labels.
+#' @param label A factor of regime labels.
 #' @param lag_max Maximum lag at which to calculate the acf.
 #' @param demean Logical. Should the covariances be about the sample means?
 #'
@@ -17,6 +17,7 @@ acf_rs <- function(x, label, lag_max, demean = TRUE) {
 
     n_reg <- length(unique(label))
     n_x <- length(x)
+    lvs <- levels(label)
 
     lag_max <- ifelse(lag_max >= n_x, n_x - 1, lag_max)
 
@@ -32,7 +33,7 @@ acf_rs <- function(x, label, lag_max, demean = TRUE) {
         label_u <- label[(1 + u):n_x]
 
         for(k in 1:n_reg) {
-            numer <- x_x_u[label_u == k]
+            numer <- x_x_u[label_u == lvs[k]]
             if(length(numer) == 0) {
                 acf_ls[[k]][u + 1] <- NA
             } else {
@@ -46,7 +47,7 @@ acf_rs <- function(x, label, lag_max, demean = TRUE) {
         names(x) <- paste0("lag", 0:lag_max)
         x
     })
-    names(acf_ls) <- paste0("Regime ", levels(label))
+    names(acf_ls) <- paste0("Regime ", lvs)
     return(acf_ls)
 }
 
@@ -105,14 +106,14 @@ acfs.mcgf <- function(x, lag_max, ...) {
         return(acfs)
     } else {
         ccfs <- attr(x, "ccfs", exact = TRUE)
-        if (!is.null(ccfs) && dim(ccfs)[3] != lag_max + 1)
+        if (!is.null(ccfs) && !is.mcgf_rs(x) && dim(ccfs)[3] != lag_max + 1)
             warning("`lag_max` must be the same as that in `ccfs`")
 
         if (!is_numeric_scalar(lag_max))
-            stop("`lag_max` must be numeric.")
+            stop("`lag_max` must be numeric.", call. = FALSE)
 
         if (lag_max < 0)
-            stop("`lag_max` must be a positive integer.")
+            stop("`lag_max` must be a positive integer.", call. = FALSE)
 
         data <- x
         n_var <- ncol(data)
@@ -147,14 +148,14 @@ acfs.mcgf_rs <- function(x, lag_max, ...) {
     } else {
         label <- attr(x, "label", exact = TRUE)
         ccfs <- attr(x, "ccfs", exact = TRUE)
-        if (!is.null(ccfs) && dim(ccfs)[3] != lag_max + 1)
+        if (!is.null(ccfs) && dim(ccfs$ccfs)[3] != lag_max + 1)
             warning("`lag_max` must be the same as that in `ccfs`")
 
         if (!is_numeric_scalar(lag_max))
-            stop("`lag_max` must be numeric.")
+            stop("`lag_max` must be numeric.", call. = FALSE)
 
         if (lag_max < 0)
-            stop("`lag_max` must be a positive integer.")
+            stop("`lag_max` must be a positive integer.", call. = FALSE)
 
         data <- x
         n_var <- ncol(data)
@@ -167,8 +168,9 @@ acfs.mcgf_rs <- function(x, lag_max, ...) {
             acf_data <- Map(cbind, acf_data, z)
         }
 
-        acfs <- lapply(acf_data, rowMeans)
-        return(acfs)
+        acfs_rs <- lapply(acf_data, rowMeans)
+        acfs <- acfs.mcgf(x, lag_max = lag_max)
+        return(list(acfs = acfs, acfs_rs = acfs_rs))
     }
 }
 
@@ -188,6 +190,13 @@ acfs.mcgf_rs <- function(x, lag_max, ...) {
 #' wind_sq <- sqrt(wind[, -1])
 #' time <- wind[, 1]
 #' wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
+#' wind_mcgf <- add_acfs(x = wind_mcgf, lag_max = 3)
+#' print(wind_mcgf, "acfs")
+#'
+#' wind_sq <- sqrt(wind[, -1])
+#' time <- wind[, 1]
+#' wind_mcgf <- mcgf_rs(data = wind_sq, locations = wind_loc, time = time,
+#' label = c(rep(1,3574), rep(2, 3000)))
 #' wind_mcgf <- add_acfs(x = wind_mcgf, lag_max = 3)
 #' print(wind_mcgf, "acfs")
 #' @export

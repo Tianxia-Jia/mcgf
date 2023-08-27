@@ -45,16 +45,23 @@ sds.mcgf <- function(x, ...) {
 }
 
 #' @rdname sds.mcgf
+#'
+#' @param replace Logical; if TRUE, `sds` are recalculated.
 #' @export
-sds.mcgf_rs <- function(x, ...) {
-    sds <- attr(x, "sds", exact = TRUE)
+sds.mcgf_rs <- function(x, replace = FALSE, ...) {
 
-    if (!is.null(sds)) {
-        return(sds)
-    } else {
+    if (replace) {
         label <- attr(x, "label", exact = TRUE)
-        sds <- sd_rs(x = x, label = label)
-        return(sds)
+        sds_rs <- sd_rs(x = x, label = label)
+        sds <- sds.mcgf(x)
+        return(list(sds = sds, sds_rs = sds_rs))
+    } else {
+        sds <- attr(x, "sds", exact = TRUE)
+        if (!is.null(sds)) {
+            return(sds)
+        } else {
+            return(sds.mcgf_rs(x, replace = TRUE))
+        }
     }
 }
 
@@ -71,25 +78,22 @@ sd_rs <- function(x, label) {
     if (!is.factor(label))
         label <- as.factor(label)
 
-    n_reg <- length(unique(label))
-    sd_ls <- lapply(1:n_reg, function(i) apply(x[label == i, ], 2, stats::sd))
+    lvs <- levels(label)
+
+    n_reg <- length(lvs)
+    sd_ls <- lapply(1:n_reg, function(i)
+        apply(x[label == lvs[i], ], 2, stats::sd))
     names(sd_ls) <- paste0("Regime ", levels(label))
 
     return(sd_ls)
 }
 
 #' @rdname sds.mcgf
-#' @param value A vector of standard deviations for all stations.
+#' @param value A vector (or list of vectors) of standard deviations for all
+#' stations (under each regime and combined).
 #' @export
 `sds<-` <- function(x, value) {
 
-    if (!is.vector(value, mode = "numeric"))
-        stop("`value` must be a numeric vector.")
-
-    if (length(value) != ncol(x))
-        stop("length of `value` must be the same as number of columns.")
-
     attr(x, "sds") <- value
+    return(x)
 }
-
-
