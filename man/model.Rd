@@ -2,7 +2,7 @@
 % Please edit documentation in R/model.R
 \name{model}
 \alias{model}
-\title{Generic function for displaying fitted models for mcgf objects}
+\title{Generic function for displaying fitted models for \code{mcgf} objects}
 \usage{
 model(x, ...)
 }
@@ -15,19 +15,22 @@ model(x, ...)
 Fitted models for an mcgf object.
 }
 \description{
-Generic function for displaying fitted models for mcgf objects
+Generic function for displaying fitted models for \code{mcgf} objects
 }
 \seealso{
 Other {functions related to model fitting}: 
 \code{\link{add_base.mcgf_rs}()},
 \code{\link{add_base.mcgf}()},
+\code{\link{add_lagr.mcgf_rs}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{add_lagr}()},
 \code{\link{fit_base.mcgf_rs}()},
 \code{\link{fit_base.mcgf}()},
 \code{\link{fit_base}()},
+\code{\link{fit_lagr.mcgf_rs}()},
 \code{\link{fit_lagr.mcgf}()},
 \code{\link{fit_lagr}()},
+\code{\link{model.mcgf_rs}()},
 \code{\link{model.mcgf}()}
 }
 \concept{{functions related to model fitting}}

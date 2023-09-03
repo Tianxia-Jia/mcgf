@@ -2,7 +2,7 @@
 % Please edit documentation in R/krige.R
 \name{krige}
 \alias{krige}
-\title{Generic function for displaying fitted models for mcgf objects}
+\title{Generic function for computing kriging forecasts}
 \usage{
 krige(x, ...)
 }
@@ -15,10 +15,11 @@ krige(x, ...)
 Kriging results of \code{x}
 }
 \description{
-Generic function for displaying fitted models for mcgf objects
+Generic function for computing kriging forecasts
 }
 \seealso{
 Other {functions related to prediction}: 
+\code{\link{krige.mcgf_rs}()},
 \code{\link{krige.mcgf}()}
 }
 \concept{{functions related to prediction}}

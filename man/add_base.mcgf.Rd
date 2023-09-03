@@ -46,13 +46,16 @@ add the base model; the value must contain \code{model}, \code{par_base}, \code{
 \seealso{
 Other {functions related to model fitting}: 
 \code{\link{add_base.mcgf_rs}()},
+\code{\link{add_lagr.mcgf_rs}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{add_lagr}()},
 \code{\link{fit_base.mcgf_rs}()},
 \code{\link{fit_base.mcgf}()},
 \code{\link{fit_base}()},
+\code{\link{fit_lagr.mcgf_rs}()},
 \code{\link{fit_lagr.mcgf}()},
 \code{\link{fit_lagr}()},
+\code{\link{model.mcgf_rs}()},
 \code{\link{model.mcgf}()},
 \code{\link{model}()}
 }

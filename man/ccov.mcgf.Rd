@@ -2,12 +2,12 @@
 % Please edit documentation in R/ccov.R
 \name{ccov.mcgf}
 \alias{ccov.mcgf}
-\title{Covariance/correlation for joint distribution of an mcgf object}
+\title{Covariance/correlation for joint distribution of an \code{mcgf} object}
 \usage{
 \method{ccov}{mcgf}(x, model = c("all", "base", "empirical"), cor = FALSE, ...)
 }
 \arguments{
-\item{x}{An mcgf object.}
+\item{x}{An \code{mcgf} object.}
 
 \item{model}{Which model to use. One of \code{all}, \code{base}, and \code{empirical}.}
 
@@ -16,8 +16,8 @@
 \item{...}{Additional arguments. Not in use.}
 }
 \value{
-Joint correlation matrix.
+Joint vovariance/correlation matrix.
 }
 \description{
-Covariance/correlation for joint distribution of an mcgf object
+Covariance/correlation for joint distribution of an \code{mcgf} object
 }

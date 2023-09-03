@@ -200,17 +200,31 @@ add_base.mcgf_rs <- function(x,
             stop("must give `fit_s_ls` and `fit_t_ls`.", call. = FALSE)
 
         if (!fit_s_ls$rs && !fit_t_ls$rs) {
-            return(add_base.mcgf(x = x, fit_s = fit_s_ls, fit_t = fit_t_ls,
-                                 sep = TRUE, old = old, ...))
+            x <- add_base.mcgf(
+                x = x,
+                fit_s = fit_s_ls[[1]],
+                fit_t = fit_t_ls[[1]],
+                sep = TRUE,
+                old = old,
+                ...
+            )
+            attr(x, "base_rs") <- c(spatial = fit_s_ls$rs,
+                                    temporal = fit_t_ls$rs)
+            return(x)
         }
     } else {
-        if (!fit_base_ls$rs)
-            return(add_base.mcgf(x = x, fit_base = fit_base_ls, old = old, ...))
+        if (!fit_base_ls$rs) {
+            x <- add_base.mcgf(x = x, fit_base = fit_base_ls[[1]], old = old,
+                               ...)
+            attr(x, "base_rs") <- FALSE
+            return(x)
+        }
     }
 
     if (old) {
         attr(x, "base_old") <- attr(x, "base", exact = TRUE)
         attr(x, "base_res_old") <- attr(x, "base_res", exact = TRUE)
+        attr(x, "base_rs_old") <- attr(x, "base_rs", exact = TRUE)
     }
 
     lvs <- levels(attr(x, "label", exact = TRUE))
@@ -246,7 +260,7 @@ add_base.mcgf_rs <- function(x,
                 stop("unmatching `horizon` for pure spatial and pure temporal ",
                      'models in "', names(lag_ls)[i], '".', call. = FALSE)
 
-            lag <- fit_s$lag
+            lag <- fit_t$lag
             horizon <- fit_t$horizon
             lag_max <- lag + horizon - 1
 
@@ -266,7 +280,8 @@ add_base.mcgf_rs <- function(x,
             base_res <- list(
                 par_base = par_base,
                 fit_base = list(spatial = fit_s$fit, temporal = fit_t$fit),
-                method_base = c(spatial = fit_s$method, temporal = fit_t$method),
+                method_base = c(spatial = fit_s$method,
+                                temporal = fit_t$method),
                 optim_fn = c(
                     spatial = fit_s$optim_fn,
                     temporal = fit_t$optim_fn
@@ -375,7 +390,7 @@ add_base.mcgf_rs <- function(x,
         stop("`value` must contain `model`, `par_base`, `cor_base`, `lag`",
              ", and `horizon`.", call. = FALSE)
 
-    if(is.null(attr(x, "base", exact = TRUE)))
+    if (is.null(attr(x, "base", exact = TRUE)))
         message("Overwriting the existing base model.")
 
     base_res <- list(

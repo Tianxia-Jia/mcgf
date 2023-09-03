@@ -2,18 +2,21 @@
 % Please edit documentation in R/fit_lagr.R
 \name{fit_lagr.mcgf}
 \alias{fit_lagr.mcgf}
-\title{Parameter estimation for Lagrangian correlation functions.}
+\title{Parameter estimation for Lagrangian correlation functions for an \code{mcgf}
+object.}
 \usage{
 \method{fit_lagr}{mcgf}(
   x,
-  model = c("lagr_tri", "lagr_askey"),
+  model = c("lagr_tri", "lagr_askey", "none"),
   method = c("wls", "mle"),
   optim_fn = c("nlminb", "optim", "other"),
-  par_fixed,
+  par_fixed = NULL,
   par_init,
-  lower,
-  upper,
-  other_optim_fn,
+  lower = NULL,
+  upper = NULL,
+  other_optim_fn = NULL,
+  dists_base = FALSE,
+  dists_lagr = NULL,
   ...
 )
 }
@@ -21,7 +24,8 @@
 \item{x}{An \code{mcgf} object containing attributes \code{dists}, \code{acfs}, \code{ccfs}, and
 \code{sds}. \code{x} must have been passed to \code{add_base()} or \verb{base<-}}
 
-\item{model}{Base model, one of \code{lagr_tri}, \code{lagr_askey}.}
+\item{model}{Base model, one of \code{lagr_tri}, \code{lagr_askey}, or \code{none}.
+If \code{none}, NULLs are returned.}
 
 \item{method}{Parameter estimation methods, weighted least square (\code{wls}) or
 maximum likelihood estimation (\code{mle}).}
@@ -41,13 +45,20 @@ When \code{optim_fn = other}, supply \code{other_optim_fn}.}
 arguments must be initial values for the parameters and a function to be
 minimized respectively (same as that of \code{optim} and \code{nlminb}).}
 
+\item{dists_base}{Logical; if TRUE \code{dists_base} from the base model is used
+as the distance.}
+
+\item{dists_lagr}{List of distance matrices/arrays. Used when \code{dists_base} is
+FALSE. If NULL, \code{dists(x)} is used.}
+
 \item{...}{Additional arguments passed to \code{optim_fn}.}
 }
 \value{
 A list containing outputs from optimization functions of \code{optim_fn}.
 }
 \description{
-Parameter estimation for Lagrangian correlation functions.
+Parameter estimation for Lagrangian correlation functions for an \code{mcgf}
+object.
 }
 \details{
 This function fits the Lagrangian models using weighted least squares and
@@ -62,12 +73,15 @@ used if they are not specified.
 Other {functions related to model fitting}: 
 \code{\link{add_base.mcgf_rs}()},
 \code{\link{add_base.mcgf}()},
+\code{\link{add_lagr.mcgf_rs}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{add_lagr}()},
 \code{\link{fit_base.mcgf_rs}()},
 \code{\link{fit_base.mcgf}()},
 \code{\link{fit_base}()},
+\code{\link{fit_lagr.mcgf_rs}()},
 \code{\link{fit_lagr}()},
+\code{\link{model.mcgf_rs}()},
 \code{\link{model.mcgf}()},
 \code{\link{model}()}
 }

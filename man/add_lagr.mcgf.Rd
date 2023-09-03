@@ -3,14 +3,14 @@
 \name{add_lagr.mcgf}
 \alias{add_lagr.mcgf}
 \alias{lagr<-}
-\title{Add lagr model outputted from \code{\link[=fit_lagr]{fit_lagr()}} to a mcgf object.}
+\title{Add lagr model outputted from \code{\link[=fit_lagr]{fit_lagr()}} to a \code{mcgf} object.}
 \usage{
 \method{add_lagr}{mcgf}(x, fit_lagr, ...)
 
 lagr(x) <- value
 }
 \arguments{
-\item{x}{An mcgf object.}
+\item{x}{An \code{mcgf} object.}
 
 \item{fit_lagr}{Output from the \code{\link[=fit_lagr]{fit_lagr()}} function.}
 
@@ -23,18 +23,21 @@ must contains \code{model}, \code{par_lagr}, and \code{cor_lagr}.}
 \code{x} with newly added attributes of the Lagrangian model.
 }
 \description{
-Add lagr model outputted from \code{\link[=fit_lagr]{fit_lagr()}} to a mcgf object.
+Add lagr model outputted from \code{\link[=fit_lagr]{fit_lagr()}} to a \code{mcgf} object.
 }
 \seealso{
 Other {functions related to model fitting}: 
 \code{\link{add_base.mcgf_rs}()},
 \code{\link{add_base.mcgf}()},
+\code{\link{add_lagr.mcgf_rs}()},
 \code{\link{add_lagr}()},
 \code{\link{fit_base.mcgf_rs}()},
 \code{\link{fit_base.mcgf}()},
 \code{\link{fit_base}()},
+\code{\link{fit_lagr.mcgf_rs}()},
 \code{\link{fit_lagr.mcgf}()},
 \code{\link{fit_lagr}()},
+\code{\link{model.mcgf_rs}()},
 \code{\link{model.mcgf}()},
 \code{\link{model}()}
 }

@@ -68,7 +68,7 @@ cov_par <- function(cov, horizon = 1, n_var, joint = FALSE) {
 
     if (joint) {
         if (missing(n_var)) {
-            stop("missing `n_var`.")
+            stop("missing `n_var`.", call. = FALSE)
         }
         cov_mat_joint <- cov
     } else {

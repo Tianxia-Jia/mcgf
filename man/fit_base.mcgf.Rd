@@ -9,7 +9,7 @@ object.}
   x,
   lag,
   horizon = 1,
-  model = c("spatial", "temporal", "sep", "fs"),
+  model = c("spatial", "temporal", "sep", "fs", "none"),
   method = c("wls", "mle"),
   optim_fn = c("nlminb", "optim", "other"),
   par_fixed = NULL,
@@ -29,8 +29,9 @@ object.}
 
 \item{horizon}{Integer forecast horizon.}
 
-\item{model}{Base model, one of \code{spatial}, \code{temporal}, \code{sep}, \code{fs}. Only
-\code{sep} and \code{fs} are supported when \code{method = mle}}
+\item{model}{Base model, one of \code{spatial}, \code{temporal}, \code{sep}, \code{fs}, \code{none}.
+Only \code{sep} and \code{fs} are supported when \code{method = mle}. If \code{none}, NULLs are
+returned.}
 
 \item{method}{Parameter estimation methods, weighted least square (\code{wls}) or
 maximum likelihood estimation (\code{mle}).}
@@ -74,12 +75,15 @@ bounds are used if they are not specified.
 Other {functions related to model fitting}: 
 \code{\link{add_base.mcgf_rs}()},
 \code{\link{add_base.mcgf}()},
+\code{\link{add_lagr.mcgf_rs}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{add_lagr}()},
 \code{\link{fit_base.mcgf_rs}()},
 \code{\link{fit_base}()},
+\code{\link{fit_lagr.mcgf_rs}()},
 \code{\link{fit_lagr.mcgf}()},
 \code{\link{fit_lagr}()},
+\code{\link{model.mcgf_rs}()},
 \code{\link{model.mcgf}()},
 \code{\link{model}()}
 }
