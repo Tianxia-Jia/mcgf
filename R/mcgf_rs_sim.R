@@ -11,6 +11,8 @@
 #' @param dists_ls List of distance matrices or arrays.
 #' @param sd_ls List of standard deviation for each location.
 #' @param lag_ls List of time lags.
+#' @param scale_time Scale of time unit, default is 1. Elements in `lag_ls` are
+#' divided by `scale_time`.
 #' @param init Initial samples, default is 0.
 #' @param mu_c_ls,mu_p_ls List of means of current and past.
 #' @param return_all Logical; if TRUE the joint covariance matrix, arrays of
@@ -35,6 +37,7 @@
                          dists_ls,
                          sd_ls,
                          lag_ls,
+                         scale_time = 1,
                          init = 0,
                          mu_c_ls,
                          mu_p_ls,
@@ -47,7 +50,7 @@
     n_var <- nrow(dists_ls[[1]]$h)
     n_block_row_ls <- lapply(lag_max_ls, function(x) x + 1)
 
-    u_ls <- lapply(lag_max_ls, function(x) 0:x)
+    u_ls <- lapply(lag_max_ls, function(x) (0:x) / scale_time)
     dim_ar_ls <- lapply(u_ls, function(x) c(n_var, n_var, length(x)))
     h_ar_ls <- Map(function(x, dim) array(x$h, dim = dim),
                    dists_ls, dim_ar_ls)
@@ -166,6 +169,7 @@ mcgf_rs_sim <- function(N,
                         dists_ls,
                         sd_ls,
                         lag_ls,
+                        scale_time = 1,
                         init = 0,
                         mu_c_ls = list(0),
                         mu_p_ls = list(0),
@@ -245,6 +249,7 @@ mcgf_rs_sim <- function(N,
         dists_ls = dists_ls,
         sd_ls = sd_ls,
         lag_ls = lag_ls,
+        scale_time = scale_time,
         init = init,
         mu_c_ls = mu_c_ls,
         mu_p_ls = mu_p_ls,

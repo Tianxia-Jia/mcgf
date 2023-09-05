@@ -85,6 +85,7 @@ fit_lagr.mcgf <- function(x,
     lag <- attr(x, "lag", exact = TRUE)
     horizon <- attr(x, "horizon", exact = TRUE)
     lag_max <- lag + horizon - 1
+    time_scale <- attr(x, "time_scale", exact = TRUE)
 
     if (!is.null(par_fixed)) {
         par_fixed_nm <- names(par_fixed)
@@ -95,14 +96,16 @@ fit_lagr.mcgf <- function(x,
         par_model <- par_model[ind_not_fixed]
         if (!is.null(lower)) {
             if (length(lower) != length(par_model))
-                stop("`lower` must be of length ", length(par_model), ".")
+                stop("`lower` must be of length ", length(par_model), ".",
+                     call. = FALSE)
             lower_model <- lower
         }
         lower_model <- lower_model[ind_not_fixed]
 
         if (!is.null(upper)) {
             if (length(upper) != length(par_model))
-                stop("`upper` must be of length ", length(par_model), ".")
+                stop("`upper` must be of length ", length(par_model), ".",
+                     call. = FALSE)
             upper_model <- upper
         }
         upper_model <- upper_model[ind_not_fixed]
@@ -111,17 +114,17 @@ fit_lagr.mcgf <- function(x,
     }
 
     if (is.null(par_init))
-        stop("must provide `par_init`.")
+        stop("must provide `par_init`.", call. = FALSE)
 
     par_init_nm <- names(par_init)
     if (is.null(par_init_nm) || any(!par_init_nm %in% par_model))
-        stop("unknow parameters in `par_init`.")
+        stop("unknow parameters in `par_init`.", call. = FALSE)
 
     if (any(!par_model %in% par_init_nm)) {
         par_missing <- par_model[which(!par_model %in% par_init_nm)]
         stop("initial value(s) for ",
              paste0('`', par_init_nm, "`", collapse = ", "),
-             " not found.")
+             " not found.", call. = FALSE)
     }
 
     par_init <- par_init[order(match(names(par_init), par_model))]
@@ -129,7 +132,7 @@ fit_lagr.mcgf <- function(x,
     optim_fn <- match.arg(optim_fn)
     if (optim_fn == "other") {
         if (is.null(other_optim_fn))
-            stop("specify a optimization function.")
+            stop("specify a optimization function.", call. = FALSE)
         optim_fn = other_optim_fn
     }
 
@@ -198,7 +201,7 @@ fit_lagr.mcgf <- function(x,
         lagrangian = model,
         h1 = h1_ar,
         h2 = h2_ar,
-        u = u_ar
+        u = u_ar / time_scale
     )
 
     if (method == "wls") {
@@ -340,6 +343,7 @@ fit_lagr.mcgf_rs <- function(x,
             ccfs(x_n) <- ccfs(x)$ccfs_rs[[n]]
             sds(x_n) <- sds(x)$sds_rs[[n]]
             attr(x_n, "lag") <- lag_ls[[n]]
+            attr(x_n, "mle_label") <- lvs[n]
             if (base_rs) {
                 attr(x_n, "base_res") <-
                     attr(x_n, "base_res", exact = TRUE)[[n]]

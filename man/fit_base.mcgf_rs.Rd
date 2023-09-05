@@ -18,6 +18,7 @@ object.}
   upper_ls = list(NULL),
   other_optim_fn_ls = list(NULL),
   dists_base_ls = list(NULL),
+  scale_time = 1,
   rs = TRUE,
   ...
 )
@@ -54,6 +55,9 @@ to be minimized respectively (same as that of \code{optim} and \code{nlminb}).}
 
 \item{dists_base_ls}{List of lists of distance matrices. If NULL, \code{dists(x)}
 is used. Each element must be a matrix or an array of distance matrices.}
+
+\item{scale_time}{Scale of time unit, default is 1. \code{lag} is divided by
+\code{scale_time} for parameter estimation.}
 
 \item{rs}{Logical; if TRUE \code{x} is treated as a regime-switching, FALSE if the
 parameters need to be estimated in a non-regime-switching setting.}

@@ -18,6 +18,7 @@ object.}
   upper = NULL,
   other_optim_fn = NULL,
   dists_base = NULL,
+  scale_time = 1,
   ...
 )
 }
@@ -53,6 +54,9 @@ minimized respectively (same as that of \code{optim} and \code{nlminb}).}
 
 \item{dists_base}{List of distance matrices. If NULL, \code{dists(x)} is used.
 Must be a matrix or an array of distance matrices.}
+
+\item{scale_time}{Scale of time unit, default is 1. \code{lag} is divided by
+\code{scale_time} for parameter estimation.}
 
 \item{...}{Additional arguments passed to \code{optim_fn}.}
 }

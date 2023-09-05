@@ -31,9 +31,11 @@ fit_base <- function(x, ...) {
 #' @param other_optim_fn Optional, other optimization functions. The first two
 #' arguments must be initial values for the parameters and a function to be
 #' minimized respectively (same as that of `optim` and `nlminb`).
-#' @param ... Additional arguments passed to `optim_fn`.
 #' @param dists_base List of distance matrices. If NULL, `dists(x)` is used.
 #' Must be a matrix or an array of distance matrices.
+#' @param scale_time Scale of time unit, default is 1. `lag` is divided by
+#' `scale_time` for parameter estimation.
+#' @param ... Additional arguments passed to `optim_fn`.
 #'
 #' @return A list containing outputs from optimization functions of `optim_fn`.
 #' @export
@@ -59,7 +61,10 @@ fit_base.mcgf <- function(x,
                           upper = NULL,
                           other_optim_fn = NULL,
                           dists_base = NULL,
+                          scale_time = 1,
                           ...) {
+
+    scale_time <- as.integer(scale_time)
     model <- match.arg(model)
 
     if (model == "none") {
@@ -72,6 +77,7 @@ fit_base.mcgf <- function(x,
             par_names = NULL,
             par_fixed = NULL,
             dists_base = NULL,
+            scale_time = 1,
             dots = NULL))
     }
 
@@ -132,8 +138,29 @@ fit_base.mcgf <- function(x,
                 stop("`lower` must be of length ", length(par_model), ".",
                      call. = FALSE)
             lower_model <- lower
+        } else {
+            lower_model <- lower_model[ind_not_fixed]
         }
-        lower_model <- lower_model[ind_not_fixed]
+
+        if (!is.null(upper)) {
+            if (length(upper) != length(par_model))
+                stop("`upper` must be of length ", length(par_model), ".",
+                     call. = FALSE)
+            upper_model <- upper
+        } else {
+            upper_model <- upper_model[ind_not_fixed]
+        }
+
+    } else {
+
+        par_fixed <- NULL
+
+        if (!is.null(lower)) {
+            if (length(lower) != length(par_model))
+                stop("`lower` must be of length ", length(par_model), ".",
+                     call. = FALSE)
+            lower_model <- lower
+        }
 
         if (!is.null(upper)) {
             if (length(upper) != length(par_model))
@@ -141,9 +168,6 @@ fit_base.mcgf <- function(x,
                      call. = FALSE)
             upper_model <- upper
         }
-        upper_model <- upper_model[ind_not_fixed]
-    } else {
-        par_fixed <- NULL
     }
 
     if (missing(par_init))
@@ -207,7 +231,7 @@ fit_base.mcgf <- function(x,
             temporal = {
                 cor_fn <- ".cor_cauchy"
                 cor_emp <- acfs(x)[1:(lag_max + 1)]
-                par_fixed_other <<- list(x = 0:lag_max, nu = 1, nugget = 0)
+                par_fixed_other <- list(x = 0:lag_max / scale_time)
                 list(cor_fn = cor_fn,
                      cor_emp = cor_emp,
                      par_fixed_other = par_fixed_other)
@@ -219,7 +243,7 @@ fit_base.mcgf <- function(x,
                     to_ar(h = dists_h, lag_max = lag_max)
                 par_fixed_other <-
                     list(h = h_u_ar$h_ar,
-                         u = h_u_ar$u_ar)
+                         u = h_u_ar$u_ar / scale_time)
                 list(cor_fn = cor_fn,
                      cor_emp = cor_emp,
                      par_fixed_other = par_fixed_other)
@@ -231,7 +255,7 @@ fit_base.mcgf <- function(x,
                     to_ar(h = dists_h, lag_max = lag_max)
                 par_fixed_other <-
                     list(h = h_u_ar$h_ar,
-                         u = h_u_ar$u_ar)
+                         u = h_u_ar$u_ar / scale_time)
                 list(cor_fn = cor_fn,
                      cor_emp = cor_emp,
                      par_fixed_other = par_fixed_other)
@@ -259,7 +283,7 @@ fit_base.mcgf <- function(x,
                     to_ar(h = dists_h, lag_max = lag_max)
                 par_fixed_other <-
                     list(h = h_u_ar$h_ar,
-                         u = h_u_ar$u_ar)
+                         u = h_u_ar$u_ar / scale_time)
                 list(cor_fn = cor_fn,
                      par_fixed_other = par_fixed_other)
             },
@@ -269,7 +293,7 @@ fit_base.mcgf <- function(x,
                     to_ar(h = dists_h, lag_max = lag_max)
                 par_fixed_other <-
                     list(h = h_u_ar$h_ar,
-                         u = h_u_ar$u_ar)
+                         u = h_u_ar$u_ar / scale_time)
                 list(cor_fn = cor_fn,
                      par_fixed_other = par_fixed_other)
             }
@@ -298,6 +322,7 @@ fit_base.mcgf <- function(x,
         par_names = names(par_init),
         par_fixed = par_fixed,
         dists_base = dists_base,
+        scale_time = scale_time,
         dots = dots))
 }
 
@@ -326,6 +351,8 @@ fit_base.mcgf <- function(x,
 #' is used. Each element must be a matrix or an array of distance matrices.
 #' @param rs Logical; if TRUE `x` is treated as a regime-switching, FALSE if the
 #' parameters need to be estimated in a non-regime-switching setting.
+#' @param scale_time Scale of time unit, default is 1. `lag` is divided by
+#' `scale_time` for parameter estimation.
 #' @param ... Additional arguments passed to all `optim_fn_ls`.
 #'
 #' @return A list containing outputs from optimization functions of `optim_fn`
@@ -351,8 +378,11 @@ fit_base.mcgf_rs <- function(x,
                              upper_ls = list(NULL),
                              other_optim_fn_ls = list(NULL),
                              dists_base_ls = list(NULL),
+                             scale_time = 1,
                              rs = TRUE,
                              ...) {
+
+    scale_time <- as.integer(scale_time)
 
     args_ls <- c("lag", "model", "method", "optim_fn", "par_fixed", "par_init",
                  "lower", "upper", "other_optim_fn", "dists_base")
@@ -378,7 +408,7 @@ fit_base.mcgf_rs <- function(x,
             }
         }
 
-        fit_base_fixed <- list(horizon = horizon, ...)
+        fit_base_fixed <- list(horizon = horizon, scale_time = scale_time, ...)
 
         for (n in 1:n_regime) {
             ind_n <- lapply(mget(args_i), function(x) x[[n]])
@@ -390,7 +420,9 @@ fit_base.mcgf_rs <- function(x,
             acfs(x_n) <- acfs(x)$acfs_rs[[n]]
             ccfs(x_n) <- ccfs(x)$ccfs_rs[[n]]
             sds(x_n) <- sds(x)$sds_rs[[n]]
-            fit_base_fixed_n <- c(fit_base_fixed, list(x = x_n))
+            attr(x_n, "mle_label") <- lvs[n]
+            fit_base_fixed_n <- c(fit_base_fixed,
+                                  list(x = x_n))
             res_base_ls[[n]] <- do.call(fit_base.mcgf,
                                         c(args_n, fit_base_fixed_n))
         }
@@ -412,7 +444,9 @@ fit_base.mcgf_rs <- function(x,
         acfs(x_no_rs) <- acfs(x)$acfs
         ccfs(x_no_rs) <- ccfs(x)$ccfs
         sds(x_no_rs) <- sds(x)$sds
-        fit_base_fixed <- c(horizon = horizon, list(x = x_no_rs), ...)
+        fit_base_fixed <- c(horizon = horizon,
+                            list(x = x_no_rs, scale_time = scale_time),
+                            ...)
         res_base_ls <- do.call(fit_base.mcgf,
                                c(args_no_rs, fit_base_fixed))
         res_base_ls <- c(list(res_base_ls), rs = rs)

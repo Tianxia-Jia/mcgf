@@ -51,12 +51,14 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
             if (is.null(lag))
                 stop("please provide `lag` for the empirical model.",
                      call. = FALSE)
+            attr(x, "lag") <- lag
         }
         if (is.null(horizon)) {
             horizon <- dots$horizon
             if (is.null(horizon))
                 stop("please provide `horizon` for the empirical model.",
                      call. = FALSE)
+            attr(x, "horizon") <- horizon
         }
 
     } else if (model == "base") {

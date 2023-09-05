@@ -32,6 +32,7 @@ model.mcgf <- function(x, model = c("all", "base", "lagrangian"), old = FALSE,
         cat('                 Model\n')
         cat('----------------------------------------\n')
         cat("- Time lag:", attr(x, "lag", exact = TRUE), "\n")
+        cat("- Scale of time lag:", attr(x, "scale_time", exact = TRUE), "\n")
         cat("- Forecast horizon:",
             attr(x, "horizon", exact = TRUE),
             "\n")
@@ -114,6 +115,7 @@ model.mcgf_rs <- function(x, model = c("all", "base", "lagrangian"),
         cat('----------------------------------------\n')
         cat("- Time lag:",
             paste(attr(x, "lag", exact = TRUE), collapse = ", "), "\n")
+        cat("- Scale of time lag:", attr(x, "scale_time", exact = TRUE), "\n")
         cat("- Forecast horizon:", attr(x, "horizon", exact = TRUE), "\n")
     }
 

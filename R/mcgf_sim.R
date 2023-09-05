@@ -9,6 +9,8 @@
 #' @param dists Distance matrices or arrays.
 #' @param sd Standard deviation for each location.
 #' @param lag Time lag.
+#' @param scale_time Scale of time unit, default is 1. `lag` is divided by
+#' `scale_time`.
 #' @param horizon Forecast horizon, default is 1.
 #' @param init Initial samples, default is 0.
 #' @param mu_c,mu_p Means of current and past.
@@ -32,6 +34,7 @@
                       dists,
                       sd,
                       lag,
+                      scale_time = 1,
                       horizon = 1,
                       init = 0,
                       mu_c,
@@ -44,7 +47,7 @@
 
     n_rounds <- ceiling((N - n_block_row) / horizon)
 
-    u <- 0:lag_max
+    u <- (0:lag_max) / scale_time
     dim_ar <- c(n_var, n_var, length(u))
     h_ar <- array(dists$h, dim = dim_ar)
     u_ar <- array(rep(u, each = n_var * n_var), dim = dim_ar)
@@ -140,6 +143,7 @@ mcgf_sim <- function(N,
                      dists,
                      sd = 1,
                      lag = 1,
+                     scale_time = 1,
                      horizon = 1,
                      init = 0,
                      mu_c = 0,
@@ -191,6 +195,7 @@ mcgf_sim <- function(N,
         dists = dists,
         sd = sd,
         lag = lag,
+        scale_time = scale_time,
         horizon = horizon,
         init = init,
         mu_c = mu_c,

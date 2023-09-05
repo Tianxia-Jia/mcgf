@@ -64,6 +64,8 @@ mat_inv <- function(x) {
 #' @param horizon Forecast horizon, default is 1.
 #' @param n_var Number of locations.
 #' @param joint Logical; True if `cov` is the joint covariance matrix.
+#'
+#' @keywords internal
 cov_par <- function(cov, horizon = 1, n_var, joint = FALSE) {
 
     if (joint) {

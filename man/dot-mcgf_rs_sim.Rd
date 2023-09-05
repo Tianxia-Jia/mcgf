@@ -15,6 +15,7 @@
   dists_ls,
   sd_ls,
   lag_ls,
+  scale_time = 1,
   init = 0,
   mu_c_ls,
   mu_p_ls,
@@ -42,6 +43,9 @@
 \item{sd_ls}{List of standard deviation for each location.}
 
 \item{lag_ls}{List of time lags.}
+
+\item{scale_time}{Scale of time unit, default is 1. Elements in \code{lag_ls} are
+divided by \code{scale_time}.}
 
 \item{init}{Initial samples, default is 0.}
 

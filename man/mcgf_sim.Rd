@@ -14,6 +14,7 @@ mcgf_sim(
   dists,
   sd = 1,
   lag = 1,
+  scale_time = 1,
   horizon = 1,
   init = 0,
   mu_c = 0,
@@ -39,6 +40,9 @@ mcgf_sim(
 \item{sd}{Standard deviation for each location.}
 
 \item{lag}{Time lag.}
+
+\item{scale_time}{Scale of time unit, default is 1. \code{lag} is divided by
+\code{scale_time}.}
 
 \item{horizon}{Forecast horizon, default is 1.}
 
