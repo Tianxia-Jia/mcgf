@@ -85,7 +85,7 @@ fit_lagr.mcgf <- function(x,
     lag <- attr(x, "lag", exact = TRUE)
     horizon <- attr(x, "horizon", exact = TRUE)
     lag_max <- lag + horizon - 1
-    time_scale <- attr(x, "time_scale", exact = TRUE)
+    scale_time <- attr(x, "scale_time", exact = TRUE)
 
     if (!is.null(par_fixed)) {
         par_fixed_nm <- names(par_fixed)
@@ -201,7 +201,7 @@ fit_lagr.mcgf <- function(x,
         lagrangian = model,
         h1 = h1_ar,
         h2 = h2_ar,
-        u = u_ar / time_scale
+        u = u_ar / scale_time
     )
 
     if (method == "wls") {

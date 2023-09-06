@@ -45,8 +45,8 @@ obj_mle <- function(par, cor_fn, x, lag, par_fixed) {
     new_cov_par <- cov_par(cov = fitted, horizon = horizon)
     det_cov_curr <- det(new_cov_par$cov_curr)
 
-    if (is.na(det_cov_curr) | det_cov_curr < 0) {
-        return(0)
+    if (is.na(det_cov_curr) || det_cov_curr < 0) {
+        return(99999)
     } else {
 
         mle_label <- attr(x, "mle_label", exact = TRUE)
@@ -70,7 +70,7 @@ obj_mle <- function(par, cor_fn, x, lag, par_fixed) {
                 t(x) %*% y %*% x, cov_curr_inv))
 
         if (is.infinite(llike)) {
-            return(0)
+            return(99999)
         } else {
             return(-llike)
         }

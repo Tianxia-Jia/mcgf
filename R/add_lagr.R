@@ -31,6 +31,7 @@ add_lagr.mcgf <- function(x, fit_lagr, ...) {
     lag <- attr(x, "lag", exact = TRUE)
     horizon <- attr(x, "horizon", exact = TRUE)
     lag_max <- lag + horizon - 1
+    scale_time <- attr(x, "scale_time", exact = TRUE)
 
     if (!is.null(fit_lagr$dists_lagr)) {
         lagr_h <- fit_lagr$dists_base$h
@@ -58,7 +59,7 @@ add_lagr.mcgf <- function(x, fit_lagr, ...) {
         lagrangian = lagrangian,
         h1 = h1_ar,
         h2 = h2_ar,
-        u = u_ar
+        u = u_ar / scale_time
     )
 
     cor_lagr <- do.call("..cor_stat", c(par_lagr, par_lagr_other))
@@ -121,6 +122,7 @@ add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
 
     lagr_res_ls <- lagr_model_ls <- vector("list", n_regime)
     names(lagr_res_ls) <- names(lagr_model_ls) <- paste0("Regime ", lvs)
+    scale_time <- attr(x, "scale_time", exact = TRUE)
 
     for (i in 1:n_regime) {
 
@@ -161,7 +163,7 @@ add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
             lagrangian = lagrangian,
             h1 = h1_ar,
             h2 = h2_ar,
-            u = u_ar
+            u = u_ar / scale_time
         )
         cor_lagr <- do.call("..cor_stat", c(par_lagr, par_lagr_other))
 

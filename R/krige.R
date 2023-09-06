@@ -85,11 +85,10 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
             stop("number of rows in `newdata` must be higher than `lag` ",
                  lag, ".", call. = FALSE)
 
-        dat <- stats::embed(as.matrix(newdata), n_blcok)
-    } else {
-        dat <- stats::embed(as.matrix(x), n_blcok)
+        x <- newdata
     }
 
+    dat <- stats::embed(as.matrix(x), n_blcok)
     pred <- dat[, -c(1:(horizon * n_var))] %*% t(cov_mat_res$weights)
     n_pred <- nrow(pred)
 
@@ -236,12 +235,20 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
         if (length(newlabel) != NROW(newdata))
             stop("lenght of `newlabel` must equal to `nrow(newdata)`",
                  call. = FALSE)
+
+        Y_pred <- array(NA, dim = c(dim(newdata), horizon),
+                        dimnames = list(rownames(newdata),
+                                        colnames(newdata),
+                                        paste0("Horizon ", horizon:1)))
+    } else {
+
+        Y_pred <- array(NA, dim = c(dim(x), horizon),
+                        dimnames = list(rownames(x),
+                                        colnames(x),
+                                        paste0("Horizon ", horizon:1)))
     }
 
-    Y_pred <- array(NA, dim = c(dim(x), horizon),
-                    dimnames = list(rownames(x),
-                                    colnames(x),
-                                    paste0("Horizon ", horizon:1)))
+
 
     for (n in 1:n_regime) {
 

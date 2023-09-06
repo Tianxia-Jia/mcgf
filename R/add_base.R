@@ -97,6 +97,8 @@ add_base.mcgf <- function(x,
             base_h <- dists(x)$h
         }
 
+        scale_time <- fit_t$scale_time
+
     } else {
         if (!(fit_base$model %in% c("sep", "fs")))
             stop('base model must be `sep` or `fs`.', call. = FALSE)
@@ -116,6 +118,8 @@ add_base.mcgf <- function(x,
         } else {
             base_h <- dists(x)$h
         }
+
+        scale_time <- fit_base$scale_time
     }
 
     if (!is.matrix(base_h)) {
@@ -123,7 +127,7 @@ add_base.mcgf <- function(x,
     }
 
     h_u_ar <- to_ar(h = base_h, lag_max = lag_max)
-    par_base_other <- list(h = h_u_ar$h_ar, u = h_u_ar$u_ar)
+    par_base_other <- list(h = h_u_ar$h_ar, u = h_u_ar$u_ar / scale_time)
 
     cor_base <- do.call(base_fn, c(par_base, par_base_other))
 
@@ -147,7 +151,7 @@ add_base.mcgf <- function(x,
         attr(x, "base") <- "sep"
         attr(x, "base_res") <- base_res
         attr(x, "lag") <- fit_t$lag
-        attr(x, "scale_time") <- fit_t$scale_time
+        attr(x, "scale_time") <- scale_time
         attr(x, "horizon") <- fit_t$horizon
 
     } else {
@@ -166,7 +170,7 @@ add_base.mcgf <- function(x,
         attr(x, "base") <- fit_base$model
         attr(x, "base_res") <- base_res
         attr(x, "lag") <- fit_base$lag
-        attr(x, "scale_time") <- fit_base$scale_time
+        attr(x, "scale_time") <- scale_time
         attr(x, "horizon") <- fit_base$horizon
     }
     return(x)
@@ -314,7 +318,7 @@ add_base.mcgf_rs <- function(x,
         attr(x, "base_res") <- base_res_ls
         attr(x, "base_rs") <- c(spatial = fit_s_ls$rs, temporal = fit_t_ls$rs)
         attr(x, "lag") <- lag_ls
-        attr(x, "time_scale") <- fit_t$time_scale
+        attr(x, "scale_time") <- fit_t$scale_time
         attr(x, "horizon") <- horizon
 
     } else {
@@ -382,7 +386,7 @@ add_base.mcgf_rs <- function(x,
         attr(x, "base_res") <- base_res_ls
         attr(x, "base_rs") <- fit_base_ls$rs
         attr(x, "lag") <- lag_ls
-        attr(x, "time_scale") <- fit_base$time_scale
+        attr(x, "scale_time") <- fit_base$scale_time
         attr(x, "horizon") <- horizon
     }
     return(x)
@@ -421,7 +425,7 @@ add_base.mcgf_rs <- function(x,
     attr(x, "base_res") <- base_res
     attr(x, "base_rs") <- value$rs
     attr(x, "lag") <- value$lag
-    attr(x, "time_scale") <- value$time_scale
+    attr(x, "scale_time") <- value$scale_time
     attr(x, "horizon") <- value$horizon
     return(x)
 }

@@ -69,9 +69,14 @@ ccfs.mcgf <- function(x, lag_max, ncores = 1,  ...) {
         data <- x
         n_var <- ncol(data)
 
-        if ((n_var > 30 && lag_max > 10) || n_var > 50)
-            cat("Large dataset, this may take a while. Set `ncores` > 1 to",
-                "speed up.\n")
+        if ((n_var > 30 && lag_max > 10) || n_var > 50) {
+
+            if (ncores == 1) {
+                cat("Large dataset, this may take a while. Set `ncores` > 1 to",
+                    "speed up.\n")
+            }
+
+        }
 
         ccfs <- array(
             NA,
@@ -160,9 +165,13 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, ...) {
         n_var <- ncol(data)
         n_regime <- length(levels(label))
 
-        if ((n_var > 30 && lag_max > 10) || n_var > 50)
-            cat("Large dataset, this may take a while. Set `ncores` > 1 to",
-                "speed up.\n")
+        if ((n_var > 30 && lag_max > 10) || n_var > 50) {
+
+            if (ncores == 1) {
+                cat("Large dataset, this may take a while. Set `ncores` > 1 to",
+                    "speed up.\n")
+            }
+        }
 
         ccfs_rs <- array(
             NA,
