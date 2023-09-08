@@ -209,6 +209,13 @@ add_base.mcgf_rs <- function(x,
                              sep = FALSE,
                              old = FALSE,
                              ...) {
+
+    if (old) {
+        attr(x, "base_old") <- attr(x, "base", exact = TRUE)
+        attr(x, "base_res_old") <- attr(x, "base_res", exact = TRUE)
+        attr(x, "base_rs_old") <- attr(x, "base_rs", exact = TRUE)
+    }
+
     if (sep) {
         if (missing(fit_s_ls) || missing(fit_t_ls))
             stop("must give `fit_s_ls` and `fit_t_ls`.", call. = FALSE)
@@ -233,12 +240,6 @@ add_base.mcgf_rs <- function(x,
             attr(x, "base_rs") <- FALSE
             return(x)
         }
-    }
-
-    if (old) {
-        attr(x, "base_old") <- attr(x, "base", exact = TRUE)
-        attr(x, "base_res_old") <- attr(x, "base_res", exact = TRUE)
-        attr(x, "base_rs_old") <- attr(x, "base_rs", exact = TRUE)
     }
 
     lvs <- levels(attr(x, "label", exact = TRUE))

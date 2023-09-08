@@ -153,7 +153,12 @@ add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
             lagr_h2 <- lagr_h2[, , 1:(lag_max + 1)]
         }
 
-        cor_base <- attr(x, "base_res", exact = TRUE)[[i]]$cor_base
+        if (attr(x, "base_rs", exact = TRUE)) {
+            cor_base <- attr(x, "base_res", exact = TRUE)[[i]]$cor_base
+        } else {
+            cor_base <- attr(x, "base_res", exact = TRUE)$cor_base
+        }
+
         u_ar <- to_ar(h = lagr_h, lag_max = lag_max)$u_ar
         h1_ar <- to_ar(h = lagr_h1, lag_max = lag_max, u = FALSE)
         h2_ar <- to_ar(h = lagr_h2, lag_max = lag_max, u = FALSE)

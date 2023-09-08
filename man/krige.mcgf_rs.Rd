@@ -8,6 +8,8 @@
   x,
   newdata,
   newlabel,
+  soft = FALSE,
+  prob,
   model = c("all", "base", "empirical"),
   interval = FALSE,
   level = 0.95,
@@ -21,6 +23,11 @@
 is missing the forecasts at the original data points are returned.}
 
 \item{newlabel}{A vector of new regime labels.}
+
+\item{soft}{Logical; if true, soft forecasts (and bounds) are produced.}
+
+\item{prob}{Matrix with simplex rows. Number of columns must be the same as
+unique labels in \code{x}.}
 
 \item{model}{Which model to use. One of \code{all}, \code{base}, and \code{empirical}.}
 
@@ -43,6 +50,12 @@ It produces simple kriging forecasts for a zero-mean mcgf. It supports
 kriging for the \code{empirical} model, the \code{base} model, and the \code{all} model
 which is the general stationary model with the base and Lagrangian model
 from \code{x}.
+
+When \code{soft = TRUE}, \code{prob} will be used to compute the soft forecasts
+(weighted forecasts). The number of columns must match the number of unique
+levels in \code{x}. The column order must be the same as the order of regimes as
+in \code{levels(attr(x, "label", exact = TRUE))}. If not all regimes are seen in
+\code{newlabel}, then only relevant columns in \code{prob} are used.
 
 When \code{interval = TRUE}, confidence interval for each forecasts and each
 horizon is given. Note that it does not compute confidence regions.

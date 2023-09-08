@@ -8,9 +8,9 @@
 \title{Extract, calculate, or assign cross-correlations for an \code{mcgf} or \code{mcgf_rs}
 object}
 \usage{
-\method{ccfs}{mcgf}(x, lag_max, ncores = 1, ...)
+\method{ccfs}{mcgf}(x, lag_max, ncores = 1, replace = FALSE, ...)
 
-\method{ccfs}{mcgf_rs}(x, lag_max, ncores = 1, ...)
+\method{ccfs}{mcgf_rs}(x, lag_max, ncores = 1, replace = FALSE, ...)
 
 ccfs(x) <- value
 
@@ -23,6 +23,8 @@ add_ccfs(x, lag_max, ncores = 1, ...)
 
 \item{ncores}{Number of cpu cores used for computing. The \code{doParallel}
 package is required when \code{ncores} > 1.}
+
+\item{replace}{Logical; if TRUE, \code{acfs} are recalculated.}
 
 \item{...}{Additional parameters or attributes. Not in use.}
 

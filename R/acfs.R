@@ -71,6 +71,7 @@ acfs <- function(x, ...) {
 #'
 #' @param x An `mcgf` or `mcgf_rs` object.
 #' @param lag_max Maximum lag at which to calculate the acf.
+#' @param replace Logical; if TRUE, `acfs` are recalculated.
 #' @param ... Additional parameters or attributes.
 #'
 #' @return [`acfs()`] returns (regime-switching) mean auto-correlations.
@@ -99,10 +100,10 @@ acfs <- function(x, ...) {
 #' acfs(x = wind_mcgf, lag_max = 3)
 #'
 #' @family {functions related to the auto- and cross-correlations}
-acfs.mcgf <- function(x, lag_max, ...) {
+acfs.mcgf <- function(x, lag_max, replace = FALSE, ...) {
     acfs <- attr(x, "acfs", exact = TRUE)
 
-    if (!is.null(acfs)) {
+    if (!is.null(acfs) && !replace) {
         return(acfs)
     } else {
         ccfs <- attr(x, "ccfs", exact = TRUE)
@@ -140,10 +141,10 @@ acfs.mcgf <- function(x, lag_max, ...) {
 #' label = c(rep(1,3574), rep(2, 3000)))
 #' acfs(x = wind_mcgf, lag_max = 3)
 #' @export
-acfs.mcgf_rs <- function(x, lag_max, ...) {
+acfs.mcgf_rs <- function(x, lag_max, replace = FALSE, ...) {
     acfs <- attr(x, "acfs", exact = TRUE)
 
-    if (!is.null(acfs)) {
+    if (!is.null(acfs) && !replace) {
         return(acfs)
     } else {
         label <- attr(x, "label", exact = TRUE)

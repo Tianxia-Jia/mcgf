@@ -20,6 +20,7 @@ ccfs <- function(x, ...) {
 #' @param lag_max Maximum lag at which to calculate the ccfs.
 #' @param ncores Number of cpu cores used for computing. The `doParallel`
 #' package is required when `ncores` > 1.
+#' @param replace Logical; if TRUE, `acfs` are recalculated.
 #' @param ... Additional parameters or attributes. Not in use.
 #'
 #' @return [`ccfs()`] returns (regime-switching) cross-correlations.
@@ -49,11 +50,11 @@ ccfs <- function(x, ...) {
 #' # ccfs(x = wind_mcgf, lag_max = 3, ncores = 10)
 #'
 #' @family {functions related to the auto- and cross-correlations}
-ccfs.mcgf <- function(x, lag_max, ncores = 1,  ...) {
+ccfs.mcgf <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
 
     ccfs <- attr(x, "ccfs", exact = TRUE)
 
-    if (!is.null(ccfs)) {
+    if (!is.null(ccfs) && !replace) {
         return(ccfs)
     } else {
         acfs <- attr(x, "acfs", exact = TRUE)
@@ -144,10 +145,10 @@ ccfs.mcgf <- function(x, lag_max, ncores = 1,  ...) {
 #' ccfs(x = wind_mcgf, lag_max = 3)
 #' # ccfs(x = wind_mcgf, lag_max = 3, ncores = 10)
 #' @export
-ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, ...) {
+ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
     ccfs <- attr(x, "ccfs", exact = TRUE)
 
-    if (!is.null(ccfs)) {
+    if (!is.null(ccfs) && !replace) {
         return(ccfs)
     } else {
         label <- attr(x, "label", exact = TRUE)

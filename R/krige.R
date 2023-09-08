@@ -71,9 +71,9 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
     }
 
     lag_max <- lag + horizon - 1
-    n_blcok <- lag_max + 1
+    n_block <- lag_max + 1
     n_var <- ncol(dists(x)$h)
-    cov_mat <- ccov(x, model = model)
+    cov_mat <- ccov.mcgf(x, model = model)
     cov_mat_res <- cov_par(cov_mat, horizon = horizon,
                        n_var = n_var, joint = TRUE)
 
@@ -88,18 +88,18 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
         x <- newdata
     }
 
-    dat <- stats::embed(as.matrix(x), n_blcok)
+    dat <- rbind(as.matrix(x), matrix(nrow = horizon - 1, ncol = ncol(x)))
+    dat <- stats::embed(dat, n_block)
     pred <- dat[, -c(1:(horizon * n_var))] %*% t(cov_mat_res$weights)
-    n_pred <- nrow(pred)
-
     Y_pred <- array(NA, dim = c(dim(x), horizon),
                     dimnames = list(rownames(x),
                                     colnames(x),
                                     paste0("Horizon ", horizon:1)))
 
     for (i in 1:horizon) {
-        Y_pred[(n_blcok - i + 1):(nrow(x) - i + 1), , i] <-
-            pred[, (1 + (i - 1) * n_var):(i * n_var)]
+        ind_y <- (n_block - i + 1):nrow(x)
+        ind_pred <- 1:(nrow(dat) - horizon + i)
+        Y_pred[ind_y, , i] <- pred[ind_pred, (1 + (i - 1) * n_var):(i * n_var)]
     }
 
     if (interval) {
@@ -111,9 +111,9 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
         lower <- upper <- array(NA, dim = dim(Y_pred),
                                 dimnames = dimnames(Y_pred))
         for (i in 1:horizon) {
-            moe_hori <- moe[(1 + (i - 1) * n_var):(i * n_var)]
-            lower[, , i] <- sweep(Y_pred[, , i], 2, moe_hori)
-            upper[, , i] <- sweep(Y_pred[, , i], 2, moe_hori, "+")
+            moe_i <- moe[(1 + (i - 1) * n_var):(i * n_var)]
+            lower[, , i] <- sweep(Y_pred[, , i], 2, moe_i)
+            upper[, , i] <- sweep(Y_pred[, , i], 2, moe_i, "+")
         }
 
         Y_pred <- Y_pred[, , horizon:1]
@@ -137,6 +137,9 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
 #' @param interval Logical; if TRUE, prediction intervals are computed.
 #' @param level A numeric scalar between 0 and 1 giving the confidence level for
 #' the intervals (if any) to be calculated. Used when `interval = TRUE`
+#' @param soft Logical; if true, soft forecasts (and bounds) are produced.
+#' @param prob Matrix with simplex rows. Number of columns must be the same as
+#' unique labels in `x`.
 #' @param ... Additional arguments. Give `lag` and `horizon` if they are not
 #' defined in `x` for the `empirical` model.
 #'
@@ -149,11 +152,19 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
 #' which is the general stationary model with the base and Lagrangian model
 #' from `x`.
 #'
+#' When `soft = TRUE`, `prob` will be used to compute the soft forecasts
+#' (weighted forecasts). The number of columns must match the number of unique
+#' levels in `x`. The column order must be the same as the order of regimes as
+#' in `levels(attr(x, "label", exact = TRUE))`. If not all regimes are seen in
+#' `newlabel`, then only relevant columns in `prob` are used.
+#'
 #' When `interval = TRUE`, confidence interval for each forecasts and each
 #' horizon is given. Note that it does not compute confidence regions.
 #'
 #' @family {functions related to prediction}
 krige.mcgf_rs <- function(x, newdata, newlabel,
+                          soft = FALSE,
+                          prob,
                           model = c("all", "base", "empirical"),
                           interval = FALSE, level = 0.95, ...) {
 
@@ -185,7 +196,8 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
     horizon <- attr(x, "horizon", exact = TRUE)
     n_var <- ncol(dists(x)$h)
 
-    lvs <- levels(attr(x, "label", exact = TRUE))
+    label <- attr(x, "label", exact = TRUE)
+    lvs <- levels(label)
     n_regime <- length(lvs)
 
     if (model == "empirical") {
@@ -198,7 +210,7 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
                 stop("please provide `lag_ls` for the empirical model.",
                      call. = FALSE)
 
-            if (length(lag_ls) != length(n_regime))
+            if (length(lag_ls) != n_regime)
                 stop("length of `lag_ls` must be ", n_regime, ".",
                      call. = FALSE)
         }
@@ -233,67 +245,143 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
                  max(unlist(lag_ls)), ".", call. = FALSE)
 
         if (length(newlabel) != NROW(newdata))
-            stop("lenght of `newlabel` must equal to `nrow(newdata)`",
+            stop("lenght of `newlabel` must equal to `nrow(newdata)`.",
                  call. = FALSE)
 
-        Y_pred <- array(NA, dim = c(dim(newdata), horizon),
-                        dimnames = list(rownames(newdata),
-                                        colnames(newdata),
-                                        paste0("Horizon ", horizon:1)))
-    } else {
+        newlabel <- as.factor(newlabel)
 
-        Y_pred <- array(NA, dim = c(dim(x), horizon),
-                        dimnames = list(rownames(x),
-                                        colnames(x),
-                                        paste0("Horizon ", horizon:1)))
+        if (any(!(levels(newlabel) %in% lvs)))
+            stop("unknown levels in `newlabel.`", call. = FALSE)
+
+        x <- newdata
+        label <- newlabel
     }
 
+    if (soft) {
 
+        if (missing(prob))
+            stop("must provide probabilities for soft forecasting.",
+                 call. = FALSE)
+
+        prob <- as.matrix(prob)
+
+        if (ncol(prob) != length(lvs))
+            stop("number of columns in `prob` must the same as the number of ",
+                 "unique levels in `x`.", call. = FALSE)
+
+        if (nrow(prob) != nrow(x)) {
+            if (!missing(newdata)) {
+                stop("number of rows in `prob` must be the same as that of ",
+                     "`newdata`.", call. = FALSE)
+            } else {
+                stop("number of rows in `prob` must be the same as that of ",
+                     "`x`.", call. = FALSE)
+            }
+        }
+
+        if (nrow(prob) != nrow(x))
+            stop("number of rows in `prob` must be the same as that of ",
+                 "`x`.", call. = FALSE)
+
+        new_lvs <- levels(label)
+        prob <- prob[, which(lvs %in% new_lvs)]
+
+        if (ncol(prob) == 1) {
+            soft <- FALSE
+        } else {
+            prob <- prob / rowSums(prob)
+        }
+    }
+
+    Y_pred <- array(NA, dim = c(dim(x), horizon),
+                    dimnames = list(rownames(x),
+                                    colnames(x),
+                                    paste0("Horizon ", horizon:1)))
+
+    if (interval) {
+        alpha <- (1 - level) / 2
+        lower <- upper <- array(NA, dim = dim(Y_pred),
+                                dimnames = dimnames(Y_pred))
+        cv <- stats::qnorm(alpha, lower.tail = FALSE)
+    }
+
+    pred <- vector("list", n_regime)
 
     for (n in 1:n_regime) {
 
         lag_max <- lag_ls[[n]] + horizon - 1
-        n_blcok <- lag_max + 1
+        n_block <- lag_max + 1
 
-        if (!missing(newdata)) {
-            dat <- stats::embed(as.matrix(newdata), n_blcok)
-            label <- newlabel
-        }  else {
-            dat <- stats::embed(as.matrix(x), n_blcok)
-            label <- attr(x, "label", exact = TRUE)
+        dat <- rbind(as.matrix(x),
+                     matrix(nrow = horizon - 1, ncol = ncol(x)))
+        dat <- stats::embed(as.matrix(dat), n_block)
+
+        pred[[n]] <- dat[, -c(1:(horizon * n_var))] %*%
+            t(cov_mat_res[[n]]$weights)
+    }
+
+    if (soft) {
+
+        Y_pred_ls <- rep(list(Y_pred), n_regime)
+
+        for (n in 1:n_regime) {
+            for (i in 1:horizon) {
+                ind_y <- (n_block - i + 1):nrow(x)
+                ind_pred <- 1:(nrow(dat) - horizon + i)
+
+                Y_pred_ls[[n]][ind_y, , i] <-
+                    pred[[n]][ind_pred, (1 + (i - 1) * n_var):(i * n_var)] *
+                    prob[ind_y, n]
+            }
         }
 
-        ind_n <- label[-c(1:lag_max)] == lvs[[n]]
-        pred <- dat[ind_n, -c(1:(horizon * n_var))] %*%
-            t(cov_mat_res[[n]]$weights)
+        Y_pred <- Reduce("+", Y_pred_ls)
 
-        for (i in 1:horizon) {
-            ind_y <- (n_blcok - i + 1):(nrow(x) - i + 1)
-            ind_y <- ind_y[label[ind_y] == lvs[[n]]]
-            Y_pred[ind_y, , i] <-
-                pred[, (1 + (i - 1) * n_var):(i * n_var)]
+        if (interval) {
+
+            sds_ls <- lapply(cov_mat_res, function(x) sqrt(diag(x$cov_curr)))
+            sds_ls <- lapply(sds_ls,
+                             function(x) matrix(x, nrow = nrow(prob),
+                                                ncol = n_var * horizon,
+                                                byrow = T))
+            sds_ls <- Map(function(x, i) x * prob[, i],
+                          sds_ls, seq_len(ncol(prob)))
+            moe <-  Reduce("+", sds_ls) * cv
+
+            for (i in 1:horizon) {
+                moe_i <- moe[, (1 + (i - 1) * n_var):(i * n_var)]
+                lower[, , i] <- Y_pred[, , i] - moe_i
+                upper[, , i] <- Y_pred[, , i] + moe_i
+            }
+        }
+
+    } else {
+
+        for (n in 1:n_regime) {
+
+            for (i in 1:horizon) {
+                ind_i <- (n_block - i + 1):nrow(x)
+                ind_y <- ind_i[label[ind_i] == lvs[[n]]]
+
+                ind_pred <- 1:(nrow(dat) - horizon + i)
+                ind_pred <- ind_pred[label[ind_i] == lvs[[n]]]
+
+                Y_pred[ind_y, , i] <-
+                    pred[[n]][ind_pred, (1 + (i - 1) * n_var):(i * n_var)]
+
+                if (interval) {
+                    moe <- sqrt(diag(cov_mat_res[[n]]$cov_curr)) * cv
+                    moe_i <- moe[(1 + (i - 1) * n_var):(i * n_var)]
+                    lower[ind_y, , i] <-
+                        sweep(Y_pred[ind_y, , i], 2, moe_i)
+                    upper[ind_y, , i] <-
+                        sweep(Y_pred[ind_y, , i], 2, moe_i, "+")
+                }
+            }
         }
     }
 
     if (interval) {
-        alpha <- (1 - level) / 2
-
-        lower <- upper <- array(NA, dim = dim(Y_pred),
-                                dimnames = dimnames(Y_pred))
-
-        for (n in 1:n_regime) {
-            moe <- sqrt(diag(cov_mat_res[[n]]$cov_curr)) *
-                stats::qnorm(alpha, lower.tail = FALSE)
-
-            for (i in 1:horizon) {
-                ind_y <- (n_blcok - i + 1):(nrow(x) - i + 1)
-                ind_y <- ind_y[label[ind_y] == lvs[[n]]]
-
-                moe_hori <- moe[(1 + (i - 1) * n_var):(i * n_var)]
-                lower[ind_y, , i] <- sweep(Y_pred[ind_y, , i], 2, moe_hori)
-                upper[ind_y, , i] <- sweep(Y_pred[ind_y, , i], 2, moe_hori, "+")
-            }
-        }
         Y_pred <- Y_pred[, , horizon:1]
         lower <- lower[, , horizon:1]
         upper <- upper[, , horizon:1]
@@ -304,4 +392,5 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
         Y_pred <- Y_pred[, , horizon:1]
         return(Y_pred)
     }
+
 }

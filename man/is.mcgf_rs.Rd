@@ -7,18 +7,20 @@
 \usage{
 is.mcgf_rs(x)
 
-as.mcgf_rs(x, label)
+as.mcgf_rs(x, label, ncores = 1)
 }
 \arguments{
 \item{x}{An Object.}
 
 \item{label}{A vector of regime labels. Its length must be the same as
 the number rows in \code{data}.}
+
+\item{ncores}{Number of cpu cores used for computing in \verb{[ccfs()]}.}
 }
 \value{
 \code{is.mcgf_rs} returns a logical valud; TRUE if \code{x} is of the \code{mcgf_rs}
 class. \code{as.mcgf_rs} coerces an \code{mcgf} object to an \code{mcgf_rs} object by adding
-regime labels.
+regime labels. Fitted base or Lagrangian models in \code{x} are kept.
 }
 \description{
 Check if an object is an \code{mcgf_rs} object..

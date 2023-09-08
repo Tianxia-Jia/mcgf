@@ -8,9 +8,9 @@
 \title{Extract, calculate, or assign mean auto-correlations for an \code{mcgf} or
 \code{mcgf_rs} object}
 \usage{
-\method{acfs}{mcgf}(x, lag_max, ...)
+\method{acfs}{mcgf}(x, lag_max, replace = FALSE, ...)
 
-\method{acfs}{mcgf_rs}(x, lag_max, ...)
+\method{acfs}{mcgf_rs}(x, lag_max, replace = FALSE, ...)
 
 acfs(x) <- value
 
@@ -20,6 +20,8 @@ add_acfs(x, lag_max, ...)
 \item{x}{An \code{mcgf} or \code{mcgf_rs} object.}
 
 \item{lag_max}{Maximum lag at which to calculate the acf.}
+
+\item{replace}{Logical; if TRUE, \code{acfs} are recalculated.}
 
 \item{...}{Additional parameters or attributes.}
 

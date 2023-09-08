@@ -102,7 +102,7 @@ mcgf_rs <- function(data, locations, dists, label, time) {
 #'
 #' @return `is.mcgf_rs` returns a logical valud; TRUE if `x` is of the `mcgf_rs`
 #' class. `as.mcgf_rs` coerces an `mcgf` object to an `mcgf_rs` object by adding
-#' regime labels.
+#' regime labels. Fitted base or Lagrangian models in `x` are kept.
 #' @export
 is.mcgf_rs <- function(x){
     inherits(x, "mcgf_rs")
@@ -111,6 +111,47 @@ is.mcgf_rs <- function(x){
 #' @rdname is.mcgf_rs
 #' @param label A vector of regime labels. Its length must be the same as
 #' the number rows in `data`.
-as.mcgf_rs <- function(x, label) {
-    return(validate_mcgf_rs(new_mcgf_rs(x, label)))
+#' @param ncores Number of cpu cores used for computing in `[ccfs()]`.
+#' @export
+as.mcgf_rs <- function(x, label, ncores = 1) {
+
+    x_mcgf_rs <- validate_mcgf_rs(new_mcgf_rs(x, label))
+
+    if (!is.null(attr(x, "base_old", exact = TRUE))) {
+        attr(x_mcgf_rs, "base_rs_old") <- FALSE
+    }
+
+    if (!is.null(attr(x, "base", exact = TRUE))) {
+        attr(x_mcgf_rs, "base_rs") <- FALSE
+    }
+
+    if (!is.null(attr(x, "lagr", exact = TRUE))) {
+        attr(x_mcgf_rs, "lagr_rs") <- FALSE
+    }
+
+    if (!is.null(attr(x, "acfs", exact = TRUE))) {
+
+        lag_max <- attr(x_mcgf_rs, "lag", exact = TRUE) +
+            attr(x_mcgf_rs, "horizon", exact = TRUE) - 1
+
+        ccfs_x <- ccfs(x_mcgf_rs)
+        ccfs(x_mcgf_rs) <- NULL
+        acfs(x_mcgf_rs) <- acfs(x_mcgf_rs, lag_max, replace = TRUE)
+        ccfs(x_mcgf_rs) <- ccfs_x
+    }
+
+    if (!is.null(attr(x, "ccfs", exact = TRUE))) {
+
+        lag_max <- attr(x_mcgf_rs, "lag", exact = TRUE) +
+            attr(x_mcgf_rs, "horizon", exact = TRUE) - 1
+
+        acfs_x <- acfs(x_mcgf_rs)
+        acfs(x_mcgf_rs) <- NULL
+        ccfs(x_mcgf_rs) <- ccfs(x_mcgf_rs, lag_max, ncores = ncores,
+                                replace = TRUE)
+        acfs(x_mcgf_rs) <- acfs_x
+
+        sds(x_mcgf_rs) <- sds(x_mcgf_rs, replace = TRUE)
+    }
+    return(x_mcgf_rs)
 }
