@@ -23,8 +23,8 @@ fit_lagr <- function(x, ...) {
 #' When `optim_fn = other`, supply `other_optim_fn`.
 #' @param par_fixed Fixed parameters.
 #' @param par_init Initial values for parameters to be optimized.
-#' @param lower Optional; lower bounds of parameters.
-#' @param upper Optional: upper bounds of parameters.
+#' @param lower Optional; lower bounds of parameters lambda, v1, v2, and k.
+#' @param upper Optional: upper bounds of parameters lambda, v1, v2, and k.
 #' @param other_optim_fn Optional, other optimization functions. The first two
 #' arguments must be initial values for the parameters and a function to be
 #' minimized respectively (same as that of `optim` and `nlminb`).
@@ -88,18 +88,22 @@ fit_lagr.mcgf <- function(x,
     scale_time <- attr(x, "scale_time", exact = TRUE)
 
     if (!is.null(par_fixed)) {
+
         par_fixed_nm <- names(par_fixed)
+
         if (is.null(par_fixed_nm) || any(!par_fixed_nm %in% par_model))
             stop("unknow parameters in `par_fixed`.")
 
         ind_not_fixed <- which(!par_model %in% par_fixed_nm)
         par_model <- par_model[ind_not_fixed]
+
         if (!is.null(lower)) {
             if (length(lower) != length(par_model))
                 stop("`lower` must be of length ", length(par_model), ".",
                      call. = FALSE)
             lower_model <- lower
         }
+
         lower_model <- lower_model[ind_not_fixed]
 
         if (!is.null(upper)) {
@@ -108,9 +112,26 @@ fit_lagr.mcgf <- function(x,
                      call. = FALSE)
             upper_model <- upper
         }
+
         upper_model <- upper_model[ind_not_fixed]
+
     } else {
+
         par_fixed <- NULL
+
+        if (!is.null(lower)) {
+            if (length(lower) != length(par_model))
+                stop("`lower` must be of length ", length(par_model), ".",
+                     call. = FALSE)
+            lower_model <- lower
+        }
+
+        if (!is.null(upper)) {
+            if (length(upper) != length(par_model))
+                stop("`upper` must be of length ", length(par_model), ".",
+                     call. = FALSE)
+            upper_model <- upper
+        }
     }
 
     if (is.null(par_init))
@@ -229,7 +250,8 @@ fit_lagr.mcgf <- function(x,
             lower = lower_model,
             upper = upper_model,
             x = x,
-            lag = lag
+            lag = lag,
+            ...
         )
     }
 
@@ -284,8 +306,8 @@ fit_lagr.mcgf <- function(x,
 #' @family {functions related to model fitting}
 fit_lagr.mcgf_rs <- function(x,
                              model_ls,
-                             method_ls,
-                             optim_fn_ls,
+                             method_ls = "wls",
+                             optim_fn_ls = "nlminb",
                              par_fixed_ls = list(NULL),
                              par_init_ls,
                              lower_ls = list(NULL),

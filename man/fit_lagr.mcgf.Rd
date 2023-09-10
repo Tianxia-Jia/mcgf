@@ -37,9 +37,9 @@ When \code{optim_fn = other}, supply \code{other_optim_fn}.}
 
 \item{par_init}{Initial values for parameters to be optimized.}
 
-\item{lower}{Optional; lower bounds of parameters.}
+\item{lower}{Optional; lower bounds of parameters lambda, v1, v2, and k.}
 
-\item{upper}{Optional: upper bounds of parameters.}
+\item{upper}{Optional: upper bounds of parameters lambda, v1, v2, and k.}
 
 \item{other_optim_fn}{Optional, other optimization functions. The first two
 arguments must be initial values for the parameters and a function to be

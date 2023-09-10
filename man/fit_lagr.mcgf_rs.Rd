@@ -8,8 +8,8 @@ object.}
 \method{fit_lagr}{mcgf_rs}(
   x,
   model_ls,
-  method_ls,
-  optim_fn_ls,
+  method_ls = "wls",
+  optim_fn_ls = "nlminb",
   par_fixed_ls = list(NULL),
   par_init_ls,
   lower_ls = list(NULL),
