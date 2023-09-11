@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `mcgf` is to provide easy-to-use functions for simulating and fitting covariance models. This package has functions to simulate samples for Markov chain Gaussian fields with covariance functions of the Gneiting class by simple kriging. Parameter estimation methods such as weighted least squares and maximum likelihood estimation are available.
+The goal of `mcgf` is to provide easy-to-use functions for simulating and fitting covariance models. It provides functions for simulating (regime-switching)  Markov chain Gaussian fields with covariance functions of the Gneiting class by simple kriging. Parameter estimation methods such as weighted least squares and maximum likelihood estimation are available.
 
 ## Installation
 
@@ -31,34 +31,38 @@ devtools::install_github("tianxia-jia/mcgf")
 
 ## Data Simulation
 
-To simulate a MCGF with fully symmetric covariance structure, we first create distance arrays for 10 locations:
+To simulate a MCGF with fully symmetric covariance structure, we begin with simulating 10 locations randomly.
 
-```{r}
+```{r, message = F, warning=F}
 library(mcgf)
-set.seed(123)
+set.seed(1234)
 dists <- rdists(10)
 ```
 
-Next, we simulate a MCGF.
+Next, we simulate a MCGF with the general stationary covariance structure. In this example the covariance structure is a convex combination of a base separable model and a Lagrangian model account for asymmetry.
 
-```{r}
-library(mcgf)
-par_s <- list(nugget = 0.2, c = 0.001, gamma = 0.3)
-par_t <- list(a = 5, alpha = 0.5)
-par_base <- list(par_s = par_s, par_t = par_t)
+```{r, message = F, warning=F}
+par_spatial <- list(nugget = 0, c = 0.01, gamma = 0.3)
+par_temporal <- list(a = 1, alpha = 0.5)
+par_sep <- list(par_s = par_spatial, par_t = par_temporal)
+par_lagr <- list(v1 = 10, v2 = 50, k = 2)
 
-set.seed(123)
-X <- mcgf_sim(N = 1000, base = "sep", lagrangian = "none", par_base = par_base,
-              dists = dists, lag = 10)
+set.seed(1234)
+X <- mcgf_sim(N = 1500, base = "sep", lagrangian = "lagr_tri", lambda = 0.5, 
+              par_base = par_sep, par_lagr = par_lagr, dists = dists, 
+              lag = 10)
 plot.ts(X)
 ```
 
 ## Parameter Estimation
 
-To estimate parameters using weighted least squares method, we need to calculate autocorrelations and cross-autocorrelations. Let's first create a `mcgf` object. The `mcgf` class extends the `data.frame` with more attributes.
+### Create an `mcgf` object
+To estimate parameters, we need to calculate auto-correlations and cross-correlations. Let's first create an `mcgf` object. The `mcgf` class extends the `data.frame` with more attributes.
 
 ```{r}
-x_mcgf <- mcgf(X, dists = dists)
+train <- X[1:1000, ]
+test <- X[-c(1:1000), ]
+x_mcgf <- mcgf(train, dists = dists)
 ```
 
 Then the acfs and ccfs can be added to this object as follows.
@@ -68,41 +72,85 @@ x_mcgf <- add_acfs(x = x_mcgf, lag_max = 10)
 x_mcgf <- add_ccfs(x = x_mcgf, lag_max = 10)
 ```
 
-To find the weighted least squares, we can run
+### Estimate base model
+
+To perform parameter estimation, we can start with estimating the parameters for spatial and temporal models.
 
 ```{r}
-fit_base(x = x_mcgf, lag = 10, model = "sep", optim_fn = "nlminb",
-         par_init = list(a = 1, alpha = 0.5, nugget = 0.1, c = 0.001, 
-                         gamma = 0.5), method = "wls")
+fit_spatial <- fit_base(x = x_mcgf, lag = 10, model = "spatial", 
+                        par_init = list(nugget = 0, c = 0.001, gamma = 0.5), 
+                        method = "wls")
+fit_spatial$fit
 ```
-To find the maximum likelihood estimates, we run
+```{r}
+fit_temporal <- fit_base(x = x_mcgf, lag = 10, model = "temporal", 
+                        par_init = list(a = 1, alpha = 0.5), 
+                        method = "wls")
+fit_temporal$fit
+```
+Alternatively, we can fit the separable model all at once:
 
 ```{r}
-fit_base(x = x_mcgf, lag = 10, model = "sep", optim_fn = "nlminb",
-         par_init = list(a = 1, alpha = 0.5, nugget = 0.1, c = 0.001, 
+fit_sep <- fit_base(x = x_mcgf, lag = 10, model = "sep",
+                    par_init = list(a = 1, alpha = 0.5, nugget = 0, c = 0.001, 
+                         gamma = 0.5))
+fit_sep$fit
+```
+we can also estimate the parameters using MLE:
+```{r}
+fit_sep2 <- fit_base(x = x_mcgf, lag = 10, model = "sep",
+                    par_init = list(a = 1, alpha = 0.5, nugget = 0, c = 0.001, 
                          gamma = 0.5), method = "mle")
+fit_sep2$fit
 ```
 
-<!-- ## Regime-Switching MCGF -->
+Now we will add the base model to `x_mcgf`:
+```{r}
+x_mcgf <- add_base(x_mcgf, fit_base = fit_sep)
+```
 
-<!-- Regime-switching MCGF can be simulated as -->
+To print the current model, we do
+```{r}
+model(x_mcgf)
+```
 
-<!-- ```{r, warning=FALSE,error=FALSE} -->
-<!-- par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5) -->
-<!-- par_t <- list(a = 1, alpha = 0.5) -->
-<!-- par_base <- list(par_s = par_s, par_t = par_t) -->
-<!-- par_lagr <- list(v1 = 5, v2 = 10) -->
+### Estimate the Lagrangian model
 
-<!-- set.seed(123) -->
-<!-- labels <- sample(1:2, 1000, replace = TRUE) -->
-<!-- X <- mcgf_rs_sim(N = 1000, -->
-<!--                  labels = labels, -->
-<!--                  base_ls = list("sep"), -->
-<!--                  lagrangian_ls = list("none", "none"), -->
-<!--                  lambda_ls = list(0, 0.5), -->
-<!--                  par_base_ls = list(par_base), -->
-<!--                  par_lagr_ls = list(NULL, par_lagr), -->
-<!--                  dists_ls = list(dists, dists)) -->
-<!-- plot.ts(X[, -1]) -->
-<!-- ``` -->
+Similarly, we can estimate the parameters for the Lagrangian component by
+```{r}
+fit_lagr <- fit_lagr(x = x_mcgf, model = "lagr_tri",
+                    par_init = list(lambda = 0.1, v1 = 10, v2 = 10, k = 1))
+fit_lagr$fit
+```
+
+We can add the Lagrangian model by
+```{r}
+x_mcgf <- add_lagr(x_mcgf, fit_lagr = fit_lagr)
+```
+
+Finally we may print the final model:
+```{r}
+model(x_mcgf)
+```
+
+### Kriging forecast
+
+This package provides kriging forecasts (and intervals) for empirical, base, and general stationary models. We will obtain forecasts for the test dataset.
+```{r}
+# Empirical model
+fit_emp <- krige(x_mcgf, model = "empirical", newdata = test, interval = TRUE)
+rmse_emp <- sqrt(mean(colMeans((test - fit_emp$fit) ^ 2, na.rm = T)))
+
+# Base separable model
+fit_base <- krige(x_mcgf, model = "base", newdata = test, interval = TRUE)
+rmse_base <- sqrt(mean(colMeans((test - fit_base$fit) ^ 2, na.rm = T)))
+
+# Stationary model
+fit_stat <- krige(x_mcgf, model = "all", newdata = test, interval = TRUE)
+rmse_stat <- sqrt(mean(colMeans((test - fit_stat$fit) ^ 2, na.rm = T)))
+
+rmse <- c(rmse_emp, rmse_base, rmse_stat)
+names(rmse) <- c("Empirical", "Separable", "Stationary")
+rmse
+```
 
