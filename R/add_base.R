@@ -146,7 +146,7 @@ add_base.mcgf <- function(x,
         )
 
         dists_base <- fit_s$dists_base
-        base_res <- c(base_res, dists_base = dists_base)
+        base_res <- c(base_res, list(dists_base = dists_base))
 
         attr(x, "base") <- "sep"
         attr(x, "base_res") <- base_res
@@ -165,7 +165,7 @@ add_base.mcgf <- function(x,
             dots = fit_base$dots
         )
         dists_base <- fit_base$dists_base
-        base_res <- c(base_res, dists_base = dists_base)
+        base_res <- c(base_res, list(dists_base = dists_base))
 
         attr(x, "base") <- fit_base$model
         attr(x, "base_res") <- base_res
@@ -307,7 +307,7 @@ add_base.mcgf_rs <- function(x,
             )
 
             dists_base <- fit_s$dists_base
-            base_res <- c(base_res, dists_base = dists_base)
+            base_res <- c(base_res, list(dists_base = dists_base))
 
             base_res_ls[[i]] <- base_res
             lag_ls[[i]] <- lag
@@ -376,7 +376,7 @@ add_base.mcgf_rs <- function(x,
                 dots = fit_base$dots
             )
             dists_base <- fit_base$dists_base
-            base_res <- c(base_res, dists_base = dists_base)
+            base_res <- c(base_res, list(dists_base = dists_base))
 
             base_res_ls[[i]] <- base_res
             lag_ls[[i]] <- lag
@@ -420,7 +420,7 @@ add_base.mcgf_rs <- function(x,
         dots = value$dots
     )
     dists_base <- value$dists_base
-    base_res <- c(base_res, dists_base = dists_base)
+    base_res <- c(base_res, list(dists_base = dists_base))
 
     attr(x, "base") <- value$model
     attr(x, "base_res") <- base_res

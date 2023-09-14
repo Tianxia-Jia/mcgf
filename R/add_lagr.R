@@ -75,7 +75,7 @@ add_lagr.mcgf <- function(x, fit_lagr, ...) {
     )
 
     dists_lagr <- fit_lagr$dists_lagr
-    lagr_res <- c(lagr_res, dists_lagr = dists_lagr)
+    lagr_res <- c(lagr_res, list(dists_lagr = dists_lagr))
 
     attr(x, "lagr") <- fit_lagr$model
     attr(x, "lagr_res") <- lagr_res
@@ -182,7 +182,7 @@ add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
             dots = fit_lagr$dots
         )
         dists_lagr <- fit_lagr$dists_lagr
-        lagr_res <- c(lagr_res, dists_lagr = dists_lagr)
+        lagr_res <- c(lagr_res, list(dists_lagr = dists_lagr))
 
         lagr_res_ls[[i]] <- lagr_res
         lagr_model_ls[[i]] <- lagrangian
@@ -219,7 +219,7 @@ add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
         dots = value$dots
     )
     dists_lagr <- value$dists_lagr
-    lagr_res <- c(lagr_res, dists_lagr = dists_lagr)
+    lagr_res <- c(lagr_res, list(dists_lagr = dists_lagr))
 
     attr(x, "lagr") <- value$model
     attr(x, "lagr_res") <- lagr_res

@@ -31,7 +31,7 @@ ccov.mcgf <- function(x, model = c("all", "base", "empirical"),
     empirical <- FALSE
 
     if (model == "empirical") {
-        cor_ar <- ccfs(x)[,,1:(horizon + lag)]
+        cor_ar <- ccfs(x)[, , 1:(horizon + lag)]
         empirical <- TRUE
 
     } else if (model == "base") {
