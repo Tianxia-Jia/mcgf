@@ -284,7 +284,8 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
                  "`x`.", call. = FALSE)
 
         new_lvs <- levels(label)
-        prob <- prob[, which(lvs %in% new_lvs)]
+
+        prob[, which(!lvs %in% new_lvs)] <- 0
 
         if (ncol(prob) == 1) {
             soft <- FALSE
