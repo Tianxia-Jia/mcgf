@@ -10,8 +10,9 @@ to_ar <- function(h, lag_max, u = TRUE) {
     dim_ar <- c(dim(h)[1:2], lag_max + 1)
 
     if (length(dim(h)) == 3) {
-        if (any(dim_ar != dim(h)))
-            stop('unmatching dimension of h.', call. = FALSE)
+        if (any(dim_ar != dim(h))) {
+            stop("unmatching dimension of h.", call. = FALSE)
+        }
         h_ar <- h
     } else {
         h_ar <- array(h, dim = dim_ar)

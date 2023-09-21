@@ -8,9 +8,8 @@
 #' @keywords internal
 #' @return The objective of weighted least squares.
 obj_wls <- function(par, cor_fn, cor_emp, par_fixed) {
-
     fitted <- do.call(cor_fn, c(par, par_fixed))
-    summand <- ((cor_emp - fitted) / (1 - fitted)) ^ 2
+    summand <- ((cor_emp - fitted) / (1 - fitted))^2
     summand[is.infinite(summand)] <- NA
     wls <- sum(summand, na.rm = T)
     return(wls)
@@ -28,7 +27,6 @@ obj_wls <- function(par, cor_fn, cor_emp, par_fixed) {
 #' @return The objective of maximum likelihood: the additive inverse of
 #' log-likelihood.
 obj_mle <- function(par, cor_fn, x, lag, par_fixed) {
-
     sds <- sds(x)
     n_var <- length(sds)
 
@@ -46,9 +44,8 @@ obj_mle <- function(par, cor_fn, x, lag, par_fixed) {
     det_cov_curr <- det(new_cov_par$cov_curr)
 
     if (is.na(det_cov_curr) || det_cov_curr < 0) {
-        return(99999)
+        return(NA)
     } else {
-
         mle_label <- attr(x, "mle_label", exact = TRUE)
         x_ts <- stats::embed(as.matrix(x), n_lag)
 
@@ -59,21 +56,22 @@ obj_mle <- function(par, cor_fn, x, lag, par_fixed) {
             x_ts <- x_ts[ind_n, ]
         }
 
-        mu_c <- t(tcrossprod(new_cov_par$weights,
-                             x_ts[, -c(1:(n_var * horizon))]))
+        mu_c <- tcrossprod(x_ts[, -c(1:(n_var * horizon))], new_cov_par$weights)
         mu_diff <- x_ts[, 1:(n_var * horizon)] - mu_c
 
         cov_curr_inv <- mat_inv(new_cov_par$cov_curr)
 
-        llike <- -nrow(x_ts) * log(det_cov_curr) -
-            sum(apply(mu_diff, 1, function(x, y)
-                t(x) %*% y %*% x, cov_curr_inv))
-
-        if (is.infinite(llike)) {
-            return(99999)
+        if (det_cov_curr == 0) {
+            llike <- -sum(apply(mu_diff, 1, function(x, y) {
+                crossprod(x, y) %*% x
+            }, cov_curr_inv))
         } else {
-            return(-llike)
+            llike <- -nrow(x_ts) * log(det_cov_curr) -
+                sum(apply(mu_diff, 1, function(x, y) {
+                    crossprod(x, y) %*% x
+                }, cov_curr_inv))
         }
+        return(-llike)
     }
 }
 
@@ -92,18 +90,19 @@ obj_mle <- function(par, cor_fn, x, lag, par_fixed) {
 #' @return A list outputted from optimization functions of `optim_fn`.
 estimate <- function(par_init, method, optim_fn, cor_fn, par_fixed, lower,
                      upper, ...) {
-
     obj_fn <- switch(method,
-                     wls = obj_wls,
-                     mle = obj_mle)
+        wls = obj_wls,
+        mle = obj_mle
+    )
 
     args <- list(par_init,
-                 obj_fn,
-                 cor_fn = cor_fn,
-                 par_fixed = par_fixed,
-                 lower = lower,
-                 upper = upper,
-                 ...)
+        obj_fn,
+        cor_fn = cor_fn,
+        par_fixed = par_fixed,
+        lower = lower,
+        upper = upper,
+        ...
+    )
 
     if (optim_fn == "optim") args <- c(args, method = "L-BFGS-B")
 

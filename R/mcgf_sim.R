@@ -40,7 +40,6 @@
                       mu_c,
                       mu_p,
                       return_all = FALSE) {
-
     lag_max <- lag + horizon - 1
     n_var <- nrow(dists$h)
     n_block_row <- lag_max + 1
@@ -85,7 +84,7 @@
     X <- init
     for (n in 1:n_rounds) {
         X_past <- stats::embed(utils::tail(X, lag), lag)
-        X_new_mean <- mu_c + X_cov_par$weights %*% t(X_past - mu_p)
+        X_new_mean <- mu_c + tcrossprod(X_cov_par$weights, X_past - mu_p)
 
         X_new <- mvnfast::rmvn(1, X_new_mean, X_cov_par$cov_curr)
         X_new <- matrix(X_new, ncol = n_var, byrow = T)
@@ -98,16 +97,17 @@
 
     if (return_all) {
         cov_mat_joint <- cov_joint(cov = cov_ar)
-        par <- list(cov_mat = cov_mat_joint,
-                    dists = list(h = h_ar),
-                    u = u_ar)
+        par <- list(
+            cov_mat = cov_mat_joint,
+            dists = list(h = h_ar),
+            u = u_ar
+        )
 
         if (lagrangian == "lagr_tri") {
-            par$dists = list(h = h_ar, h1 = h1_ar, h2 = h2_ar)
+            par$dists <- list(h = h_ar, h1 = h1_ar, h2 = h2_ar)
         }
 
         return(list(X = X, par = par))
-
     } else {
         return(X = X)
     }
@@ -125,12 +125,14 @@
 #' par_lagr <- list(v1 = 5, v2 = 10)
 #' h1 <- matrix(c(0, 5, -5, 0), nrow = 2)
 #' h2 <- matrix(c(0, 8, -8, 0), nrow = 2)
-#' h <- sqrt(h1 ^ 2 + h2 ^ 2)
+#' h <- sqrt(h1^2 + h2^2)
 #' dists <- list(h = h, h1 = h1, h2 = h2)
 #'
 #' set.seed(123)
-#' X <- mcgf_sim(N = 1000, base = "sep", lagrangian = "lagr_tri", lambda = 0.5,
-#'               par_base = par_base, par_lagr = par_lagr, dists = dists)
+#' X <- mcgf_sim(
+#'     N = 1000, base = "sep", lagrangian = "lagr_tri", lambda = 0.5,
+#'     par_base = par_base, par_lagr = par_lagr, dists = dists
+#' )
 #' # plot.ts(X)
 #'
 #' @family {simulations of Markov chain Gaussian fields}
@@ -149,19 +151,21 @@ mcgf_sim <- function(N,
                      mu_c = 0,
                      mu_p = 0,
                      return_all = FALSE) {
-
-    if (N < horizon)
+    if (N < horizon) {
         stop("`N` must be no less than `horizon`", call. = FALSE)
+    }
 
-    if (is.null(dists$h))
+    if (is.null(dists$h)) {
         stop("missing 'h' in `dists`.", call. = FALSE)
+    }
 
     if (lagrangian != "none") {
-
-        if (is.null(dists$h1))
+        if (is.null(dists$h1)) {
             stop("missing 'h1' in `dists`.", call. = FALSE)
-        if (is.null(dists$h2))
+        }
+        if (is.null(dists$h2)) {
             stop("missing 'h2' in `dists`.", call. = FALSE)
+        }
     }
 
     lag_max <- lag + horizon - 1
@@ -176,9 +180,11 @@ mcgf_sim <- function(N,
     if (length(init) == 1) {
         init <- matrix(init, nrow = n_block_row, ncol = n_var)
     } else {
-        if (NROW(init) != n_block_row || NCOL(init) !=  n_var)
+        if (NROW(init) != n_block_row || NCOL(init) != n_var) {
             stop("dim of 'n_var' must be 1 or ", n_block_row, " x ", n_var, ".",
-                 call. = FALSE)
+                call. = FALSE
+            )
+        }
     }
 
     sd <- check_length(x = sd, length = n_var, name = "sd")

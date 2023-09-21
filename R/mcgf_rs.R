@@ -10,12 +10,13 @@
 #' `data` part of the object. Additional attributes may be assigned and
 #' extracted.
 new_mcgf_rs <- function(x, label) {
-
     data <- as.data.frame(x)
     label <- as.factor(label)
 
-    return(structure(.Data = data, label = label,
-                  class = c("mcgf_rs", "mcgf", "data.frame")))
+    return(structure(
+        .Data = data, label = label,
+        class = c("mcgf_rs", "mcgf", "data.frame")
+    ))
 }
 
 #' Validate an mcgf_rs object
@@ -29,12 +30,12 @@ new_mcgf_rs <- function(x, label) {
 #' It validates an `mcgf_rs` object by checking if `label` is of the matching
 #' length.
 validate_mcgf_rs <- function(x) {
-
     n <- nrow(x)
     label <- attr(x, "label", exact = TRUE)
 
-    if (length(label) != n)
+    if (length(label) != n) {
         stop("length of `label` must be the same as the number of rows in `x`.")
+    }
 
     return(x)
 }
@@ -83,13 +84,17 @@ validate_mcgf_rs <- function(x) {
 #'
 #' @family {functions related to the rs class}
 mcgf_rs <- function(data, locations, dists, label, time) {
+    if (length(unique(label)) == 1) {
+        message(
+            "only 1 unique class found in `label`, consider using `mcgf()`",
+            "instead."
+        )
+    }
 
-    if (length(unique(label)) == 1)
-        message("only 1 unique class found in `label`, consider using `mcgf()`",
-                "instead.")
-
-    x_mcgf <- mcgf(data = data, locations = locations, dists = dists,
-                   time = time)
+    x_mcgf <- mcgf(
+        data = data, locations = locations, dists = dists,
+        time = time
+    )
 
 
     return(validate_mcgf_rs(new_mcgf_rs(x_mcgf, label)))
@@ -104,7 +109,7 @@ mcgf_rs <- function(data, locations, dists, label, time) {
 #' class. `as.mcgf_rs` coerces an `mcgf` object to an `mcgf_rs` object by adding
 #' regime labels. Fitted base or Lagrangian models in `x` are kept.
 #' @export
-is.mcgf_rs <- function(x){
+is.mcgf_rs <- function(x) {
     inherits(x, "mcgf_rs")
 }
 
@@ -114,7 +119,6 @@ is.mcgf_rs <- function(x){
 #' @param ncores Number of cpu cores used for computing in `[ccfs()]`.
 #' @export
 as.mcgf_rs <- function(x, label, ncores = 1) {
-
     x_mcgf_rs <- validate_mcgf_rs(new_mcgf_rs(x, label))
 
     if (!is.null(attr(x, "base_old", exact = TRUE))) {
@@ -130,7 +134,6 @@ as.mcgf_rs <- function(x, label, ncores = 1) {
     }
 
     if (!is.null(attr(x, "acfs", exact = TRUE))) {
-
         lag_max <- attr(x_mcgf_rs, "lag", exact = TRUE) +
             attr(x_mcgf_rs, "horizon", exact = TRUE) - 1
 
@@ -141,14 +144,15 @@ as.mcgf_rs <- function(x, label, ncores = 1) {
     }
 
     if (!is.null(attr(x, "ccfs", exact = TRUE))) {
-
         lag_max <- attr(x_mcgf_rs, "lag", exact = TRUE) +
             attr(x_mcgf_rs, "horizon", exact = TRUE) - 1
 
         acfs_x <- acfs(x_mcgf_rs)
         acfs(x_mcgf_rs) <- NULL
-        ccfs(x_mcgf_rs) <- ccfs(x_mcgf_rs, lag_max, ncores = ncores,
-                                replace = TRUE)
+        ccfs(x_mcgf_rs) <- ccfs(x_mcgf_rs, lag_max,
+            ncores = ncores,
+            replace = TRUE
+        )
         acfs(x_mcgf_rs) <- acfs_x
 
         sds(x_mcgf_rs) <- sds(x_mcgf_rs, replace = TRUE)

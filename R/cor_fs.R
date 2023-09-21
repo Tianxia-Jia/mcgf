@@ -31,7 +31,7 @@
 .cor_fs <- function(nugget, c, gamma = 1 / 2, a, alpha, beta = 0, h, u) {
     c_cauchy <- .cor_cauchy(a = a, alpha = alpha, nu = 1, x = u)
     c_exp <- .cor_exp(c = c, gamma = gamma, x = h)
-    corr <- c_cauchy * c_exp ^ (c_cauchy ^ (beta * gamma))
+    corr <- c_cauchy * c_exp^(c_cauchy^(beta * gamma))
     corr <- set_nugget(x = corr, nugget = nugget, set_to = c_cauchy)
     return(corr)
 }
@@ -52,28 +52,35 @@
 #'
 #' @family {correlation functions}
 cor_fs <- function(nugget = 0, c, gamma = 1 / 2, a, alpha, beta = 0, h, u) {
+    if (!is_numeric_scalar(nugget) || nugget < 0 || nugget > 1) {
+        stop("`nugget` must be in [0, 1].", call. = FALSE)
+    }
 
-    if (!is_numeric_scalar(nugget) || nugget < 0 || nugget > 1)
-        stop('`nugget` must be in [0, 1].', call. = FALSE)
+    if (!is_numeric_scalar(c) || c <= 0) {
+        stop("`c` must be positive.", call. = FALSE)
+    }
 
-    if (!is_numeric_scalar(c) || c <= 0)
-        stop('`c` must be positive.', call. = FALSE)
+    if (!is_numeric_scalar(gamma) || gamma <= 0 || gamma > 1 / 2) {
+        stop("`gamma` must be in (0, 1/2].", call. = FALSE)
+    }
 
-    if (!is_numeric_scalar(gamma) || gamma <= 0 || gamma > 1 / 2)
-        stop('`gamma` must be in (0, 1/2].', call. = FALSE)
+    if (!is_numeric_scalar(a) || a <= 0) {
+        stop("`a` must be positive.", call. = FALSE)
+    }
 
-    if (!is_numeric_scalar(a) || a <= 0)
-        stop('`a` must be positive.', call. = FALSE)
-
-    if (!is_numeric_scalar(alpha) || alpha <= 0 || alpha > 1)
-        stop('`alpha` must be in (0, 1].', call. = FALSE)
+    if (!is_numeric_scalar(alpha) || alpha <= 0 || alpha > 1) {
+        stop("`alpha` must be in (0, 1].", call. = FALSE)
+    }
 
     check_dist(x = h, name = "h")
 
-    if (is.null(dim(h)) != is.null(dim(u)) || any(dim(h) != dim(u)))
+    if (is.null(dim(h)) != is.null(dim(u)) || any(dim(h) != dim(u))) {
         stop("`u` must be of the same dimension as `h`.", call. = FALSE)
+    }
 
-    corr <- .cor_fs(nugget = nugget, c = c, gamma = gamma, a = a, alpha = alpha,
-                    beta = beta, h = h, u = u)
+    corr <- .cor_fs(
+        nugget = nugget, c = c, gamma = gamma, a = a, alpha = alpha,
+        beta = beta, h = h, u = u
+    )
     return(corr)
 }

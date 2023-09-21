@@ -43,7 +43,6 @@ add_base.mcgf <- function(x,
                           sep = FALSE,
                           old = FALSE,
                           ...) {
-
     if (old) {
         attr(x, "base_old") <- attr(x, "base", exact = TRUE)
         attr(x, "base_res_old") <- attr(x, "base_res", exact = TRUE)
@@ -52,7 +51,6 @@ add_base.mcgf <- function(x,
             lag_new <- fit_t$lag
             horizon_new <- fit_t$horizon
             scale_time_new <- fit_t$scale_time
-
         } else {
             lag_new <- fit_base$lag
             horizon_new <- fit_base$horizon
@@ -60,23 +58,29 @@ add_base.mcgf <- function(x,
         }
 
         if (!is.null(attr(x, "lag", exact = TRUE)) &&
-            attr(x, "lag", exact = TRUE) != lag_new)
+            attr(x, "lag", exact = TRUE) != lag_new) {
             stop("unmatching `lag` for old and new base models.", call. = FALSE)
+        }
 
         if (!is.null(attr(x, "horizon", exact = TRUE)) &&
-            attr(x, "horizon", exact = TRUE) != horizon_new)
+            attr(x, "horizon", exact = TRUE) != horizon_new) {
             stop("unmatching `horizon` for old and new base models.",
-                 call. = FALSE)
+                call. = FALSE
+            )
+        }
 
         if (!is.null(attr(x, "scale_time", exact = TRUE)) &&
-            attr(x, "scale_time", exact = TRUE) != scale_time_new)
+            attr(x, "scale_time", exact = TRUE) != scale_time_new) {
             stop("unmatching `scale_time` for old and new base models.",
-                 call. = FALSE)
+                call. = FALSE
+            )
+        }
     }
 
     if (sep) {
-        if (missing(fit_s) || missing(fit_t))
+        if (missing(fit_s) || missing(fit_t)) {
             stop("must give `fit_s` and `fit_t`.", call. = FALSE)
+        }
 
         par_s <- as.list(fit_s$fit$par)
         names(par_s) <- fit_s$par_names
@@ -98,18 +102,19 @@ add_base.mcgf <- function(x,
         }
 
         scale_time <- fit_t$scale_time
-
     } else {
-        if (!(fit_base$model %in% c("sep", "fs")))
-            stop('base model must be `sep` or `fs`.', call. = FALSE)
+        if (!(fit_base$model %in% c("sep", "fs"))) {
+            stop("base model must be `sep` or `fs`.", call. = FALSE)
+        }
 
         par_base <- as.list(fit_base$fit$par)
         names(par_base) <- fit_base$par_names
         par_base <- c(par_base, fit_base$par_fixed)
 
         base_fn <- switch(fit_base$model,
-                          sep = "..cor_sep",
-                          fs = ".cor_fs")
+            sep = "..cor_sep",
+            fs = ".cor_fs"
+        )
 
         lag_max <- fit_base$lag + fit_base$horizon - 1
 
@@ -153,7 +158,6 @@ add_base.mcgf <- function(x,
         attr(x, "lag") <- fit_t$lag
         attr(x, "scale_time") <- scale_time
         attr(x, "horizon") <- fit_t$horizon
-
     } else {
         base_res <- list(
             par_base = par_base,
@@ -194,7 +198,7 @@ add_base.mcgf <- function(x,
 #' @export
 #'
 #' @details
-#‘ This function is equivalent to [`add_base.mcgf()`] for `mcgf_rs` objects.
+# ‘ This function is equivalent to [`add_base.mcgf()`] for `mcgf_rs` objects.
 #'
 #' After fitting the base model by [`fit_base()`], the results can be added to
 #' `x` by [`add_base()`]. To supply the base model directly, use [`base<-`] to
@@ -209,7 +213,6 @@ add_base.mcgf_rs <- function(x,
                              sep = FALSE,
                              old = FALSE,
                              ...) {
-
     if (old) {
         attr(x, "base_old") <- attr(x, "base", exact = TRUE)
         attr(x, "base_res_old") <- attr(x, "base_res", exact = TRUE)
@@ -217,8 +220,9 @@ add_base.mcgf_rs <- function(x,
     }
 
     if (sep) {
-        if (missing(fit_s_ls) || missing(fit_t_ls))
+        if (missing(fit_s_ls) || missing(fit_t_ls)) {
             stop("must give `fit_s_ls` and `fit_t_ls`.", call. = FALSE)
+        }
 
         if (!fit_s_ls$rs && !fit_t_ls$rs) {
             x <- add_base.mcgf(
@@ -229,14 +233,18 @@ add_base.mcgf_rs <- function(x,
                 old = old,
                 ...
             )
-            attr(x, "base_rs") <- c(spatial = fit_s_ls$rs,
-                                    temporal = fit_t_ls$rs)
+            attr(x, "base_rs") <- c(
+                spatial = fit_s_ls$rs,
+                temporal = fit_t_ls$rs
+            )
             return(x)
         }
     } else {
         if (!fit_base_ls$rs) {
-            x <- add_base.mcgf(x = x, fit_base = fit_base_ls[[1]], old = old,
-                               ...)
+            x <- add_base.mcgf(
+                x = x, fit_base = fit_base_ls[[1]], old = old,
+                ...
+            )
             attr(x, "base_rs") <- FALSE
             return(x)
         }
@@ -257,7 +265,6 @@ add_base.mcgf_rs <- function(x,
         names(base_res_ls) <- names(lag_ls) <- paste0("Regime ", lvs)
 
         for (i in 1:n_regime) {
-
             fit_s <- fit_s_ls[[i]]
             fit_t <- fit_t_ls[[i]]
 
@@ -271,9 +278,12 @@ add_base.mcgf_rs <- function(x,
 
             par_base <- c(par_s, par_t)
 
-            if (fit_s$horizon != fit_t$horizon)
+            if (fit_s$horizon != fit_t$horizon) {
                 stop("unmatching `horizon` for pure spatial and pure temporal ",
-                     'models in "', names(lag_ls)[i], '".', call. = FALSE)
+                    'models in "', names(lag_ls)[i], '".',
+                    call. = FALSE
+                )
+            }
 
             lag <- fit_t$lag
             horizon <- fit_t$horizon
@@ -295,8 +305,10 @@ add_base.mcgf_rs <- function(x,
             base_res <- list(
                 par_base = par_base,
                 fit_base = list(spatial = fit_s$fit, temporal = fit_t$fit),
-                method_base = c(spatial = fit_s$method,
-                                temporal = fit_t$method),
+                method_base = c(
+                    spatial = fit_s$method,
+                    temporal = fit_t$method
+                ),
                 optim_fn = c(
                     spatial = fit_s$optim_fn,
                     temporal = fit_t$optim_fn
@@ -321,9 +333,7 @@ add_base.mcgf_rs <- function(x,
         attr(x, "lag") <- lag_ls
         attr(x, "scale_time") <- fit_t$scale_time
         attr(x, "horizon") <- horizon
-
     } else {
-
         if (!fit_base_ls$rs) {
             fit_base_ls <- c(rep(fit_base_ls[1], n_regime - 1), fit_base_ls)
         }
@@ -333,20 +343,23 @@ add_base.mcgf_rs <- function(x,
             paste0("Regime ", lvs)
 
         for (i in 1:n_regime) {
-
             fit_base <- fit_base_ls[[i]]
 
-            if (!(fit_base$model %in% c("sep", "fs")))
+            if (!(fit_base$model %in% c("sep", "fs"))) {
                 stop('base model must be `sep` or `fs` for "', names(lag_ls)[i],
-                     '".', call. = FALSE)
+                    '".',
+                    call. = FALSE
+                )
+            }
 
             par_base <- as.list(fit_base$fit$par)
             names(par_base) <- fit_base$par_names
             par_base <- c(par_base, fit_base$par_fixed)
 
             base_fn <- switch(fit_base$model,
-                              sep = "..cor_sep",
-                              fs = ".cor_fs")
+                sep = "..cor_sep",
+                fs = ".cor_fs"
+            )
 
             lag <- fit_base$lag
             horizon <- fit_base$horizon
@@ -401,14 +414,17 @@ add_base.mcgf_rs <- function(x,
 #'
 #' @export
 `base<-` <- function(x, value) {
-
-    if (any(! c("model", "par_base", "cor_base", "lag", "horizon") %in%
-            names(value)))
+    if (any(!c("model", "par_base", "cor_base", "lag", "horizon") %in%
+        names(value))) {
         stop("`value` must contain `model`, `par_base`, `cor_base`, `lag`",
-             ", and `horizon`.", call. = FALSE)
+            ", and `horizon`.",
+            call. = FALSE
+        )
+    }
 
-    if (is.null(attr(x, "base", exact = TRUE)))
+    if (is.null(attr(x, "base", exact = TRUE))) {
         message("Overwriting the existing base model.")
+    }
 
     base_res <- list(
         par_base = value$par_base,

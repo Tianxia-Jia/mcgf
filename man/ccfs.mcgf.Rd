@@ -62,8 +62,10 @@ ccfs(x = wind_mcgf, lag_max = 3)
 
 wind_sq <- sqrt(wind[, -1])
 time <- wind[, 1]
-wind_mcgf <- mcgf_rs(data = wind_sq, locations = wind_loc, time = time,
-label = c(rep(1,3574), rep(2, 3000)))
+wind_mcgf <- mcgf_rs(
+    data = wind_sq, locations = wind_loc, time = time,
+    label = c(rep(1, 3574), rep(2, 3000))
+)
 ccfs(x = wind_mcgf, lag_max = 3)
 # ccfs(x = wind_mcgf, lag_max = 3, ncores = 10)
 wind_sq <- sqrt(wind[, -1])

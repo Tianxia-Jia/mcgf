@@ -72,20 +72,26 @@ par_base <- list(par_s = par_s, par_t = par_t)
 par_lagr <- list(v1 = 5, v2 = 10)
 h1 <- matrix(c(0, 5, -5, 0), nrow = 2)
 h2 <- matrix(c(0, 8, -8, 0), nrow = 2)
-h <- sqrt(h1 ^ 2 + h2 ^ 2)
+h <- sqrt(h1^2 + h2^2)
 u <- matrix(0.1, nrow = 2, ncol = 2)
-cor_stat(base = "sep", lagrangian = "lagr_tri", par_base = par_base,
-         par_lagr = par_lagr, lambda = 0.8, h = h, h1 = h1, h2 = h2, u = u)
+cor_stat(
+    base = "sep", lagrangian = "lagr_tri", par_base = par_base,
+    par_lagr = par_lagr, lambda = 0.8, h = h, h1 = h1, h2 = h2, u = u
+)
 
 h1 <- array(c(0, 5, -5, 0), dim = c(2, 2, 3))
 h2 <- array(c(0, 8, -8, 0), dim = c(2, 2, 3))
-h <- sqrt(h1 ^ 2 + h2 ^ 2)
+h <- sqrt(h1^2 + h2^2)
 u <- array(rep(c(0.1, 0.2, 0.3), each = 4), dim = c(2, 2, 3))
-fit_base <- cor_fs(nugget = 0.5, c = 0.01, gamma = 0.5, a = 1, alpha = 0.5,
-                   beta = 0.0, h = h, u = u)
+fit_base <- cor_fs(
+    nugget = 0.5, c = 0.01, gamma = 0.5, a = 1, alpha = 0.5,
+    beta = 0.0, h = h, u = u
+)
 par_lagr <- list(v1 = 5, v2 = 10)
-cor_stat(base = fit_base, lagrangian = "lagr_askey", par_lagr = par_lagr,
-         h1 = h1, h2 = h2, u = u, lambda = 0.8, base_fixed = TRUE)
+cor_stat(
+    base = fit_base, lagrangian = "lagr_askey", par_lagr = par_lagr,
+    h1 = h1, h2 = h2, u = u, lambda = 0.8, base_fixed = TRUE
+)
 
 }
 \seealso{

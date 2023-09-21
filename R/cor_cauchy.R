@@ -19,9 +19,10 @@
 #' Gneiting, T., and Schlather, M. (2004). Stochastic Models That Separate
 #' Fractal Dimension and the Hurst Effect. SIAM Review, 46(2), 269–282.
 .cor_cauchy <- function(x, a, alpha, nu = 1, nugget = 0) {
-    corr <- (a * abs(x) ^ (2 * alpha) + 1) ^ (-nu)
-    if (nugget > 0)
+    corr <- (a * abs(x)^(2 * alpha) + 1)^(-nu)
+    if (nugget > 0) {
         corr <- add_nugget(x = corr, nugget = nugget)
+    }
     return(corr)
 }
 
@@ -42,26 +43,32 @@
 #'
 #' @family {correlation functions}
 cor_cauchy <- function(x, a, alpha, nu = 1, nugget = 0, is.dist = FALSE) {
+    if (!is_numeric_scalar(nugget) || nugget < 0 || nugget > 1) {
+        stop("`nugget` must be in [0, 1].", call. = FALSE)
+    }
 
-    if (!is_numeric_scalar(nugget) || nugget < 0 || nugget > 1)
-        stop('`nugget` must be in [0, 1].', call. = FALSE)
+    if (!is_numeric_scalar(a) || a <= 0) {
+        stop("`a` must be positive.", call. = FALSE)
+    }
 
-    if (!is_numeric_scalar(a) || a <= 0)
-        stop('`a` must be positive.', call. = FALSE)
+    if (!is_numeric_scalar(alpha) || alpha <= 0 || alpha > 1) {
+        stop("`alpha` must be in (0, 1].", call. = FALSE)
+    }
 
-    if (!is_numeric_scalar(alpha) || alpha <= 0 || alpha > 1)
-        stop('`alpha` must be in (0, 1].', call. = FALSE)
+    if (!is_numeric_scalar(nu) || nu <= 0) {
+        stop("`nu` must be positive.", call. = FALSE)
+    }
 
-    if (!is_numeric_scalar(nu) || nu <= 0)
-        stop('`nu` must be positive.', call. = FALSE)
-
-    if (nugget > 0 && is.dist == F)
-        stop('nugget effect used only when `is.dist = TRUE`.', call. = FALSE)
+    if (nugget > 0 && is.dist == F) {
+        stop("nugget effect used only when `is.dist = TRUE`.", call. = FALSE)
+    }
 
     if (is.dist) {
         check_dist(x)
-        corr <- .cor_cauchy(x = x, a = a, alpha = alpha, nu = nu,
-                            nugget = nugget)
+        corr <- .cor_cauchy(
+            x = x, a = a, alpha = alpha, nu = nu,
+            nugget = nugget
+        )
     } else {
         corr <- .cor_cauchy(x = x, a = a, alpha = alpha, nu = nu, nugget = 0)
     }

@@ -73,19 +73,21 @@ par_base <- list(par_s = par_s, par_t = par_t)
 par_lagr <- list(v1 = 5, v2 = 10)
 h1 <- matrix(c(0, 5, -5, 0), nrow = 2)
 h2 <- matrix(c(0, 8, -8, 0), nrow = 2)
-h <- sqrt(h1 ^ 2 + h2 ^ 2)
+h <- sqrt(h1^2 + h2^2)
 dists <- list(h = h, h1 = h1, h2 = h2)
 
 set.seed(123)
 label <- sample(1:2, 1000, replace = TRUE)
-X <- mcgf_rs_sim(N = 1000,
-                 label = label,
-                 base_ls = list("sep"),
-                 lagrangian_ls = list("none", "lagr_tri"),
-                 lambda_ls = list(0, 0.5),
-                 par_base_ls = list(par_base),
-                 par_lagr_ls = list(NULL, par_lagr),
-                 dists_ls = list(dists, dists))
+X <- mcgf_rs_sim(
+    N = 1000,
+    label = label,
+    base_ls = list("sep"),
+    lagrangian_ls = list("none", "lagr_tri"),
+    lambda_ls = list(0, 0.5),
+    par_base_ls = list(par_base),
+    par_lagr_ls = list(NULL, par_lagr),
+    dists_ls = list(dists, dists)
+)
 # plot.ts(X[, -1])
 
 }

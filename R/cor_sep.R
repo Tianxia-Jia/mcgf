@@ -41,7 +41,6 @@
 #' Space–Time Data, Journal of the American Statistical Association, 97:458,
 #' 590-600.
 .cor_sep <- function(spatial, temporal, par_s, par_t) {
-
     fit_s <- do.call(paste0("cor_", spatial), par_s)
     fit_t <- do.call(paste0("cor_", temporal), par_t)
     fit_sep <- fit_s * fit_t
@@ -64,15 +63,19 @@
 #' par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5)
 #' u <- matrix(0, nrow = 2, ncol = 2)
 #' par_t <- list(a = 1, alpha = 0.5)
-#' cor_sep(spatial = "exp", temporal = "cauchy", par_s = par_s, par_t = par_t,
-#'         h = h, u = u)
+#' cor_sep(
+#'     spatial = "exp", temporal = "cauchy", par_s = par_s, par_t = par_t,
+#'     h = h, u = u
+#' )
 #'
 #' h <- array(c(0, 5, 5, 0), dim = c(2, 2, 3))
 #' par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5)
 #' u <- array(rep(0:2, each = 4), dim = c(2, 2, 3))
 #' par_t <- list(a = 1, alpha = 0.5)
-#' cor_sep(spatial = "exp", temporal = "cauchy", par_s = par_s, par_t = par_t,
-#'         h = h, u = u)
+#' cor_sep(
+#'     spatial = "exp", temporal = "cauchy", par_s = par_s, par_t = par_t,
+#'     h = h, u = u
+#' )
 #'
 #' @family {correlation functions}
 cor_sep <- function(spatial = c("exp", "cauchy"),
@@ -81,17 +84,19 @@ cor_sep <- function(spatial = c("exp", "cauchy"),
                     par_t,
                     h,
                     u) {
-
     spatial <- match.arg(spatial)
     temporal <- match.arg(temporal)
 
-    if (is.null(dim(h)) != is.null(dim(u)) || any(dim(h) != dim(u)))
+    if (is.null(dim(h)) != is.null(dim(u)) || any(dim(h) != dim(u))) {
         stop("`u` must be of the same dimension as `h`.", call. = FALSE)
+    }
 
     par_s <- append(par_s, list(x = h, is.dist = TRUE))
     par_t <- append(par_t, list(x = u, is.dist = FALSE))
 
-    corr <- .cor_sep(spatial = spatial, temporal = temporal, par_s = par_s,
-                     par_t = par_t)
+    corr <- .cor_sep(
+        spatial = spatial, temporal = temporal, par_s = par_s,
+        par_t = par_t
+    )
     return(corr)
 }

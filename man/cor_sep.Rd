@@ -47,15 +47,19 @@ h <- matrix(c(0, 5, 5, 0), nrow = 2)
 par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5)
 u <- matrix(0, nrow = 2, ncol = 2)
 par_t <- list(a = 1, alpha = 0.5)
-cor_sep(spatial = "exp", temporal = "cauchy", par_s = par_s, par_t = par_t,
-        h = h, u = u)
+cor_sep(
+    spatial = "exp", temporal = "cauchy", par_s = par_s, par_t = par_t,
+    h = h, u = u
+)
 
 h <- array(c(0, 5, 5, 0), dim = c(2, 2, 3))
 par_s <- list(nugget = 0.5, c = 0.01, gamma = 0.5)
 u <- array(rep(0:2, each = 4), dim = c(2, 2, 3))
 par_t <- list(a = 1, alpha = 0.5)
-cor_sep(spatial = "exp", temporal = "cauchy", par_s = par_s, par_t = par_t,
-        h = h, u = u)
+cor_sep(
+    spatial = "exp", temporal = "cauchy", par_s = par_s, par_t = par_t,
+    h = h, u = u
+)
 
 }
 \references{

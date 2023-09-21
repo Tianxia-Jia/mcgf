@@ -51,49 +51,54 @@ ccfs <- function(x, ...) {
 #'
 #' @family {functions related to the auto- and cross-correlations}
 ccfs.mcgf <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
-
     ccfs <- attr(x, "ccfs", exact = TRUE)
 
     if (!is.null(ccfs) && !replace) {
         return(ccfs)
     } else {
         acfs <- attr(x, "acfs", exact = TRUE)
-        if (!is.null(acfs) && !is.mcgf_rs(x) && length(acfs) != lag_max + 1)
+        if (!is.null(acfs) && !is.mcgf_rs(x) && length(acfs) != lag_max + 1) {
             warning("`lag_max` must be the same as that in `acfs`")
+        }
 
-        if (!is_numeric_scalar(lag_max))
+        if (!is_numeric_scalar(lag_max)) {
             stop("`lag_max` must be numeric.")
+        }
 
-        if (lag_max < 0)
+        if (lag_max < 0) {
             stop("`lag_max` must be a positive integer.")
+        }
 
         data <- x
         n_var <- ncol(data)
 
         if ((n_var > 30 && lag_max > 10) || n_var > 50) {
-
             if (ncores == 1) {
-                cat("Large dataset, this may take a while. Set `ncores` > 1 to",
-                    "speed up.\n")
+                cat(
+                    "Large dataset, this may take a while. Set `ncores` > 1 to",
+                    "speed up.\n"
+                )
             }
-
         }
 
         ccfs <- array(
             NA,
             dim = c(n_var, n_var, lag_max + 1),
-            dimnames = list(colnames(data),
-                            colnames(data),
-                            paste0("lag", 0:lag_max))
+            dimnames = list(
+                colnames(data),
+                colnames(data),
+                paste0("lag", 0:lag_max)
+            )
         )
 
         if (ncores == 1) {
             for (i in 1:n_var) {
                 for (j in 1:n_var) {
-                    ccfs[i, j,] <- stats::ccf(data[, i],
-                                              data[, j],
-                                              lag.max = lag_max,
-                                              plot = F)$acf[-c(1:lag_max)]
+                    ccfs[i, j, ] <- stats::ccf(data[, i],
+                        data[, j],
+                        lag.max = lag_max,
+                        plot = F
+                    )$acf[-c(1:lag_max)]
                 }
             }
         } else {
@@ -106,8 +111,9 @@ ccfs.mcgf <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
             if (!requireNamespace("foreach", quietly = TRUE)) {
                 stop("The `foreach` package is required when `ncores` > 1.")
             }
-            if (ncores > parallel::detectCores())
+            if (ncores > parallel::detectCores()) {
                 ncores <- parallel::detectCores()
+            }
 
             cl <- parallel::makeCluster(ncores)
             doParallel::registerDoParallel(cl)
@@ -118,9 +124,10 @@ ccfs.mcgf <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
                 ccfs_i <- vector("list", n_var)
                 for (j in 1:n_var) {
                     ccfs_i[[j]] <- stats::ccf(data[, i],
-                                              data[, j],
-                                              lag.max = lag_max,
-                                              plot = F)$acf[-c(1:lag_max)]
+                        data[, j],
+                        lag.max = lag_max,
+                        plot = F
+                    )$acf[-c(1:lag_max)]
                 }
                 ccfs_i
             }
@@ -128,7 +135,7 @@ ccfs.mcgf <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
 
             for (i in 1:n_var) {
                 for (j in 1:n_var) {
-                    ccfs[i, j,] <- ccfs_ls[[i]][[j]]
+                    ccfs[i, j, ] <- ccfs_ls[[i]][[j]]
                 }
             }
         }
@@ -140,8 +147,10 @@ ccfs.mcgf <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
 #' @examples
 #' wind_sq <- sqrt(wind[, -1])
 #' time <- wind[, 1]
-#' wind_mcgf <- mcgf_rs(data = wind_sq, locations = wind_loc, time = time,
-#' label = c(rep(1,3574), rep(2, 3000)))
+#' wind_mcgf <- mcgf_rs(
+#'     data = wind_sq, locations = wind_loc, time = time,
+#'     label = c(rep(1, 3574), rep(2, 3000))
+#' )
 #' ccfs(x = wind_mcgf, lag_max = 3)
 #' # ccfs(x = wind_mcgf, lag_max = 3, ncores = 10)
 #' @export
@@ -153,33 +162,39 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
     } else {
         label <- attr(x, "label", exact = TRUE)
         acfs <- attr(x, "acfs", exact = TRUE)
-        if (!is.null(acfs) && length(acfs$acfs) != lag_max + 1)
+        if (!is.null(acfs) && length(acfs$acfs) != lag_max + 1) {
             warning("`lag_max` must be the same as that in `acfs`")
+        }
 
-        if (!is_numeric_scalar(lag_max))
+        if (!is_numeric_scalar(lag_max)) {
             stop("`lag_max` must be numeric.")
+        }
 
-        if (lag_max < 0)
+        if (lag_max < 0) {
             stop("`lag_max` must be a positive integer.")
+        }
 
         data <- x
         n_var <- ncol(data)
         n_regime <- length(levels(label))
 
         if ((n_var > 30 && lag_max > 10) || n_var > 50) {
-
             if (ncores == 1) {
-                cat("Large dataset, this may take a while. Set `ncores` > 1 to",
-                    "speed up.\n")
+                cat(
+                    "Large dataset, this may take a while. Set `ncores` > 1 to",
+                    "speed up.\n"
+                )
             }
         }
 
         ccfs_rs <- array(
             NA,
             dim = c(n_var, n_var, lag_max + 1),
-            dimnames = list(colnames(data),
-                            colnames(data),
-                            paste0("lag", 0:lag_max))
+            dimnames = list(
+                colnames(data),
+                colnames(data),
+                paste0("lag", 0:lag_max)
+            )
         )
         ccfs_rs <- rep(list(ccfs_rs), n_regime)
         names(ccfs_rs) <- paste0("Regime ", levels(label))
@@ -188,9 +203,10 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
             for (i in 1:n_var) {
                 for (j in 1:n_var) {
                     ccfs_i_j <- ccf_rs(data[, i],
-                                       data[, j],
-                                       label = label,
-                                       lag_max = lag_max)
+                        data[, j],
+                        label = label,
+                        lag_max = lag_max
+                    )
                     for (k in 1:n_regime) {
                         ccfs_rs[[k]][i, j, ] <- ccfs_i_j[[k]][-c(1:lag_max)]
                     }
@@ -206,8 +222,9 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
             if (!requireNamespace("foreach", quietly = TRUE)) {
                 stop("The `foreach` package is required when `ncores` > 1.")
             }
-            if (ncores > parallel::detectCores())
+            if (ncores > parallel::detectCores()) {
                 ncores <- parallel::detectCores()
+            }
 
             cl <- parallel::makeCluster(ncores)
             doParallel::registerDoParallel(cl)
@@ -219,9 +236,10 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
                 ccfs_i <- vector("list", n_var)
                 for (j in 1:n_var) {
                     ccfs_i[[j]] <- ccf_rs(data[, i],
-                                          data[, j],
-                                          label = label,
-                                          lag_max = lag_max)
+                        data[, j],
+                        label = label,
+                        lag_max = lag_max
+                    )
                 }
                 ccfs_i
             }
@@ -230,7 +248,7 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
             for (i in 1:n_var) {
                 for (j in 1:n_var) {
                     for (k in 1:n_regime) {
-                        ccfs_rs[[k]][i, j,] <-
+                        ccfs_rs[[k]][i, j, ] <-
                             ccfs_ls[[i]][[j]][[k]][-c(1:lag_max)]
                     }
                 }
@@ -251,7 +269,6 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
 #' @return Cross-correlations for each group in `label`.
 #' @export
 ccf_rs <- function(x, y, label, lag_max) {
-
     stopifnot(length(x) == length(y))
     stopifnot(length(y) == length(label))
 
@@ -271,11 +288,10 @@ ccf_rs <- function(x, y, label, lag_max) {
         x
     })
 
-    for(k in 1:n_reg) {
-
+    for (k in 1:n_reg) {
         x_k <- x[label == lvs[k]]
         y_k <- y[label == lvs[k]]
-        denom <- sqrt(sum(x_k ^ 2) * sum(y_k ^ 2))
+        denom <- sqrt(sum(x_k^2) * sum(y_k^2))
 
         for (u in 0:lag_max) {
             y.u <- stats::lag(y, -u)
@@ -283,7 +299,7 @@ ccf_rs <- function(x, y, label, lag_max) {
             label_u <- label[(1 + u):n_x]
             numer <- x_x_u[label_u == lvs[k]]
 
-            if(length(numer) == 0) {
+            if (length(numer) == 0) {
                 ccf_ls[[k]][lag_max + u + 1] <- NA
             } else {
                 ccf_ls[[k]][lag_max + u + 1] <- sum(numer) / denom
@@ -297,7 +313,7 @@ ccf_rs <- function(x, y, label, lag_max) {
             label_u <- label[(1 + u):n_x]
             numer <- x_x_u[label_u == lvs[k]]
 
-            if(length(numer) == 0) {
+            if (length(numer) == 0) {
                 ccf_ls[[k]][lag_max + 1 - u] <- NA
             } else {
                 ccf_ls[[k]][lag_max + 1 - u] <- sum(numer) / denom
@@ -318,7 +334,6 @@ ccf_rs <- function(x, y, label, lag_max) {
 #' @param value Cross-correlations.
 #' @export
 `ccfs<-` <- function(x, value) {
-
     attr(x, "ccfs") <- value
     return(x)
 }
@@ -334,7 +349,6 @@ ccf_rs <- function(x, y, label, lag_max) {
 #' print(wind_mcgf, "sds")
 #' @export
 add_ccfs <- function(x, lag_max, ncores = 1, ...) {
-
     ccfs <- ccfs(x = x, lag_max = lag_max, ncores = ncores, ...)
     attr(x, "ccfs") <- ccfs
 

@@ -7,12 +7,13 @@
 #' @export
 #' @family {functions related to the class}
 print.mcgf <- function(x, attr = ".Data", ...) {
-
     if (attr == ".Data") {
         print.data.frame(x, ...)
-        cat("\nOther attributes:",
+        cat(
+            "\nOther attributes:",
             paste(names(attributes(x))[-c(1:3)], collapse = ", "),
-            "\n")
+            "\n"
+        )
         return(invisible(NULL))
     } else {
         print(attr(x, attr, exact = TRUE))

@@ -37,7 +37,7 @@
 #' par_base <- list(par_s = par_s, par_t = par_t)
 #' h1 <- array(c(0, 5, -5, 0), dim = c(2, 2, 3))
 #' h2 <- array(c(0, 8, -8, 0), dim = c(2, 2, 3))
-#' h <- sqrt(h1 ^ 2 + h2 ^ 2)
+#' h <- sqrt(h1^2 + h2^2)
 #' u <- array(rep(c(1, 2, 3), each = 4), dim = c(2, 2, 3))
 #' cor_stat_rs(
 #'     n_regime = 2,
@@ -55,10 +55,12 @@
 #' # Fit general stationary model given fs as the base model.
 #' h1 <- array(c(0, 5, -5, 0), dim = c(2, 2, 3))
 #' h2 <- array(c(0, 8, -8, 0), dim = c(2, 2, 3))
-#' h <- sqrt(h1 ^ 2 + h2 ^ 2)
+#' h <- sqrt(h1^2 + h2^2)
 #' u <- array(rep(c(0.1, 0.2, 0.3), each = 4), dim = c(2, 2, 3))
-#' fit_base <- cor_fs(nugget = 0.5, c = 0.01, gamma = 0.5, a = 1, alpha = 0.5,
-#'                    beta = 0.0, h = h, u = u)
+#' fit_base <- cor_fs(
+#'     nugget = 0.5, c = 0.01, gamma = 0.5, a = 1, alpha = 0.5,
+#'     beta = 0.0, h = h, u = u
+#' )
 #' par_lagr <- list(v1 = 5, v2 = 10)
 #' cor_stat_rs(
 #'     n_regime = 2,
@@ -86,7 +88,6 @@ cor_stat_rs <- function(n_regime,
                         h2_ls,
                         u_ls,
                         base_fixed = FALSE) {
-
     if (!is_numeric_scalar(n_regime)) {
         stop("'n_regime' must be an integer.", call. = FALSE)
     } else {
@@ -94,31 +95,42 @@ cor_stat_rs <- function(n_regime,
     }
 
     if (all(lagrangian_ls == "none")) {
-
         par_lagr_ls <- h1_ls <- h2_ls <- vector("list", n_regime)
         lambda_ls <- rep(list(0), n_regime)
-
     } else if (any(lagrangian_ls == "none")) {
-
-        if (missing(par_lagr_ls) || length(par_lagr_ls) != n_regime)
+        if (missing(par_lagr_ls) || length(par_lagr_ls) != n_regime) {
             stop("length of `par_lagr_ls` must be ", n_regime,
-                 " if `par_lagr_ls` contains 'none'.", call. = FALSE)
+                " if `par_lagr_ls` contains 'none'.",
+                call. = FALSE
+            )
+        }
 
-        if (missing(lambda_ls) || length(lambda_ls) != n_regime)
+        if (missing(lambda_ls) || length(lambda_ls) != n_regime) {
             stop("length of `lambda_ls` must be ", n_regime,
-                 " if `lambda_ls`` contains 'none'.", call. = FALSE)
+                " if `lambda_ls`` contains 'none'.",
+                call. = FALSE
+            )
+        }
 
-        if (missing(h1_ls) || length(h1_ls) != n_regime)
+        if (missing(h1_ls) || length(h1_ls) != n_regime) {
             stop("length of `h1_ls` must be ", n_regime,
-                 " if `h1_ls`` contains 'none'.", call. = FALSE)
+                " if `h1_ls`` contains 'none'.",
+                call. = FALSE
+            )
+        }
 
-        if (missing(h2_ls) || length(h2_ls) != n_regime)
+        if (missing(h2_ls) || length(h2_ls) != n_regime) {
             stop("length of `h2_ls` must be ", n_regime,
-                 " if `h2_ls` contains 'none'.", call. = FALSE)
+                " if `h2_ls` contains 'none'.",
+                call. = FALSE
+            )
+        }
     }
 
-    args_stat <- c("base", "lagrangian", "par_base", "par_lagr", "lambda", "h",
-                   "h1", "h2", "u")
+    args_stat <- c(
+        "base", "lagrangian", "par_base", "par_lagr", "lambda", "h",
+        "h1", "h2", "u"
+    )
     args_stat_i <- paste0("i_", args_stat)
     args_stat_rs <- paste0(args_stat, "_ls")
 
@@ -129,12 +141,13 @@ cor_stat_rs <- function(n_regime,
 
         if (length_args_i == 1) {
             assign(args_stat_i[i], rep(1L, n_regime))
-
         } else if (length_args_i == n_regime) {
             assign(args_stat_i[i], 1:n_regime)
         } else {
             stop("length of `", args_stat_rs[i], "` must be 1 or ", n_regime,
-                 ".", call. = FALSE)
+                ".",
+                call. = FALSE
+            )
         }
     }
 

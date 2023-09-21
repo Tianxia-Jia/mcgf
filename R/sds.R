@@ -49,7 +49,6 @@ sds.mcgf <- function(x, ...) {
 #' @param replace Logical; if TRUE, `sds` are recalculated.
 #' @export
 sds.mcgf_rs <- function(x, replace = FALSE, ...) {
-
     if (replace) {
         label <- attr(x, "label", exact = TRUE)
         sds_rs <- sd_rs(x = x, label = label)
@@ -74,15 +73,16 @@ sds.mcgf_rs <- function(x, replace = FALSE, ...) {
 #' @return A list of standard deviations for each regime.
 #' @export
 sd_rs <- function(x, label) {
-
-    if (!is.factor(label))
+    if (!is.factor(label)) {
         label <- as.factor(label)
+    }
 
     lvs <- levels(label)
 
     n_reg <- length(lvs)
-    sd_ls <- lapply(1:n_reg, function(i)
-        apply(x[label == lvs[i], ], 2, stats::sd))
+    sd_ls <- lapply(1:n_reg, function(i) {
+        apply(x[label == lvs[i], ], 2, stats::sd)
+    })
     names(sd_ls) <- paste0("Regime ", levels(label))
 
     return(sd_ls)
@@ -93,7 +93,6 @@ sd_rs <- function(x, label) {
 #' stations (under each regime and combined).
 #' @export
 `sds<-` <- function(x, value) {
-
     attr(x, "sds") <- value
     return(x)
 }

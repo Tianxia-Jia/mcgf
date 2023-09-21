@@ -39,7 +39,6 @@ dists <- function(x, ...) {
 #' obj
 #' @family {functions related to the class}
 dists.mcgf <- function(x, ...) {
-
     dists <- attr(x, "dists", exact = TRUE)
 
     if (is.null(dists)) {
@@ -53,9 +52,10 @@ dists.mcgf <- function(x, ...) {
 #' @param value List of signed distance matrices, outputted from [dists()].
 #' @export
 `dists<-` <- function(x, value) {
-
-    dists <- check_dists(dists = value, n_var = ncol(x),
-                         names = colnames(x), name_dists = "value")
+    dists <- check_dists(
+        dists = value, n_var = ncol(x),
+        names = colnames(x), name_dists = "value"
+    )
     attr(x, "dists") <- value
     return(x)
 }
@@ -79,16 +79,18 @@ dists.mcgf <- function(x, ...) {
 #' rdists(10, scale = 1)
 #' rdists(10, names = LETTERS[1:10])
 rdists <- function(N, names, scale = 100) {
-    if (!is_numeric_scalar(N))
+    if (!is_numeric_scalar(N)) {
         stop("`N` must be an integer.")
+    }
 
     x <- stats::rnorm(N) * scale
     y <- stats::rnorm(N) * scale
     grid <- cbind(x, y)
 
     if (!missing(names)) {
-        if (length(names) != N)
+        if (length(names) != N) {
             stop("Length of `names` must be `N`.")
+        }
     } else {
         names <- paste0("loc", 1:N)
     }

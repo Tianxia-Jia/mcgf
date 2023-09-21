@@ -9,8 +9,10 @@ time <- as.Date(paste(wind$year + 1900, wind$month, wind$day, sep = "-"))
 wind <- wind[, -c(1:3, 6)]
 wind <- wind * 1852 / 3600
 wind <- data.frame(time = time, wind)
-wind <- wind[, c("time", "VAL", "BEL", "CLA", "SHA", "RPT", "BIR", "MUL", "MAL",
-                 "KIL", "CLO", "DUB")]
+wind <- wind[, c(
+    "time", "VAL", "BEL", "CLA", "SHA", "RPT", "BIR", "MUL", "MAL",
+    "KIL", "CLO", "DUB"
+)]
 colnames(wind)[colnames(wind) == "RPT"] <- "ROC"
 usethis::use_data(wind, overwrite = TRUE)
 

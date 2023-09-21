@@ -59,7 +59,6 @@ fit_lagr.mcgf <- function(x,
                           dists_base = FALSE,
                           dists_lagr = NULL,
                           ...) {
-
     model <- match.arg(model)
 
     if (model == "none") {
@@ -72,7 +71,8 @@ fit_lagr.mcgf <- function(x,
             par_fixed = NULL,
             dists_base = NULL,
             dists_lagr = NULL,
-            dots = NULL))
+            dots = NULL
+        ))
     }
 
     method <- match.arg(method)
@@ -88,101 +88,120 @@ fit_lagr.mcgf <- function(x,
     scale_time <- attr(x, "scale_time", exact = TRUE)
 
     if (!is.null(par_fixed)) {
-
         par_fixed_nm <- names(par_fixed)
 
-        if (is.null(par_fixed_nm) || any(!par_fixed_nm %in% par_model))
+        if (is.null(par_fixed_nm) || any(!par_fixed_nm %in% par_model)) {
             stop("unknow parameters in `par_fixed`.")
+        }
 
         ind_not_fixed <- which(!par_model %in% par_fixed_nm)
         par_model <- par_model[ind_not_fixed]
 
         if (!is.null(lower)) {
-            if (length(lower) != length(par_model))
+            if (length(lower) != length(par_model)) {
                 stop("`lower` must be of length ", length(par_model), ".",
-                     call. = FALSE)
+                    call. = FALSE
+                )
+            }
             lower_model <- lower
         }
 
         lower_model <- lower_model[ind_not_fixed]
 
         if (!is.null(upper)) {
-            if (length(upper) != length(par_model))
+            if (length(upper) != length(par_model)) {
                 stop("`upper` must be of length ", length(par_model), ".",
-                     call. = FALSE)
+                    call. = FALSE
+                )
+            }
             upper_model <- upper
         }
 
         upper_model <- upper_model[ind_not_fixed]
-
     } else {
-
         par_fixed <- NULL
 
         if (!is.null(lower)) {
-            if (length(lower) != length(par_model))
+            if (length(lower) != length(par_model)) {
                 stop("`lower` must be of length ", length(par_model), ".",
-                     call. = FALSE)
+                    call. = FALSE
+                )
+            }
             lower_model <- lower
         }
 
         if (!is.null(upper)) {
-            if (length(upper) != length(par_model))
+            if (length(upper) != length(par_model)) {
                 stop("`upper` must be of length ", length(par_model), ".",
-                     call. = FALSE)
+                    call. = FALSE
+                )
+            }
             upper_model <- upper
         }
     }
 
-    if (is.null(par_init))
+    if (is.null(par_init)) {
         stop("must provide `par_init`.", call. = FALSE)
+    }
 
     par_init_nm <- names(par_init)
-    if (is.null(par_init_nm) || any(!par_init_nm %in% par_model))
+    if (is.null(par_init_nm) || any(!par_init_nm %in% par_model)) {
         stop("unknow parameters in `par_init`.", call. = FALSE)
+    }
 
     if (any(!par_model %in% par_init_nm)) {
         par_missing <- par_model[which(!par_model %in% par_init_nm)]
         stop("initial value(s) for ",
-             paste0('`', par_init_nm, "`", collapse = ", "),
-             " not found.", call. = FALSE)
+            paste0("`", par_init_nm, "`", collapse = ", "),
+            " not found.",
+            call. = FALSE
+        )
     }
 
     par_init <- par_init[order(match(names(par_init), par_model))]
 
     optim_fn <- match.arg(optim_fn)
     if (optim_fn == "other") {
-        if (is.null(other_optim_fn))
+        if (is.null(other_optim_fn)) {
             stop("specify a optimization function.", call. = FALSE)
-        optim_fn = other_optim_fn
+        }
+        optim_fn <- other_optim_fn
     }
 
     if (dists_base) {
-        if (!is.null(dists_lagr))
+        if (!is.null(dists_lagr)) {
             warning("`dists_base` is used. Set it to FALSE if `dists_lagr` ",
-                    "needs to be used.", call. = FALSE)
+                "needs to be used.",
+                call. = FALSE
+            )
+        }
         dists_base_ls <- attr(x, "base_res", exact = TRUE)$dists_base
 
-        if (is.null(dists_base_ls))
+        if (is.null(dists_base_ls)) {
             stop("`dists_base` is NULL.", call. = FALSE)
+        }
 
-        if (any(names(dists_base_ls) != c("h", "h1", "h2")))
+        if (any(names(dists_base_ls) != c("h", "h1", "h2"))) {
             stop("`dists_base` must be a list of matrices/arrays with ",
-                 "names `h`, `h1`, 'h2'.", call. = FALSE)
+                "names `h`, `h1`, 'h2'.",
+                call. = FALSE
+            )
+        }
 
         lagr_h <- dists_base_ls$h
         lagr_h1 <- dists_base_ls$h1
         lagr_h2 <- dists_base_ls$h2
-
     } else {
         if (is.null(dists_lagr)) {
             lagr_h <- dists(x)$h
             lagr_h1 <- dists(x)$h1
             lagr_h2 <- dists(x)$h2
-        } else{
+        } else {
             if (any(names(dists_lagr) != c("h", "h1", "h2"))) {
                 stop("`dists_lagr` must be a list of matrices/arrays with ",
-                     "names `h`, `h1`, 'h2'.", call. = FALSE)
+                    "names `h`, `h1`, 'h2'.",
+                    call. = FALSE
+                )
             } else {
                 check_dist(dists_lagr$h)
                 check_dist_sign(dists_lagr$h1, "h1")
@@ -195,17 +214,24 @@ fit_lagr.mcgf <- function(x,
         }
     }
 
-    if (any(dim(lagr_h) != dim(lagr_h1)))
+    if (any(dim(lagr_h) != dim(lagr_h1))) {
         stop("unmatching dimensions for `h` and `h1 `in `dists`.",
-             call. = FALSE)
-    if (any(dim(lagr_h) != dim(lagr_h2)))
+            call. = FALSE
+        )
+    }
+    if (any(dim(lagr_h) != dim(lagr_h2))) {
         stop("unmatching dimensions for `h` and `h2 `in `dists`.",
-             call. = FALSE)
+            call. = FALSE
+        )
+    }
 
     if (!is.matrix(lagr_h)) {
-        if (dim(lagr_h)[3] < lag_max + 1)
+        if (dim(lagr_h)[3] < lag_max + 1) {
             stop("third dims from `dists_lagr` must be greater or ",
-                 "equal to ", lag_max + 1, ".", call. = FALSE)
+                "equal to ", lag_max + 1, ".",
+                call. = FALSE
+            )
+        }
 
         lagr_h <- lagr_h[, , 1:(lag_max + 1)]
         lagr_h1 <- lagr_h1[, , 1:(lag_max + 1)]
@@ -226,7 +252,6 @@ fit_lagr.mcgf <- function(x,
     )
 
     if (method == "wls") {
-
         res_lagr <- estimate(
             par_init = par_init,
             method = method,
@@ -238,9 +263,7 @@ fit_lagr.mcgf <- function(x,
             upper = upper_model,
             ...
         )
-
     } else {
-
         res_lagr <- estimate(
             par_init = par_init,
             method = method,
@@ -264,7 +287,8 @@ fit_lagr.mcgf <- function(x,
         par_fixed = par_fixed,
         dists_base = dists_base,
         dists_lagr = dists_lagr,
-        dots = dots))
+        dots = dots
+    ))
 }
 
 #' Parameter estimation for Lagrangian correlation functions for an `mcgf_rs`
@@ -317,12 +341,14 @@ fit_lagr.mcgf_rs <- function(x,
                              dists_lagr_ls = list(NULL),
                              rs = TRUE,
                              ...) {
-
-    if (missing(dists_base_ls))
+    if (missing(dists_base_ls)) {
         dists_base_ls <- list(FALSE)
+    }
 
-    args_ls <- c("model", "method", "optim_fn", "par_fixed", "par_init",
-                 "lower", "upper", "other_optim_fn", "dists_base", "dists_lagr")
+    args_ls <- c(
+        "model", "method", "optim_fn", "par_fixed", "par_init",
+        "lower", "upper", "other_optim_fn", "dists_base", "dists_lagr"
+    )
     args_i <- paste0("i_", args_ls)
     args_rs <- paste0(args_ls, "_ls")
 
@@ -331,7 +357,6 @@ fit_lagr.mcgf_rs <- function(x,
     base_rs <- attr(x, "base_rs", exact = TRUE)
 
     if (rs) {
-
         lvs <- levels((attr(x, "label", exact = TRUE)))
         n_regime <- length(lvs)
         res_lagr_ls <- vector("list", n_regime)
@@ -341,12 +366,13 @@ fit_lagr.mcgf_rs <- function(x,
 
             if (length_args_i == 1) {
                 assign(args_i[i], rep(1L, n_regime))
-
             } else if (length_args_i == n_regime) {
                 assign(args_i[i], 1:n_regime)
             } else {
                 stop("length of `", args_rs[i], "` must be 1 or ", n_regime,
-                     ".", call. = FALSE)
+                    ".",
+                    call. = FALSE
+                )
             }
         }
 
@@ -372,19 +398,22 @@ fit_lagr.mcgf_rs <- function(x,
             } else {
                 attr(x_n, "base_res") <- attr(x_n, "base_res", exact = TRUE)
             }
-            res_lagr_ls[[n]] <- do.call(fit_lagr.mcgf,
-                                        c(args_n, list(x = x_n), ...))
+            res_lagr_ls[[n]] <- do.call(
+                fit_lagr.mcgf,
+                c(args_n, list(x = x_n), ...)
+            )
         }
 
         names(res_lagr_ls) <- paste0("Regime ", lvs)
         res_lagr_ls <- c(res_lagr_ls, rs = rs)
         return(res_lagr_ls)
-
     } else {
-
-        if (base_rs)
+        if (base_rs) {
             stop("the base model cannot be regime-switching if the Lagragian",
-                 " model is not regime-switching.", call. = FALSE)
+                " model is not regime-switching.",
+                call. = FALSE
+            )
+        }
 
         if (length(unique(lag_ls)) != 1) {
             stop("`lag` must be the same for all regimes.", call. = FALSE)
@@ -409,8 +438,10 @@ fit_lagr.mcgf_rs <- function(x,
         } else {
             attr(x_no_rs, "base_res") <- attr(x_no_rs, "base_res", exact = TRUE)
         }
-        res_lagr_ls <- do.call(fit_lagr.mcgf,
-                               c(args_no_rs, list(x = x_no_rs), ...))
+        res_lagr_ls <- do.call(
+            fit_lagr.mcgf,
+            c(args_no_rs, list(x = x_no_rs), ...)
+        )
         res_lagr_ls <- c(list(res_lagr_ls), rs = rs)
         return(res_lagr_ls)
     }

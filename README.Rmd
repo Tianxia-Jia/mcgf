@@ -6,10 +6,10 @@ output: github_document
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+    collapse = TRUE,
+    comment = "#>",
+    fig.path = "man/figures/README-",
+    out.width = "100%"
 )
 ```
 
@@ -48,9 +48,11 @@ par_sep <- list(par_s = par_spatial, par_t = par_temporal)
 par_lagr <- list(v1 = 10, v2 = 50, k = 2)
 
 set.seed(1234)
-X <- mcgf_sim(N = 1500, base = "sep", lagrangian = "lagr_tri", lambda = 0.5, 
-              par_base = par_sep, par_lagr = par_lagr, dists = dists, 
-              lag = 10)
+X <- mcgf_sim(
+    N = 1500, base = "sep", lagrangian = "lagr_tri", lambda = 0.5,
+    par_base = par_sep, par_lagr = par_lagr, dists = dists,
+    lag = 10
+)
 plot.ts(X)
 ```
 
@@ -77,30 +79,42 @@ x_mcgf <- add_ccfs(x = x_mcgf, lag_max = 10)
 To perform parameter estimation, we can start with estimating the parameters for spatial and temporal models.
 
 ```{r}
-fit_spatial <- fit_base(x = x_mcgf, lag = 10, model = "spatial", 
-                        par_init = list(nugget = 0, c = 0.001, gamma = 0.5), 
-                        method = "wls")
+fit_spatial <- fit_base(
+    x = x_mcgf, lag = 10, model = "spatial",
+    par_init = list(nugget = 0, c = 0.001, gamma = 0.5),
+    method = "wls"
+)
 fit_spatial$fit
 ```
 ```{r}
-fit_temporal <- fit_base(x = x_mcgf, lag = 10, model = "temporal", 
-                        par_init = list(a = 1, alpha = 0.5), 
-                        method = "wls")
+fit_temporal <- fit_base(
+    x = x_mcgf, lag = 10, model = "temporal",
+    par_init = list(a = 1, alpha = 0.5),
+    method = "wls"
+)
 fit_temporal$fit
 ```
 Alternatively, we can fit the separable model all at once:
 
 ```{r}
-fit_sep <- fit_base(x = x_mcgf, lag = 10, model = "sep",
-                    par_init = list(a = 1, alpha = 0.5, nugget = 0, c = 0.001, 
-                         gamma = 0.5))
+fit_sep <- fit_base(
+    x = x_mcgf, lag = 10, model = "sep",
+    par_init = list(
+        a = 1, alpha = 0.5, nugget = 0, c = 0.001,
+        gamma = 0.5
+    )
+)
 fit_sep$fit
 ```
 we can also estimate the parameters using MLE:
 ```{r}
-fit_sep2 <- fit_base(x = x_mcgf, lag = 10, model = "sep",
-                    par_init = list(a = 1, alpha = 0.5, nugget = 0, c = 0.001, 
-                         gamma = 0.5), method = "mle")
+fit_sep2 <- fit_base(
+    x = x_mcgf, lag = 10, model = "sep",
+    par_init = list(
+        a = 1, alpha = 0.5, nugget = 0, c = 0.001,
+        gamma = 0.5
+    ), method = "mle"
+)
 fit_sep2$fit
 ```
 
@@ -118,8 +132,10 @@ model(x_mcgf)
 
 Similarly, we can estimate the parameters for the Lagrangian component by
 ```{r}
-fit_lagr <- fit_lagr(x = x_mcgf, model = "lagr_tri",
-                    par_init = list(lambda = 0.1, v1 = 10, v2 = 10, k = 1))
+fit_lagr <- fit_lagr(
+    x = x_mcgf, model = "lagr_tri",
+    par_init = list(lambda = 0.1, v1 = 10, v2 = 10, k = 1)
+)
 fit_lagr$fit
 ```
 
@@ -139,15 +155,15 @@ This package provides kriging forecasts (and intervals) for empirical, base, and
 ```{r}
 # Empirical model
 fit_emp <- krige(x_mcgf, model = "empirical", newdata = test, interval = TRUE)
-rmse_emp <- sqrt(mean(colMeans((test - fit_emp$fit) ^ 2, na.rm = T)))
+rmse_emp <- sqrt(mean(colMeans((test - fit_emp$fit)^2, na.rm = T)))
 
 # Base separable model
 fit_base <- krige(x_mcgf, model = "base", newdata = test, interval = TRUE)
-rmse_base <- sqrt(mean(colMeans((test - fit_base$fit) ^ 2, na.rm = T)))
+rmse_base <- sqrt(mean(colMeans((test - fit_base$fit)^2, na.rm = T)))
 
 # Stationary model
 fit_stat <- krige(x_mcgf, model = "all", newdata = test, interval = TRUE)
-rmse_stat <- sqrt(mean(colMeans((test - fit_stat$fit) ^ 2, na.rm = T)))
+rmse_stat <- sqrt(mean(colMeans((test - fit_stat$fit)^2, na.rm = T)))
 
 rmse <- c(rmse_emp, rmse_base, rmse_stat)
 names(rmse) <- c("Empirical", "Separable", "Stationary")

@@ -6,8 +6,10 @@ test_that("cor_exp() calculates exponential correlation", {
 
 test_that("cor_exp() errors if nugget > 0 but is.dist = FALSE", {
     x <- matrix(c(0, 5, 0, 5, 0, 1, 0, 1, 0), nrow = 3)
-    expect_error(cor_exp(x, c = 0.01, gamma = 0.5, nugget = 0.5,
-                         is.dist = FALSE))
+    expect_error(cor_exp(x,
+        c = 0.01, gamma = 0.5, nugget = 0.5,
+        is.dist = FALSE
+    ))
 })
 
 test_that("cor_cauchy() errors if invalid distance", {

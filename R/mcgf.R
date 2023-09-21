@@ -13,16 +13,16 @@
 #' `data.frame` class, all methods remain valid to the `data` part of the
 #' object. Additional attributes may be assigned and extracted.
 new_mcgf <- function(data, locations, dists, time) {
-
     data <- as.data.frame(data)
     rownames(data) <- time
 
     if (!missing(dists)) {
         structure(.Data = data, dists = dists, class = c("mcgf", "data.frame"))
-    }
-    else {
-        structure(.Data = data, locations = locations,
-                  class = c("mcgf", "data.frame"))
+    } else {
+        structure(
+            .Data = data, locations = locations,
+            class = c("mcgf", "data.frame")
+        )
     }
 }
 
@@ -37,15 +37,16 @@ new_mcgf <- function(data, locations, dists, time) {
 #' It validates an `mcgf` object by checking if `dists` contains valid
 #' distance matrics/arrays.
 validate_mcgf <- function(x) {
-
     data <- x
     n_var <- ncol(x)
     locations <- attr(x, "locations", exact = TRUE)
     dists <- attr(x, "dists", exact = TRUE)
 
     if (!is.null(dists)) {
-        dists <- check_dists(dists = dists, n_var = n_var,
-                             names = colnames(data))
+        dists <- check_dists(
+            dists = dists, n_var = n_var,
+            names = colnames(data)
+        )
         attr(x, "dists") <- dists
     }
     return(x)
@@ -84,12 +85,13 @@ validate_mcgf <- function(x) {
 #'
 #' @family {functions related to the class}
 mcgf <- function(data, locations, dists, time) {
-
-    if (!is.data.frame(data) && !is.matrix(data))
+    if (!is.data.frame(data) && !is.matrix(data)) {
         stop("`data` must be a matrix or data.frame.", call. = FALSE)
+    }
 
-    if (any(is.na(data)))
+    if (any(is.na(data))) {
         stop("`data` must not contain missing values.", call. = FALSE)
+    }
 
     if (any(sapply(data, function(x) !is.numeric(x)))) {
         stop("non numeric values found in `data`.", call. = FALSE)
@@ -97,7 +99,8 @@ mcgf <- function(data, locations, dists, time) {
 
     if (missing(locations) && missing(dists)) {
         stop("must provide either `locations` or `dists`.",
-             call. = FALSE)
+            call. = FALSE
+        )
     }
 
     if (!missing(locations) && !missing(dists)) {
@@ -109,45 +112,58 @@ mcgf <- function(data, locations, dists, time) {
     n_var <- NCOL(data)
 
     if (missing(time)) {
-        cat("`time` not provided, assuming rows are equally spaced temporally.",
-            "\n")
+        cat(
+            "`time` not provided, assuming rows are equally spaced temporally.",
+            "\n"
+        )
         time <- 1:NROW(data)
     }
 
     if (length(time) != NROW(data)) {
         stop("length of `time` must be the same as the number of rows of ",
-             "`data`.", call. = FALSE)
+            "`data`.",
+            call. = FALSE
+        )
     }
 
     diff_time <- diff(time)
-    if (length(unique(diff_time)) != 1)
+    if (length(unique(diff_time)) != 1) {
         stop("`time` must be equally spaced.")
-    if (unique(diff_time) < 0)
+    }
+    if (unique(diff_time) < 0) {
         stop("`time` must be in ascending order.")
+    }
 
     if (!missing(locations)) {
-
-        if (ncol(data) != nrow(locations))
+        if (ncol(data) != nrow(locations)) {
             stop("number of columns of `data` must be the same as the ",
-                 "number of rows of `locations`", call. = FALSE)
+                "number of rows of `locations`",
+                call. = FALSE
+            )
+        }
 
-        if (!is.null(rownames(locations)))
+        if (!is.null(rownames(locations))) {
             locations <- locations[match(name_var, rownames(locations)), ]
+        }
 
         if (any(colnames(data) != rownames(locations))) {
             stop("row names of `locations` are not the same as the column ",
-                 "names of `data`.", call. = FALSE)
+                "names of `data`.",
+                call. = FALSE
+            )
             rownames(locations) <- colnames(data)
         }
-        return(validate_mcgf(new_mcgf(data = data, locations = locations,
-                                      time = time)))
+        return(validate_mcgf(new_mcgf(
+            data = data, locations = locations,
+            time = time
+        )))
     } else {
-
         if (!is.list(dists)) {
             stop("`dists` must be a list.", call. = FALSE)
         }
-        if (any(!c("h1", "h2") %in% names(dists)))
+        if (any(!c("h1", "h2") %in% names(dists))) {
             stop("`dists` must contain 'h1' and 'h2',", call. = FALSE)
+        }
 
         return(validate_mcgf(new_mcgf(data = data, dists = dists, time = time)))
     }
@@ -159,6 +175,6 @@ mcgf <- function(data, locations, dists, time) {
 #'
 #' @return Logical; TRUE if `x` is of the `mcgf` class
 #' @export
-is.mcgf <- function(x){
+is.mcgf <- function(x) {
     inherits(x, "mcgf")
 }

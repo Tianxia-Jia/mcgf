@@ -17,7 +17,6 @@
 #' This function is a special case of [`.cor_stat()`]. It is used inside
 #' [`fit_lagr()`].
 ..cor_stat <- function(cor_base, lagrangian, lambda, v1, v2, k = 2, h1, h2, u) {
-
     par_lagr <- list(v1 = v1, v2 = v2, k = k, h1 = h1, h2 = h2, u = u)
     fit_lagr <- do.call(paste0(".cor_", lagrangian), par_lagr)
     corr <- (1 - lambda) * cor_base + lambda * fit_lagr
@@ -54,17 +53,16 @@
 #' When `lagrangian = "none"`, `lambda` must be 0.
 #'
 #' @references
-#'Gneiting, T., Genton, M., & Guttorp, P. (2006). Geostatistical Space-Time
-#'Models, Stationarity, Separability, and Full Symmetry. In C&amp;H/CRC
-#'Monographs on Statistics &amp; Applied Probability (pp. 151–175).
-#'Chapman and Hall/CRC.
+#' Gneiting, T., Genton, M., & Guttorp, P. (2006). Geostatistical Space-Time
+#' Models, Stationarity, Separability, and Full Symmetry. In C&amp;H/CRC
+#' Monographs on Statistics &amp; Applied Probability (pp. 151–175).
+#' Chapman and Hall/CRC.
 .cor_stat <- function(base,
                       lagrangian,
                       par_base,
                       par_lagr,
                       lambda,
                       base_fixed = FALSE) {
-
     if (base_fixed) {
         fit_base <- base
     } else {
@@ -100,20 +98,26 @@
 #' par_lagr <- list(v1 = 5, v2 = 10)
 #' h1 <- matrix(c(0, 5, -5, 0), nrow = 2)
 #' h2 <- matrix(c(0, 8, -8, 0), nrow = 2)
-#' h <- sqrt(h1 ^ 2 + h2 ^ 2)
+#' h <- sqrt(h1^2 + h2^2)
 #' u <- matrix(0.1, nrow = 2, ncol = 2)
-#' cor_stat(base = "sep", lagrangian = "lagr_tri", par_base = par_base,
-#'          par_lagr = par_lagr, lambda = 0.8, h = h, h1 = h1, h2 = h2, u = u)
+#' cor_stat(
+#'     base = "sep", lagrangian = "lagr_tri", par_base = par_base,
+#'     par_lagr = par_lagr, lambda = 0.8, h = h, h1 = h1, h2 = h2, u = u
+#' )
 #'
 #' h1 <- array(c(0, 5, -5, 0), dim = c(2, 2, 3))
 #' h2 <- array(c(0, 8, -8, 0), dim = c(2, 2, 3))
-#' h <- sqrt(h1 ^ 2 + h2 ^ 2)
+#' h <- sqrt(h1^2 + h2^2)
 #' u <- array(rep(c(0.1, 0.2, 0.3), each = 4), dim = c(2, 2, 3))
-#' fit_base <- cor_fs(nugget = 0.5, c = 0.01, gamma = 0.5, a = 1, alpha = 0.5,
-#'                    beta = 0.0, h = h, u = u)
+#' fit_base <- cor_fs(
+#'     nugget = 0.5, c = 0.01, gamma = 0.5, a = 1, alpha = 0.5,
+#'     beta = 0.0, h = h, u = u
+#' )
 #' par_lagr <- list(v1 = 5, v2 = 10)
-#' cor_stat(base = fit_base, lagrangian = "lagr_askey", par_lagr = par_lagr,
-#'          h1 = h1, h2 = h2, u = u, lambda = 0.8, base_fixed = TRUE)
+#' cor_stat(
+#'     base = fit_base, lagrangian = "lagr_askey", par_lagr = par_lagr,
+#'     h1 = h1, h2 = h2, u = u, lambda = 0.8, base_fixed = TRUE
+#' )
 #'
 #' @family {correlation functions}
 #' @family {Lagrangian correlation functions}
@@ -128,15 +132,13 @@ cor_stat <- function(base = c("sep", "fs"),
                      h2,
                      u,
                      base_fixed = FALSE) {
-
     lagrangian <- match.arg(lagrangian)
 
     if (lagrangian == "none") {
-
         if (base_fixed) {
             stop("cannot supply `base` when `lagragian = 'none'`",
-                 call. = FALSE)
-
+                call. = FALSE
+            )
         } else {
             base <- match.arg(base)
             if (base == "sep") {
@@ -159,21 +161,24 @@ cor_stat <- function(base = c("sep", "fs"),
                 base_fixed = FALSE
             )
         }
-
     } else {
+        par_lagr <- append(
+            par_lagr,
+            list(h1 = h1, h2 = h2, u = u)
+        )
 
-        par_lagr <- append(par_lagr,
-                           list(h1 = h1, h2 = h2, u = u))
-
-        if (lambda < 0 || lambda > 1)
+        if (lambda < 0 || lambda > 1) {
             stop("`lambda` must be in [0, 1].",
-                 call. = FALSE)
+                call. = FALSE
+            )
+        }
 
         if (base_fixed) {
-
-            if (any(dim(base) != dim(h1)))
+            if (any(dim(base) != dim(h1))) {
                 stop("`base` must be of the same dimension as `h1`.",
-                     call. = FALSE)
+                    call. = FALSE
+                )
+            }
 
             corr <- .cor_stat(
                 base = base,
@@ -182,7 +187,6 @@ cor_stat <- function(base = c("sep", "fs"),
                 lambda = lambda,
                 base_fixed = TRUE
             )
-
         } else {
             base <- match.arg(base)
             if (base == "sep") {

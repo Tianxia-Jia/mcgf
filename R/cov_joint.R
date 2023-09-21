@@ -17,7 +17,6 @@
 #'
 #' `cov_par` gives weights and covariance matrix for the current values..
 cov_joint <- function(cov) {
-
     cov_t <- aperm(cov, c(2, 1, 3))
     n_var <- dim(cov)[1]
     lag_max <- dim(cov)[3] - 1
@@ -27,10 +26,12 @@ cov_joint <- function(cov) {
     cov_all <- matrix(cov[, , ind_toep[1, ] + 1], nrow = n_var)
 
     for (i in 2:n_block) {
-        ind_u_i <- ind_toep[i,][-c(1:(i - 1))]
-        ind_u_t_i <- ind_toep[i,][1:(i - 1)]
-        cov_i <- cbind(matrix(cov_t[, , ind_u_t_i + 1], nrow = n_var),
-                       matrix(cov[, , ind_u_i + 1], nrow = n_var))
+        ind_u_i <- ind_toep[i, ][-c(1:(i - 1))]
+        ind_u_t_i <- ind_toep[i, ][1:(i - 1)]
+        cov_i <- cbind(
+            matrix(cov_t[, , ind_u_t_i + 1], nrow = n_var),
+            matrix(cov[, , ind_u_i + 1], nrow = n_var)
+        )
 
         cov_all <- rbind(cov_all, cov_i)
     }
@@ -44,18 +45,21 @@ cov_joint <- function(cov) {
 #' @keywords internal
 #' @return Inverse of x.
 mat_inv <- function(x) {
-
-    x_inv <- tryCatch({
-        chol2inv(chol(x))
-    },
-    error = function(e) {
-        tryCatch({
-            solve(x)
+    x_inv <- tryCatch(
+        {
+            chol2inv(chol(x))
         },
         error = function(e) {
-            MASS::ginv(x)
-        })
-    })
+            tryCatch(
+                {
+                    solve(x)
+                },
+                error = function(e) {
+                    MASS::ginv(x)
+                }
+            )
+        }
+    )
     return(x_inv)
 }
 
@@ -67,7 +71,6 @@ mat_inv <- function(x) {
 #'
 #' @keywords internal
 cov_par <- function(cov, horizon = 1, n_var, joint = FALSE) {
-
     if (joint) {
         if (missing(n_var)) {
             stop("missing `n_var`.", call. = FALSE)

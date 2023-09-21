@@ -24,13 +24,13 @@
 #' Askey, R. (1973). Radial characteristic functions, Tech. Report No. 1262,
 #' Math. Research Center, University of Wisconsin-Madison.
 .cor_lagr_askey <- function(v1, v2, k = 2, h1, h2, u) {
-    v_norm <- sqrt(v1 ^ 2 + v2 ^ 2)
+    v_norm <- sqrt(v1^2 + v2^2)
 
-    h_vu_norm <- sqrt((h1 - v1 * u) ^ 2 + (h2 - v2 * u) ^ 2)
+    h_vu_norm <- sqrt((h1 - v1 * u)^2 + (h2 - v2 * u)^2)
 
     lagr <- (1 - 1 / (k * v_norm) * h_vu_norm)
     lagr[lagr < 0] <- 0
-    lagr <- lagr ^ (3 / 2)
+    lagr <- lagr^(3 / 2)
 
     return(lagr)
 }
@@ -54,15 +54,17 @@
 #' @family {correlation functions}
 #' @family {Lagrangian correlation functions}
 cor_lagr_askey <- function(v1, v2, k = 2, h1, h2, u) {
+    if (!is_numeric_scalar(k) || k <= 0) {
+        stop("`k` must be positive.", call. = FALSE)
+    }
 
-    if (!is_numeric_scalar(k) || k <= 0)
-        stop('`k` must be positive.', call. = FALSE)
-
-    if (any(dim(h1) != dim(h2)))
+    if (any(dim(h1) != dim(h2))) {
         stop("`h2` must be of the same dimension as `h1`.", call. = FALSE)
+    }
 
-    if (any(dim(h1) != dim(u)))
+    if (any(dim(h1) != dim(u))) {
         stop("`u` must be of the same dimension as `h1`.", call. = FALSE)
+    }
 
     check_dist_sign(h1, name = "h1")
     check_dist_sign(h2, name = "h2")

@@ -9,7 +9,6 @@
 #' @keywords internal
 #' @return List of signed distances.
 .find_dists <- function(grid, names = NULL, longlat = TRUE) {
-
     n_var <- nrow(grid)
 
     lat <- cbind(mean(grid[, 1]), grid[, 2])
@@ -20,11 +19,11 @@
     lon_dists <- sp::spDists(lon, longlat = longlat)
     rownames(lon_dists) <- colnames(lon_dists) <- names
 
-    h <- sqrt(lon_dists ^ 2 + lat_dists ^ 2)
+    h <- sqrt(lon_dists^2 + lat_dists^2)
     rownames(h) <- colnames(h) <- names
 
     h1 <- matrix(0, ncol = n_var, nrow = n_var)
-    for(i in 1:n_var) {
+    for (i in 1:n_var) {
         for (j in 1:n_var) {
             h1[i, j] <- sign(grid[, 1][i] - grid[, 1][j]) *
                 lon_dists[i, j]
@@ -33,7 +32,7 @@
     rownames(h1) <- colnames(h1) <- names
 
     h2 <- matrix(0, ncol = n_var, nrow = n_var)
-    for(i in 1:n_var) {
+    for (i in 1:n_var) {
         for (j in 1:n_var) {
             h2[i, j] <- sign(grid[, 2][i] - grid[, 2][j]) *
                 lat_dists[i, j]
@@ -67,13 +66,14 @@
 #' rownames(locations) <- paste("Site", 1:3)
 #' find_dists(locations)
 find_dists <- function(locations, longlat = TRUE) {
-
-    if (NCOL(locations) != 2)
+    if (NCOL(locations) != 2) {
         stop("`locations` must contain 2 columns", call. = FALSE)
+    }
 
     names <- rownames(locations)
-    if (any(table(names) > 1))
+    if (any(table(names) > 1)) {
         stop("duplicate row names found in `locations`", call. = FALSE)
+    }
 
     dists_ls <- .find_dists(locations, names = names, longlat = longlat)
     return(dists_ls)

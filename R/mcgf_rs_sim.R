@@ -42,7 +42,6 @@
                          mu_c_ls,
                          mu_p_ls,
                          return_all = FALSE) {
-
     n_regime <- length(unique(label))
     regime <- sort(unique(label))
 
@@ -52,17 +51,26 @@
 
     u_ls <- lapply(lag_max_ls, function(x) (0:x) / scale_time)
     dim_ar_ls <- lapply(u_ls, function(x) c(n_var, n_var, length(x)))
-    h_ar_ls <- Map(function(x, dim) array(x$h, dim = dim),
-                   dists_ls, dim_ar_ls)
-    u_ar_ls <- Map(function(x, dim)
-        array(rep(x, each = n_var * n_var), dim = dim),
-        u_ls, dim_ar_ls)
+    h_ar_ls <- Map(
+        function(x, dim) array(x$h, dim = dim),
+        dists_ls, dim_ar_ls
+    )
+    u_ar_ls <- Map(
+        function(x, dim) {
+            array(rep(x, each = n_var * n_var), dim = dim)
+        },
+        u_ls, dim_ar_ls
+    )
 
     if (any(lagrangian_ls != "none")) {
-        h1_ar_ls <- Map(function(x, dim) array(x[["h1"]], dim = dim),
-                        dists_ls, dim_ar_ls)
-        h2_ar_ls <- Map(function(x, dim) array(x[["h2"]], dim = dim),
-                        dists_ls, dim_ar_ls)
+        h1_ar_ls <- Map(
+            function(x, dim) array(x[["h1"]], dim = dim),
+            dists_ls, dim_ar_ls
+        )
+        h2_ar_ls <- Map(
+            function(x, dim) array(x[["h2"]], dim = dim),
+            dists_ls, dim_ar_ls
+        )
 
         cov_ar_rs <- cor_stat_rs(
             n_regime = n_regime,
@@ -77,7 +85,6 @@
             u_ls = u_ar_ls,
             base_fixed = FALSE
         )
-
     } else {
         cov_ar_rs <- cor_stat_rs(
             n_regime = n_regime,
@@ -102,10 +109,15 @@
     for (n in 1:N) {
         regime_n <- which(label[n] == regime)
 
-        X_past <- stats::embed(utils::tail(X, lag_max_ls[[regime_n]]),
-                               lag_max_ls[[regime_n]])
+        X_past <- stats::embed(
+            utils::tail(X, lag_max_ls[[regime_n]]),
+            lag_max_ls[[regime_n]]
+        )
         X_new_mean <- mu_c_ls[[regime_n]] +
-            X_cov_par[[regime_n]]$weights %*% t(X_past - mu_p_ls[[regime_n]])
+            tcrossprod(
+                X_cov_par[[regime_n]]$weights,
+                X_past - mu_p_ls[[regime_n]]
+            )
 
         X_new <- mvnfast::rmvn(1, X_new_mean, X_cov_par[[k]]$cov_curr)
         X_new <- matrix(X_new, ncol = n_var, byrow = T)
@@ -117,17 +129,17 @@
     X <- cbind(regime = c(rep(NA, NROW(init)), label), X)
 
     if (return_all) {
-
         cov_mat_joint_ls <- lapply(cov_ar_rs, cov_joint)
-        par <- list(cov_mat_ls = cov_mat_joint_ls,
-                    dists_ls = list(h = h_ar_ls),
-                    u = u_ar_ls)
+        par <- list(
+            cov_mat_ls = cov_mat_joint_ls,
+            dists_ls = list(h = h_ar_ls),
+            u = u_ar_ls
+        )
 
         if (any(lagrangian_ls != "none")) {
             par$dists_ls <- list(h = h_ar_ls, h1 = h1_ar_ls, h2 = h2_ar_ls)
         }
         return(list(X = X, par = par))
-
     } else {
         return(X = X)
     }
@@ -143,19 +155,21 @@
 #' par_lagr <- list(v1 = 5, v2 = 10)
 #' h1 <- matrix(c(0, 5, -5, 0), nrow = 2)
 #' h2 <- matrix(c(0, 8, -8, 0), nrow = 2)
-#' h <- sqrt(h1 ^ 2 + h2 ^ 2)
+#' h <- sqrt(h1^2 + h2^2)
 #' dists <- list(h = h, h1 = h1, h2 = h2)
 #'
 #' set.seed(123)
 #' label <- sample(1:2, 1000, replace = TRUE)
-#' X <- mcgf_rs_sim(N = 1000,
-#'                  label = label,
-#'                  base_ls = list("sep"),
-#'                  lagrangian_ls = list("none", "lagr_tri"),
-#'                  lambda_ls = list(0, 0.5),
-#'                  par_base_ls = list(par_base),
-#'                  par_lagr_ls = list(NULL, par_lagr),
-#'                  dists_ls = list(dists, dists))
+#' X <- mcgf_rs_sim(
+#'     N = 1000,
+#'     label = label,
+#'     base_ls = list("sep"),
+#'     lagrangian_ls = list("none", "lagr_tri"),
+#'     lambda_ls = list(0, 0.5),
+#'     par_base_ls = list(par_base),
+#'     par_lagr_ls = list(NULL, par_lagr),
+#'     dists_ls = list(dists, dists)
+#' )
 #' # plot.ts(X[, -1])
 #'
 #' @family {simulations of Markov chain Gaussian fields}
@@ -174,27 +188,30 @@ mcgf_rs_sim <- function(N,
                         mu_c_ls = list(0),
                         mu_p_ls = list(0),
                         return_all = FALSE) {
-
     n_regime <- length(unique(label))
 
-    if (n_regime == 1)
+    if (n_regime == 1) {
         cat("Only 1 regime found in `label`. Simulating for 1 regime only.\n")
+    }
 
     for (k in 1:length(dists_ls)) {
-        if (is.null(dists_ls[[k]]$h))
+        if (is.null(dists_ls[[k]]$h)) {
             stop("missing 'h' for regime ", k, " in `dists_ls`.", call. = FALSE)
+        }
     }
 
     for (k in 1:length(lagrangian_ls)) {
-
         if (lagrangian_ls[[k]] != "none") {
-
-            if (is.null(dists_ls[[k]]$h1))
+            if (is.null(dists_ls[[k]]$h1)) {
                 stop("missing 'h1' for regime ", k, " in `dists_ls`.",
-                     call. = FALSE)
-            if (is.null(dists_ls[[k]]$h2))
+                    call. = FALSE
+                )
+            }
+            if (is.null(dists_ls[[k]]$h2)) {
                 stop("missing 'h2' for regime ", k, " in `dists_ls`.",
-                     call. = FALSE)
+                    call. = FALSE
+                )
+            }
         }
     }
 
@@ -211,17 +228,22 @@ mcgf_rs_sim <- function(N,
     n_block_row_ls <- lapply(lag_max_ls, function(x) x + 1)
 
     if (N < 1 + max(unlist(n_block_row_ls))) {
-        warning("'N' must be no less than ",
-                1 + max(unlist(n_block_row_ls)))
+        warning(
+            "'N' must be no less than ",
+            1 + max(unlist(n_block_row_ls))
+        )
         N <- 1 + max(unlist(n_block_row_ls))
     }
 
     if (length(init) == 1) {
         init <- matrix(init, nrow = max(unlist(n_block_row_ls)), ncol = n_var)
     } else {
-        if (NROW(init) != max(unlist(n_block_row_ls)) || NCOL(init) !=  n_var)
+        if (NROW(init) != max(unlist(n_block_row_ls)) || NCOL(init) != n_var) {
             stop("dim of `init` must be 1 or ", max(unlist(n_block_row_ls)),
-                 " x ", n_var, ".", call. = FALSE)
+                " x ", n_var, ".",
+                call. = FALSE
+            )
+        }
     }
 
     sd_ls <- check_length_ls(sd_ls, n_var, "sd_ls")
@@ -229,13 +251,13 @@ mcgf_rs_sim <- function(N,
     mu_p_ls <- check_length_ls(mu_p_ls, n_var, "mu_p_ls")
 
     if (length(sd_ls) != n_regime) {
-        sd_ls <-rep(sd_ls, n_regime)
+        sd_ls <- rep(sd_ls, n_regime)
     }
     if (length(mu_c_ls) != n_regime) {
-        mu_c_ls <-rep(mu_c_ls, n_regime)
+        mu_c_ls <- rep(mu_c_ls, n_regime)
     }
     if (length(mu_p_ls) != n_regime) {
-        mu_p_ls <-rep(mu_p_ls, n_regime)
+        mu_p_ls <- rep(mu_p_ls, n_regime)
     }
 
     res <- .mcgf_rs_sim(

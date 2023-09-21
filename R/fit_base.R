@@ -63,7 +63,6 @@ fit_base.mcgf <- function(x,
                           dists_base = NULL,
                           scale_time = 1,
                           ...) {
-
     scale_time <- as.integer(scale_time)
     model <- match.arg(model)
 
@@ -78,19 +77,20 @@ fit_base.mcgf <- function(x,
             par_fixed = NULL,
             dists_base = NULL,
             scale_time = 1,
-            dots = NULL))
+            dots = NULL
+        ))
     }
 
     method <- match.arg(method)
     dots <- list(...)
 
-    if(!is_numeric_scalar(lag)) {
+    if (!is_numeric_scalar(lag)) {
         stop("`lag` must be a positive number.", call. = FALSE)
     } else if (lag < 0) {
         stop("`lag` must be a positive number.", call. = FALSE)
     }
 
-    if(!is_numeric_scalar(horizon)) {
+    if (!is_numeric_scalar(horizon)) {
         stop("`horizon` must be a positive number.", call. = FALSE)
     } else if (horizon < 0) {
         stop("`horizon` must be a positive number.", call. = FALSE)
@@ -114,13 +114,16 @@ fit_base.mcgf <- function(x,
 
     lag_max <- lag + horizon - 1
 
-    if (lag_max + 1 > length(acfs(x)))
+    if (lag_max + 1 > length(acfs(x))) {
         stop("`lag` + `horizon` must be no greater than ", length(acfs(x)),
-             ", or recompute `acfs` and `ccfs` with greater `lag_max`.",
-             call. = FALSE)
+            ", or recompute `acfs` and `ccfs` with greater `lag_max`.",
+            call. = FALSE
+        )
+    }
 
-    if (method == "mle" && model %in% c("spatial", "temporal"))
+    if (method == "mle" && model %in% c("spatial", "temporal")) {
         stop("mle is available for `sep` and `fs` models only.", call. = FALSE)
+    }
 
     par_model <- eval(as.name(paste0("par_", model)))
     lower_model <- eval(as.name(paste0("lower_", model)))
@@ -128,73 +131,85 @@ fit_base.mcgf <- function(x,
 
     if (!is.null(par_fixed)) {
         par_fixed_nm <- names(par_fixed)
-        if (any(!par_fixed_nm %in% par_model))
+        if (any(!par_fixed_nm %in% par_model)) {
             stop("unknow parameters in `par_fixed`.", call. = FALSE)
+        }
 
         ind_not_fixed <- which(!par_model %in% par_fixed_nm)
         par_model <- par_model[ind_not_fixed]
         if (!is.null(lower)) {
-            if (length(lower) != length(par_model))
+            if (length(lower) != length(par_model)) {
                 stop("`lower` must be of length ", length(par_model), ".",
-                     call. = FALSE)
+                    call. = FALSE
+                )
+            }
             lower_model <- lower
         } else {
             lower_model <- lower_model[ind_not_fixed]
         }
 
         if (!is.null(upper)) {
-            if (length(upper) != length(par_model))
+            if (length(upper) != length(par_model)) {
                 stop("`upper` must be of length ", length(par_model), ".",
-                     call. = FALSE)
+                    call. = FALSE
+                )
+            }
             upper_model <- upper
         } else {
             upper_model <- upper_model[ind_not_fixed]
         }
-
     } else {
-
         par_fixed <- NULL
 
         if (!is.null(lower)) {
-            if (length(lower) != length(par_model))
+            if (length(lower) != length(par_model)) {
                 stop("`lower` must be of length ", length(par_model), ".",
-                     call. = FALSE)
+                    call. = FALSE
+                )
+            }
             lower_model <- lower
         }
 
         if (!is.null(upper)) {
-            if (length(upper) != length(par_model))
+            if (length(upper) != length(par_model)) {
                 stop("`upper` must be of length ", length(par_model), ".",
-                     call. = FALSE)
+                    call. = FALSE
+                )
+            }
             upper_model <- upper
         }
     }
 
-    if (missing(par_init))
+    if (missing(par_init)) {
         stop("must provide `par_init`.", call. = FALSE)
+    }
 
     par_init_nm <- names(par_init)
-    if (any(!par_init_nm %in% par_model))
-            stop("unknow parameters in `par_init`.", call. = FALSE)
+    if (any(!par_init_nm %in% par_model)) {
+        stop("unknow parameters in `par_init`.", call. = FALSE)
+    }
 
     if (any(!par_model %in% par_init_nm)) {
         par_missing <- par_model[which(!par_model %in% par_init_nm)]
         stop("initial value(s) for ",
-             paste0('`', par_missing, "`", collapse = ", "),
-             " not found.", call. = FALSE)
+            paste0("`", par_missing, "`", collapse = ", "),
+            " not found.",
+            call. = FALSE
+        )
     }
     par_init <- par_init[order(match(names(par_init), par_model))]
 
     optim_fn <- match.arg(optim_fn)
     if (optim_fn == "other") {
-        if (is.null(other_optim_fn))
+        if (is.null(other_optim_fn)) {
             stop("specify a optimization function.", call. = FALSE)
-        optim_fn = other_optim_fn
+        }
+        optim_fn <- other_optim_fn
     }
 
     if (is.null(dists_base)) {
         dists_h <- dists(x)$h
-    } else{
+    } else {
         if (model != "temporal") {
             check_dist(dists_base)
 
@@ -202,11 +217,14 @@ fit_base.mcgf <- function(x,
                 dists_h <- dists_base
             } else {
                 if (model != "spatial") {
-                    if (dim(dists_base)[3] < lag_max + 1)
+                    if (dim(dists_base)[3] < lag_max + 1) {
                         stop("third dim in `dists_base` must be greater or ",
-                             "equal to ",
-                             lag_max + 1,
-                             ".", call. = FALSE)
+                            "equal to ",
+                            lag_max + 1,
+                            ".",
+                            call. = FALSE
+                        )
+                    }
                     dists_h <- dists_base[, , 1:(lag_max + 1)]
                 } else {
                     dists_h <- dists_base[, , 1]
@@ -216,25 +234,26 @@ fit_base.mcgf <- function(x,
     }
 
     if (method == "wls") {
-
-        model_args <- switch(
-            model,
+        model_args <- switch(model,
             spatial = {
                 cor_fn <- ".cor_exp"
                 cor_emp <- ccfs(x)[, , 1]
                 par_fixed_other <- list(x = dists_h)
-                list(cor_fn = cor_fn,
-                     cor_emp = cor_emp,
-                     par_fixed_other = par_fixed_other)
-
+                list(
+                    cor_fn = cor_fn,
+                    cor_emp = cor_emp,
+                    par_fixed_other = par_fixed_other
+                )
             },
             temporal = {
                 cor_fn <- ".cor_cauchy"
                 cor_emp <- acfs(x)[1:(lag_max + 1)]
                 par_fixed_other <- list(x = 0:lag_max / scale_time)
-                list(cor_fn = cor_fn,
-                     cor_emp = cor_emp,
-                     par_fixed_other = par_fixed_other)
+                list(
+                    cor_fn = cor_fn,
+                    cor_emp = cor_emp,
+                    par_fixed_other = par_fixed_other
+                )
             },
             sep = {
                 cor_fn <- "..cor_sep"
@@ -242,11 +261,15 @@ fit_base.mcgf <- function(x,
                 h_u_ar <-
                     to_ar(h = dists_h, lag_max = lag_max)
                 par_fixed_other <-
-                    list(h = h_u_ar$h_ar,
-                         u = h_u_ar$u_ar / scale_time)
-                list(cor_fn = cor_fn,
-                     cor_emp = cor_emp,
-                     par_fixed_other = par_fixed_other)
+                    list(
+                        h = h_u_ar$h_ar,
+                        u = h_u_ar$u_ar / scale_time
+                    )
+                list(
+                    cor_fn = cor_fn,
+                    cor_emp = cor_emp,
+                    par_fixed_other = par_fixed_other
+                )
             },
             fs = {
                 cor_fn <- ".cor_fs"
@@ -254,11 +277,15 @@ fit_base.mcgf <- function(x,
                 h_u_ar <-
                     to_ar(h = dists_h, lag_max = lag_max)
                 par_fixed_other <-
-                    list(h = h_u_ar$h_ar,
-                         u = h_u_ar$u_ar / scale_time)
-                list(cor_fn = cor_fn,
-                     cor_emp = cor_emp,
-                     par_fixed_other = par_fixed_other)
+                    list(
+                        h = h_u_ar$h_ar,
+                        u = h_u_ar$u_ar / scale_time
+                    )
+                list(
+                    cor_fn = cor_fn,
+                    cor_emp = cor_emp,
+                    par_fixed_other = par_fixed_other
+                )
             }
         )
 
@@ -274,28 +301,34 @@ fit_base.mcgf <- function(x,
             ...
         )
     } else {
-
-        model_args <- switch(
-            model,
+        model_args <- switch(model,
             sep = {
                 cor_fn <- "..cor_sep"
                 h_u_ar <-
                     to_ar(h = dists_h, lag_max = lag_max)
                 par_fixed_other <-
-                    list(h = h_u_ar$h_ar,
-                         u = h_u_ar$u_ar / scale_time)
-                list(cor_fn = cor_fn,
-                     par_fixed_other = par_fixed_other)
+                    list(
+                        h = h_u_ar$h_ar,
+                        u = h_u_ar$u_ar / scale_time
+                    )
+                list(
+                    cor_fn = cor_fn,
+                    par_fixed_other = par_fixed_other
+                )
             },
             fs = {
                 cor_fn <- ".cor_fs"
                 h_u_ar <-
                     to_ar(h = dists_h, lag_max = lag_max)
                 par_fixed_other <-
-                    list(h = h_u_ar$h_ar,
-                         u = h_u_ar$u_ar / scale_time)
-                list(cor_fn = cor_fn,
-                     par_fixed_other = par_fixed_other)
+                    list(
+                        h = h_u_ar$h_ar,
+                        u = h_u_ar$u_ar / scale_time
+                    )
+                list(
+                    cor_fn = cor_fn,
+                    par_fixed_other = par_fixed_other
+                )
             }
         )
 
@@ -323,7 +356,8 @@ fit_base.mcgf <- function(x,
         par_fixed = par_fixed,
         dists_base = dists_base,
         scale_time = scale_time,
-        dots = dots))
+        dots = dots
+    ))
 }
 
 #' Parameter estimation for symmetric correlation functions for an `mcgf_rs`
@@ -381,11 +415,12 @@ fit_base.mcgf_rs <- function(x,
                              scale_time = 1,
                              rs = TRUE,
                              ...) {
-
     scale_time <- as.integer(scale_time)
 
-    args_ls <- c("lag", "model", "method", "optim_fn", "par_fixed", "par_init",
-                 "lower", "upper", "other_optim_fn", "dists_base")
+    args_ls <- c(
+        "lag", "model", "method", "optim_fn", "par_fixed", "par_init",
+        "lower", "upper", "other_optim_fn", "dists_base"
+    )
     args_i <- paste0("i_", args_ls)
     args_rs <- paste0(args_ls, "_ls")
 
@@ -399,12 +434,13 @@ fit_base.mcgf_rs <- function(x,
 
             if (length_args_i == 1) {
                 assign(args_i[i], rep(1L, n_regime))
-
             } else if (length_args_i == n_regime) {
                 assign(args_i[i], 1:n_regime)
             } else {
                 stop("length of `", args_rs[i], "` must be 1 or ", n_regime,
-                     ".", call. = FALSE)
+                    ".",
+                    call. = FALSE
+                )
             }
         }
 
@@ -421,17 +457,19 @@ fit_base.mcgf_rs <- function(x,
             ccfs(x_n) <- ccfs(x)$ccfs_rs[[n]]
             sds(x_n) <- sds(x)$sds_rs[[n]]
             attr(x_n, "mle_label") <- lvs[n]
-            fit_base_fixed_n <- c(fit_base_fixed,
-                                  list(x = x_n))
-            res_base_ls[[n]] <- do.call(fit_base.mcgf,
-                                        c(args_n, fit_base_fixed_n))
+            fit_base_fixed_n <- c(
+                fit_base_fixed,
+                list(x = x_n)
+            )
+            res_base_ls[[n]] <- do.call(
+                fit_base.mcgf,
+                c(args_n, fit_base_fixed_n)
+            )
         }
         names(res_base_ls) <- paste0("Regime ", lvs)
         res_base_ls <- c(res_base_ls, rs = rs)
         return(res_base_ls)
-
     } else {
-
         for (i in 1:length(args_rs)) {
             value_args_i <- eval(as.name(args_rs[i]))[[1]]
             assign(args_ls[i], value_args_i)
@@ -444,11 +482,15 @@ fit_base.mcgf_rs <- function(x,
         acfs(x_no_rs) <- acfs(x)$acfs
         ccfs(x_no_rs) <- ccfs(x)$ccfs
         sds(x_no_rs) <- sds(x)$sds
-        fit_base_fixed <- c(horizon = horizon,
-                            list(x = x_no_rs, scale_time = scale_time),
-                            ...)
-        res_base_ls <- do.call(fit_base.mcgf,
-                               c(args_no_rs, fit_base_fixed))
+        fit_base_fixed <- c(
+            horizon = horizon,
+            list(x = x_no_rs, scale_time = scale_time),
+            ...
+        )
+        res_base_ls <- do.call(
+            fit_base.mcgf,
+            c(args_no_rs, fit_base_fixed)
+        )
         res_base_ls <- c(list(res_base_ls), rs = rs)
         return(res_base_ls)
     }

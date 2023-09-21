@@ -17,9 +17,9 @@ test_that("check_dist() errors if any element in x is NA or NaN", {
     expect_error(check_dist(x = h))
 
     h <- array(matrix(c(NaN, 5, 0, 5, 0, 1, 0, 1, 0), nrow = 3),
-               dim = c(3, 3, 3))
+        dim = c(3, 3, 3)
+    )
     expect_error(check_dist(x = h))
-
 })
 
 test_that("check_dist() errors if any element in x is negative", {
@@ -29,9 +29,9 @@ test_that("check_dist() errors if any element in x is negative", {
     expect_error(check_dist(x = h))
 
     h <- array(matrix(c(-0.1, 5, 0, 5, 0, 1, 0, 1, 0), nrow = 3),
-               dim = c(3, 3, 3))
+        dim = c(3, 3, 3)
+    )
     expect_error(check_dist(x = h))
-
 })
 
 test_that("check_dist() errors if x is not a matrix or 3d array", {
@@ -39,6 +39,7 @@ test_that("check_dist() errors if x is not a matrix or 3d array", {
     expect_error(check_dist(x = h))
 
     h <- array(matrix(c(0, 1, 0, 5, 0, 1, 0, 1, 0), nrow = 3),
-               dim = c(3, 3, 3))
+        dim = c(3, 3, 3)
+    )
     expect_error(check_dist(x = h))
 })

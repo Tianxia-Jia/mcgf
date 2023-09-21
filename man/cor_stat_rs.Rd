@@ -70,7 +70,7 @@ par_t <- list(a = 1, alpha = 0.5)
 par_base <- list(par_s = par_s, par_t = par_t)
 h1 <- array(c(0, 5, -5, 0), dim = c(2, 2, 3))
 h2 <- array(c(0, 8, -8, 0), dim = c(2, 2, 3))
-h <- sqrt(h1 ^ 2 + h2 ^ 2)
+h <- sqrt(h1^2 + h2^2)
 u <- array(rep(c(1, 2, 3), each = 4), dim = c(2, 2, 3))
 cor_stat_rs(
     n_regime = 2,
@@ -88,10 +88,12 @@ cor_stat_rs(
 # Fit general stationary model given fs as the base model.
 h1 <- array(c(0, 5, -5, 0), dim = c(2, 2, 3))
 h2 <- array(c(0, 8, -8, 0), dim = c(2, 2, 3))
-h <- sqrt(h1 ^ 2 + h2 ^ 2)
+h <- sqrt(h1^2 + h2^2)
 u <- array(rep(c(0.1, 0.2, 0.3), each = 4), dim = c(2, 2, 3))
-fit_base <- cor_fs(nugget = 0.5, c = 0.01, gamma = 0.5, a = 1, alpha = 0.5,
-                   beta = 0.0, h = h, u = u)
+fit_base <- cor_fs(
+    nugget = 0.5, c = 0.01, gamma = 0.5, a = 1, alpha = 0.5,
+    beta = 0.0, h = h, u = u
+)
 par_lagr <- list(v1 = 5, v2 = 10)
 cor_stat_rs(
     n_regime = 2,

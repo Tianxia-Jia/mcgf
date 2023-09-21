@@ -22,7 +22,6 @@ add_lagr <- function(x, ...) {
 #' @export
 #' @family {functions related to model fitting}
 add_lagr.mcgf <- function(x, fit_lagr, ...) {
-
     par_lagr <- as.list(fit_lagr$fit$par)
     names(par_lagr) <- fit_lagr$par_names
     par_lagr <- c(par_lagr, fit_lagr$par_fixed)
@@ -93,8 +92,8 @@ add_lagr.mcgf <- function(x, fit_lagr, ...) {
 #' @export
 #'
 #' @details
-#‘ This function is equivalent to [`add_lagr.mcgf()`] for `mcgf_rs` objects.
-#‘
+# ‘ This function is equivalent to [`add_lagr.mcgf()`] for `mcgf_rs` objects.
+# ‘
 #' After fitting the Lagrangian model by [`fit_lagr()`], the results can be
 #' added to `x` by [`add_base()`]. To supply the Lagrangian model directly,
 #' use [`lagr<-`] to add the Lagrangian model; the value must contain the same
@@ -102,7 +101,6 @@ add_lagr.mcgf <- function(x, fit_lagr, ...) {
 #'
 #' @family {functions related to model fitting}
 add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
-
     if (!fit_lagr_ls$rs) {
         attr(x, "lag") <- attr(x, "lag")[[1]]
         x <- add_lagr.mcgf(x = x, fit_lagr = fit_lagr_ls[[1]], ...)
@@ -125,7 +123,6 @@ add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
     scale_time <- attr(x, "scale_time", exact = TRUE)
 
     for (i in 1:n_regime) {
-
         fit_lagr <- fit_lagr_ls[[i]]
 
         par_lagr <- as.list(fit_lagr$fit$par)
@@ -201,13 +198,14 @@ add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
 #' must contains `model`, `par_lagr`, and `cor_lagr`.
 #' @export
 `lagr<-` <- function(x, value) {
-
-    if (any(! c("model", "par_lagr", "cor_lagr") %in%
-            names(value)))
+    if (any(!c("model", "par_lagr", "cor_lagr") %in%
+        names(value))) {
         stop("`value` must contain `model`, `par_lagr`, `cor_lagr`.")
+    }
 
-    if (is.null(attr(x, "lagr", exact = TRUE)))
+    if (is.null(attr(x, "lagr", exact = TRUE))) {
         message("Overwriting the existing lagr model.")
+    }
 
     lagr_res <- list(
         par_lagr = value$par_lagr,
