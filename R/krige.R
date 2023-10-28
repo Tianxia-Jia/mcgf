@@ -72,7 +72,7 @@ krige <- function(x, ...) {
 #' sim1_krige <- krige(sim1_mcgf, interval = TRUE)
 #'
 #' # Calculate RMSE for each location
-#' rmse <- colMeans((sim1_mcgf - sim1_krige$fit)^2, na.rm = TRUE)
+#' rmse <- sqrt(colMeans((sim1_mcgf - sim1_krige$fit)^2, na.rm = TRUE))
 #' rmse
 #'
 #' # Calculate MAE for each location
@@ -80,9 +80,11 @@ krige <- function(x, ...) {
 #' mae
 #'
 #' # Calculate POPI for each location
-#' popi <- colMeans(sim1_mcgf < sim1_krige$lower | sim1_mcgf > sim1_krige$upper,
+#' popi <- colMeans(
+#'     sim1_mcgf < sim1_krige$lower | sim1_mcgf > sim1_krige$upper,
 #'     na.rm = TRUE
 #' )
+#' popi
 #' @family functions on fitting an mcgf
 krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
                        interval = FALSE, level = 0.95, ...) {
@@ -248,7 +250,7 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
 #' sim2_krige <- krige(sim2_mcgf, model = "base", interval = TRUE)
 #'
 #' # Calculate RMSE for each location
-#' rmse <- colMeans((sim2_mcgf - sim2_krige$fit)^2, na.rm = TRUE)
+#' rmse <- sqrt(colMeans((sim2_mcgf - sim2_krige$fit)^2, na.rm = TRUE))
 #' rmse
 #'
 #' # Calculate MAE for each location
@@ -256,9 +258,11 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
 #' mae
 #'
 #' # Calculate POPI for each location
-#' popi <- colMeans(sim2_mcgf < sim2_krige$lower | sim2_mcgf > sim2_krige$upper,
+#' popi <- colMeans(
+#'     sim2_mcgf < sim2_krige$lower | sim2_mcgf > sim2_krige$upper,
 #'     na.rm = TRUE
 #' )
+#' popi
 #' @family functions on fitting an mcgf_rs
 krige.mcgf_rs <- function(x, newdata, newlabel,
                           soft = FALSE,

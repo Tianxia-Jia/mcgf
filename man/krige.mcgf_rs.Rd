@@ -87,7 +87,7 @@ sim2_mcgf <- add_base(sim2_mcgf, fit_base_ls = fit_sep)
 sim2_krige <- krige(sim2_mcgf, model = "base", interval = TRUE)
 
 # Calculate RMSE for each location
-rmse <- colMeans((sim2_mcgf - sim2_krige$fit)^2, na.rm = TRUE)
+rmse <- sqrt(colMeans((sim2_mcgf - sim2_krige$fit)^2, na.rm = TRUE))
 rmse
 
 # Calculate MAE for each location
@@ -95,9 +95,11 @@ mae <- colMeans(abs(sim2_mcgf - sim2_krige$fit), na.rm = TRUE)
 mae
 
 # Calculate POPI for each location
-popi <- colMeans(sim2_mcgf < sim2_krige$lower | sim2_mcgf > sim2_krige$upper,
+popi <- colMeans(
+    sim2_mcgf < sim2_krige$lower | sim2_mcgf > sim2_krige$upper,
     na.rm = TRUE
 )
+popi
 }
 \seealso{
 Other functions on fitting an mcgf_rs: 
