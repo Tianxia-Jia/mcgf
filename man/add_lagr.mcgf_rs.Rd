@@ -25,20 +25,54 @@ added to \code{x} by \code{\link[=add_base]{add_base()}}. To supply the Lagrangi
 use \code{\link{lagr<-}} to add the Lagrangian model; the value must contain the same
 output as \code{\link[=add_lagr.mcgf]{add_lagr.mcgf()}} or \code{\link[=add_lagr.mcgf_rs]{add_lagr.mcgf_rs()}}.
 }
-\seealso{
-Other {functions related to model fitting}: 
-\code{\link{add_base.mcgf_rs}()},
-\code{\link{add_base.mcgf}()},
-\code{\link{add_lagr.mcgf}()},
-\code{\link{add_lagr}()},
-\code{\link{fit_base.mcgf_rs}()},
-\code{\link{fit_base.mcgf}()},
-\code{\link{fit_base}()},
-\code{\link{fit_lagr.mcgf_rs}()},
-\code{\link{fit_lagr.mcgf}()},
-\code{\link{fit_lagr}()},
-\code{\link{model.mcgf_rs}()},
-\code{\link{model.mcgf}()},
-\code{\link{model}()}
+\examples{
+data(sim3)
+sim3_mcgf <- mcgf_rs(sim3$data, dists = sim3$dists, label = sim3$label)
+sim3_mcgf <- add_acfs(sim3_mcgf, lag_max = 5)
+sim3_mcgf <- add_ccfs(sim3_mcgf, lag_max = 5)
+
+# Fit a fully symmetric model with known variables
+fit_fs <- fit_base(
+    sim3_mcgf,
+    lag_ls = 5,
+    model_ls = "fs",
+    rs = FALSE,
+    par_init_ls = list(list(beta = 0)),
+    par_fixed_ls = list(list(
+        nugget = 0,
+        c = 0.05,
+        gamma = 0.5,
+        a = 0.5,
+        alpha = 0.2
+    ))
+)
+
+# Set beta to 0 to fit a separable model with known variables
+fit_fs[[1]]$fit$par <- 0
+
+# Store the fitted separable model to 'sim3_mcgf'
+sim3_mcgf <- add_base(sim3_mcgf, fit_base_ls = fit_fs)
+
+# Fit a regime-switching Lagrangian model.
+fit_lagr_rs <- fit_lagr(
+    sim3_mcgf,
+    model_ls = list("lagr_tri"),
+    par_init_ls = list(
+        list(v1 = -50, v2 = 50),
+        list(v1 = 100, v2 = 100)
+    ),
+    par_fixed_ls = list(list(lambda = 0.2, k = 2))
+)
+
+# Store the fitted Lagrangian model to 'sim3_mcgf'
+sim3_mcgf <- add_lagr(sim3_mcgf, fit_lagr_ls = fit_lagr_rs)
+model(sim3_mcgf)
 }
-\concept{{functions related to model fitting}}
+\seealso{
+Other {functions related to fitting an mcgf_rs object}: 
+\code{\link{add_base.mcgf_rs}()},
+\code{\link{fit_base.mcgf_rs}()},
+\code{\link{fit_lagr.mcgf_rs}()},
+\code{\link{krige.mcgf_rs}()}
+}
+\concept{{functions related to fitting an mcgf_rs object}}

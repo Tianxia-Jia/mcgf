@@ -44,7 +44,7 @@
     n_var <- nrow(dists$h)
     n_block_row <- lag_max + 1
 
-    n_rounds <- ceiling((N - n_block_row) / horizon)
+    n_rounds <- ceiling(N / horizon)
 
     u <- (0:lag_max) / scale_time
     dim_ar <- c(n_var, n_var, length(u))
@@ -80,14 +80,16 @@
 
     cov_ar <- cor2cov_ar(cov_ar, sd)
     X_cov_par <- cov_par(cov = cov_ar, horizon = horizon)
+    new_cov_chol <- chol(X_cov_par$cov_curr)
 
     X <- init
     for (n in 1:n_rounds) {
         X_past <- stats::embed(utils::tail(X, lag), lag)
         X_new_mean <- mu_c + tcrossprod(X_cov_par$weights, X_past - mu_p)
 
-        X_new <- mvnfast::rmvn(1, X_new_mean, X_cov_par$cov_curr)
-        X_new <- matrix(X_new, ncol = n_var, byrow = T)
+        # X_new <- mvnfast::rmvn(1, X_new_mean, X_cov_par$cov_curr)
+        X_new <- crossprod(new_cov_chol, stats::rnorm(length(X_new_mean)))
+        X_new <- matrix(X_new + X_new_mean, ncol = n_var, byrow = T)
         X_new <- X_new[horizon:1, ]
         X <- rbind(X, X_new)
     }

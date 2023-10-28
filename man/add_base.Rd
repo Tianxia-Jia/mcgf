@@ -11,9 +11,12 @@ add_base(x, ...)
 
 \item{...}{Additional parameters or attributes.}
 }
+\value{
+\code{x} with the newly added base model.
+}
 \description{
 Generic function for adding a base model
 }
 \details{
-Refer to \code{\link[=add_base.mcgf]{add_base.mcgf()}} for more details.
+Refer to \code{\link[=add_base.mcgf]{add_base.mcgf()}} and \code{\link[=add_base.mcgf_rs]{add_base.mcgf_rs()}} for more details.
 }

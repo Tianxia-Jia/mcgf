@@ -43,20 +43,59 @@ After fitting the base model by \code{\link[=fit_base]{fit_base()}}, the results
 add the base model; the value must contain \code{model}, \code{par_base}, \code{cor_base},
 \code{lag}, and \code{horizon}.
 }
-\seealso{
-Other {functions related to model fitting}: 
-\code{\link{add_base.mcgf_rs}()},
-\code{\link{add_lagr.mcgf_rs}()},
-\code{\link{add_lagr.mcgf}()},
-\code{\link{add_lagr}()},
-\code{\link{fit_base.mcgf_rs}()},
-\code{\link{fit_base.mcgf}()},
-\code{\link{fit_base}()},
-\code{\link{fit_lagr.mcgf_rs}()},
-\code{\link{fit_lagr.mcgf}()},
-\code{\link{fit_lagr}()},
-\code{\link{model.mcgf_rs}()},
-\code{\link{model.mcgf}()},
-\code{\link{model}()}
+\examples{
+data(sim1)
+sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+sim1_mcgf <- add_acfs(sim1_mcgf, lag_max = 5)
+sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5)
+
+# Fit a pure spatial model
+fit_spatial <- fit_base(
+    sim1_mcgf,
+    model = "spatial",
+    lag = 5,
+    par_init = c(c = 0.001, gamma = 0.5),
+    par_fixed = c(nugget = 0)
+)
+# Fit a pure temporal model
+fit_temporal <- fit_base(
+    sim1_mcgf,
+    model = "temporal",
+    lag = 5,
+    par_init = c(a = 0.3, alpha = 0.5)
+)
+
+# Store the fitted models to 'sim1_mcgf'
+sim1_mcgf <-
+    add_base(sim1_mcgf,
+        fit_s = fit_spatial,
+        fit_t = fit_temporal,
+        sep = TRUE
+    )
+
+# Fit a separable model
+fit_sep <- fit_base(
+    sim1_mcgf,
+    model = "sep",
+    lag = 5,
+    par_init = c(
+        c = 0.001,
+        gamma = 0.5,
+        a = 0.3,
+        alpha = 0.5
+    ),
+    par_fixed = c(nugget = 0)
+)
+# Store the newly fitted model, and keep the old fit
+sim1_mcgf <- add_base(sim1_mcgf, fit_base = fit_sep, old = TRUE)
+model(sim1_mcgf, model = "base", old = TRUE)
 }
-\concept{{functions related to model fitting}}
+\seealso{
+Other {functions related to fitting an mcgf object}: 
+\code{\link{add_lagr.mcgf}()},
+\code{\link{fit_base.mcgf}()},
+\code{\link{fit_lagr.mcgf}()},
+\code{\link{krige.mcgf}()},
+\code{\link{model.mcgf}()}
+}
+\concept{{functions related to fitting an mcgf object}}

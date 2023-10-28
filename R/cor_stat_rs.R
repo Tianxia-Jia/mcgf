@@ -74,8 +74,6 @@
 #'     base_fixed = TRUE
 #' )
 #'
-#' @family {correlation functions}
-#' @family {Lagrangian correlation functions}
 #' @family {general stationary functions}
 cor_stat_rs <- function(n_regime,
                         base_ls,

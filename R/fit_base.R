@@ -3,9 +3,11 @@
 #' @param x An **R** object.
 #' @param ... Additional parameters or attributes.
 #'
-#' @return A vector of estimated parameters
+#' @return A vector of estimated parameters.
 #' @export
-#' @family {functions related to model fitting}
+#'
+#' @details
+#' Refer to [`fit_base.mcgf()`] and [`fit_base.mcgf_rs()`] for more details.
 fit_base <- function(x, ...) {
     UseMethod("fit_base")
 }
@@ -48,7 +50,51 @@ fit_base <- function(x, ...) {
 #' `upper` are lower and upper bounds of parameters in `par_init` and default
 #' bounds are used if they are not specified.
 #'
-#' @family {functions related to model fitting}
+#' Note that both `wls` and `mle` are heuristic approaches when `x` contains
+#' observations from a subset of the discrete spatial domain, though estimation
+#' results are close to that using the full spatial domain for large sample
+#' sizes.
+#'
+#' @examples
+#' data(sim1)
+#' sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+#' sim1_mcgf <- add_acfs(sim1_mcgf, lag_max = 5)
+#' sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5)
+#'
+#' # Fit a pure spatial model
+#' fit_spatial <- fit_base(
+#'     sim1_mcgf,
+#'     model = "spatial",
+#'     lag = 5,
+#'     par_init = c(c = 0.001, gamma = 0.5),
+#'     par_fixed = c(nugget = 0)
+#' )
+#' fit_spatial$fit
+#'
+#' # Fit a pure temporal model
+#' fit_temporal <- fit_base(
+#'     sim1_mcgf,
+#'     model = "temporal",
+#'     lag = 5,
+#'     par_init = c(a = 0.3, alpha = 0.5)
+#' )
+#' fit_temporal$fit
+#'
+#' # Fit a separable model
+#' fit_sep <- fit_base(
+#'     sim1_mcgf,
+#'     model = "sep",
+#'     lag = 5,
+#'     par_init = c(
+#'         c = 0.001,
+#'         gamma = 0.5,
+#'         a = 0.3,
+#'         alpha = 0.5
+#'     ),
+#'     par_fixed = c(nugget = 0)
+#' )
+#' fit_sep$fit
+#' @family {functions related to fitting an mcgf object}
 fit_base.mcgf <- function(x,
                           lag,
                           horizon = 1,
@@ -399,7 +445,57 @@ fit_base.mcgf <- function(x,
 #' or the same as the number of regimes in `x`. If the length of an argument is
 #' 1, then it is set the same for all regimes. Refer to [`fit_base.mcgf()`] for
 #' more details of the arguments.
-#' @family {functions related to model fitting}
+#'
+#' Note that both `wls` and `mle` are heuristic approaches when `x` contains
+#' observations from a subset of the discrete spatial domain, though estimation
+#' results are close to that using the full spatial domain for large sample
+#' sizes.
+#'
+#' @examples
+#' data(sim2)
+#' sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+#' sim2_mcgf <- add_acfs(sim2_mcgf, lag_max = 5)
+#' sim2_mcgf <- add_ccfs(sim2_mcgf, lag_max = 5)
+#'
+#' # Fit a regime-switching pure spatial model
+#' fit_spatial <-
+#'     fit_base(
+#'         sim2_mcgf,
+#'         lag_ls = 5,
+#'         model_ls = "spatial",
+#'         par_init_ls = list(c(c = 0.000001, gamma = 0.5)),
+#'         par_fixed_ls = list(c(nugget = 0))
+#'     )
+#' lapply(fit_spatial[1:2], function(x) x$fit)
+#'
+#' # Fit a regime-switching pure temporal model
+#' fit_temporal <-
+#'     fit_base(
+#'         sim2_mcgf,
+#'         lag_ls = 5,
+#'         model_ls = "temporal",
+#'         par_init_ls = list(
+#'             list(a = 0.8, alpha = 0.8),
+#'             list(a = 0.5, alpha = 0.5)
+#'         )
+#'     )
+#' lapply(fit_temporal[1:2], function(x) x$fit)
+#'
+#' # Fit a regime-switching separable model
+#' fit_sep <- fit_base(
+#'     sim2_mcgf,
+#'     lag_ls = 5,
+#'     model_ls = "sep",
+#'     par_init_ls = list(list(
+#'         c = 0.000001,
+#'         gamma = 0.5,
+#'         a = 0.5,
+#'         alpha = 0.5
+#'     )),
+#'     par_fixed_ls = list(c(nugget = 0))
+#' )
+#' lapply(fit_sep[1:2], function(x) x$fit)
+#' @family {functions related to fitting an mcgf_rs object}
 fit_base.mcgf_rs <- function(x,
                              lag_ls,
                              horizon = 1,

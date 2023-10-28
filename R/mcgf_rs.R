@@ -82,7 +82,7 @@ validate_mcgf_rs <- function(x) {
 #' print(obj, "locations")
 #' print(obj, "label")
 #'
-#' @family {functions related to the rs class}
+#' @family {functions related to creating an mcgf/mcgf_rs object}
 mcgf_rs <- function(data, locations, dists, label, time) {
     if (length(unique(label)) == 1) {
         message(
@@ -109,6 +109,15 @@ mcgf_rs <- function(data, locations, dists, label, time) {
 #' class. `as.mcgf_rs` coerces an `mcgf` object to an `mcgf_rs` object by adding
 #' regime labels. Fitted base or Lagrangian models in `x` are kept.
 #' @export
+#' @examples
+#' data(sim2)
+#' is.mcgf_rs(sim2)
+#'
+#' sim2_mcgf <- mcgf(sim2$data, dists = sim2$dists)
+#' is.mcgf_rs(sim2_mcgf)
+#'
+#' sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+#' is.mcgf_rs(sim2_mcgf)
 is.mcgf_rs <- function(x) {
     inherits(x, "mcgf_rs")
 }
@@ -118,6 +127,11 @@ is.mcgf_rs <- function(x) {
 #' the number rows in `data`.
 #' @param ncores Number of cpu cores used for computing in `[ccfs()]`.
 #' @export
+#'
+#' @examples
+#' data(sim2)
+#' sim2_mcgf <- mcgf(sim2$data, dists = sim2$dists)
+#' sim2_mcgf <- as.mcgf_rs(sim2_mcgf, label = sim2$label)
 as.mcgf_rs <- function(x, label, ncores = 1) {
     x_mcgf_rs <- validate_mcgf_rs(new_mcgf_rs(x, label))
 

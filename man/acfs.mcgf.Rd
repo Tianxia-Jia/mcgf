@@ -41,7 +41,7 @@ Extract, calculate, or assign mean auto-correlations for an \code{mcgf} or
 For \code{mcgf} objects, \code{\link[=acfs]{acfs()}} computes mean auto-correlations for each time
 lag across locations. The output is a vector of acfs.
 
-For \code{mcgf} objects, \code{\link[=acfs]{acfs()}} computes regime-switching mean
+For \code{mcgf_rs} objects, \code{\link[=acfs]{acfs()}} computes regime-switching mean
 auto-correlations for each time lag across locations. The output is a list of
 vectors of acfs, where each vector in the list corresponds to the acfs for
 a regime.
@@ -51,35 +51,26 @@ a regime.
 \code{\link[=add_acfs]{add_acfs()}} adds \code{acfs} to \code{x}.
 }
 \examples{
-wind_sq <- sqrt(wind[, -1])
-time <- wind[, 1]
-wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
-acfs(x = wind_mcgf, lag_max = 3)
+# Calculate acfs for 'sim1'
+data(sim1)
+sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+acfs(sim1_mcgf, lag_max = 5)
 
-wind_sq <- sqrt(wind[, -1])
-time <- wind[, 1]
-wind_mcgf <- mcgf_rs(
-    data = wind_sq, locations = wind_loc, time = time,
-    label = c(rep(1, 3574), rep(2, 3000))
-)
-acfs(x = wind_mcgf, lag_max = 3)
-wind_sq <- sqrt(wind[, -1])
-time <- wind[, 1]
-wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
-wind_mcgf <- add_acfs(x = wind_mcgf, lag_max = 3)
-print(wind_mcgf, "acfs")
+# Add acfs to 'sim1_mcgf'
+sim1_mcgf <- add_acfs(sim1_mcgf, lag_max = 5)
+print(sim1_mcgf, "acfs")
 
-wind_sq <- sqrt(wind[, -1])
-time <- wind[, 1]
-wind_mcgf <- mcgf_rs(
-    data = wind_sq, locations = wind_loc, time = time,
-    label = c(rep(1, 3574), rep(2, 3000))
-)
-wind_mcgf <- add_acfs(x = wind_mcgf, lag_max = 3)
-print(wind_mcgf, "acfs")
+# Calculate acfs for 'sim2'
+data(sim2)
+sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+acfs(sim2_mcgf, lag_max = 5)
+
+# Add acfs to 'sim2_mcgf'
+sim2_mcgf <- add_acfs(sim2_mcgf, lag_max = 5)
+print(sim2_mcgf, "acfs")
 }
 \seealso{
-Other {functions related to the auto- and cross-correlations}: 
+Other {functions related to calculating acfs and ccfs}: 
 \code{\link{ccfs.mcgf}()}
 }
-\concept{{functions related to the auto- and cross-correlations}}
+\concept{{functions related to calculating acfs and ccfs}}

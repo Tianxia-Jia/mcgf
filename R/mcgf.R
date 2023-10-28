@@ -83,7 +83,7 @@ validate_mcgf <- function(x) {
 #' obj <- mcgf(data, locations)
 #' print(obj, "locations")
 #'
-#' @family {functions related to the class}
+#' @family {functions related to creating an mcgf/mcgf_rs object}
 mcgf <- function(data, locations, dists, time) {
     if (!is.data.frame(data) && !is.matrix(data)) {
         stop("`data` must be a matrix or data.frame.", call. = FALSE)
@@ -175,6 +175,12 @@ mcgf <- function(data, locations, dists, time) {
 #'
 #' @return Logical; TRUE if `x` is of the `mcgf` class
 #' @export
+#' @examples
+#' data(sim1)
+#' is.mcgf(sim1)
+#'
+#' sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+#' is.mcgf(sim1_mcgf)
 is.mcgf <- function(x) {
     inherits(x, "mcgf")
 }

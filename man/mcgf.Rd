@@ -53,9 +53,7 @@ print(obj, "locations")
 
 }
 \seealso{
-Other {functions related to the class}: 
-\code{\link{dists.mcgf}()},
-\code{\link{dists}()},
-\code{\link{print.mcgf}()}
+Other {functions related to creating an mcgf/mcgf_rs object}: 
+\code{\link{mcgf_rs}()}
 }
-\concept{{functions related to the class}}
+\concept{{functions related to creating an mcgf/mcgf_rs object}}

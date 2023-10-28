@@ -109,23 +109,7 @@ cor_stat_rs(
 
 }
 \seealso{
-Other {correlation functions}: 
-\code{\link{cor_cauchy}()},
-\code{\link{cor_exp}()},
-\code{\link{cor_fs}()},
-\code{\link{cor_lagr_askey}()},
-\code{\link{cor_lagr_tri}()},
-\code{\link{cor_sep}()},
-\code{\link{cor_stat}()}
-
-Other {Lagrangian correlation functions}: 
-\code{\link{cor_lagr_askey}()},
-\code{\link{cor_lagr_tri}()},
-\code{\link{cor_stat}()}
-
 Other {general stationary functions}: 
 \code{\link{cor_stat}()}
 }
-\concept{{Lagrangian correlation functions}}
-\concept{{correlation functions}}
 \concept{{general stationary functions}}

@@ -119,8 +119,6 @@
 #'     h1 = h1, h2 = h2, u = u, lambda = 0.8, base_fixed = TRUE
 #' )
 #'
-#' @family {correlation functions}
-#' @family {Lagrangian correlation functions}
 #' @family {general stationary functions}
 cor_stat <- function(base = c("sep", "fs"),
                      lagrangian = c("none", "lagr_tri", "lagr_askey"),

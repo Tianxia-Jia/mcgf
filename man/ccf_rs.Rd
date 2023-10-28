@@ -19,3 +19,10 @@ Cross-correlations for each group in \code{label}.
 \description{
 Calculate regime-switching cross-correlation
 }
+\examples{
+set.seed(123)
+x <- rnorm(100)
+y <- rnorm(100)
+label <- sample(1:2, 100, replace = TRUE)
+ccf_rs(x, y, label = factor(label), lag_max = 3)
+}

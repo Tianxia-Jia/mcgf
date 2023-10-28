@@ -4,7 +4,7 @@
 #' @param ... Additional parameters or attributes.
 #'
 #' @details
-#' Refer to [`sds.mcgf()`] for more details.
+#' Refer to [`sds.mcgf()`] and [`sds.mcgf_rs()`] for more details.
 #'
 #' @export
 sds <- function(x, ...) {
@@ -33,6 +33,14 @@ sds <- function(x, ...) {
 #' `sds` to `x`.
 #'
 #' @export
+#' @examples
+#' data(sim1)
+#' sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+#' sds(sim1_mcgf)
+#'
+#' data(sim2)
+#' sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+#' sds(sim2_mcgf)
 sds.mcgf <- function(x, ...) {
     sds <- attr(x, "sds", exact = TRUE)
 
@@ -72,6 +80,11 @@ sds.mcgf_rs <- function(x, replace = FALSE, ...) {
 #'
 #' @return A list of standard deviations for each regime.
 #' @export
+#' @examples
+#' set.seed(123)
+#' x <- matrix(rnorm(200), nrow = 100)
+#' label <- sample(1:2, 100, replace = TRUE)
+#' sd_rs(x, label = factor(label))
 sd_rs <- function(x, label) {
     if (!is.factor(label)) {
         label <- as.factor(label)
@@ -92,6 +105,16 @@ sd_rs <- function(x, label) {
 #' @param value A vector (or list of vectors) of standard deviations for all
 #' stations (under each regime and combined).
 #' @export
+#' @examples
+#' data(sim1)
+#' sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+#' sim1_sds <- sds(sim1_mcgf)
+#' sds(sim1_mcgf) <- sim1_sds
+#'
+#' data(sim2)
+#' sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+#' sim2_sds <- sds(sim2_mcgf)
+#' sds(sim2_mcgf) <- sim2_sds
 `sds<-` <- function(x, value) {
     attr(x, "sds") <- value
     return(x)

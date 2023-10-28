@@ -15,5 +15,5 @@ acfs(x, ...)
 Generic function for calculating autocorrelation
 }
 \details{
-Refer to \code{\link[=acfs.mcgf]{acfs.mcgf()}} for more details.
+Refer to \code{\link[=acfs.mcgf]{acfs.mcgf()}} and \code{\link[=acfs.mcgf_rs]{acfs.mcgf_rs()}} for more details.
 }

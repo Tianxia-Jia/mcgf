@@ -17,23 +17,28 @@
 #'
 #' `cov_par` gives weights and covariance matrix for the current values..
 cov_joint <- function(cov) {
-    cov_t <- aperm(cov, c(2, 1, 3))
     n_var <- dim(cov)[1]
     lag_max <- dim(cov)[3] - 1
     n_block <- dim(cov)[3]
-    ind_toep <- stats::toeplitz(0:lag_max)
 
-    cov_all <- matrix(cov[, , ind_toep[1, ] + 1], nrow = n_var)
+    cov_all <- matrix(NA, n_var * n_block, n_var * n_block)
 
-    for (i in 2:n_block) {
-        ind_u_i <- ind_toep[i, ][-c(1:(i - 1))]
-        ind_u_t_i <- ind_toep[i, ][1:(i - 1)]
-        cov_i <- cbind(
-            matrix(cov_t[, , ind_u_t_i + 1], nrow = n_var),
-            matrix(cov[, , ind_u_i + 1], nrow = n_var)
-        )
+    for (i in 1:n_block) {
+        ind_i_start <- (i - 1) * n_var + 1
+        ind_i_end <- n_var * i
 
-        cov_all <- rbind(cov_all, cov_i)
+        for (j in 1:n_block) {
+            ind_j_start <- (j - 1) * n_var + 1
+            ind_j_end <- n_var * j
+
+            if (j >= i) {
+                cov_all[ind_i_start:ind_i_end, ind_j_start:ind_j_end] <-
+                    cov[, , j - i + 1]
+            } else {
+                cov_all[ind_i_start:ind_i_end, ind_j_start:ind_j_end] <-
+                    t(cov[, , i - j + 1])
+            }
+        }
     }
     return(cov_all)
 }

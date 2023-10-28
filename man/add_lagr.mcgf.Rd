@@ -25,20 +25,45 @@ must contains \code{model}, \code{par_lagr}, and \code{cor_lagr}.}
 \description{
 Add lagr model outputted from \code{\link[=fit_lagr]{fit_lagr()}} to a \code{mcgf} object.
 }
-\seealso{
-Other {functions related to model fitting}: 
-\code{\link{add_base.mcgf_rs}()},
-\code{\link{add_base.mcgf}()},
-\code{\link{add_lagr.mcgf_rs}()},
-\code{\link{add_lagr}()},
-\code{\link{fit_base.mcgf_rs}()},
-\code{\link{fit_base.mcgf}()},
-\code{\link{fit_base}()},
-\code{\link{fit_lagr.mcgf_rs}()},
-\code{\link{fit_lagr.mcgf}()},
-\code{\link{fit_lagr}()},
-\code{\link{model.mcgf_rs}()},
-\code{\link{model.mcgf}()},
-\code{\link{model}()}
+\examples{
+data(sim1)
+sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+sim1_mcgf <- add_acfs(sim1_mcgf, lag_max = 5)
+sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5)
+
+# Fit a separable model and store it to 'sim1_mcgf'
+fit_sep <- fit_base(
+    sim1_mcgf,
+    model = "sep",
+    lag = 5,
+    par_init = c(
+        c = 0.001,
+        gamma = 0.5,
+        a = 0.3,
+        alpha = 0.5
+    ),
+    par_fixed = c(nugget = 0)
+)
+sim1_mcgf <- add_base(sim1_mcgf, fit_base = fit_sep)
+
+# Fit a Lagrangian model
+fit_lagr <- fit_lagr(
+    sim1_mcgf,
+    model = "lagr_tri",
+    par_init = c(v1 = 300, v2 = 300, lambda = 0.15),
+    par_fixed = c(k = 2)
+)
+
+# Store the fitted Lagrangian model to 'sim1_mcgf'
+sim1_mcgf <- add_lagr(sim1_mcgf, fit_lagr = fit_lagr)
+model(sim1_mcgf, old = TRUE)
 }
-\concept{{functions related to model fitting}}
+\seealso{
+Other {functions related to fitting an mcgf object}: 
+\code{\link{add_base.mcgf}()},
+\code{\link{fit_base.mcgf}()},
+\code{\link{fit_lagr.mcgf}()},
+\code{\link{krige.mcgf}()},
+\code{\link{model.mcgf}()}
+}
+\concept{{functions related to fitting an mcgf object}}

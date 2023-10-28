@@ -54,14 +54,6 @@ Other {correlation functions}:
 \code{\link{cor_exp}()},
 \code{\link{cor_fs}()},
 \code{\link{cor_lagr_askey}()},
-\code{\link{cor_sep}()},
-\code{\link{cor_stat_rs}()},
-\code{\link{cor_stat}()}
-
-Other {Lagrangian correlation functions}: 
-\code{\link{cor_lagr_askey}()},
-\code{\link{cor_stat_rs}()},
-\code{\link{cor_stat}()}
+\code{\link{cor_sep}()}
 }
-\concept{{Lagrangian correlation functions}}
 \concept{{correlation functions}}

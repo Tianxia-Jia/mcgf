@@ -104,6 +104,7 @@
     }
 
     X_cov_par <- lapply(cov_ar_rs, cov_par)
+    new_cov_chol <- lapply(X_cov_par, function(x) chol(x$cov_curr))
 
     X <- init
     for (n in 1:N) {
@@ -119,8 +120,9 @@
                 X_past - mu_p_ls[[regime_n]]
             )
 
-        X_new <- mvnfast::rmvn(1, X_new_mean, X_cov_par[[k]]$cov_curr)
-        X_new <- matrix(X_new, ncol = n_var, byrow = T)
+        # X_new <- mvnfast::rmvn(1, X_new_mean, X_cov_par[[regime_n]]$cov_curr)
+        X_new <- crossprod(new_cov_chol[[regime_n]], stats::rnorm(length(X_new_mean)))
+        X_new <- matrix(X_new + X_new_mean, ncol = n_var, byrow = T)
         X <- rbind(X, X_new)
     }
 

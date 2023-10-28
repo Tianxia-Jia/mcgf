@@ -12,25 +12,11 @@ model(x, ...)
 \item{...}{Additional parameters or attributes.}
 }
 \value{
-Fitted models for an mcgf object.
+Details of the fitted models.
 }
 \description{
 Generic function for displaying fitted models for \code{mcgf} objects
 }
-\seealso{
-Other {functions related to model fitting}: 
-\code{\link{add_base.mcgf_rs}()},
-\code{\link{add_base.mcgf}()},
-\code{\link{add_lagr.mcgf_rs}()},
-\code{\link{add_lagr.mcgf}()},
-\code{\link{add_lagr}()},
-\code{\link{fit_base.mcgf_rs}()},
-\code{\link{fit_base.mcgf}()},
-\code{\link{fit_base}()},
-\code{\link{fit_lagr.mcgf_rs}()},
-\code{\link{fit_lagr.mcgf}()},
-\code{\link{fit_lagr}()},
-\code{\link{model.mcgf_rs}()},
-\code{\link{model.mcgf}()}
+\details{
+Refer to \code{\link[=model.mcgf]{model.mcgf()}} and \code{\link[=model.mcgf_rs]{model.mcgf_rs()}} for more details.
 }
-\concept{{functions related to model fitting}}

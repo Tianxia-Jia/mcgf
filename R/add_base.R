@@ -3,10 +3,11 @@
 #' @param x An **R** object.
 #' @param ... Additional parameters or attributes.
 #'
-#' @details
-#' Refer to [`add_base.mcgf()`] for more details.
-#'
+#' @return `x` with the newly added base model.
 #' @export
+#'
+#' @details
+#' Refer to [`add_base.mcgf()`] and [`add_base.mcgf_rs()`] for more details.
 add_base <- function(x, ...) {
     UseMethod("add_base")
 }
@@ -35,7 +36,53 @@ add_base <- function(x, ...) {
 #' add the base model; the value must contain `model`, `par_base`, `cor_base`,
 #' `lag`, and `horizon`.
 #'
-#' @family {functions related to model fitting}
+#' @examples
+#' data(sim1)
+#' sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+#' sim1_mcgf <- add_acfs(sim1_mcgf, lag_max = 5)
+#' sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5)
+#'
+#' # Fit a pure spatial model
+#' fit_spatial <- fit_base(
+#'     sim1_mcgf,
+#'     model = "spatial",
+#'     lag = 5,
+#'     par_init = c(c = 0.001, gamma = 0.5),
+#'     par_fixed = c(nugget = 0)
+#' )
+#' # Fit a pure temporal model
+#' fit_temporal <- fit_base(
+#'     sim1_mcgf,
+#'     model = "temporal",
+#'     lag = 5,
+#'     par_init = c(a = 0.3, alpha = 0.5)
+#' )
+#'
+#' # Store the fitted models to 'sim1_mcgf'
+#' sim1_mcgf <-
+#'     add_base(sim1_mcgf,
+#'         fit_s = fit_spatial,
+#'         fit_t = fit_temporal,
+#'         sep = TRUE
+#'     )
+#'
+#' # Fit a separable model
+#' fit_sep <- fit_base(
+#'     sim1_mcgf,
+#'     model = "sep",
+#'     lag = 5,
+#'     par_init = c(
+#'         c = 0.001,
+#'         gamma = 0.5,
+#'         a = 0.3,
+#'         alpha = 0.5
+#'     ),
+#'     par_fixed = c(nugget = 0)
+#' )
+#' # Store the newly fitted model, and keep the old fit
+#' sim1_mcgf <- add_base(sim1_mcgf, fit_base = fit_sep, old = TRUE)
+#' model(sim1_mcgf, model = "base", old = TRUE)
+#' @family {functions related to fitting an mcgf object}
 add_base.mcgf <- function(x,
                           fit_base,
                           fit_s,
@@ -84,7 +131,7 @@ add_base.mcgf <- function(x,
 
         par_s <- as.list(fit_s$fit$par)
         names(par_s) <- fit_s$par_names
-        par_s <- c(par_s, fit_t$par_fixed)
+        par_s <- c(par_s, fit_s$par_fixed)
 
         par_t <- as.list(fit_t$fit$par)
         names(par_t) <- fit_t$par_names
@@ -205,7 +252,59 @@ add_base.mcgf <- function(x,
 #' add the base model; the value must contain the same output as
 #' [`add_base.mcgf()`] or [`add_base.mcgf_rs()`].
 #'
-#' @family {functions related to model fitting}
+#' @examples
+#' data(sim2)
+#' sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+#' sim2_mcgf <- add_acfs(sim2_mcgf, lag_max = 5)
+#' sim2_mcgf <- add_ccfs(sim2_mcgf, lag_max = 5)
+#'
+#' # Fit a regime-switching pure spatial model
+#' fit_spatial <-
+#'     fit_base(
+#'         sim2_mcgf,
+#'         lag_ls = 5,
+#'         model_ls = "spatial",
+#'         par_init_ls = list(c(c = 0.000001, gamma = 0.5)),
+#'         par_fixed_ls = list(c(nugget = 0))
+#'     )
+#'
+#' # Fit a regime-switching pure temporal model
+#' fit_temporal <-
+#'     fit_base(
+#'         sim2_mcgf,
+#'         lag_ls = 5,
+#'         model_ls = "temporal",
+#'         par_init_ls = list(
+#'             list(a = 0.8, alpha = 0.8),
+#'             list(a = 0.5, alpha = 0.5)
+#'         )
+#'     )
+#'
+#' # Store the fitted models to 'sim2_mcgf'
+#' sim2_mcgf <- add_base(sim2_mcgf,
+#'     fit_s_ls = fit_spatial,
+#'     fit_t_ls = fit_temporal,
+#'     sep = TRUE
+#' )
+#'
+#' # Fit a regime-switching separable model
+#' fit_sep <- fit_base(
+#'     sim2_mcgf,
+#'     lag_ls = 5,
+#'     model_ls = "sep",
+#'     par_init_ls = list(list(
+#'         c = 0.000001,
+#'         gamma = 0.5,
+#'         a = 0.5,
+#'         alpha = 0.5
+#'     )),
+#'     par_fixed_ls = list(c(nugget = 0))
+#' )
+#'
+#' # Store the newly fitted model, and keep the old fit
+#' sim2_mcgf <- add_base(sim2_mcgf, fit_base_ls = fit_sep, old = TRUE)
+#' model(sim2_mcgf, model = "base", old = TRUE)
+#' @family {functions related to fitting an mcgf_rs object}
 add_base.mcgf_rs <- function(x,
                              fit_base_ls,
                              fit_s_ls,

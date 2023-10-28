@@ -15,5 +15,5 @@ sds(x, ...)
 Generic function for standard deviations for each column
 }
 \details{
-Refer to \code{\link[=sds.mcgf]{sds.mcgf()}} for more details.
+Refer to \code{\link[=sds.mcgf]{sds.mcgf()}} and \code{\link[=sds.mcgf_rs]{sds.mcgf_rs()}} for more details.
 }

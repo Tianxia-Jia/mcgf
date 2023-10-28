@@ -59,4 +59,8 @@ print(obj, "locations")
 print(obj, "label")
 
 }
-\concept{{functions related to the rs class}}
+\seealso{
+Other {functions related to creating an mcgf/mcgf_rs object}: 
+\code{\link{mcgf}()}
+}
+\concept{{functions related to creating an mcgf/mcgf_rs object}}

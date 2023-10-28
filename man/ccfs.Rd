@@ -15,5 +15,5 @@ ccfs(x, ...)
 Generic function for calculating cross-correlation
 }
 \details{
-Refer to \code{\link[=ccfs.mcgf]{ccfs.mcgf()}} for more details.
+Refer to \code{\link[=ccfs.mcgf]{ccfs.mcgf()}} and \code{\link[=ccfs.mcgf_rs]{ccfs.mcgf_rs()}} for more details.
 }

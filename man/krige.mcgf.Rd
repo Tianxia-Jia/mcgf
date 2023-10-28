@@ -44,9 +44,60 @@ from \code{x}.
 When \code{interval = TRUE}, confidence interval for each forecasts and each
 horizon is given. Note that it does not compute confidence regions.
 }
-\seealso{
-Other {functions related to prediction}: 
-\code{\link{krige.mcgf_rs}()},
-\code{\link{krige}()}
+\examples{
+data(sim1)
+sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+sim1_mcgf <- add_acfs(sim1_mcgf, lag_max = 5)
+sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5)
+
+# Fit a separable model and store it to 'sim1_mcgf'
+fit_sep <- fit_base(
+    sim1_mcgf,
+    model = "sep",
+    lag = 5,
+    par_init = c(
+        c = 0.001,
+        gamma = 0.5,
+        a = 0.3,
+        alpha = 0.5
+    ),
+    par_fixed = c(nugget = 0)
+)
+sim1_mcgf <- add_base(sim1_mcgf, fit_base = fit_sep)
+
+# Fit a Lagrangian model
+fit_lagr <- fit_lagr(
+    sim1_mcgf,
+    model = "lagr_tri",
+    par_init = c(v1 = 300, v2 = 300, lambda = 0.15),
+    par_fixed = c(k = 2)
+)
+
+# Store the fitted Lagrangian model to 'sim1_mcgf'
+sim1_mcgf <- add_lagr(sim1_mcgf, fit_lagr = fit_lagr)
+
+# Calculate the simple kriging predictions and intervals
+sim1_krige <- krige(sim1_mcgf, interval = TRUE)
+
+# Calculate RMSE for each location
+rmse <- colMeans((sim1_mcgf - sim1_krige$fit) ^ 2, na.rm = TRUE)
+rmse
+
+# Calculate MAE for each location
+mae <- colMeans(abs(sim1_mcgf - sim1_krige$fit), na.rm = TRUE)
+mae
+
+# Calculate POPI for each location
+popi <- colMeans(sim1_mcgf < sim1_krige$lower | sim1_mcgf > sim1_krige$upper,
+                 na.rm = TRUE)
 }
-\concept{{functions related to prediction}}
+\seealso{
+Other {functions related to fitting an mcgf object}: 
+\code{\link{add_base.mcgf}()},
+\code{\link{add_lagr.mcgf}()},
+\code{\link{fit_base.mcgf}()},
+\code{\link{fit_lagr.mcgf}()},
+\code{\link{model.mcgf}()}
+}
+\concept{{functions related to fitting an mcgf object}}
+\concept{{functions related to prediction for an mcgf object}}

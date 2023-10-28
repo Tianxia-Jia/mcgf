@@ -3,9 +3,11 @@
 #' @param x An **R** object.
 #' @param ... Additional parameters or attributes.
 #'
-#' @return A vector of estimated parameters
+#' @return A vector of estimated parameters.
 #' @export
-#' @family {functions related to model fitting}
+#'
+#' @details
+#' Refer to [`fit_lagr.mcgf()`] and [`fit_lagr.mcgf_rs()`] for more details.
 fit_lagr <- function(x, ...) {
     UseMethod("fit_lagr")
 }
@@ -46,7 +48,45 @@ fit_lagr <- function(x, ...) {
 #' lower and upper bounds of parameters in `par_init` and default bounds are
 #' used if they are not specified.
 #'
-#' @family {functions related to model fitting}
+#' Note that both `wls` and `mle` are heuristic approaches when `x` contains
+#' observations from a subset of the discrete spatial domain, though estimation
+#' results are close to that using the full spatial domain for large sample
+#' sizes.
+#'
+#' Since parameters for the base model and the Lagrangian model are estimated
+#' sequentially, more accurate estimation may be obtained if the full model is
+#' fitted all at once.
+#'
+#' @examples
+#' data(sim1)
+#' sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+#' sim1_mcgf <- add_acfs(sim1_mcgf, lag_max = 5)
+#' sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5)
+#'
+#' # Fit a separable model and store it to 'sim1_mcgf'
+#' fit_sep <- fit_base(
+#'     sim1_mcgf,
+#'     model = "sep",
+#'     lag = 5,
+#'     par_init = c(
+#'         c = 0.001,
+#'         gamma = 0.5,
+#'         a = 0.3,
+#'         alpha = 0.5
+#'     ),
+#'     par_fixed = c(nugget = 0)
+#' )
+#' sim1_mcgf <- add_base(sim1_mcgf, fit_base = fit_sep)
+#'
+#' # Fit a Lagrangian model
+#' fit_lagr <- fit_lagr(
+#'     sim1_mcgf,
+#'     model = "lagr_tri",
+#'     par_init = c(v1 = 300, v2 = 300, lambda = 0.15),
+#'     par_fixed = c(k = 2)
+#' )
+#' fit_lagr$fit
+#' @family {functions related to fitting an mcgf object}
 fit_lagr.mcgf <- function(x,
                           model = c("lagr_tri", "lagr_askey", "none"),
                           method = c("wls", "mle"),
@@ -75,12 +115,15 @@ fit_lagr.mcgf <- function(x,
         ))
     }
 
+    if (!is.null(lower)) lower <- unlist(lower)
+    if (!is.null(upper)) upper <- unlist(upper)
+
     method <- match.arg(method)
     dots <- list(...)
 
     par_model <- c("lambda", "v1", "v2", "k")
-    lower_model <- c(0, -9999, -9999, 0)
-    upper_model <- c(1, 9999, 9999, 9999)
+    lower_model <- c(0, -99999, -99999, 0)
+    upper_model <- c(1, 99999, 99999, 99999)
 
     lag <- attr(x, "lag", exact = TRUE)
     horizon <- attr(x, "horizon", exact = TRUE)
@@ -104,9 +147,9 @@ fit_lagr.mcgf <- function(x,
                 )
             }
             lower_model <- lower
+        } else {
+            lower_model <- lower_model[ind_not_fixed]
         }
-
-        lower_model <- lower_model[ind_not_fixed]
 
         if (!is.null(upper)) {
             if (length(upper) != length(par_model)) {
@@ -115,9 +158,9 @@ fit_lagr.mcgf <- function(x,
                 )
             }
             upper_model <- upper
+        } else {
+            upper_model <- upper_model[ind_not_fixed]
         }
-
-        upper_model <- upper_model[ind_not_fixed]
     } else {
         par_fixed <- NULL
 
@@ -152,7 +195,7 @@ fit_lagr.mcgf <- function(x,
     if (any(!par_model %in% par_init_nm)) {
         par_missing <- par_model[which(!par_model %in% par_init_nm)]
         stop("initial value(s) for ",
-            paste0("`", par_init_nm, "`", collapse = ", "),
+            paste0("`", par_missing, "`", collapse = ", "),
             " not found.",
             call. = FALSE
         )
@@ -327,7 +370,55 @@ fit_lagr.mcgf <- function(x,
 #' 1, then it is set the same for all regimes. Refer to [`fit_lagr.mcgf()`] for
 #' more details of the arguments.
 #'
-#' @family {functions related to model fitting}
+#' Note that both `wls` and `mle` are heuristic approaches when `x` contains
+#' observations from a subset of the discrete spatial domain, though estimation
+#' results are close to that using the full spatial domain for large sample
+#' sizes.
+#'
+#' Since parameters for the base model and the Lagrangian model are estimated
+#' sequentially, more accurate estimation may be obtained if the full model is
+#' fitted all at once.
+#'
+#' @examples
+#' data(sim3)
+#' sim3_mcgf <- mcgf_rs(sim3$data, dists = sim3$dists, label = sim3$label)
+#' sim3_mcgf <- add_acfs(sim3_mcgf, lag_max = 5)
+#' sim3_mcgf <- add_ccfs(sim3_mcgf, lag_max = 5)
+#'
+#' # Fit a fully symmetric model with known variables
+#' fit_fs <- fit_base(
+#'     sim3_mcgf,
+#'     lag_ls = 5,
+#'     model_ls = "fs",
+#'     rs = FALSE,
+#'     par_init_ls = list(list(beta = 0)),
+#'     par_fixed_ls = list(list(
+#'         nugget = 0,
+#'         c = 0.05,
+#'         gamma = 0.5,
+#'         a = 0.5,
+#'         alpha = 0.2
+#'     ))
+#' )
+#'
+#' # Set beta to 0 to fit a separable model with known variables
+#' fit_fs[[1]]$fit$par <- 0
+#'
+#' # Store the fitted separable model to 'sim3_mcgf'
+#' sim3_mcgf <- add_base(sim3_mcgf, fit_base_ls = fit_fs)
+#'
+#' # Fit a regime-switching Lagrangian model.
+#' fit_lagr_rs <- fit_lagr(
+#'     sim3_mcgf,
+#'     model_ls = list("lagr_tri"),
+#'     par_init_ls = list(
+#'         list(v1 = -50, v2 = 50),
+#'         list(v1 = 100, v2 = 100)
+#'     ),
+#'     par_fixed_ls = list(list(lambda = 0.2, k = 2))
+#' )
+#' lapply(fit_lagr_rs[1:2], function(x) x$fit)
+#' @family {functions related to fitting an mcgf_rs object}
 fit_lagr.mcgf_rs <- function(x,
                              model_ls,
                              method_ls = "wls",
@@ -355,6 +446,7 @@ fit_lagr.mcgf_rs <- function(x,
     lag_ls <- attr(x, "lag", exact = TRUE)
 
     base_rs <- attr(x, "base_rs", exact = TRUE)
+    if (length(base_rs) != 1) base_rs <- any(base_rs)
 
     if (rs) {
         lvs <- levels((attr(x, "label", exact = TRUE)))

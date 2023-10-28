@@ -5,8 +5,10 @@
 #' @param ... Additional parameters or attributes.
 #'
 #' @return Joint correlation/covariance matrix.
+#'
 #' @export
-#' @family {functions related to cor and cov}
+#' @details
+#' Refer to [`ccov.mcgf()`] and [`ccov.mcgf_rs()`] for more details.
 ccov <- function(x, ...) {
     UseMethod("ccov")
 }
@@ -18,8 +20,30 @@ ccov <- function(x, ...) {
 #' @param cor Logical; if TRUE, correlation is outputted.
 #' @param ... Additional arguments. Not in use.
 #'
-#' @return Joint vovariance/correlation matrix.
+#' @return Joint covariance/correlation matrix.
 #' @export
+#' @examples
+#' data(sim1)
+#' sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+#' sim1_mcgf <- add_acfs(sim1_mcgf, lag_max = 5)
+#' sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5)
+#'
+#' # Fit a separable model and store it to 'sim1_mcgf'
+#' fit_sep <- fit_base(
+#'     sim1_mcgf,
+#'     model = "sep",
+#'     lag = 5,
+#'     par_init = c(
+#'         c = 0.001,
+#'         gamma = 0.5,
+#'         a = 0.3,
+#'         alpha = 0.5
+#'     ),
+#'     par_fixed = c(nugget = 0)
+#' )
+#' sim1_mcgf <- add_base(sim1_mcgf, fit_base = fit_sep)
+#'
+#' ccov(sim1_mcgf, model = "base")
 ccov.mcgf <- function(x, model = c("all", "base", "empirical"),
                       cor = FALSE, ...) {
     model <- match.arg(model)
@@ -64,8 +88,30 @@ ccov.mcgf <- function(x, model = c("all", "base", "empirical"),
 #' @param cor Logical; if TRUE, correlation is returned
 #' @param ... Additional arguments. Not in use.
 #'
-#' @return A list of joint vovariance/correlation matrix.
+#' @return A list of joint covariance/correlation matrix.
 #' @export
+#' @examples
+#' data(sim2)
+#' sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+#' sim2_mcgf <- add_acfs(sim2_mcgf, lag_max = 5)
+#' sim2_mcgf <- add_ccfs(sim2_mcgf, lag_max = 5)
+#'
+#' # Fit a regime-switching separable model
+#' fit_sep <- fit_base(
+#'     sim2_mcgf,
+#'     lag_ls = 5,
+#'     model_ls = "sep",
+#'     par_init_ls = list(list(
+#'         c = 0.000001,
+#'         gamma = 0.5,
+#'         a = 0.5,
+#'         alpha = 0.5
+#'     )),
+#'     par_fixed_ls = list(c(nugget = 0))
+#' )
+#' sim2_mcgf <- add_base(sim2_mcgf, fit_base_ls = fit_sep)
+#'
+#' ccov(sim2_mcgf, model = "base")
 ccov.mcgf_rs <- function(x, model = c("all", "base", "empirical"),
                          cor = FALSE, ...) {
     model <- match.arg(model)

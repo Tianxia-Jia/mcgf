@@ -16,8 +16,31 @@
 \item{...}{Additional arguments. Not in use.}
 }
 \value{
-Joint vovariance/correlation matrix.
+Joint covariance/correlation matrix.
 }
 \description{
 Covariance/correlation for joint distribution of an \code{mcgf} object
+}
+\examples{
+data(sim1)
+sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+sim1_mcgf <- add_acfs(sim1_mcgf, lag_max = 5)
+sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5)
+
+# Fit a separable model and store it to 'sim1_mcgf'
+fit_sep <- fit_base(
+    sim1_mcgf,
+    model = "sep",
+    lag = 5,
+    par_init = c(
+        c = 0.001,
+        gamma = 0.5,
+        a = 0.3,
+        alpha = 0.5
+    ),
+    par_fixed = c(nugget = 0)
+)
+sim1_mcgf <- add_base(sim1_mcgf, fit_base = fit_sep)
+
+ccov(sim1_mcgf, model = "base")
 }

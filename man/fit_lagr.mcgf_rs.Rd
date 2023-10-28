@@ -70,21 +70,61 @@ Arguments are in lists. The length of arguments that end in \verb{_ls} must be 1
 or the same as the number of regimes in \code{x}. If the length of an argument is
 1, then it is set the same for all regimes. Refer to \code{\link[=fit_lagr.mcgf]{fit_lagr.mcgf()}} for
 more details of the arguments.
+
+Note that both \code{wls} and \code{mle} are heuristic approaches when \code{x} contains
+observations from a subset of the discrete spatial domain, though estimation
+results are close to that using the full spatial domain for large sample
+sizes.
+
+Since parameters for the base model and the Lagrangian model are estimated
+sequentially, more accurate estimation may be obtained if the full model is
+fitted all at once.
+}
+\examples{
+data(sim3)
+sim3_mcgf <- mcgf_rs(sim3$data, dists = sim3$dists, label = sim3$label)
+sim3_mcgf <- add_acfs(sim3_mcgf, lag_max = 5)
+sim3_mcgf <- add_ccfs(sim3_mcgf, lag_max = 5)
+
+# Fit a fully symmetric model with known variables
+fit_fs <- fit_base(
+    sim3_mcgf,
+    lag_ls = 5,
+    model_ls = "fs",
+    rs = FALSE,
+    par_init_ls = list(list(beta = 0)),
+    par_fixed_ls = list(list(
+        nugget = 0,
+        c = 0.05,
+        gamma = 0.5,
+        a = 0.5,
+        alpha = 0.2
+    ))
+)
+
+# Set beta to 0 to fit a separable model with known variables
+fit_fs[[1]]$fit$par <- 0
+
+# Store the fitted separable model to 'sim3_mcgf'
+sim3_mcgf <- add_base(sim3_mcgf, fit_base_ls = fit_fs)
+
+# Fit a regime-switching Lagrangian model.
+fit_lagr_rs <- fit_lagr(
+    sim3_mcgf,
+    model_ls = list("lagr_tri"),
+    par_init_ls = list(
+        list(v1 = -50, v2 = 50),
+        list(v1 = 100, v2 = 100)
+    ),
+    par_fixed_ls = list(list(lambda = 0.2, k = 2))
+)
+lapply(fit_lagr_rs[1:2], function(x) x$fit)
 }
 \seealso{
-Other {functions related to model fitting}: 
+Other {functions related to fitting an mcgf_rs object}: 
 \code{\link{add_base.mcgf_rs}()},
-\code{\link{add_base.mcgf}()},
 \code{\link{add_lagr.mcgf_rs}()},
-\code{\link{add_lagr.mcgf}()},
-\code{\link{add_lagr}()},
 \code{\link{fit_base.mcgf_rs}()},
-\code{\link{fit_base.mcgf}()},
-\code{\link{fit_base}()},
-\code{\link{fit_lagr.mcgf}()},
-\code{\link{fit_lagr}()},
-\code{\link{model.mcgf_rs}()},
-\code{\link{model.mcgf}()},
-\code{\link{model}()}
+\code{\link{krige.mcgf_rs}()}
 }
-\concept{{functions related to model fitting}}
+\concept{{functions related to fitting an mcgf_rs object}}

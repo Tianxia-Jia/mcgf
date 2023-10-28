@@ -18,3 +18,9 @@ A list of standard deviations for each regime.
 \description{
 Calculate standard deviation for each location under each regime.
 }
+\examples{
+set.seed(123)
+x <- matrix(rnorm(200), nrow = 100)
+label <- sample(1:2, 100, replace = TRUE)
+sd_rs(x, label = factor(label))
+}

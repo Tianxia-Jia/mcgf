@@ -60,9 +60,51 @@ in \code{levels(attr(x, "label", exact = TRUE))}. If not all regimes are seen in
 When \code{interval = TRUE}, confidence interval for each forecasts and each
 horizon is given. Note that it does not compute confidence regions.
 }
-\seealso{
-Other {functions related to prediction}: 
-\code{\link{krige.mcgf}()},
-\code{\link{krige}()}
+\examples{
+data(sim2)
+sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+sim2_mcgf <- add_acfs(sim2_mcgf, lag_max = 5)
+sim2_mcgf <- add_ccfs(sim2_mcgf, lag_max = 5)
+
+# Fit a regime-switching separable model
+fit_sep <- fit_base(
+    sim2_mcgf,
+    lag_ls = 5,
+    model_ls = "sep",
+    par_init_ls = list(list(
+        c = 0.000001,
+        gamma = 0.5,
+        a = 0.5,
+        alpha = 0.5
+    )),
+    par_fixed_ls = list(c(nugget = 0))
+)
+
+# Store the fitted separable models to 'sim2_mcgf'
+sim2_mcgf <- add_base(sim2_mcgf, fit_base_ls = fit_sep)
+
+# Calculate the simple kriging predictions and intervals
+sim2_krige <- krige(sim2_mcgf, model = "base", interval = TRUE)
+
+# Calculate RMSE for each location
+rmse <- colMeans((sim2_mcgf - sim2_krige$fit)^2, na.rm = TRUE)
+rmse
+
+# Calculate MAE for each location
+mae <- colMeans(abs(sim2_mcgf - sim2_krige$fit), na.rm = TRUE)
+mae
+
+# Calculate POPI for each location
+popi <- colMeans(sim2_mcgf < sim2_krige$lower | sim2_mcgf > sim2_krige$upper,
+    na.rm = TRUE
+)
 }
-\concept{{functions related to prediction}}
+\seealso{
+Other {functions related to fitting an mcgf_rs object}: 
+\code{\link{add_base.mcgf_rs}()},
+\code{\link{add_lagr.mcgf_rs}()},
+\code{\link{fit_base.mcgf_rs}()},
+\code{\link{fit_lagr.mcgf_rs}()}
+}
+\concept{{functions related to fitting an mcgf_rs object}}
+\concept{{functions related to prediction for an mcgf_rs object}}

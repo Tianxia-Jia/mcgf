@@ -5,7 +5,8 @@
 #' are in m/s. De-trended data sets are also provided.
 #'
 #' @name wind
-#' @format `wind`: an object of class data.frame with 6574 rows and 12 columns.
+#' @format `wind`: a list containing a data.frame with 6574 rows and 12 columns,
+#' and a list of locations.
 #'
 #' @details
 #' The data were obtained from the **gstat** package, and were modified so that
@@ -25,27 +26,3 @@
 #' Monographs on Statistics &amp; Applied Probability (pp. 151–175).
 #' Chapman and Hall/CRC.
 "wind"
-
-#' Ireland wind data, 1961-1978
-#' @rdname wind
-#' @format `wind_loc`: an object of class data.frame with 12 rows and 2 columns.
-"wind_loc"
-
-#' #' Ireland wind data, 1961-1978
-#' #' @rdname wind
-#' #' @format `wind_train`: an object of class data.frame with 3650 rows and
-#' #' 12 columns.
-#' "wind_train"
-#'
-#' #' Ireland wind data, 1961-1978
-#' #' @rdname wind
-#' #' @format `wind_test`: an object of class data.frame with 2920 rows and
-#' #' 12 columns.
-#' "wind_test"
-#'
-#' #' Ireland wind data, 1961-1978
-#' #' @rdname wind
-#' #' @format `wind_trend`: an object of class list with first element of a
-#' #' data.frame with 365 rows and 3 columns, and second element of a vector of
-#' #' lenth 11.
-#' "wind_trend"

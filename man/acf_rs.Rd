@@ -21,3 +21,9 @@ Mean auto-correlations for each group in \code{label}.
 \description{
 Calculate regime-switching auto-correlation
 }
+\examples{
+set.seed(123)
+x <- rnorm(100)
+label <- sample(1:2, 100, replace = TRUE)
+acf_rs(x, label = factor(label), lag_max = 3)
+}

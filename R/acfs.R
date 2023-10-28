@@ -7,6 +7,11 @@
 #'
 #' @return Mean auto-correlations for each group in `label`.
 #' @export
+#' @examples
+#' set.seed(123)
+#' x <- rnorm(100)
+#' label <- sample(1:2, 100, replace = TRUE)
+#' acf_rs(x, label = factor(label), lag_max = 3)
 acf_rs <- function(x, label, lag_max, demean = TRUE) {
     stopifnot(length(x) == length(label))
 
@@ -56,7 +61,7 @@ acf_rs <- function(x, label, lag_max, demean = TRUE) {
 #' @param ... Additional parameters or attributes.
 #'
 #' @details
-#' Refer to [`acfs.mcgf()`] for more details.
+#' Refer to [`acfs.mcgf()`] and [`acfs.mcgf_rs()`] for more details.
 #'
 #' @export
 acfs <- function(x, ...) {
@@ -83,7 +88,7 @@ acfs <- function(x, ...) {
 #' For `mcgf` objects, [`acfs()`] computes mean auto-correlations for each time
 #' lag across locations. The output is a vector of acfs.
 #'
-#' For `mcgf` objects, [`acfs()`] computes regime-switching mean
+#' For `mcgf_rs` objects, [`acfs()`] computes regime-switching mean
 #' auto-correlations for each time lag across locations. The output is a list of
 #' vectors of acfs, where each vector in the list corresponds to the acfs for
 #' a regime.
@@ -93,12 +98,24 @@ acfs <- function(x, ...) {
 #' [`add_acfs()`] adds `acfs` to `x`.
 #'
 #' @examples
-#' wind_sq <- sqrt(wind[, -1])
-#' time <- wind[, 1]
-#' wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
-#' acfs(x = wind_mcgf, lag_max = 3)
+#' # Calculate acfs for 'sim1'
+#' data(sim1)
+#' sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+#' acfs(sim1_mcgf, lag_max = 5)
 #'
-#' @family {functions related to the auto- and cross-correlations}
+#' # Add acfs to 'sim1_mcgf'
+#' sim1_mcgf <- add_acfs(sim1_mcgf, lag_max = 5)
+#' print(sim1_mcgf, "acfs")
+#'
+#' # Calculate acfs for 'sim2'
+#' data(sim2)
+#' sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+#' acfs(sim2_mcgf, lag_max = 5)
+#'
+#' # Add acfs to 'sim2_mcgf'
+#' sim2_mcgf <- add_acfs(sim2_mcgf, lag_max = 5)
+#' print(sim2_mcgf, "acfs")
+#' @family {functions related to calculating acfs and ccfs}
 acfs.mcgf <- function(x, lag_max, replace = FALSE, ...) {
     acfs <- attr(x, "acfs", exact = TRUE)
 
@@ -137,15 +154,6 @@ acfs.mcgf <- function(x, lag_max, replace = FALSE, ...) {
 }
 
 #' @rdname acfs.mcgf
-#'
-#' @examples
-#' wind_sq <- sqrt(wind[, -1])
-#' time <- wind[, 1]
-#' wind_mcgf <- mcgf_rs(
-#'     data = wind_sq, locations = wind_loc, time = time,
-#'     label = c(rep(1, 3574), rep(2, 3000))
-#' )
-#' acfs(x = wind_mcgf, lag_max = 3)
 #' @export
 acfs.mcgf_rs <- function(x, lag_max, replace = FALSE, ...) {
     acfs <- attr(x, "acfs", exact = TRUE)
@@ -194,22 +202,6 @@ acfs.mcgf_rs <- function(x, lag_max, replace = FALSE, ...) {
 }
 
 #' @rdname acfs.mcgf
-#'
-#' @examples
-#' wind_sq <- sqrt(wind[, -1])
-#' time <- wind[, 1]
-#' wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
-#' wind_mcgf <- add_acfs(x = wind_mcgf, lag_max = 3)
-#' print(wind_mcgf, "acfs")
-#'
-#' wind_sq <- sqrt(wind[, -1])
-#' time <- wind[, 1]
-#' wind_mcgf <- mcgf_rs(
-#'     data = wind_sq, locations = wind_loc, time = time,
-#'     label = c(rep(1, 3574), rep(2, 3000))
-#' )
-#' wind_mcgf <- add_acfs(x = wind_mcgf, lag_max = 3)
-#' print(wind_mcgf, "acfs")
 #' @export
 add_acfs <- function(x, lag_max, ...) {
     acfs <- acfs(x = x, lag_max = lag_max, ...)

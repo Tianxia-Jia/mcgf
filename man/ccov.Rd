@@ -19,4 +19,6 @@ Joint correlation/covariance matrix.
 Generic functions for calculating joint covariance/correlation matrix for mcgf
 objects
 }
-\concept{{functions related to cor and cov}}
+\details{
+Refer to \code{\link[=ccov.mcgf]{ccov.mcgf()}} and \code{\link[=ccov.mcgf_rs]{ccov.mcgf_rs()}} for more details.
+}

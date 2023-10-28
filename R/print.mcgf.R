@@ -5,7 +5,6 @@
 #' @param ... Optional arguments to print methods.
 #'
 #' @export
-#' @family {functions related to the class}
 print.mcgf <- function(x, attr = ".Data", ...) {
     if (attr == ".Data") {
         print.data.frame(x, ...)

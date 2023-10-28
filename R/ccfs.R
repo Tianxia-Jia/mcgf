@@ -4,7 +4,7 @@
 #' @param ... Additional parameters or attributes.
 #'
 #' @details
-#' Refer to [`ccfs.mcgf()`] for more details.
+#' Refer to [`ccfs.mcgf()`] and [`ccfs.mcgf_rs()`] for more details.
 #'
 #' @export
 ccfs <- function(x, ...) {
@@ -35,7 +35,8 @@ ccfs <- function(x, ...) {
 #'
 #' For `mcgf_rs` objects, [`ccfs()`] computes regime-switching
 #' cross-correlations for each time lag. The output is a list of array of
-#' matrices where each array in the list corresponds to the ccfs for a regime.
+#' matrices where each array in the list corresponds to the cross-correlation
+#' for a regime.
 #'
 #' [`ccfs<-`] assigns `ccfs` to `x`.
 #'
@@ -43,13 +44,38 @@ ccfs <- function(x, ...) {
 #'
 #' @export
 #' @examples
-#' wind_sq <- sqrt(wind[, -1])
-#' time <- wind[, 1]
-#' wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
-#' ccfs(x = wind_mcgf, lag_max = 3)
-#' # ccfs(x = wind_mcgf, lag_max = 3, ncores = 10)
+#' # Calculate ccfs for 'sim1'
+#' data(sim1)
+#' sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+#' ccfs(sim1_mcgf, lag_max = 5)
+#' \dontrun{
+#' ccfs(sim1_mcgf, lag_max = 5, ncores = 4)
+#' }
 #'
-#' @family {functions related to the auto- and cross-correlations}
+#' # Add ccfs and sds to 'sim1_mcgf'
+#' sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5)
+#' \dontrun{
+#' sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5, ncores = 4)
+#' }
+#' print(sim1_mcgf, "ccfs")
+#' print(sim1_mcgf, "sds")
+#'
+#' # Calculate ccfs for 'sim2'
+#' data(sim2)
+#' sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+#' ccfs(sim2_mcgf, lag_max = 5)
+#' \dontrun{
+#' ccfs(sim2_mcgf, lag_max = 5, ncores = 4)
+#' }
+#'
+#' # Add ccfs and sds to 'sim2_mcgf'
+#' sim2_mcgf <- add_ccfs(sim2_mcgf, lag_max = 5)
+#' \dontrun{
+#' sim2_mcgf <- add_ccfs(sim2_mcgf, lag_max = 5, ncores = 4)
+#' }
+#' print(sim2_mcgf, "ccfs")
+#' print(sim2_mcgf, "sds")
+#' @family {functions related to calculating acfs and ccfs}
 ccfs.mcgf <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
     ccfs <- attr(x, "ccfs", exact = TRUE)
 
@@ -144,15 +170,6 @@ ccfs.mcgf <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
 }
 
 #' @rdname ccfs.mcgf
-#' @examples
-#' wind_sq <- sqrt(wind[, -1])
-#' time <- wind[, 1]
-#' wind_mcgf <- mcgf_rs(
-#'     data = wind_sq, locations = wind_loc, time = time,
-#'     label = c(rep(1, 3574), rep(2, 3000))
-#' )
-#' ccfs(x = wind_mcgf, lag_max = 3)
-#' # ccfs(x = wind_mcgf, lag_max = 3, ncores = 10)
 #' @export
 ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
     ccfs <- attr(x, "ccfs", exact = TRUE)
@@ -268,6 +285,12 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
 #'
 #' @return Cross-correlations for each group in `label`.
 #' @export
+#' @examples
+#' set.seed(123)
+#' x <- rnorm(100)
+#' y <- rnorm(100)
+#' label <- sample(1:2, 100, replace = TRUE)
+#' ccf_rs(x, y, label = factor(label), lag_max = 3)
 ccf_rs <- function(x, y, label, lag_max) {
     stopifnot(length(x) == length(y))
     stopifnot(length(y) == length(label))
@@ -339,14 +362,6 @@ ccf_rs <- function(x, y, label, lag_max) {
 }
 
 #' @rdname ccfs.mcgf
-#'
-#' @examples
-#' wind_sq <- sqrt(wind[, -1])
-#' time <- wind[, 1]
-#' wind_mcgf <- mcgf(data = wind_sq, locations = wind_loc, time = time)
-#' wind_mcgf <- add_ccfs(x = wind_mcgf, lag_max = 3)
-#' print(wind_mcgf, "ccfs")
-#' print(wind_mcgf, "sds")
 #' @export
 add_ccfs <- function(x, lag_max, ncores = 1, ...) {
     ccfs <- ccfs(x = x, lag_max = lag_max, ncores = ncores, ...)

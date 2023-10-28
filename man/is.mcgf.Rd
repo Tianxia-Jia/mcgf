@@ -15,3 +15,10 @@ Logical; TRUE if \code{x} is of the \code{mcgf} class
 \description{
 Check if an object is an \code{mcgf} object.
 }
+\examples{
+data(sim1)
+is.mcgf(sim1)
+
+sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+is.mcgf(sim1_mcgf)
+}

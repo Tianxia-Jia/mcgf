@@ -3,9 +3,11 @@
 #' @param x An **R** object.
 #' @param ... Additional parameters or attributes.
 #'
-#' @return lagr model and its parameter
+#' @return `x` with the newly added Lagrangian model.
 #' @export
-#' @family {functions related to model fitting}
+#'
+#' @details
+#' Refer to [`add_lagr.mcgf()`] and [`add_lagr.mcgf_rs()`] for more details.
 add_lagr <- function(x, ...) {
     UseMethod("add_lagr")
 }
@@ -20,7 +22,40 @@ add_lagr <- function(x, ...) {
 #'
 #' @return `x` with newly added attributes of the Lagrangian model.
 #' @export
-#' @family {functions related to model fitting}
+#'
+#' @examples
+#' data(sim1)
+#' sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+#' sim1_mcgf <- add_acfs(sim1_mcgf, lag_max = 5)
+#' sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5)
+#'
+#' # Fit a separable model and store it to 'sim1_mcgf'
+#' fit_sep <- fit_base(
+#'     sim1_mcgf,
+#'     model = "sep",
+#'     lag = 5,
+#'     par_init = c(
+#'         c = 0.001,
+#'         gamma = 0.5,
+#'         a = 0.3,
+#'         alpha = 0.5
+#'     ),
+#'     par_fixed = c(nugget = 0)
+#' )
+#' sim1_mcgf <- add_base(sim1_mcgf, fit_base = fit_sep)
+#'
+#' # Fit a Lagrangian model
+#' fit_lagr <- fit_lagr(
+#'     sim1_mcgf,
+#'     model = "lagr_tri",
+#'     par_init = c(v1 = 300, v2 = 300, lambda = 0.15),
+#'     par_fixed = c(k = 2)
+#' )
+#'
+#' # Store the fitted Lagrangian model to 'sim1_mcgf'
+#' sim1_mcgf <- add_lagr(sim1_mcgf, fit_lagr = fit_lagr)
+#' model(sim1_mcgf, old = TRUE)
+#' @family {functions related to fitting an mcgf object}
 add_lagr.mcgf <- function(x, fit_lagr, ...) {
     par_lagr <- as.list(fit_lagr$fit$par)
     names(par_lagr) <- fit_lagr$par_names
@@ -99,7 +134,49 @@ add_lagr.mcgf <- function(x, fit_lagr, ...) {
 #' use [`lagr<-`] to add the Lagrangian model; the value must contain the same
 #' output as [`add_lagr.mcgf()`] or [`add_lagr.mcgf_rs()`].
 #'
-#' @family {functions related to model fitting}
+#' @examples
+#' data(sim3)
+#' sim3_mcgf <- mcgf_rs(sim3$data, dists = sim3$dists, label = sim3$label)
+#' sim3_mcgf <- add_acfs(sim3_mcgf, lag_max = 5)
+#' sim3_mcgf <- add_ccfs(sim3_mcgf, lag_max = 5)
+#'
+#' # Fit a fully symmetric model with known variables
+#' fit_fs <- fit_base(
+#'     sim3_mcgf,
+#'     lag_ls = 5,
+#'     model_ls = "fs",
+#'     rs = FALSE,
+#'     par_init_ls = list(list(beta = 0)),
+#'     par_fixed_ls = list(list(
+#'         nugget = 0,
+#'         c = 0.05,
+#'         gamma = 0.5,
+#'         a = 0.5,
+#'         alpha = 0.2
+#'     ))
+#' )
+#'
+#' # Set beta to 0 to fit a separable model with known variables
+#' fit_fs[[1]]$fit$par <- 0
+#'
+#' # Store the fitted separable model to 'sim3_mcgf'
+#' sim3_mcgf <- add_base(sim3_mcgf, fit_base_ls = fit_fs)
+#'
+#' # Fit a regime-switching Lagrangian model.
+#' fit_lagr_rs <- fit_lagr(
+#'     sim3_mcgf,
+#'     model_ls = list("lagr_tri"),
+#'     par_init_ls = list(
+#'         list(v1 = -50, v2 = 50),
+#'         list(v1 = 100, v2 = 100)
+#'     ),
+#'     par_fixed_ls = list(list(lambda = 0.2, k = 2))
+#' )
+#'
+#' # Store the fitted Lagrangian model to 'sim3_mcgf'
+#' sim3_mcgf <- add_lagr(sim3_mcgf, fit_lagr_ls = fit_lagr_rs)
+#' model(sim3_mcgf)
+#' @family {functions related to fitting an mcgf_rs object}
 add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
     if (!fit_lagr_ls$rs) {
         attr(x, "lag") <- attr(x, "lag")[[1]]
@@ -150,7 +227,7 @@ add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
             lagr_h2 <- lagr_h2[, , 1:(lag_max + 1)]
         }
 
-        if (attr(x, "base_rs", exact = TRUE)) {
+        if (any(attr(x, "base_rs", exact = TRUE))) {
             cor_base <- attr(x, "base_res", exact = TRUE)[[i]]$cor_base
         } else {
             cor_base <- attr(x, "base_res", exact = TRUE)$cor_base

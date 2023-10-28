@@ -12,14 +12,11 @@ krige(x, ...)
 \item{...}{Additional parameters or attributes.}
 }
 \value{
-Kriging results of \code{x}
+Kriging results of \code{x}.
 }
 \description{
 Generic function for computing kriging forecasts
 }
-\seealso{
-Other {functions related to prediction}: 
-\code{\link{krige.mcgf_rs}()},
-\code{\link{krige.mcgf}()}
+\details{
+Refer to \code{\link[=krige.mcgf]{krige.mcgf()}} and \code{\link[=krige.mcgf_rs]{krige.mcgf_rs()}} for more details.
 }
-\concept{{functions related to prediction}}

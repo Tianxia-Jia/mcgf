@@ -41,3 +41,21 @@ element in the list corresponds to the sds for a regime.
 \code{\link{sds<-}} assigns \code{sds} to \code{x}. Use \code{\link[=add_ccfs]{add_ccfs()}} to add both \code{ccfs} and
 \code{sds} to \code{x}.
 }
+\examples{
+data(sim1)
+sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+sds(sim1_mcgf)
+
+data(sim2)
+sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+sds(sim2_mcgf)
+data(sim1)
+sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+sim1_sds <- sds(sim1_mcgf)
+sds(sim1_mcgf) <- sim1_sds
+
+data(sim2)
+sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+sim2_sds <- sds(sim2_mcgf)
+sds(sim2_mcgf) <- sim2_sds
+}

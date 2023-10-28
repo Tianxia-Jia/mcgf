@@ -20,8 +20,6 @@ Generic function for calculating distance matrices
 }
 \seealso{
 Other {functions related to the class}: 
-\code{\link{dists.mcgf}()},
-\code{\link{mcgf}()},
-\code{\link{print.mcgf}()}
+\code{\link{dists.mcgf}()}
 }
 \concept{{functions related to the class}}

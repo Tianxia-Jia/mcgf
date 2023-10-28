@@ -2,9 +2,18 @@
 % Please edit documentation in R/model.R
 \name{model.mcgf}
 \alias{model.mcgf}
-\title{Display fitted models for an \code{mcgf} object}
+\alias{model.mcgf_rs}
+\title{Display fitted models for an \code{mcgf} or \code{mcgf_rs} object}
 \usage{
 \method{model}{mcgf}(
+  x,
+  model = c("all", "base", "lagrangian"),
+  old = FALSE,
+  print_model = TRUE,
+  ...
+)
+
+\method{model}{mcgf_rs}(
   x,
   model = c("all", "base", "lagrangian"),
   old = FALSE,
@@ -28,22 +37,19 @@ printed.}
 None (invisible \code{NULL}).
 }
 \description{
-Display fitted models for an \code{mcgf} object
+Display fitted models for an \code{mcgf} or \code{mcgf_rs} object
+}
+\details{
+For \code{mcgf} and \code{mcgf_rs} objects, \code{\link[=model]{model()}} displays the fitted models and
+their parameters. When \code{old = TRUE}, the old model is printed as well. Note
+that the old model is not used for parameter estimation or for kriging.
 }
 \seealso{
-Other {functions related to model fitting}: 
-\code{\link{add_base.mcgf_rs}()},
+Other {functions related to fitting an mcgf object}: 
 \code{\link{add_base.mcgf}()},
-\code{\link{add_lagr.mcgf_rs}()},
 \code{\link{add_lagr.mcgf}()},
-\code{\link{add_lagr}()},
-\code{\link{fit_base.mcgf_rs}()},
 \code{\link{fit_base.mcgf}()},
-\code{\link{fit_base}()},
-\code{\link{fit_lagr.mcgf_rs}()},
 \code{\link{fit_lagr.mcgf}()},
-\code{\link{fit_lagr}()},
-\code{\link{model.mcgf_rs}()},
-\code{\link{model}()}
+\code{\link{krige.mcgf}()}
 }
-\concept{{functions related to model fitting}}
+\concept{{functions related to fitting an mcgf object}}

@@ -25,3 +25,16 @@ regime labels. Fitted base or Lagrangian models in \code{x} are kept.
 \description{
 Check if an object is an \code{mcgf_rs} object..
 }
+\examples{
+data(sim2)
+is.mcgf_rs(sim2)
+
+sim2_mcgf <- mcgf(sim2$data, dists = sim2$dists)
+is.mcgf_rs(sim2_mcgf)
+
+sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+is.mcgf_rs(sim2_mcgf)
+data(sim2)
+sim2_mcgf <- mcgf(sim2$data, dists = sim2$dists)
+sim2_mcgf <- as.mcgf_rs(sim2_mcgf, label = sim2$label)
+}

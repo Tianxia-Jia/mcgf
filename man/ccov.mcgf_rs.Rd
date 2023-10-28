@@ -16,8 +16,31 @@
 \item{...}{Additional arguments. Not in use.}
 }
 \value{
-A list of joint vovariance/correlation matrix.
+A list of joint covariance/correlation matrix.
 }
 \description{
 Covariance/correlation for joint distribution of an \code{mcgf_rs}object
+}
+\examples{
+data(sim2)
+sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
+sim2_mcgf <- add_acfs(sim2_mcgf, lag_max = 5)
+sim2_mcgf <- add_ccfs(sim2_mcgf, lag_max = 5)
+
+# Fit a regime-switching separable model
+fit_sep <- fit_base(
+    sim2_mcgf,
+    lag_ls = 5,
+    model_ls = "sep",
+    par_init_ls = list(list(
+        c = 0.000001,
+        gamma = 0.5,
+        a = 0.5,
+        alpha = 0.5
+    )),
+    par_fixed_ls = list(c(nugget = 0))
+)
+sim2_mcgf <- add_base(sim2_mcgf, fit_base_ls = fit_sep)
+
+ccov(sim2_mcgf, model = "base")
 }

@@ -3,17 +3,13 @@
 \docType{data}
 \name{wind}
 \alias{wind}
-\alias{wind_loc}
 \title{Ireland wind data, 1961-1978}
 \format{
-\code{wind}: an object of class data.frame with 6574 rows and 12 columns.
-
-\code{wind_loc}: an object of class data.frame with 12 rows and 2 columns.
+\code{wind}: a list containing a data.frame with 6574 rows and 12 columns,
+and a list of locations.
 }
 \usage{
 wind
-
-wind_loc
 }
 \description{
 Daily average wind speeds for 1961-1978 at 11 synoptic meteorological
