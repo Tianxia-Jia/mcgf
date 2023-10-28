@@ -80,7 +80,7 @@ sim1_mcgf <- add_lagr(sim1_mcgf, fit_lagr = fit_lagr)
 sim1_krige <- krige(sim1_mcgf, interval = TRUE)
 
 # Calculate RMSE for each location
-rmse <- colMeans((sim1_mcgf - sim1_krige$fit) ^ 2, na.rm = TRUE)
+rmse <- colMeans((sim1_mcgf - sim1_krige$fit)^2, na.rm = TRUE)
 rmse
 
 # Calculate MAE for each location
@@ -89,7 +89,8 @@ mae
 
 # Calculate POPI for each location
 popi <- colMeans(sim1_mcgf < sim1_krige$lower | sim1_mcgf > sim1_krige$upper,
-                 na.rm = TRUE)
+    na.rm = TRUE
+)
 }
 \seealso{
 Other {functions related to fitting an mcgf object}: 
