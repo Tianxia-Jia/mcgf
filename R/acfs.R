@@ -115,7 +115,7 @@ acfs <- function(x, ...) {
 #' # Add acfs to 'sim2_mcgf'
 #' sim2_mcgf <- add_acfs(sim2_mcgf, lag_max = 5)
 #' print(sim2_mcgf, "acfs")
-#' @family {functions related to calculating acfs and ccfs}
+#' @family functions related to calculating acfs and ccfs
 acfs.mcgf <- function(x, lag_max, replace = FALSE, ...) {
     acfs <- attr(x, "acfs", exact = TRUE)
 

@@ -60,7 +60,7 @@ print(obj, "label")
 
 }
 \seealso{
-Other {functions related to creating an mcgf/mcgf_rs object}: 
+Other functions related to creating an \code{mcgf}/\code{mcgf_rs} object: 
 \code{\link{mcgf}()}
 }
-\concept{{functions related to creating an mcgf/mcgf_rs object}}
+\concept{functions related to creating an \code{mcgf}/\code{mcgf_rs} object}

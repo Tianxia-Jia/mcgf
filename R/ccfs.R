@@ -75,7 +75,7 @@ ccfs <- function(x, ...) {
 #' }
 #' print(sim2_mcgf, "ccfs")
 #' print(sim2_mcgf, "sds")
-#' @family {functions related to calculating acfs and ccfs}
+#' @family functions related to acfs and ccfs
 ccfs.mcgf <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
     ccfs <- attr(x, "ccfs", exact = TRUE)
 

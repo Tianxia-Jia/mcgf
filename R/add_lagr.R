@@ -55,7 +55,7 @@ add_lagr <- function(x, ...) {
 #' # Store the fitted Lagrangian model to 'sim1_mcgf'
 #' sim1_mcgf <- add_lagr(sim1_mcgf, fit_lagr = fit_lagr)
 #' model(sim1_mcgf, old = TRUE)
-#' @family {functions related to fitting an mcgf object}
+#' @family functions related to fitting an `mcgf` object
 add_lagr.mcgf <- function(x, fit_lagr, ...) {
     par_lagr <- as.list(fit_lagr$fit$par)
     names(par_lagr) <- fit_lagr$par_names
@@ -176,7 +176,7 @@ add_lagr.mcgf <- function(x, fit_lagr, ...) {
 #' # Store the fitted Lagrangian model to 'sim3_mcgf'
 #' sim3_mcgf <- add_lagr(sim3_mcgf, fit_lagr_ls = fit_lagr_rs)
 #' model(sim3_mcgf)
-#' @family {functions related to fitting an mcgf_rs object}
+#' @family functions related to fitting an `mcgf_rs` object
 add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
     if (!fit_lagr_ls$rs) {
         attr(x, "lag") <- attr(x, "lag")[[1]]

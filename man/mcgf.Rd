@@ -53,7 +53,7 @@ print(obj, "locations")
 
 }
 \seealso{
-Other {functions related to creating an mcgf/mcgf_rs object}: 
+Other functions related to creating an \code{mcgf}/\code{mcgf_rs} object: 
 \code{\link{mcgf_rs}()}
 }
-\concept{{functions related to creating an mcgf/mcgf_rs object}}
+\concept{functions related to creating an \code{mcgf}/\code{mcgf_rs} object}

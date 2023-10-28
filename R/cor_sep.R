@@ -77,7 +77,7 @@
 #'     h = h, u = u
 #' )
 #'
-#' @family {correlation functions}
+#' @family correlation functions
 cor_sep <- function(spatial = c("exp", "cauchy"),
                     temporal = c("exp", "cauchy"),
                     par_s,

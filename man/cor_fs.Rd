@@ -57,11 +57,13 @@ Space–Time Data, Journal of the American Statistical Association, 97:458,
 590-600.
 }
 \seealso{
-Other {correlation functions}: 
+Other correlation functions: 
 \code{\link{cor_cauchy}()},
 \code{\link{cor_exp}()},
 \code{\link{cor_lagr_askey}()},
 \code{\link{cor_lagr_tri}()},
-\code{\link{cor_sep}()}
+\code{\link{cor_sep}()},
+\code{\link{cor_stat_rs}()},
+\code{\link{cor_stat}()}
 }
-\concept{{correlation functions}}
+\concept{correlation functions}

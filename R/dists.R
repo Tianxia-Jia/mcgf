@@ -37,7 +37,6 @@ dists <- function(x, ...) {
 #' dists(obj)
 #' dists(obj) <- dists(obj)
 #' obj
-#' @family {functions related to the class}
 dists.mcgf <- function(x, ...) {
     dists <- attr(x, "dists", exact = TRUE)
 

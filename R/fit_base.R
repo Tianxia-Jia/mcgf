@@ -94,7 +94,7 @@ fit_base <- function(x, ...) {
 #'     par_fixed = c(nugget = 0)
 #' )
 #' fit_sep$fit
-#' @family {functions related to fitting an mcgf object}
+#' @family functions related to fitting an `mcgf` object
 fit_base.mcgf <- function(x,
                           lag,
                           horizon = 1,
@@ -495,7 +495,7 @@ fit_base.mcgf <- function(x,
 #'     par_fixed_ls = list(c(nugget = 0))
 #' )
 #' lapply(fit_sep[1:2], function(x) x$fit)
-#' @family {functions related to fitting an mcgf_rs object}
+#' @family functions related to fitting an `mcgf_rs` object
 fit_base.mcgf_rs <- function(x,
                              lag_ls,
                              horizon = 1,

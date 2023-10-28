@@ -137,7 +137,7 @@
 #' )
 #' # plot.ts(X)
 #'
-#' @family {simulations of Markov chain Gaussian fields}
+#' @family simulations of Markov chain Gaussian fields
 mcgf_sim <- function(N,
                      base = c("sep", "fs"),
                      lagrangian = c("none", "lagr_tri", "lagr_askey"),

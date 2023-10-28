@@ -174,7 +174,7 @@
 #' )
 #' # plot.ts(X[, -1])
 #'
-#' @family {simulations of Markov chain Gaussian fields}
+#' @family simulations of Markov chain Gaussian fields
 mcgf_rs_sim <- function(N,
                         label,
                         base_ls,

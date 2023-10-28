@@ -50,7 +50,7 @@
 #' u <- array(rep(0:2, each = 4), dim = c(2, 2, 3))
 #' cor_fs(c = 0.01, gamma = 0.5, a = 1, alpha = 0.5, beta = 0.5, h = h, u = u)
 #'
-#' @family {correlation functions}
+#' @family correlation functions
 cor_fs <- function(nugget = 0, c, gamma = 1 / 2, a, alpha, beta = 0, h, u) {
     if (!is_numeric_scalar(nugget) || nugget < 0 || nugget > 1) {
         stop("`nugget` must be in [0, 1].", call. = FALSE)

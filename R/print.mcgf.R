@@ -5,6 +5,10 @@
 #' @param ... Optional arguments to print methods.
 #'
 #' @export
+#' @examples
+#' data(sim1)
+#' sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+#' print(sim1_mcgf, "dists")
 print.mcgf <- function(x, attr = ".Data", ...) {
     if (attr == ".Data") {
         print.data.frame(x, ...)

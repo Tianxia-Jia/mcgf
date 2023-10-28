@@ -21,7 +21,7 @@ new_mcgf_rs <- function(x, label) {
 
 #' Validate an mcgf_rs object
 #'
-#' @param An mcgf_rs object
+#' @param x An mcgf_rs object
 #'
 #' @keywords internal
 #' @return An S3 object of class `mcgf_rs`.
@@ -82,7 +82,7 @@ validate_mcgf_rs <- function(x) {
 #' print(obj, "locations")
 #' print(obj, "label")
 #'
-#' @family {functions related to creating an mcgf/mcgf_rs object}
+#' @family functions related to creating an `mcgf`/`mcgf_rs` object
 mcgf_rs <- function(data, locations, dists, label, time) {
     if (length(unique(label)) == 1) {
         message(

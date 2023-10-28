@@ -28,7 +28,7 @@ new_mcgf <- function(data, locations, dists, time) {
 
 #' Validate an mcgf object
 #'
-#' @param An mcgf object
+#' @param x An mcgf object.
 #'
 #' @keywords internal
 #' @return An S3 object of class `mcgf`.
@@ -83,7 +83,7 @@ validate_mcgf <- function(x) {
 #' obj <- mcgf(data, locations)
 #' print(obj, "locations")
 #'
-#' @family {functions related to creating an mcgf/mcgf_rs object}
+#' @family functions related to creating an `mcgf`/`mcgf_rs` object
 mcgf <- function(data, locations, dists, time) {
     if (!is.data.frame(data) && !is.matrix(data)) {
         stop("`data` must be a matrix or data.frame.", call. = FALSE)

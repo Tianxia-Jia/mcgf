@@ -69,8 +69,4 @@ acfs(sim2_mcgf, lag_max = 5)
 sim2_mcgf <- add_acfs(sim2_mcgf, lag_max = 5)
 print(sim2_mcgf, "acfs")
 }
-\seealso{
-Other {functions related to calculating acfs and ccfs}: 
-\code{\link{ccfs.mcgf}()}
-}
-\concept{{functions related to calculating acfs and ccfs}}
+\concept{functions related to calculating acfs and ccfs}

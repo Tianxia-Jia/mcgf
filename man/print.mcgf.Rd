@@ -16,3 +16,8 @@
 \description{
 Print an \code{mcgf} object.
 }
+\examples{
+data(sim1)
+sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
+print(sim1_mcgf, "dists")
+}

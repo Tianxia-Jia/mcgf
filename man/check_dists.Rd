@@ -11,7 +11,9 @@ check_dists(dists, n_var, names, name_dists = "dists")
 
 \item{n_var}{Scaler, number of variables.}
 
-\item{name}{names of \code{dists}.}
+\item{names}{column and row names of matrices in \code{dists}.}
+
+\item{name_dists}{name_dists of \code{dists}.}
 }
 \value{
 \code{dists}.

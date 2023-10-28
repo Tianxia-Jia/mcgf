@@ -39,8 +39,3 @@ dists(obj)
 dists(obj) <- dists(obj)
 obj
 }
-\seealso{
-Other {functions related to the class}: 
-\code{\link{dists}()}
-}
-\concept{{functions related to the class}}

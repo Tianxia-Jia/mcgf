@@ -25,4 +25,5 @@
 #' Models, Stationarity, Separability, and Full Symmetry. In C&amp;H/CRC
 #' Monographs on Statistics &amp; Applied Probability (pp. 151–175).
 #' Chapman and Hall/CRC.
+#' @family (simulated) datasets
 "wind"

@@ -135,7 +135,7 @@ check_length <- function(x, length, name) {
 #' Check if valid input length
 #'
 #' @param x_ls List of scaler or vector
-#' @param length_ls List of length of `x_ls`.
+#' @param length List of length of `x_ls`.
 #' @param name Name of `x_ls`.
 #'
 #' @return `x_ls`.
@@ -165,7 +165,8 @@ check_length_ls <- function(x_ls, length, name) {
 #'
 #' @param dists List of scaler or vector
 #' @param n_var Scaler, number of variables.
-#' @param name names of `dists`.
+#' @param names column and row names of matrices in `dists`.
+#' @param name_dists name_dists of `dists`.
 #'
 #' @return `dists`.
 #' @keywords internal

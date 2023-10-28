@@ -45,11 +45,19 @@ their parameters. When \code{old = TRUE}, the old model is printed as well. Note
 that the old model is not used for parameter estimation or for kriging.
 }
 \seealso{
-Other {functions related to fitting an mcgf object}: 
+Other functions related to fitting an \code{mcgf} object: 
 \code{\link{add_base.mcgf}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{fit_base.mcgf}()},
 \code{\link{fit_lagr.mcgf}()},
 \code{\link{krige.mcgf}()}
+
+Other functions related to fitting an \code{mcgf_rs} object: 
+\code{\link{add_base.mcgf_rs}()},
+\code{\link{add_lagr.mcgf_rs}()},
+\code{\link{fit_base.mcgf_rs}()},
+\code{\link{fit_lagr.mcgf_rs}()},
+\code{\link{krige.mcgf_rs}()}
 }
-\concept{{functions related to fitting an mcgf object}}
+\concept{functions related to fitting an \code{mcgf_rs} object}
+\concept{functions related to fitting an \code{mcgf} object}

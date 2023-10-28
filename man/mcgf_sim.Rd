@@ -83,7 +83,7 @@ X <- mcgf_sim(
 
 }
 \seealso{
-Other {simulations of Markov chain Gaussian fields}: 
+Other simulations of Markov chain Gaussian fields: 
 \code{\link{mcgf_rs_sim}()}
 }
-\concept{{simulations of Markov chain Gaussian fields}}
+\concept{simulations of Markov chain Gaussian fields}

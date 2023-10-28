@@ -72,9 +72,10 @@ a = 0.5, \alpha = 0.2,}
 #              label = sim2[, 1])
 }
 \seealso{
-Other {simulated datasets}: 
+Other (simulated) datasets: 
 \code{\link{sim1}},
-\code{\link{sim3}}
+\code{\link{sim3}},
+\code{\link{wind}}
 }
-\concept{{simulated datasets}}
+\concept{(simulated) datasets}
 \keyword{datasets}

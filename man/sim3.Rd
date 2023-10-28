@@ -76,9 +76,10 @@ estimate the regime-switching prevailing winds.
 #              label = sim3[, 1])
 }
 \seealso{
-Other {simulated datasets}: 
+Other (simulated) datasets: 
 \code{\link{sim1}},
-\code{\link{sim2}}
+\code{\link{sim2}},
+\code{\link{wind}}
 }
-\concept{{simulated datasets}}
+\concept{(simulated) datasets}
 \keyword{datasets}

@@ -41,7 +41,7 @@
 #' x <- matrix(c(0, 5, 5, 0), nrow = 2)
 #' cor_cauchy(x, a = 1, alpha = 0.5, nugget = 0.3, is.dist = TRUE)
 #'
-#' @family {correlation functions}
+#' @family correlation functions
 cor_cauchy <- function(x, a, alpha, nu = 1, nugget = 0, is.dist = FALSE) {
     if (!is_numeric_scalar(nugget) || nugget < 0 || nugget > 1) {
         stop("`nugget` must be in [0, 1].", call. = FALSE)

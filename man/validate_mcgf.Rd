@@ -7,7 +7,7 @@
 validate_mcgf(x)
 }
 \arguments{
-\item{An}{mcgf object}
+\item{x}{An mcgf object.}
 }
 \value{
 An S3 object of class \code{mcgf}.

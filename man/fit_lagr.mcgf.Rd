@@ -109,11 +109,11 @@ fit_lagr <- fit_lagr(
 fit_lagr$fit
 }
 \seealso{
-Other {functions related to fitting an mcgf object}: 
+Other functions related to fitting an \code{mcgf} object: 
 \code{\link{add_base.mcgf}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{fit_base.mcgf}()},
 \code{\link{krige.mcgf}()},
 \code{\link{model.mcgf}()}
 }
-\concept{{functions related to fitting an mcgf object}}
+\concept{functions related to fitting an \code{mcgf} object}

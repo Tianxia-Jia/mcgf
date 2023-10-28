@@ -1,6 +1,6 @@
 #' Adjust for nugget effect for correlations
 #'
-#' @name nugget
+#' @name add_nugget
 #'
 #' @param x A correlation matrix or 3-d array.
 #' @param nugget A scalar nugget effect.
@@ -31,7 +31,7 @@ add_nugget <- function(x, nugget) {
     return(corr)
 }
 
-#' @rdname nugget
+#' @rdname add_nugget
 #' @param set_to A correlation matrix or 3-d array of the same dimension as `x`.
 set_nugget <- function(x, nugget, set_to) {
     if (any(dim(x) != dim(set_to))) {

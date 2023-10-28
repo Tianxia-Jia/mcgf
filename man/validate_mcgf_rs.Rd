@@ -7,7 +7,7 @@
 validate_mcgf_rs(x)
 }
 \arguments{
-\item{An}{mcgf_rs object}
+\item{x}{An mcgf_rs object}
 }
 \value{
 An S3 object of class \code{mcgf_rs}.

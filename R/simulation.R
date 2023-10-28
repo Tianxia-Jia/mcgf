@@ -39,7 +39,7 @@
 #' # rownames(sim1) <- 1:nrow(sim1)
 #' #
 #' # sim1 <- list(data = sim1, dists = h)
-#' @family {simulated datasets}
+#' @family (simulated) datasets
 "sim1"
 
 #' Simulated regime-switching Markov chain Gaussian field
@@ -104,7 +104,7 @@
 #' # sim2 <- list(data = sim2[,-1],
 #' #              dists = h,
 #' #              label = sim2[, 1])
-#' @family {simulated datasets}
+#' @family (simulated) datasets
 "sim2"
 
 #' Simulated regime-switching Markov chain Gaussian field
@@ -174,5 +174,5 @@
 #' # sim3 <- list(data = sim3[, -1],
 #' #              dists = h,
 #' #              label = sim3[, 1])
-#' @family {simulated datasets}
+#' @family (simulated) datasets
 "sim3"

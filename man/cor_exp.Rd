@@ -44,11 +44,13 @@ Geostatistics. Journal of the Royal Statistical Society. Series C (Applied
 Statistics), 47(3), 299–350.
 }
 \seealso{
-Other {correlation functions}: 
+Other correlation functions: 
 \code{\link{cor_cauchy}()},
 \code{\link{cor_fs}()},
 \code{\link{cor_lagr_askey}()},
 \code{\link{cor_lagr_tri}()},
-\code{\link{cor_sep}()}
+\code{\link{cor_sep}()},
+\code{\link{cor_stat_rs}()},
+\code{\link{cor_stat}()}
 }
-\concept{{correlation functions}}
+\concept{correlation functions}

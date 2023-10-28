@@ -50,9 +50,10 @@ a = 0.5, \alpha = 0.8}, and those for the Lagrangian model are:
 # sim1 <- list(data = sim1, dists = h)
 }
 \seealso{
-Other {simulated datasets}: 
+Other (simulated) datasets: 
 \code{\link{sim2}},
-\code{\link{sim3}}
+\code{\link{sim3}},
+\code{\link{wind}}
 }
-\concept{{simulated datasets}}
+\concept{(simulated) datasets}
 \keyword{datasets}

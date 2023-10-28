@@ -41,7 +41,7 @@
 #' x <- matrix(c(0, 5, 5, 0), nrow = 2)
 #' cor_exp(x, c = 0.01, gamma = 0.5, nugget = 0.3, is.dist = TRUE)
 #'
-#' @family {correlation functions}
+#' @family correlation functions
 cor_exp <- function(x, c, gamma = 1 / 2, nugget = 0, is.dist = FALSE) {
     if (!is_numeric_scalar(nugget) || nugget < 0 || nugget > 1) {
         stop("`nugget` must be in [0, 1].", call. = FALSE)

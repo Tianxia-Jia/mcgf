@@ -51,7 +51,7 @@
 #' u <- array(rep(-c(1, 2, 3), each = 4), dim = c(2, 2, 3))
 #' cor_lagr_askey(v1 = 10, v2 = 10, h1 = h1, h2 = h2, u = u)
 #'
-#' @family {correlation functions}
+#' @family correlation functions
 cor_lagr_askey <- function(v1, v2, k = 2, h1, h2, u) {
     if (!is_numeric_scalar(k) || k <= 0) {
         stop("`k` must be positive.", call. = FALSE)
