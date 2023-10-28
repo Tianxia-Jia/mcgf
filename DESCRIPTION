@@ -26,4 +26,5 @@ Imports:
 Depends: 
     R (>= 4.0.0)
 LazyData: true
-URL: https://tianxia-jia.github.io/mcgf/
+URL: https://tianxia-jia.github.io/mcgf/, https://github.com/tianxia-jia/mcgf
+BugReports: https://github.com/tianxia-jia/mcgf/issues
