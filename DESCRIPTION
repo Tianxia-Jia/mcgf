@@ -1,15 +1,15 @@
 Package: mcgf
 Title: Markov Chain Gaussian Fields Simulation and Parameter 
     Estimation
-Version: 0.0.0.1000
+Version: 1.0.0
 Authors@R: 
     person("Tianxia", "Jia", , "tianxia.jia@ucalgary.ca", 
-    role = c("aut", "cre"),
+    role = c("aut", "cre", "cph"),
     comment = c(ORCID = "0000-0001-5430-5019"))
-Description: A package to simulate samples of (Regime-Switching) Markov chain 
-    Gaussian fields with covariance functions of the Gneiting class. It supports 
+Description: Simulating and estimating (regime-switching) Markov chain Gaussian 
+    fields with covariance functions of the Gneiting class. It supports 
     parameter estimation by weighted least squared and maximum likelihood 
-    estimation methods, and produces kriging forecasts and intervals.
+    methods, and produces kriging forecasts and intervals.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -22,7 +22,6 @@ Suggests:
 Config/testthat/edition: 3
 Imports: 
     MASS,
-    mvnfast,
     sp
 Depends: 
     R (>= 4.0.0)
