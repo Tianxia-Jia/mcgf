@@ -59,11 +59,10 @@ sim1_mcgf <- add_lagr(sim1_mcgf, fit_lagr = fit_lagr)
 model(sim1_mcgf, old = TRUE)
 }
 \seealso{
-Other functions related to fitting an \code{mcgf} object: 
+Other functions on fitting an mcgf: 
 \code{\link{add_base.mcgf}()},
 \code{\link{fit_base.mcgf}()},
 \code{\link{fit_lagr.mcgf}()},
-\code{\link{krige.mcgf}()},
-\code{\link{model.mcgf}()}
+\code{\link{krige.mcgf}()}
 }
-\concept{functions related to fitting an \code{mcgf} object}
+\concept{functions on fitting an mcgf}

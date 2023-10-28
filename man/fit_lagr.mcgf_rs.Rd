@@ -121,11 +121,10 @@ fit_lagr_rs <- fit_lagr(
 lapply(fit_lagr_rs[1:2], function(x) x$fit)
 }
 \seealso{
-Other functions related to fitting an \code{mcgf_rs} object: 
+Other functions on fitting an mcgf_rs: 
 \code{\link{add_base.mcgf_rs}()},
 \code{\link{add_lagr.mcgf_rs}()},
 \code{\link{fit_base.mcgf_rs}()},
-\code{\link{krige.mcgf_rs}()},
-\code{\link{model.mcgf}()}
+\code{\link{krige.mcgf_rs}()}
 }
-\concept{functions related to fitting an \code{mcgf_rs} object}
+\concept{functions on fitting an mcgf_rs}

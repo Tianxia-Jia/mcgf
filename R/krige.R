@@ -83,8 +83,7 @@ krige <- function(x, ...) {
 #' popi <- colMeans(sim1_mcgf < sim1_krige$lower | sim1_mcgf > sim1_krige$upper,
 #'     na.rm = TRUE
 #' )
-#' @family functions related to fitting an `mcgf` object
-#' @family functions related to prediction for an `mcgf` object
+#' @family functions on fitting an mcgf
 krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
                        interval = FALSE, level = 0.95, ...) {
     model <- match.arg(model)
@@ -260,8 +259,7 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
 #' popi <- colMeans(sim2_mcgf < sim2_krige$lower | sim2_mcgf > sim2_krige$upper,
 #'     na.rm = TRUE
 #' )
-#' @family functions related to fitting an `mcgf_rs` object
-#' @family functions related to prediction for an `mcgf_rs` object
+#' @family functions on fitting an mcgf_rs
 krige.mcgf_rs <- function(x, newdata, newlabel,
                           soft = FALSE,
                           prob,

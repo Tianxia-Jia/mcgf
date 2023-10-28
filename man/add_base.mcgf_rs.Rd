@@ -91,11 +91,10 @@ sim2_mcgf <- add_base(sim2_mcgf, fit_base_ls = fit_sep, old = TRUE)
 model(sim2_mcgf, model = "base", old = TRUE)
 }
 \seealso{
-Other functions related to fitting an \code{mcgf_rs} object: 
+Other functions on fitting an mcgf_rs: 
 \code{\link{add_lagr.mcgf_rs}()},
 \code{\link{fit_base.mcgf_rs}()},
 \code{\link{fit_lagr.mcgf_rs}()},
-\code{\link{krige.mcgf_rs}()},
-\code{\link{model.mcgf}()}
+\code{\link{krige.mcgf_rs}()}
 }
-\concept{functions related to fitting an \code{mcgf_rs} object}
+\concept{functions on fitting an mcgf_rs}

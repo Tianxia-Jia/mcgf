@@ -82,7 +82,7 @@ add_base <- function(x, ...) {
 #' # Store the newly fitted model, and keep the old fit
 #' sim1_mcgf <- add_base(sim1_mcgf, fit_base = fit_sep, old = TRUE)
 #' model(sim1_mcgf, model = "base", old = TRUE)
-#' @family functions related to fitting an `mcgf` object
+#' @family functions on fitting an mcgf
 add_base.mcgf <- function(x,
                           fit_base,
                           fit_s,
@@ -304,7 +304,7 @@ add_base.mcgf <- function(x,
 #' # Store the newly fitted model, and keep the old fit
 #' sim2_mcgf <- add_base(sim2_mcgf, fit_base_ls = fit_sep, old = TRUE)
 #' model(sim2_mcgf, model = "base", old = TRUE)
-#' @family functions related to fitting an `mcgf_rs` object
+#' @family functions on fitting an mcgf_rs
 add_base.mcgf_rs <- function(x,
                              fit_base_ls,
                              fit_s_ls,

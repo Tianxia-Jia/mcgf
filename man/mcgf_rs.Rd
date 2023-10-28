@@ -57,10 +57,4 @@ label <- c(1, 1, 2, 2, 2)
 obj <- mcgf_rs(data, locations = locations, label = label)
 print(obj, "locations")
 print(obj, "label")
-
 }
-\seealso{
-Other functions related to creating an \code{mcgf}/\code{mcgf_rs} object: 
-\code{\link{mcgf}()}
-}
-\concept{functions related to creating an \code{mcgf}/\code{mcgf_rs} object}

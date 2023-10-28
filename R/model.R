@@ -30,8 +30,8 @@ model <- function(x, ...) {
 #' their parameters. When `old = TRUE`, the old model is printed as well. Note
 #' that the old model is not used for parameter estimation or for kriging.
 #'
-#' @family functions related to fitting an `mcgf` object
-#' @family functions related to fitting an `mcgf_rs` object
+#' @family functions on fitting a mcgf
+#' @family functions on fitting a mcgf_rs
 model.mcgf <- function(x, model = c("all", "base", "lagrangian"), old = FALSE,
                        print_model = TRUE, ...) {
     model <- match.arg(model)

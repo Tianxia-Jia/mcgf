@@ -93,12 +93,10 @@ popi <- colMeans(sim1_mcgf < sim1_krige$lower | sim1_mcgf > sim1_krige$upper,
 )
 }
 \seealso{
-Other functions related to fitting an \code{mcgf} object: 
+Other functions on fitting an mcgf: 
 \code{\link{add_base.mcgf}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{fit_base.mcgf}()},
-\code{\link{fit_lagr.mcgf}()},
-\code{\link{model.mcgf}()}
+\code{\link{fit_lagr.mcgf}()}
 }
-\concept{functions related to fitting an \code{mcgf} object}
-\concept{functions related to prediction for an \code{mcgf} object}
+\concept{functions on fitting an mcgf}

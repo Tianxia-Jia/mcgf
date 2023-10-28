@@ -86,7 +86,7 @@ fit_lagr <- function(x, ...) {
 #'     par_fixed = c(k = 2)
 #' )
 #' fit_lagr$fit
-#' @family functions related to fitting an `mcgf` object
+#' @family functions on fitting an mcgf
 fit_lagr.mcgf <- function(x,
                           model = c("lagr_tri", "lagr_askey", "none"),
                           method = c("wls", "mle"),
@@ -418,7 +418,7 @@ fit_lagr.mcgf <- function(x,
 #'     par_fixed_ls = list(list(lambda = 0.2, k = 2))
 #' )
 #' lapply(fit_lagr_rs[1:2], function(x) x$fit)
-#' @family functions related to fitting an `mcgf_rs` object
+#' @family functions on fitting an mcgf_rs
 fit_lagr.mcgf_rs <- function(x,
                              model_ls,
                              method_ls = "wls",

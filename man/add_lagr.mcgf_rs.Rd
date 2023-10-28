@@ -69,11 +69,10 @@ sim3_mcgf <- add_lagr(sim3_mcgf, fit_lagr_ls = fit_lagr_rs)
 model(sim3_mcgf)
 }
 \seealso{
-Other functions related to fitting an \code{mcgf_rs} object: 
+Other functions on fitting an mcgf_rs: 
 \code{\link{add_base.mcgf_rs}()},
 \code{\link{fit_base.mcgf_rs}()},
 \code{\link{fit_lagr.mcgf_rs}()},
-\code{\link{krige.mcgf_rs}()},
-\code{\link{model.mcgf}()}
+\code{\link{krige.mcgf_rs}()}
 }
-\concept{functions related to fitting an \code{mcgf_rs} object}
+\concept{functions on fitting an mcgf_rs}

@@ -18,4 +18,4 @@ A list of signed distance matrices: \code{h} (Euclidean), \code{h1}
 \description{
 Generic function for calculating distance matrices
 }
-\concept{{functions related to the class}}
+\concept{functions related to the class}

@@ -82,8 +82,6 @@ validate_mcgf <- function(x) {
 #' locations <- cbind(lon, lat)
 #' obj <- mcgf(data, locations)
 #' print(obj, "locations")
-#'
-#' @family functions related to creating an `mcgf`/`mcgf_rs` object
 mcgf <- function(data, locations, dists, time) {
     if (!is.data.frame(data) && !is.matrix(data)) {
         stop("`data` must be a matrix or data.frame.", call. = FALSE)

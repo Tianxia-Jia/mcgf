@@ -81,8 +81,6 @@ validate_mcgf_rs <- function(x) {
 #' obj <- mcgf_rs(data, locations = locations, label = label)
 #' print(obj, "locations")
 #' print(obj, "label")
-#'
-#' @family functions related to creating an `mcgf`/`mcgf_rs` object
 mcgf_rs <- function(data, locations, dists, label, time) {
     if (length(unique(label)) == 1) {
         message(

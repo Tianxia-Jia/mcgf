@@ -50,10 +50,4 @@ lat <- c(50, 55, 60)
 locations <- cbind(lon, lat)
 obj <- mcgf(data, locations)
 print(obj, "locations")
-
 }
-\seealso{
-Other functions related to creating an \code{mcgf}/\code{mcgf_rs} object: 
-\code{\link{mcgf_rs}()}
-}
-\concept{functions related to creating an \code{mcgf}/\code{mcgf_rs} object}
