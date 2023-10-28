@@ -29,49 +29,58 @@ You can install the development version of mcgf from [GitHub](https://github.com
 devtools::install_github("tianxia-jia/mcgf")
 ```
 
+
 ## Data Simulation
 
 To simulate a MCGF with fully symmetric covariance structure, we begin with simulating 10 locations randomly.
 
 ```{r, message = F, warning=F}
 library(mcgf)
-set.seed(1234)
-dists <- rdists(10)
+set.seed(123)
+h <- rdists(10)
 ```
 
 Next, we simulate a MCGF with the general stationary covariance structure. In this example the covariance structure is a convex combination of a base separable model and a Lagrangian model account for asymmetry.
 
 ```{r, message = F, warning=F}
-par_spatial <- list(nugget = 0, c = 0.01, gamma = 0.3)
-par_temporal <- list(a = 1, alpha = 0.5)
-par_sep <- list(par_s = par_spatial, par_t = par_temporal)
-par_lagr <- list(v1 = 10, v2 = 50, k = 2)
+N <- 1000
+lag <- 5
 
-set.seed(1234)
-X <- mcgf_sim(
-    N = 1500, base = "sep", lagrangian = "lagr_tri", lambda = 0.5,
-    par_base = par_sep, par_lagr = par_lagr, dists = dists,
-    lag = 10
+par_base <- list(
+    par_s = list(nugget = 0, c = 0.001, gamma = 0.5),
+    par_t = list(a = 0.5, alpha = 0.8)
 )
-plot.ts(X)
+par_lagr <- list(v1 = 200, v2 = 200, k = 2)
+
+sim1 <- mcgf_sim(
+    N = N,
+    base = "sep",
+    lagrangian = "lagr_tri",
+    par_base = par_base,
+    par_lagr = par_lagr,
+    lambda = 0.2,
+    dists = h,
+    lag = lag
+)
+sim1 <- sim1[-c(1:(lag + 1)), ]
+rownames(sim1) <- 1:nrow(sim1)
+
+sim1 <- list(data = sim1, dists = h)
 ```
 
 ## Parameter Estimation
 
 ### Create an `mcgf` object
 To estimate parameters, we need to calculate auto-correlations and cross-correlations. Let's first create an `mcgf` object. The `mcgf` class extends the `data.frame` with more attributes.
-
 ```{r}
-train <- X[1:1000, ]
-test <- X[-c(1:1000), ]
-x_mcgf <- mcgf(train, dists = dists)
+sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
 ```
 
 Then the acfs and ccfs can be added to this object as follows.
 
 ```{r}
-x_mcgf <- add_acfs(x = x_mcgf, lag_max = 10)
-x_mcgf <- add_ccfs(x = x_mcgf, lag_max = 10)
+sim1_mcgf <- add_acfs(sim1_mcgf, lag_max = lag)
+sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = lag)
 ```
 
 ### Estimate base model
@@ -80,17 +89,20 @@ To perform parameter estimation, we can start with estimating the parameters for
 
 ```{r}
 fit_spatial <- fit_base(
-    x = x_mcgf, lag = 10, model = "spatial",
-    par_init = list(nugget = 0, c = 0.001, gamma = 0.5),
-    method = "wls"
+    sim1_mcgf,
+    model = "spatial",
+    lag = lag,
+    par_init = c(c = 0.001, gamma = 0.5),
+    par_fixed = c(nugget = 0)
 )
 fit_spatial$fit
 ```
 ```{r}
 fit_temporal <- fit_base(
-    x = x_mcgf, lag = 10, model = "temporal",
-    par_init = list(a = 1, alpha = 0.5),
-    method = "wls"
+    sim1_mcgf,
+    model = "temporal",
+    lag = lag,
+    par_init = c(a = 0.3, alpha = 0.5)
 )
 fit_temporal$fit
 ```
@@ -98,34 +110,45 @@ Alternatively, we can fit the separable model all at once:
 
 ```{r}
 fit_sep <- fit_base(
-    x = x_mcgf, lag = 10, model = "sep",
-    par_init = list(
-        a = 1, alpha = 0.5, nugget = 0, c = 0.001,
-        gamma = 0.5
-    )
+    sim1_mcgf,
+    model = "sep",
+    lag = lag,
+    par_init = c(
+        c = 0.001,
+        gamma = 0.5,
+        a = 0.5,
+        alpha = 0.5
+    ),
+    par_fixed = c(nugget = 0)
 )
 fit_sep$fit
 ```
 we can also estimate the parameters using MLE:
 ```{r}
 fit_sep2 <- fit_base(
-    x = x_mcgf, lag = 10, model = "sep",
-    par_init = list(
-        a = 1, alpha = 0.5, nugget = 0, c = 0.001,
-        gamma = 0.5
-    ), method = "mle"
+    sim1_mcgf,
+    model = "sep",
+    lag = lag,
+    par_init = c(
+        c = 0.001,
+        gamma = 0.5,
+        a = 0.5,
+        alpha = 0.5
+    ),
+    par_fixed = c(nugget = 0),
+    method = "mle",
 )
 fit_sep2$fit
 ```
 
 Now we will add the base model to `x_mcgf`:
 ```{r}
-x_mcgf <- add_base(x_mcgf, fit_base = fit_sep)
+sim1_mcgf <- add_base(sim1_mcgf, fit_base = fit_sep)
 ```
 
 To print the current model, we do
 ```{r}
-model(x_mcgf)
+model(sim1_mcgf)
 ```
 
 ### Estimate the Lagrangian model
@@ -133,37 +156,53 @@ model(x_mcgf)
 Similarly, we can estimate the parameters for the Lagrangian component by
 ```{r}
 fit_lagr <- fit_lagr(
-    x = x_mcgf, model = "lagr_tri",
-    par_init = list(lambda = 0.1, v1 = 10, v2 = 10, k = 1)
+    sim1_mcgf,
+    model = "lagr_tri",
+    par_init = c(v1 = 300, v2 = 300, lambda = 0.15),
+    par_fixed = c(k = 2)
 )
 fit_lagr$fit
 ```
 
 We can add the Lagrangian model by
 ```{r}
-x_mcgf <- add_lagr(x_mcgf, fit_lagr = fit_lagr)
+sim1_mcgf <- add_lagr(sim1_mcgf, fit_lagr = fit_lagr)
 ```
 
 Finally we may print the final model:
 ```{r}
-model(x_mcgf)
+model(sim1_mcgf)
 ```
 
 ### Kriging forecast
 
-This package provides kriging forecasts (and intervals) for empirical, base, and general stationary models. We will obtain forecasts for the test dataset.
+This package provides kriging forecasts (and intervals) for empirical, base, and general stationary models.
 ```{r}
 # Empirical model
-fit_emp <- krige(x_mcgf, model = "empirical", newdata = test, interval = TRUE)
-rmse_emp <- sqrt(mean(colMeans((test - fit_emp$fit)^2, na.rm = T)))
+fit_emp <-
+    krige(sim1_mcgf,
+        model = "empirical",
+        interval = TRUE
+    )
+rmse_emp <- sqrt(mean(colMeans((sim1_mcgf - fit_emp$fit)^2, na.rm = T)))
 
 # Base separable model
-fit_base <- krige(x_mcgf, model = "base", newdata = test, interval = TRUE)
-rmse_base <- sqrt(mean(colMeans((test - fit_base$fit)^2, na.rm = T)))
+fit_base <-
+    krige(sim1_mcgf,
+        model = "base",
+        interval = TRUE
+    )
+rmse_base <-
+    sqrt(mean(colMeans((sim1_mcgf - fit_base$fit)^2, na.rm = T)))
 
 # Stationary model
-fit_stat <- krige(x_mcgf, model = "all", newdata = test, interval = TRUE)
-rmse_stat <- sqrt(mean(colMeans((test - fit_stat$fit)^2, na.rm = T)))
+fit_stat <-
+    krige(sim1_mcgf,
+        model = "all",
+        interval = TRUE
+    )
+rmse_stat <-
+    sqrt(mean(colMeans((sim1_mcgf - fit_stat$fit)^2, na.rm = T)))
 
 rmse <- c(rmse_emp, rmse_base, rmse_stat)
 names(rmse) <- c("Empirical", "Separable", "Stationary")
