@@ -25,7 +25,7 @@ controls the scale of the distance matrices.
 }
 \examples{
 set.seed(123)
-rdists(10)
-rdists(10, scale = 1)
-rdists(10, names = LETTERS[1:10])
+rdists(3)
+rdists(3, scale = 1)
+rdists(3, names = LETTERS[1:3])
 }
