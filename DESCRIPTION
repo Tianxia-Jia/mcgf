@@ -9,7 +9,7 @@ Authors@R:
 Description: Simulating and estimating (regime-switching) Markov chain Gaussian 
     fields with covariance functions of the Gneiting class. It supports 
     parameter estimation by weighted least squares and maximum likelihood 
-    methods, and produces kriging forecasts and intervals (Cressie 1993) 
+    methods, and produces Kriging forecasts and intervals (Cressie 1993) 
     <doi:10.1002/9781119115151>.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -19,7 +19,12 @@ Suggests:
     testthat (>= 3.0.0),
     doParallel (>= 1.0.17),
     foreach (>= 1.5.2),
-    parallel (>= 4.3.1)
+    parallel (>= 4.3.1),
+    knitr,
+    rmarkdown,
+    lubridate,
+    dplyr,
+    Rsolnp
 Config/testthat/edition: 3
 Imports: 
     MASS,
@@ -29,3 +34,4 @@ Depends:
 LazyData: true
 URL: https://github.com/tianxia-jia/mcgf
 BugReports: https://github.com/tianxia-jia/mcgf/issues
+VignetteBuilder: knitr
