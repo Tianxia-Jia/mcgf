@@ -11,7 +11,8 @@ and fitting covariance models. It provides functions for simulating
 (regime-switching) Markov chain Gaussian fields with covariance
 functions of the Gneiting class by simple kriging. Parameter estimation
 methods such as weighted least squares and maximum likelihood estimation
-are available.
+are available. Below is an exmaple of simulating and estimation
+parameters for an MCGF.
 
 ## Installation
 
@@ -25,7 +26,7 @@ devtools::install_github("tianxia-jia/mcgf")
 
 ## Data Simulation
 
-To simulate a MCGF with fully symmetric covariance structure, we begin
+To simulate an MCGF with fully symmetric covariance structure, we begin
 with simulating 10 locations randomly.
 
 ``` r
@@ -34,7 +35,7 @@ set.seed(123)
 h <- rdists(10)
 ```
 
-Next, we simulate a MCGF with the general stationary covariance
+Next, we simulate an MCGF with the general stationary covariance
 structure. In this example the covariance structure is a convex
 combination of a base separable model and a Lagrangian model account for
 asymmetry.

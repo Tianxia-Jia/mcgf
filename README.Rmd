@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `mcgf` is to provide easy-to-use functions for simulating and fitting covariance models. It provides functions for simulating (regime-switching)  Markov chain Gaussian fields with covariance functions of the Gneiting class by simple kriging. Parameter estimation methods such as weighted least squares and maximum likelihood estimation are available.
+The goal of `mcgf` is to provide easy-to-use functions for simulating and fitting covariance models. It provides functions for simulating (regime-switching) Markov chain Gaussian fields with covariance functions of the Gneiting class by simple kriging. Parameter estimation methods such as weighted least squares and maximum likelihood estimation are available. Below is an exmaple of simulating and estimation parameters for an MCGF.
 
 ## Installation
 
@@ -29,10 +29,9 @@ You can install the development version of mcgf from [GitHub](https://github.com
 devtools::install_github("tianxia-jia/mcgf")
 ```
 
-
 ## Data Simulation
 
-To simulate a MCGF with fully symmetric covariance structure, we begin with simulating 10 locations randomly.
+To simulate an MCGF with fully symmetric covariance structure, we begin with simulating 10 locations randomly.
 
 ```{r, message = F, warning=F}
 library(mcgf)
@@ -40,7 +39,7 @@ set.seed(123)
 h <- rdists(10)
 ```
 
-Next, we simulate a MCGF with the general stationary covariance structure. In this example the covariance structure is a convex combination of a base separable model and a Lagrangian model account for asymmetry.
+Next, we simulate an MCGF with the general stationary covariance structure. In this example the covariance structure is a convex combination of a base separable model and a Lagrangian model account for asymmetry.
 
 ```{r, message = F, warning=F}
 N <- 1000
@@ -208,4 +207,3 @@ rmse <- c(rmse_emp, rmse_base, rmse_stat)
 names(rmse) <- c("Empirical", "Separable", "Stationary")
 rmse
 ```
-
