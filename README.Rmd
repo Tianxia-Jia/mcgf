@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of `mcgf` is to provide easy-to-use functions for simulating and fitting covariance models. It provides functions for simulating (regime-switching) Markov chain Gaussian fields with covariance functions of the Gneiting class by simple kriging. Parameter estimation methods such as weighted least squares and maximum likelihood estimation are available. Below is an exmaple of simulating and estimation parameters for an MCGF.
+The goal of `mcgf` is to provide easy-to-use functions for simulating and fitting covariance models. It provides functions for simulating (regime-switching) Markov chain Gaussian fields with covariance functions of the Gneiting class by simple kriging. Parameter estimation methods such as weighted least squares and maximum likelihood estimation are available. Below is an example of simulating and estimation parameters for an MCGF.
 
 ## Installation
 

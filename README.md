@@ -11,7 +11,7 @@ and fitting covariance models. It provides functions for simulating
 (regime-switching) Markov chain Gaussian fields with covariance
 functions of the Gneiting class by simple kriging. Parameter estimation
 methods such as weighted least squares and maximum likelihood estimation
-are available. Below is an exmaple of simulating and estimation
+are available. Below is an example of simulating and estimation
 parameters for an MCGF.
 
 ## Installation
@@ -76,7 +76,7 @@ class extends the `data.frame` with more attributes.
 
 ``` r
 sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
-#> `time` not provided, assuming rows are equally spaced temporally.
+#> `time` is not provided, assuming rows are equally spaced temporally.
 ```
 
 Then the acfs and ccfs can be added to this object as follows.
