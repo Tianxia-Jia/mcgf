@@ -59,15 +59,12 @@ for a regime.
 data(sim1)
 sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
 ccfs(sim1_mcgf, lag_max = 5)
-\dontrun{
-ccfs(sim1_mcgf, lag_max = 5, ncores = 4)
-}
+
+# To use multiple cores, use the `ncores` argument
+ccfs(sim1_mcgf, lag_max = 5, ncores = 2)
 
 # Add ccfs and sds to 'sim1_mcgf'
 sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5)
-\dontrun{
-sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5, ncores = 4)
-}
 print(sim1_mcgf, "ccfs")
 print(sim1_mcgf, "sds")
 
@@ -75,15 +72,9 @@ print(sim1_mcgf, "sds")
 data(sim2)
 sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
 ccfs(sim2_mcgf, lag_max = 5)
-\dontrun{
-ccfs(sim2_mcgf, lag_max = 5, ncores = 4)
-}
 
 # Add ccfs and sds to 'sim2_mcgf'
 sim2_mcgf <- add_ccfs(sim2_mcgf, lag_max = 5)
-\dontrun{
-sim2_mcgf <- add_ccfs(sim2_mcgf, lag_max = 5, ncores = 4)
-}
 print(sim2_mcgf, "ccfs")
 print(sim2_mcgf, "sds")
 }

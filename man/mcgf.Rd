@@ -48,6 +48,6 @@ data <- cbind(S1 = 1:5, S2 = 4:8, S3 = 5:9)
 lon <- c(110, 120, 130)
 lat <- c(50, 55, 60)
 locations <- cbind(lon, lat)
-obj <- mcgf(data, locations)
+obj <- mcgf(data, locations = locations)
 print(obj, "locations")
 }

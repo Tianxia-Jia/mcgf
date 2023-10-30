@@ -80,7 +80,7 @@ validate_mcgf <- function(x) {
 #' lon <- c(110, 120, 130)
 #' lat <- c(50, 55, 60)
 #' locations <- cbind(lon, lat)
-#' obj <- mcgf(data, locations)
+#' obj <- mcgf(data, locations = locations)
 #' print(obj, "locations")
 mcgf <- function(data, locations, dists, time) {
     if (!is.data.frame(data) && !is.matrix(data)) {
@@ -110,9 +110,9 @@ mcgf <- function(data, locations, dists, time) {
     n_var <- NCOL(data)
 
     if (missing(time)) {
-        cat(
-            "`time` not provided, assuming rows are equally spaced temporally.",
-            "\n"
+        message(
+            "`time` is not provided, ",
+            "assuming rows are equally spaced temporally."
         )
         time <- 1:NROW(data)
     }
