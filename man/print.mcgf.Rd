@@ -13,6 +13,9 @@
 
 \item{...}{Optional arguments to print methods.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Print an \code{mcgf} object.
 }

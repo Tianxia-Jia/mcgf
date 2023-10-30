@@ -11,6 +11,10 @@ sds(x, ...)
 
 \item{...}{Additional parameters or attributes.}
 }
+\value{
+A vector of standard deviations for \code{mcgf} objects, or that plus
+a list of regime-switching standard deviations for \code{mcgf_rs} objects.
+}
 \description{
 Generic function for standard deviations for each column
 }

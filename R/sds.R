@@ -6,6 +6,9 @@
 #' @details
 #' Refer to [`sds.mcgf()`] and [`sds.mcgf_rs()`] for more details.
 #'
+#' @return A vector of standard deviations for `mcgf` objects, or that plus
+#' a list of regime-switching standard deviations for `mcgf_rs` objects.
+#'
 #' @export
 sds <- function(x, ...) {
     UseMethod("sds")

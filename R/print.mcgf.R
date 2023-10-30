@@ -4,6 +4,8 @@
 #' @param attr Attribute to be printed.
 #' @param ... Optional arguments to print methods.
 #'
+#' @return No return value, called for side effects.
+#'
 #' @export
 #' @examples
 #' data(sim1)
