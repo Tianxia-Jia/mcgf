@@ -31,8 +31,10 @@ h <- rdists(10)
 N <- 1000
 lag <- 5
 
-par_base <- list(par_s = list(nugget = 0, c = 0.001, gamma = 0.5),
-                 par_t = list(a = 0.5, alpha = 0.8))
+par_base <- list(
+    par_s = list(nugget = 0, c = 0.001, gamma = 0.5),
+    par_t = list(a = 0.5, alpha = 0.8)
+)
 par_lagr <- list(v1 = 200, v2 = 200, k = 2)
 
 sim1 <- mcgf_sim(
@@ -48,7 +50,8 @@ sim1 <- mcgf_sim(
 sim1 <- sim1[-c(1:(lag + 1)), ]
 rownames(sim1) <- 1:nrow(sim1)
 
-sim1 <- list(data = sim1, dists = h)}
+sim1 <- list(data = sim1, dists = h)
+}
 }
 \seealso{
 Other (simulated) datasets: 
