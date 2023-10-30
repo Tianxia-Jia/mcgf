@@ -26,54 +26,55 @@ For parameter estimation, the base model is assumed known and is used to
 estimate the regime-switching prevailing winds.
 }
 \examples{
-# Code used to generate and fit `sim3` (not run)
-# library(mcgf)
-# set.seed(123)
-# h <- rdists(10)
-#
-# # simulate regimes
-# K <- 2
-# N <- 1000
-# lag <- 5
-#
-# tran_mat <-
-#     matrix(rnorm(K ^ 2, mean = 0.06 / (K - 1), sd = 0.01), nrow = K)
-# diag(tran_mat) <- rnorm(K, mean = 0.94, sd = 0.1)
-# tran_mat <- sweep(abs(tran_mat), 1, rowSums(tran_mat), `/`)
-# tran_mat
-#
-# regime <- rep(NA, N)
-# regime[1] <- 1
-#
-# for (n in 2:(N)) {
-#     regime[n] <- sample(1:K, 1, prob = tran_mat[regime[n - 1],])
-# }
-# table(regime)
-#
-# # simulate RS MCGF
-# par_base <- list(par_s = list(nugget = 0, c = 0.05, gamma = 0.5),
-#                  par_t = list(a = 0.5, alpha = 0.2))
-#
-# par_lagr1 <- list(v1 = -100, v2 = 100, k = 2)
-# par_lagr2 <- list(v1 = 200, v2 = 200, k = 2)
-#
-# sim3 <- mcgf_rs_sim(
-#     N = N,
-#     label = regime,
-#     base_ls = list("sep"),
-#     lagrangian_ls = list("lagr_tri"),
-#     par_base_ls = list(par_base),
-#     par_lagr_ls = list(par_lagr1, par_lagr2),
-#     lambda_ls = list(0.2, 0.2),
-#     lag_ls = list(lag, lag),
-#     dists_ls = list(h, h)
-# )
-# sim3 <- sim3[-c(1:(lag + 1)), ]
-# rownames(sim3) <- 1:nrow(sim3)
-#
-# sim3 <- list(data = sim3[, -1],
-#              dists = h,
-#              label = sim3[, 1])
+# Code used to generate `sim3`
+\donttest{
+library(mcgf)
+set.seed(123)
+h <- rdists(10)
+
+# simulate regimes
+K <- 2
+N <- 1000
+lag <- 5
+
+tran_mat <-
+    matrix(rnorm(K ^ 2, mean = 0.06 / (K - 1), sd = 0.01), nrow = K)
+diag(tran_mat) <- rnorm(K, mean = 0.94, sd = 0.1)
+tran_mat <- sweep(abs(tran_mat), 1, rowSums(tran_mat), `/`)
+tran_mat
+
+regime <- rep(NA, N)
+regime[1] <- 1
+
+for (n in 2:(N)) {
+    regime[n] <- sample(1:K, 1, prob = tran_mat[regime[n - 1],])
+}
+table(regime)
+
+# simulate RS MCGF
+par_base <- list(par_s = list(nugget = 0, c = 0.05, gamma = 0.5),
+                 par_t = list(a = 0.5, alpha = 0.2))
+
+par_lagr1 <- list(v1 = -100, v2 = 100, k = 2)
+par_lagr2 <- list(v1 = 200, v2 = 200, k = 2)
+
+sim3 <- mcgf_rs_sim(
+    N = N,
+    label = regime,
+    base_ls = list("sep"),
+    lagrangian_ls = list("lagr_tri"),
+    par_base_ls = list(par_base),
+    par_lagr_ls = list(par_lagr1, par_lagr2),
+    lambda_ls = list(0.2, 0.2),
+    lag_ls = list(lag, lag),
+    dists_ls = list(h, h)
+)
+sim3 <- sim3[-c(1:(lag + 1)), ]
+rownames(sim3) <- 1:nrow(sim3)
+
+sim3 <- list(data = sim3[, -1],
+             dists = h,
+             label = sim3[, 1])}
 }
 \seealso{
 Other (simulated) datasets: 

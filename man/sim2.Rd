@@ -23,53 +23,54 @@ a = 0.5, \alpha = 0.2,}
 \alpha = 0.9.}
 }
 \examples{
-# Code used to generate and fit `sim2` (not run)
-# library(mcgf)
-# set.seed(123)
-# h <- rdists(10)
-#
-# # simulate regimes
-# K <- 2
-# N <- 1000
-# lag <- 5
-#
-# tran_mat <-
-#     matrix(rnorm(K ^ 2, mean = 0.06 / (K - 1), sd = 0.01), nrow = K)
-# diag(tran_mat) <- rnorm(K, mean = 0.94, sd = 0.1)
-# tran_mat <- sweep(abs(tran_mat), 1, rowSums(tran_mat), `/`)
-# tran_mat
-#
-# regime <- rep(NA, N)
-# regime[1] <- 1
-#
-# for (n in 2:(N)) {
-#     regime[n] <- sample(1:K, 1, prob = tran_mat[regime[n - 1], ])
-# }
-# table(regime)
-#
-# # simulate RS MCGF
-# par_base1 <- list(par_s = list(nugget = 0, c = 0.01, gamma = 0.5),
-#                   par_t = list(a = 0.5, alpha = 0.2))
-#
-# par_base2 <- list(par_s = list(nugget = 0, c = 0.04, gamma = 0.5),
-#                   par_t = list(a = 0.3, alpha = 0.9))
-#
-# sim2 <- mcgf_rs_sim(
-#     N = N,
-#     label = regime,
-#     base_ls = list("sep"),
-#     lagrangian_ls = list("none"),
-#     par_base_ls = list(par_base1, par_base2),
-#     lambda_ls = list(0.1, 0.3),
-#     lag_ls = list(lag, lag),
-#     dists_ls = list(h, h)
-# )
-# sim2 <- sim2[-c(1:(lag + 1)),]
-# rownames(sim2) <- 1:nrow(sim2)
-#
-# sim2 <- list(data = sim2[,-1],
-#              dists = h,
-#              label = sim2[, 1])
+# Code used to generate `sim2`
+\donttest{
+library(mcgf)
+set.seed(123)
+h <- rdists(10)
+
+# simulate regimes
+K <- 2
+N <- 1000
+lag <- 5
+
+tran_mat <-
+    matrix(rnorm(K ^ 2, mean = 0.06 / (K - 1), sd = 0.01), nrow = K)
+diag(tran_mat) <- rnorm(K, mean = 0.94, sd = 0.1)
+tran_mat <- sweep(abs(tran_mat), 1, rowSums(tran_mat), `/`)
+tran_mat
+
+regime <- rep(NA, N)
+regime[1] <- 1
+
+for (n in 2:(N)) {
+    regime[n] <- sample(1:K, 1, prob = tran_mat[regime[n - 1], ])
+}
+table(regime)
+
+# simulate RS MCGF
+par_base1 <- list(par_s = list(nugget = 0, c = 0.01, gamma = 0.5),
+                  par_t = list(a = 0.5, alpha = 0.2))
+
+par_base2 <- list(par_s = list(nugget = 0, c = 0.04, gamma = 0.5),
+                  par_t = list(a = 0.3, alpha = 0.9))
+
+sim2 <- mcgf_rs_sim(
+    N = N,
+    label = regime,
+    base_ls = list("sep"),
+    lagrangian_ls = list("none"),
+    par_base_ls = list(par_base1, par_base2),
+    lambda_ls = list(0.1, 0.3),
+    lag_ls = list(lag, lag),
+    dists_ls = list(h, h)
+)
+sim2 <- sim2[-c(1:(lag + 1)),]
+rownames(sim2) <- 1:nrow(sim2)
+
+sim2 <- list(data = sim2[,-1],
+             dists = h,
+             label = sim2[, 1])}
 }
 \seealso{
 Other (simulated) datasets: 
