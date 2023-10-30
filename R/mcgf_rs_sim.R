@@ -193,7 +193,10 @@ mcgf_rs_sim <- function(N,
     n_regime <- length(unique(label))
 
     if (n_regime == 1) {
-        cat("Only 1 regime found in `label`. Simulating for 1 regime only.\n")
+        message(
+            "Only 1 regime found in `label`. ",
+            "Simulating for 1 regime only."
+        )
     }
 
     for (k in 1:length(dists_ls)) {
