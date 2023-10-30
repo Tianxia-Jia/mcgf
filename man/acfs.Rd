@@ -11,6 +11,10 @@ acfs(x, ...)
 
 \item{...}{Additional parameters or attributes.}
 }
+\value{
+A vector of mean auto-correlations for \code{mcgf} objects, or that plus
+a list of regime-switching mean auto-correlations for \code{mcgf_rs} objects.
+}
 \description{
 Generic function for calculating autocorrelation
 }

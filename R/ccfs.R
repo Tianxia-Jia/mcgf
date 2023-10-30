@@ -3,6 +3,9 @@
 #' @param x An **R** object.
 #' @param ... Additional parameters or attributes.
 #'
+#' @return An array of cross-correlations for `mcgf` objects, or that plus
+#' a list of regime-switching cross-correlations for `mcgf_rs` objects.
+#'
 #' @details
 #' Refer to [`ccfs.mcgf()`] and [`ccfs.mcgf_rs()`] for more details.
 #'
@@ -48,15 +51,12 @@ ccfs <- function(x, ...) {
 #' data(sim1)
 #' sim1_mcgf <- mcgf(sim1$data, dists = sim1$dists)
 #' ccfs(sim1_mcgf, lag_max = 5)
-#' \dontrun{
-#' ccfs(sim1_mcgf, lag_max = 5, ncores = 4)
-#' }
+#'
+#' # To use multiple cores, use the `ncores` argument
+#' ccfs(sim1_mcgf, lag_max = 5, ncores = 2)
 #'
 #' # Add ccfs and sds to 'sim1_mcgf'
 #' sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5)
-#' \dontrun{
-#' sim1_mcgf <- add_ccfs(sim1_mcgf, lag_max = 5, ncores = 4)
-#' }
 #' print(sim1_mcgf, "ccfs")
 #' print(sim1_mcgf, "sds")
 #'
@@ -64,15 +64,9 @@ ccfs <- function(x, ...) {
 #' data(sim2)
 #' sim2_mcgf <- mcgf_rs(sim2$data, dists = sim2$dists, label = sim2$label)
 #' ccfs(sim2_mcgf, lag_max = 5)
-#' \dontrun{
-#' ccfs(sim2_mcgf, lag_max = 5, ncores = 4)
-#' }
 #'
 #' # Add ccfs and sds to 'sim2_mcgf'
 #' sim2_mcgf <- add_ccfs(sim2_mcgf, lag_max = 5)
-#' \dontrun{
-#' sim2_mcgf <- add_ccfs(sim2_mcgf, lag_max = 5, ncores = 4)
-#' }
 #' print(sim2_mcgf, "ccfs")
 #' print(sim2_mcgf, "sds")
 #' @family functions related to acfs and ccfs
@@ -100,9 +94,9 @@ ccfs.mcgf <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
 
         if ((n_var > 30 && lag_max > 10) || n_var > 50) {
             if (ncores == 1) {
-                cat(
+                message(
                     "Large dataset, this may take a while. Set `ncores` > 1 to",
-                    "speed up.\n"
+                    " speed up."
                 )
             }
         }
@@ -197,7 +191,7 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
 
         if ((n_var > 30 && lag_max > 10) || n_var > 50) {
             if (ncores == 1) {
-                cat(
+                message(
                     "Large dataset, this may take a while. Set `ncores` > 1 to",
                     "speed up.\n"
                 )

@@ -60,6 +60,9 @@ acf_rs <- function(x, label, lag_max, demean = TRUE) {
 #' @param x An **R** object.
 #' @param ... Additional parameters or attributes.
 #'
+#' @return A vector of mean auto-correlations for `mcgf` objects, or that plus
+#' a list of regime-switching mean auto-correlations for `mcgf_rs` objects.
+#'
 #' @details
 #' Refer to [`acfs.mcgf()`] and [`acfs.mcgf_rs()`] for more details.
 #'

@@ -11,6 +11,10 @@ ccfs(x, ...)
 
 \item{...}{Additional parameters or attributes.}
 }
+\value{
+An array of cross-correlations for \code{mcgf} objects, or that plus
+a list of regime-switching cross-correlations for \code{mcgf_rs} objects.
+}
 \description{
 Generic function for calculating cross-correlation
 }
