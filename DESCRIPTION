@@ -32,6 +32,6 @@ Imports:
 Depends: 
     R (>= 4.0.0)
 LazyData: true
-URL: https://github.com/tianxia-jia/mcgf
+URL: https://github.com/tianxia-jia/mcgf, https://tianxia-jia.github.io/mcgf/
 BugReports: https://github.com/tianxia-jia/mcgf/issues
 VignetteBuilder: knitr
