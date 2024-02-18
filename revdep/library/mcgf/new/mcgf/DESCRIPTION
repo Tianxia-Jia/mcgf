@@ -28,7 +28,7 @@ VignetteBuilder: knitr
 RemoteType: local
 RemoteUrl: D:\OneDrive - University of Calgary\R Package\mcgf
 NeedsCompilation: no
-Packaged: 2024-02-18 01:36:19 UTC; tylar
+Packaged: 2024-02-18 03:38:25 UTC; tylar
 Author: Tianxia Jia [aut, cre, cph] (<https://orcid.org/0000-0001-5430-5019>)
 Maintainer: Tianxia Jia <tianxia.jia@ucalgary.ca>
-Built: R 4.3.2; ; 2024-02-18 01:36:20 UTC; windows
+Built: R 4.3.2; ; 2024-02-18 03:38:26 UTC; windows
