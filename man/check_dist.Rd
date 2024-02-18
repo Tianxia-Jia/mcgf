@@ -4,10 +4,14 @@
 \alias{check_dist}
 \title{Check if valid distance}
 \usage{
-check_dist(x, name = "x")
+check_dist(x, name = "x", check_sym = TRUE)
 }
 \arguments{
 \item{x}{Distance matrix or array.}
+
+\item{name}{Name of \code{x} for displaying errors.}
+
+\item{check_sym}{Logical; if TRUE each matrix (slice) must be symmetric.}
 }
 \value{
 NULL.

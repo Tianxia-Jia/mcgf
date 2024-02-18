@@ -11,7 +11,7 @@ check_length(x, length, name)
 
 \item{length}{Length of \code{x}.}
 
-\item{name}{Name of \code{x}.}
+\item{name}{Name of \code{x} for displaying errors.}
 }
 \value{
 \code{x}.

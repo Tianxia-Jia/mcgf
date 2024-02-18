@@ -47,15 +47,15 @@
 #'
 #' @inherit .find_dists return
 #'
-#' @param locations A matrix or data.frame of 2D points, first column
-#' x/longitude, second column y/latitude.
+#' @param locations A matrix or data.frame of 2D points, the first column is
+#' x/longitude, and the second column is y/latitude.
 #' @param longlat Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
 #' if FALSE, Euclidean distance.
 #'
 #' @export
 #'
 #' @details
-#'  `locations` must be a matrix or data.frame containing 2 columns,
+#' `locations` must be a matrix or data.frame containing 2 columns,
 #' first column x/longitude, and second column y/latitude.The row names of
 #' `locations` are used as the names of the locations.
 #'

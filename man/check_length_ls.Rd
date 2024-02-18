@@ -11,7 +11,7 @@ check_length_ls(x_ls, length, name)
 
 \item{length}{List of length of \code{x_ls}.}
 
-\item{name}{Name of \code{x_ls}.}
+\item{name}{Name of \code{x} for displaying errors.}
 }
 \value{
 \code{x_ls}.

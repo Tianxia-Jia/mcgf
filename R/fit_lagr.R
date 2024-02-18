@@ -246,9 +246,9 @@ fit_lagr.mcgf <- function(x,
                     call. = FALSE
                 )
             } else {
-                check_dist(dists_lagr$h)
-                check_dist_sign(dists_lagr$h1, "h1")
-                check_dist_sign(dists_lagr$h2, "h2")
+                check_dist(dists_lagr$h, "h", check_sym = FALSE)
+                check_dist_sign(dists_lagr$h1, "h1", check_sym = FALSE)
+                check_dist_sign(dists_lagr$h2, "h2", check_sym = FALSE)
 
                 lagr_h <- dists_lagr$h
                 lagr_h1 <- dists_lagr$h1

@@ -68,9 +68,9 @@ add_lagr.mcgf <- function(x, fit_lagr, ...) {
     scale_time <- attr(x, "scale_time", exact = TRUE)
 
     if (!is.null(fit_lagr$dists_lagr)) {
-        lagr_h <- fit_lagr$dists_base$h
-        lagr_h1 <- fit_lagr$dists_base$h1
-        lagr_h2 <- fit_lagr$dists_base$h2
+        lagr_h <- fit_lagr$dists_lagr$h
+        lagr_h1 <- fit_lagr$dists_lagr$h1
+        lagr_h2 <- fit_lagr$dists_lagr$h2
     } else {
         lagr_h <- dists(x)$h
         lagr_h1 <- dists(x)$h1
@@ -212,9 +212,9 @@ add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
         lag_max <- lag + horizon - 1
 
         if (!is.null(fit_lagr$dists_lagr)) {
-            lagr_h <- fit_lagr$dists_base$h
-            lagr_h1 <- fit_lagr$dists_base$h1
-            lagr_h2 <- fit_lagr$dists_base$h2
+            lagr_h <- fit_lagr$dists_lagr$h
+            lagr_h1 <- fit_lagr$dists_lagr$h1
+            lagr_h2 <- fit_lagr$dists_lagr$h2
         } else {
             lagr_h <- dists(x)$h
             lagr_h1 <- dists(x)$h1
