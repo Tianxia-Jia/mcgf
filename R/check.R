@@ -14,6 +14,8 @@ is_numeric_scalar <- function(x) {
 #' Check if valid distance
 #'
 #' @param x Distance matrix or array.
+#' @param name Name of `x` for displaying errors.
+#' @param check_sym Logical; if TRUE each matrix (slice) must be symmetric.
 #'
 #' @return NULL.
 #' @keywords internal
@@ -22,7 +24,7 @@ is_numeric_scalar <- function(x) {
 #' Check if `x` is a valid distance vector, matrix or array. It errors if any
 #' elements in `x` is negative, or if `x` is not a symmetric matrix or an
 #' array of symmetric matrices.
-check_dist <- function(x, name = "x") {
+check_dist <- function(x, name = "x", check_sym = TRUE) {
     if (any(is.na(x))) {
         stop("NA or NaN found in `", name, "`.", call. = FALSE)
     }
@@ -39,19 +41,21 @@ check_dist <- function(x, name = "x") {
                 )
             }
 
-            if (is.matrix(x)) {
-                if (!isSymmetric.matrix(x)) {
-                    stop("distance matrix `", name, "` is not symmetric.",
-                        call. = FALSE
-                    )
-                }
-            } else {
-                for (i in 1:dim(x)[3]) {
-                    if (!isSymmetric.matrix(x[, , i])) {
-                        stop("not all matrix slices in array `", name,
-                            "` is symmetric.",
+            if (check_sym) {
+                if (is.matrix(x)) {
+                    if (!isSymmetric.matrix(x)) {
+                        stop("distance matrix `", name, "` is not symmetric.",
                             call. = FALSE
                         )
+                    }
+                } else {
+                    for (i in 1:dim(x)[3]) {
+                        if (!isSymmetric.matrix(x[, , i])) {
+                            stop("not all matrix slices in array `", name,
+                                "` is symmetric.",
+                                call. = FALSE
+                            )
+                        }
                     }
                 }
             }
@@ -63,6 +67,8 @@ check_dist <- function(x, name = "x") {
 #' Check if valid signed distance
 #'
 #' @param x Distance matrix or array.
+#' @param name Name of `x` for displaying errors.
+#' @param check_sym Logical; if TRUE each matrix (slice) must be symmetric.
 #'
 #' @return NULL.
 #' @keywords internal
@@ -71,7 +77,7 @@ check_dist <- function(x, name = "x") {
 #' Check if `x` is a valid signed distance vector, matrix or array. It errors
 #' if `x` in absolute value is not a symmetric matrix or an array of
 #' symmetric matrices.
-check_dist_sign <- function(x, name) {
+check_dist_sign <- function(x, name, check_sym = TRUE) {
     if (any(is.na(x))) {
         stop("NA or NaN found in `", name, "`.", call. = FALSE)
     }
@@ -84,20 +90,22 @@ check_dist_sign <- function(x, name) {
                 )
             }
 
-            if (is.matrix(x)) {
-                if (!isSymmetric.matrix(abs(x))) {
-                    stop("distance matrix `", name,
-                        "` is not symmetric in absolute values.",
-                        call. = FALSE
-                    )
-                }
-            } else {
-                for (i in 1:dim(x)[3]) {
-                    if (!isSymmetric.matrix(abs(x)[, , i])) {
-                        stop("not all matrix slices in array `", name,
-                            "`` is symmetric in absolute values.",
+            if (check_sym) {
+                if (is.matrix(x)) {
+                    if (!isSymmetric.matrix(abs(x))) {
+                        stop("distance matrix `", name,
+                            "` is not symmetric in absolute values.",
                             call. = FALSE
                         )
+                    }
+                } else {
+                    for (i in 1:dim(x)[3]) {
+                        if (!isSymmetric.matrix(abs(x)[, , i])) {
+                            stop("not all matrix slices in array `", name,
+                                "`` is symmetric in absolute values.",
+                                call. = FALSE
+                            )
+                        }
                     }
                 }
             }
@@ -110,7 +118,7 @@ check_dist_sign <- function(x, name) {
 #'
 #' @param x Scaler or vector
 #' @param length Length of `x`.
-#' @param name Name of `x`.
+#' @param name Name of `x` for displaying errors.
 #'
 #' @return `x`.
 #' @keywords internal
@@ -136,7 +144,7 @@ check_length <- function(x, length, name) {
 #'
 #' @param x_ls List of scaler or vector
 #' @param length List of length of `x_ls`.
-#' @param name Name of `x_ls`.
+#' @param name Name of `x` for displaying errors.
 #'
 #' @return `x_ls`.
 #' @keywords internal
