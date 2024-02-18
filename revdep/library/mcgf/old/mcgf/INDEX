@@ -1,0 +1,85 @@
+acf_rs                  Calculate regime-switching auto-correlation
+acfs                    Generic function for calculating
+                        autocorrelation
+acfs.mcgf               Extract, calculate, or assign mean
+                        auto-correlations for an 'mcgf' or 'mcgf_rs'
+                        object
+add_base                Generic function for adding a base model
+add_base.mcgf           Add base model outputted from 'fit_base()' to
+                        an 'mcgf' object.
+add_base.mcgf_rs        Add base model outputted from 'fit_base()' to
+                        an 'mcgf_rs' object.
+add_lagr                Generic function for adding a Lagrangian model
+add_lagr.mcgf           Add lagr model outputted from 'fit_lagr()' to a
+                        'mcgf' object.
+add_lagr.mcgf_rs        Add lagr model outputted from 'fit_lagr()' to a
+                        'mcgf_rs' object.
+ccf_rs                  Calculate regime-switching cross-correlation
+ccfs                    Generic function for calculating
+                        cross-correlation
+ccfs.mcgf               Extract, calculate, or assign
+                        cross-correlations for an 'mcgf' or 'mcgf_rs'
+                        object
+ccov                    Generic functions for calculating joint
+                        covariance/correlation matrix for mcgf objects
+ccov.mcgf               Covariance/correlation for joint distribution
+                        of an 'mcgf' object
+ccov.mcgf_rs            Covariance/correlation for joint distribution
+                        of an 'mcgf_rs'object
+cor2cov                 Convert correlation to covariance
+cor_cauchy              Calculate Cauchy correlation
+cor_exp                 Calculate exponential correlation
+cor_fs                  Calculate correlation for fully symmetric model
+cor_lagr_askey          Calculate Lagrangian correlation of the Askey
+                        form
+cor_lagr_tri            Calculate Lagrangian correlation of the
+                        triangular form
+cor_sep                 Calculate correlation for separable model
+cor_stat                Calculate general stationary correlation.
+cor_stat_rs             Calculate general stationary correlation.
+dists                   Generic function for calculating distance
+                        matrices
+dists.mcgf              Calculating distance matrices for an 'mcgf'
+                        object
+find_dists              Calculate (signed) distances between
+                        coordinates
+fit_base                Fit correlation base models
+fit_base.mcgf           Parameter estimation for symmetric correlation
+                        functions for an 'mcgf' object.
+fit_base.mcgf_rs        Parameter estimation for symmetric correlation
+                        functions for an 'mcgf_rs' object.
+fit_lagr                Fit correlation Lagrangian models
+fit_lagr.mcgf           Parameter estimation for Lagrangian correlation
+                        functions for an 'mcgf' object.
+fit_lagr.mcgf_rs        Parameter estimation for Lagrangian correlation
+                        functions for an 'mcgf_rs' object.
+is.mcgf                 Check if an object is an 'mcgf' object.
+is.mcgf_rs              Check if an object is an 'mcgf_rs' object..
+krige                   Generic function for computing kriging
+                        forecasts
+krige.mcgf              Obtain kriging forecasts for an 'mcgf' object.
+krige.mcgf_rs           Obtain kriging forecasts for an 'mcgf_rs'
+                        object.
+mcgf                    Create mcgf object
+mcgf_rs                 Create mcgf_rs object
+mcgf_rs_sim             Simulate regime-switching Markov chain Gaussian
+                        field
+mcgf_sim                Simulate Markov chain Gaussian field
+model                   Generic function for displaying fitted models
+                        for 'mcgf' objects
+model.mcgf              Display fitted models for an 'mcgf' or
+                        'mcgf_rs' object
+print.mcgf              Print an 'mcgf' object.
+rdists                  Generate random distance matrices
+sd_rs                   Calculate standard deviation for each location
+                        under each regime.
+sds                     Generic function for standard deviations for
+                        each column
+sds.mcgf                Extract, calculate, or assign standard
+                        deviations for an 'mcgf' or 'mcgf_rs' object.
+sim1                    Simulated Markov chain Gaussian field
+sim2                    Simulated regime-switching Markov chain
+                        Gaussian field
+sim3                    Simulated regime-switching Markov chain
+                        Gaussian field
+wind                    Ireland wind data, 1961-1978

@@ -1,0 +1,296 @@
+---
+title: "mcgf"
+output: rmarkdown::html_vignette
+bibliography: mcgf.bib
+vignette: >
+  %\VignetteIndexEntry{mcgf}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+```
+
+# Introduction
+The `mcgf` package contains useful functions to simulate Markov chain Gaussian fields (MCGF) and regime-switching Markov chain Gaussian fields (RS-MCGF) with covariance structures of the Gneiting class [@Gneiting2002]. It also provides useful tools to estimate the parameters by weighted least squares (WLS) and maximum likelihood estimation (MLE). The `mcgf` can used to fit covariance models and obtain Kriging forecasts. A typical workflow is given below.
+
+1. Create an `mcgf` object by providing a dataset and the corresponding locations/distances
+2. Calculate auto- and cross- correlations.
+3. Fit the base covariance model which is a fully symmetric model.
+4. Fit the Lagrangian model to account for asymmetry, if necessary.
+5. Obtain Kriging forecasts.
+
+We will demonstrate the use of `mcgf` by an example below.
+
+# Irish Wind
+The Ireland wind data contains daily wind speeds for 1961-1978 at 11 synoptic meteorological stations in the Republic of Ireland. It is available in the `gstat` package and is also imported to `mcgf`. To view the details on this dataset, run `help(wind)`. The object `wind` contains the wind speeds data as well as the locations of the stations.
+```{r load data}
+library(mcgf)
+data(wind)
+head(wind$data)
+head(wind$locations)
+```
+
+## Data De-treding
+
+To fit covariance models on `wind`, the first step is to load the data set and de-trend the data to have a mean-zero time series. We will follow the data de-trending procedure in @Gneiting2006a.
+
+1. We start with removing the leap day and take the square-root transformation. To do this we need to use the `lubridate` package.
+```{r leap, message = F}
+# install.packages("lubridate")
+library(lubridate)
+ind_leap <- month(wind$data$time) == 2 & day(wind$data$time) == 29
+wind_de <- wind$data[!ind_leap, ]
+wind_de[, -1] <- sqrt(wind_de[, -1])
+```
+
+2. Next, we split the data into training and test datasets, where training contains data in 1961-1970 and test spans 1971-1978.
+```{r split}
+is_train <- year(wind_de$time) <= 1970
+wind_train <- wind_de[is_train, ]
+wind_test <- wind_de[!is_train, ]
+```
+
+3. We will estimate and remove the annual trend for the training dataset. The annual trend is the daily averages across the training years. We will use the `dplyr` package for this task.
+```{r annual, message = F}
+# install.packages("dplyr")
+library(dplyr)
+# Estimate annual trend
+avg_train <- tibble(
+    month = month(wind_train$time),
+    day = day(wind_train$time),
+    ws = rowMeans(wind_train[, -1])
+)
+trend_train <- avg_train %>%
+    group_by(month, day) %>%
+    summarise(trend = mean(ws))
+
+# Subtract annual trend
+trend_train2 <- left_join(avg_train, trend_train, by = c("month", "day"))$trend
+wind_train[, -1] <- wind_train[, -1] - trend_train2
+```
+
+4. To obtain a mean-zero time series, we will subtract the station-wise mean for each station.
+```{r station}
+# Subtract station-wise mean
+mean_train <- colMeans(wind_train[, -1])
+wind_train[, -1] <- sweep(wind_train[, -1], 2, mean_train)
+wind_trend <- list(
+    annual = as.data.frame(trend_train),
+    mean = mean_train
+)
+```
+
+5. Finally, we will subtract the annual trend and station-wise mean from the test dataset.
+```{r test}
+avg_test <- tibble(
+    month = month(wind_test$time),
+    day = day(wind_test$time)
+)
+trend_train3 <-
+    left_join(avg_test, trend_train, by = c("month", "day"))$trend
+wind_test[, -1] <- wind_test[, -1] - trend_train3
+wind_test[, -1] <- sweep(wind_test[, -1], 2, mean_train)
+```
+
+## Fitting Covariance Models
+
+We will first fit pure spatial and temporal models, then the fully symmetric model, and finally the general stationary model. First, we will create an `mcgf` object and calculate auto- and cross- correlations.
+```{r mcgf}
+wind_mcgf <- mcgf(wind_train[, -1], locations = wind$locations)
+wind_mcgf <- add_acfs(wind_mcgf, lag_max = 3)
+wind_mcgf <- add_ccfs(wind_mcgf, lag_max = 3)
+```
+
+Here `acfs` actually refers to the mean auto-correlations across the stations for each time lag. To view the calculated `acfs`, we can run:
+```{r acfs}
+acfs(wind_mcgf)
+```
+Similarly, we can view the `ccfs` by:
+```{r ccfs}
+ccfs(wind_mcgf)
+```
+
+### Pure Spatial Model
+The pure spatial model can be fitted using the `fit_base` function. The results are actually obtained from the optimization function `nlminb`.
+```{r spatial, message=F}
+fit_spatial <- fit_base(
+    wind_mcgf,
+    model = "spatial",
+    lag = 3,
+    par_init = c(nugget = 0.1, c = 0.001),
+    par_fixed = c(gamma = 0.5)
+)
+fit_spatial$fit
+```
+Here we set `gamma` to be 0.5 and it is not estimated along with `c` or `nugget`. By default `mcgf` provides two optimization functions: `nlminb` and `optim`. Other optimization functions are also supported as long as their first two arguments are initial values for the parameters and a function to be minimized respectively (same as that of `optim` and `nlminb`). Also, if the argument names for upper and lower bounds are not `upper` or `lower`, we can create a simple wrapper to "change" them.
+```{r}
+library(Rsolnp)
+solnp2 <- function(pars, fun, lower, upper, ...) {
+    solnp(pars, fun, LB = lower, UB = upper, ...)
+}
+fit_spatial2 <- fit_base(
+    wind_mcgf,
+    model = "spatial",
+    lag = 3,
+    par_init = c(nugget = 0.1, c = 0.001),
+    par_fixed = c(gamma = 0.5),
+    optim_fn = "other",
+    other_optim_fn = "solnp2"
+)
+fit_spatial2$fit
+```
+
+### Pure Temporal Model
+
+The pure temporal can also be fitted by `fit_base`:
+```{r temporal}
+fit_temporal <- fit_base(
+    wind_mcgf,
+    model = "temporal",
+    lag = 3,
+    par_init = c(a = 0.5, alpha = 0.5)
+)
+fit_temporal$fit
+```
+Before fitting the fully symmetric model, we need to store the fitted spatial and temporal models to `wind_mcgf` using `add_base`:
+```{r sep}
+wind_mcgf <- add_base(wind_mcgf,
+    fit_s = fit_spatial,
+    fit_t = fit_temporal,
+    sep = T
+)
+```
+
+
+### Separable Model
+We can also fit the pure spatial and temporal models all at once by fitting a separable model:
+```{r}
+fit_sep <- fit_base(
+    wind_mcgf,
+    model = "sep",
+    lag = 3,
+    par_init = c(nugget = 0.1, c = 0.001, a = 0.5, alpha = 0.5),
+    par_fixed = c(gamma = 0.5)
+)
+fit_sep$fit
+```
+Once can also store this model to `wind_mcgf`, but to be consistent with @Gneiting2006a, we will just use the estimates from the pure spatial and temporal models to estimate the interaction parameter `beta`.
+
+### Fully Symmetric Model
+When holding other parameters constant, the parameter `beta` can be estimated by:
+```{r fs}
+par_sep <- c(fit_spatial$fit$par, fit_temporal$fit$par, gamma = 0.5)
+fit_fs <-
+    fit_base(
+        wind_mcgf,
+        model = "fs",
+        lag = 3,
+        par_init = c(beta = 0),
+        par_fixed = par_sep
+    )
+fit_fs$fit
+```
+At this stage, we have fitted the base model, and we will store the fully symmetric model as the base model and print the base model:
+```{r base}
+wind_mcgf <- add_base(wind_mcgf, fit_base = fit_fs, old = TRUE)
+model(wind_mcgf, model = "base", old = TRUE)
+```
+The `old = TRUE` in `add_base` keeps the fitted pure spatial and temporal models for records, and they are not used for any further steps. It is recommended to keep the old model not only for reproducibility, but to keep a history of fitted models.
+
+### Lagrangian Model
+We will fit a Lagrangian correlation function to model the westerly wind:
+```{r westerly}
+fit_lagr <- fit_lagr(wind_mcgf,
+    model = "lagr_tri",
+    par_init = c(v1 = 200, lambda = 0.1),
+    par_fixed = c(v2 = 0, k = 2)
+)
+fit_lagr$fit
+```
+
+Finally we will store this model to `wind_mcgf` using `add_lagr` and then print the final model:
+```{r stat}
+wind_mcgf <- add_lagr(wind_mcgf, fit_lagr = fit_lagr)
+model(wind_mcgf, old = TRUE)
+```
+
+## Simple Kriging
+For the test dataset, we can obtain the simple kriging forecasts and intervals for the empirical model, base model, and general stationary model using the `krige` function:
+```{r krige}
+krige_emp <- krige(
+    x = wind_mcgf,
+    newdata = wind_test[, -1],
+    model = "empirical",
+    interval = TRUE
+)
+krige_base <- krige(
+    x = wind_mcgf,
+    newdata = wind_test[, -1],
+    model = "base",
+    interval = TRUE
+)
+krige_stat <- krige(
+    x = wind_mcgf,
+    newdata = wind_test[, -1],
+    model = "all",
+    interval = TRUE
+)
+```
+Next, we can compute the root mean square error (RMSE), mean absolute error (MAE), and the realized percentage of observations falling outside the 95\% PI (POPI) for these models on the test dataset.
+
+### RMSE
+```{r rmse}
+# RMSE
+rmse_emp <- sqrt(colMeans((wind_test[, -1] - krige_emp$fit)^2, na.rm = T))
+rmse_base <- sqrt(colMeans((wind_test[, -1] - krige_base$fit)^2, na.rm = T))
+rmse_stat <- sqrt(colMeans((wind_test[, -1] - krige_stat$fit)^2, na.rm = T))
+rmse <- c(
+    "Empirical" = mean(rmse_emp),
+    "Base" = mean(rmse_base),
+    "STAT" = mean(rmse_emp)
+)
+rmse
+```
+### MAE
+```{r MAE}
+mae_emp <- colMeans(abs(wind_test[, -1] - krige_emp$fit), na.rm = T)
+mae_base <- colMeans(abs(wind_test[, -1] - krige_base$fit), na.rm = T)
+mae_stat <- colMeans(abs(wind_test[, -1] - krige_stat$fit), na.rm = T)
+mae <- c(
+    "Empirical" = mean(mae_emp),
+    "Base" = mean(mae_base),
+    "STAT" = mean(mae_stat)
+)
+mae
+```
+### POPI
+```{r popi}
+# POPI
+popi_emp <- colMeans(
+    wind_test[, -1] < krige_emp$lower | wind_test[, -1] > krige_emp$upper,
+    na.rm = T
+)
+popi_base <- colMeans(
+    wind_test[, -1] < krige_base$lower | wind_test[, -1] > krige_base$upper,
+    na.rm = T
+)
+popi_stat <- colMeans(
+    wind_test[, -1] < krige_stat$lower | wind_test[, -1] > krige_stat$upper,
+    na.rm = T
+)
+popi <- c(
+    "Empirical" = mean(popi_emp),
+    "Base" = mean(popi_base),
+    "STAT" = mean(popi_stat)
+)
+popi
+```
+
+# References
+
+<div id="refs"></div>

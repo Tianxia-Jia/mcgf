@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head><title>R: Markov Chain Gaussian Fields Simulation and Parameter Estimation</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+<h1> Markov Chain Gaussian Fields Simulation and Parameter Estimation
+<img class="toplogo" src="../../../doc/html/Rlogo.svg" alt="[R logo]" />
+</h1>
+<hr/>
+<div style="text-align: center;">
+<a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
+<a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
+</div><h2>Documentation for package &lsquo;mcgf&rsquo; version 1.0.0.9000</h2>
+
+<ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
+<li><a href="../NEWS">Package NEWS</a>.</li>
+</ul>
+
+<h2>Help Pages</h2>
+
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="acfs.html">acfs</a></td>
+<td>Generic function for calculating autocorrelation</td></tr>
+<tr><td style="width: 25%;"><a href="acfs.mcgf.html">acfs.mcgf</a></td>
+<td>Extract, calculate, or assign mean auto-correlations for an 'mcgf' or 'mcgf_rs' object</td></tr>
+<tr><td style="width: 25%;"><a href="acfs.mcgf.html">acfs.mcgf_rs</a></td>
+<td>Extract, calculate, or assign mean auto-correlations for an 'mcgf' or 'mcgf_rs' object</td></tr>
+<tr><td style="width: 25%;"><a href="acfs.mcgf.html">acfs&lt;-</a></td>
+<td>Extract, calculate, or assign mean auto-correlations for an 'mcgf' or 'mcgf_rs' object</td></tr>
+<tr><td style="width: 25%;"><a href="acf_rs.html">acf_rs</a></td>
+<td>Calculate regime-switching auto-correlation</td></tr>
+<tr><td style="width: 25%;"><a href="acfs.mcgf.html">add_acfs</a></td>
+<td>Extract, calculate, or assign mean auto-correlations for an 'mcgf' or 'mcgf_rs' object</td></tr>
+<tr><td style="width: 25%;"><a href="add_base.html">add_base</a></td>
+<td>Generic function for adding a base model</td></tr>
+<tr><td style="width: 25%;"><a href="add_base.mcgf.html">add_base.mcgf</a></td>
+<td>Add base model outputted from 'fit_base()' to an 'mcgf' object.</td></tr>
+<tr><td style="width: 25%;"><a href="add_base.mcgf_rs.html">add_base.mcgf_rs</a></td>
+<td>Add base model outputted from 'fit_base()' to an 'mcgf_rs' object.</td></tr>
+<tr><td style="width: 25%;"><a href="ccfs.mcgf.html">add_ccfs</a></td>
+<td>Extract, calculate, or assign cross-correlations for an 'mcgf' or 'mcgf_rs' object</td></tr>
+<tr><td style="width: 25%;"><a href="add_lagr.html">add_lagr</a></td>
+<td>Generic function for adding a Lagrangian model</td></tr>
+<tr><td style="width: 25%;"><a href="add_lagr.mcgf.html">add_lagr.mcgf</a></td>
+<td>Add lagr model outputted from 'fit_lagr()' to a 'mcgf' object.</td></tr>
+<tr><td style="width: 25%;"><a href="add_lagr.mcgf_rs.html">add_lagr.mcgf_rs</a></td>
+<td>Add lagr model outputted from 'fit_lagr()' to a 'mcgf_rs' object.</td></tr>
+<tr><td style="width: 25%;"><a href="is.mcgf_rs.html">as.mcgf_rs</a></td>
+<td>Check if an object is an 'mcgf_rs' object..</td></tr>
+<tr><td style="width: 25%;"><a href="add_base.mcgf.html">base&lt;-</a></td>
+<td>Add base model outputted from 'fit_base()' to an 'mcgf' object.</td></tr>
+<tr><td style="width: 25%;"><a href="ccfs.html">ccfs</a></td>
+<td>Generic function for calculating cross-correlation</td></tr>
+<tr><td style="width: 25%;"><a href="ccfs.mcgf.html">ccfs.mcgf</a></td>
+<td>Extract, calculate, or assign cross-correlations for an 'mcgf' or 'mcgf_rs' object</td></tr>
+<tr><td style="width: 25%;"><a href="ccfs.mcgf.html">ccfs.mcgf_rs</a></td>
+<td>Extract, calculate, or assign cross-correlations for an 'mcgf' or 'mcgf_rs' object</td></tr>
+<tr><td style="width: 25%;"><a href="ccfs.mcgf.html">ccfs&lt;-</a></td>
+<td>Extract, calculate, or assign cross-correlations for an 'mcgf' or 'mcgf_rs' object</td></tr>
+<tr><td style="width: 25%;"><a href="ccf_rs.html">ccf_rs</a></td>
+<td>Calculate regime-switching cross-correlation</td></tr>
+<tr><td style="width: 25%;"><a href="ccov.html">ccov</a></td>
+<td>Generic functions for calculating joint covariance/correlation matrix for mcgf objects</td></tr>
+<tr><td style="width: 25%;"><a href="ccov.mcgf.html">ccov.mcgf</a></td>
+<td>Covariance/correlation for joint distribution of an 'mcgf' object</td></tr>
+<tr><td style="width: 25%;"><a href="ccov.mcgf_rs.html">ccov.mcgf_rs</a></td>
+<td>Covariance/correlation for joint distribution of an 'mcgf_rs'object</td></tr>
+<tr><td style="width: 25%;"><a href="cor2cov.html">cor2cov</a></td>
+<td>Convert correlation to covariance</td></tr>
+<tr><td style="width: 25%;"><a href="cor2cov.html">cor2cov_ar</a></td>
+<td>Convert correlation to covariance</td></tr>
+<tr><td style="width: 25%;"><a href="cor_cauchy.html">cor_cauchy</a></td>
+<td>Calculate Cauchy correlation</td></tr>
+<tr><td style="width: 25%;"><a href="cor_exp.html">cor_exp</a></td>
+<td>Calculate exponential correlation</td></tr>
+<tr><td style="width: 25%;"><a href="cor_fs.html">cor_fs</a></td>
+<td>Calculate correlation for fully symmetric model</td></tr>
+<tr><td style="width: 25%;"><a href="cor_lagr_askey.html">cor_lagr_askey</a></td>
+<td>Calculate Lagrangian correlation of the Askey form</td></tr>
+<tr><td style="width: 25%;"><a href="cor_lagr_tri.html">cor_lagr_tri</a></td>
+<td>Calculate Lagrangian correlation of the triangular form</td></tr>
+<tr><td style="width: 25%;"><a href="cor_sep.html">cor_sep</a></td>
+<td>Calculate correlation for separable model</td></tr>
+<tr><td style="width: 25%;"><a href="cor_stat.html">cor_stat</a></td>
+<td>Calculate general stationary correlation.</td></tr>
+<tr><td style="width: 25%;"><a href="cor_stat_rs.html">cor_stat_rs</a></td>
+<td>Calculate general stationary correlation.</td></tr>
+<tr><td style="width: 25%;"><a href="dists.html">dists</a></td>
+<td>Generic function for calculating distance matrices</td></tr>
+<tr><td style="width: 25%;"><a href="dists.mcgf.html">dists.mcgf</a></td>
+<td>Calculating distance matrices for an 'mcgf' object</td></tr>
+<tr><td style="width: 25%;"><a href="dists.mcgf.html">dists&lt;-</a></td>
+<td>Calculating distance matrices for an 'mcgf' object</td></tr>
+<tr><td style="width: 25%;"><a href="find_dists.html">find_dists</a></td>
+<td>Calculate (signed) distances between coordinates</td></tr>
+<tr><td style="width: 25%;"><a href="fit_base.html">fit_base</a></td>
+<td>Fit correlation base models</td></tr>
+<tr><td style="width: 25%;"><a href="fit_base.mcgf.html">fit_base.mcgf</a></td>
+<td>Parameter estimation for symmetric correlation functions for an 'mcgf' object.</td></tr>
+<tr><td style="width: 25%;"><a href="fit_base.mcgf_rs.html">fit_base.mcgf_rs</a></td>
+<td>Parameter estimation for symmetric correlation functions for an 'mcgf_rs' object.</td></tr>
+<tr><td style="width: 25%;"><a href="fit_lagr.html">fit_lagr</a></td>
+<td>Fit correlation Lagrangian models</td></tr>
+<tr><td style="width: 25%;"><a href="fit_lagr.mcgf.html">fit_lagr.mcgf</a></td>
+<td>Parameter estimation for Lagrangian correlation functions for an 'mcgf' object.</td></tr>
+<tr><td style="width: 25%;"><a href="fit_lagr.mcgf_rs.html">fit_lagr.mcgf_rs</a></td>
+<td>Parameter estimation for Lagrangian correlation functions for an 'mcgf_rs' object.</td></tr>
+<tr><td style="width: 25%;"><a href="is.mcgf.html">is.mcgf</a></td>
+<td>Check if an object is an 'mcgf' object.</td></tr>
+<tr><td style="width: 25%;"><a href="is.mcgf_rs.html">is.mcgf_rs</a></td>
+<td>Check if an object is an 'mcgf_rs' object..</td></tr>
+<tr><td style="width: 25%;"><a href="krige.html">krige</a></td>
+<td>Generic function for computing kriging forecasts</td></tr>
+<tr><td style="width: 25%;"><a href="krige.mcgf.html">krige.mcgf</a></td>
+<td>Obtain kriging forecasts for an 'mcgf' object.</td></tr>
+<tr><td style="width: 25%;"><a href="krige.mcgf_rs.html">krige.mcgf_rs</a></td>
+<td>Obtain kriging forecasts for an 'mcgf_rs' object.</td></tr>
+<tr><td style="width: 25%;"><a href="add_lagr.mcgf.html">lagr&lt;-</a></td>
+<td>Add lagr model outputted from 'fit_lagr()' to a 'mcgf' object.</td></tr>
+<tr><td style="width: 25%;"><a href="mcgf.html">mcgf</a></td>
+<td>Create mcgf object</td></tr>
+<tr><td style="width: 25%;"><a href="mcgf_rs.html">mcgf_rs</a></td>
+<td>Create mcgf_rs object</td></tr>
+<tr><td style="width: 25%;"><a href="mcgf_rs_sim.html">mcgf_rs_sim</a></td>
+<td>Simulate regime-switching Markov chain Gaussian field</td></tr>
+<tr><td style="width: 25%;"><a href="mcgf_sim.html">mcgf_sim</a></td>
+<td>Simulate Markov chain Gaussian field</td></tr>
+<tr><td style="width: 25%;"><a href="model.html">model</a></td>
+<td>Generic function for displaying fitted models for 'mcgf' objects</td></tr>
+<tr><td style="width: 25%;"><a href="model.mcgf.html">model.mcgf</a></td>
+<td>Display fitted models for an 'mcgf' or 'mcgf_rs' object</td></tr>
+<tr><td style="width: 25%;"><a href="model.mcgf.html">model.mcgf_rs</a></td>
+<td>Display fitted models for an 'mcgf' or 'mcgf_rs' object</td></tr>
+<tr><td style="width: 25%;"><a href="print.mcgf.html">print.mcgf</a></td>
+<td>Print an 'mcgf' object.</td></tr>
+<tr><td style="width: 25%;"><a href="rdists.html">rdists</a></td>
+<td>Generate random distance matrices</td></tr>
+<tr><td style="width: 25%;"><a href="sds.html">sds</a></td>
+<td>Generic function for standard deviations for each column</td></tr>
+<tr><td style="width: 25%;"><a href="sds.mcgf.html">sds.mcgf</a></td>
+<td>Extract, calculate, or assign standard deviations for an 'mcgf' or 'mcgf_rs' object.</td></tr>
+<tr><td style="width: 25%;"><a href="sds.mcgf.html">sds.mcgf_rs</a></td>
+<td>Extract, calculate, or assign standard deviations for an 'mcgf' or 'mcgf_rs' object.</td></tr>
+<tr><td style="width: 25%;"><a href="sds.mcgf.html">sds&lt;-</a></td>
+<td>Extract, calculate, or assign standard deviations for an 'mcgf' or 'mcgf_rs' object.</td></tr>
+<tr><td style="width: 25%;"><a href="sd_rs.html">sd_rs</a></td>
+<td>Calculate standard deviation for each location under each regime.</td></tr>
+<tr><td style="width: 25%;"><a href="sim1.html">sim1</a></td>
+<td>Simulated Markov chain Gaussian field</td></tr>
+<tr><td style="width: 25%;"><a href="sim2.html">sim2</a></td>
+<td>Simulated regime-switching Markov chain Gaussian field</td></tr>
+<tr><td style="width: 25%;"><a href="sim3.html">sim3</a></td>
+<td>Simulated regime-switching Markov chain Gaussian field</td></tr>
+<tr><td style="width: 25%;"><a href="wind.html">wind</a></td>
+<td>Ireland wind data, 1961-1978</td></tr>
+<tr><td style="width: 25%;"><a href="dists.mcgf.html">`dists&lt;-`</a></td>
+<td>Calculating distance matrices for an 'mcgf' object</td></tr>
+</table>
+</div></body></html>
