@@ -1,3 +1,6 @@
+## 2024-02-17
+This is a patch submission, where some bugs have been fixed.
+
 ## 2023-10-30
 This is a resubmission. I have made the following changes:
 * kriging -> Kriging in DESCRIPTION
