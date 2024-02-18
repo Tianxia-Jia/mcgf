@@ -58,7 +58,7 @@ and a Lagrangian model, has the form
 where \eqn{\lambda} is the weight of the Lagrangian term.
 
 If \code{base_fixed = TRUE}, the correlation is of the form
-\deqn{C(\mathbf{h}, u)=(1-\lambda)\text{Base}+
+\deqn{C(\mathbf{h}, u)=(1-\lambda)C_{\text{Base}}+
 \lambda C_{\text{Lagr}}(\mathbf{h}, u),}
 where \code{base} is a correlation matrix/array and \code{par_base} and \code{h} are not
 used.

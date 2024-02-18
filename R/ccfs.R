@@ -193,7 +193,7 @@ ccfs.mcgf_rs <- function(x, lag_max, ncores = 1, replace = FALSE, ...) {
             if (ncores == 1) {
                 message(
                     "Large dataset, this may take a while. Set `ncores` > 1 to",
-                    "speed up.\n"
+                    " speed up.\n"
                 )
             }
         }

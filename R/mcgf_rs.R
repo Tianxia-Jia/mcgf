@@ -94,7 +94,6 @@ mcgf_rs <- function(data, locations, dists, label, time) {
         time = time
     )
 
-
     return(validate_mcgf_rs(new_mcgf_rs(x_mcgf, label)))
 }
 

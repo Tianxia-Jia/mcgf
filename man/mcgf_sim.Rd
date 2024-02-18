@@ -79,7 +79,7 @@ X <- mcgf_sim(
     N = 1000, base = "sep", lagrangian = "lagr_tri", lambda = 0.5,
     par_base = par_base, par_lagr = par_lagr, dists = dists
 )
-# plot.ts(X)
+plot.ts(X)
 
 }
 \seealso{

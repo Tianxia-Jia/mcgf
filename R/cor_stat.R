@@ -45,7 +45,7 @@
 #' where \eqn{\lambda} is the weight of the Lagrangian term.
 #'
 #' If `base_fixed = TRUE`, the correlation is of the form
-#' \deqn{C(\mathbf{h}, u)=(1-\lambda)\text{Base}+
+#' \deqn{C(\mathbf{h}, u)=(1-\lambda)C_{\text{Base}}+
 #' \lambda C_{\text{Lagr}}(\mathbf{h}, u),}
 #' where `base` is a correlation matrix/array and `par_base` and `h` are not
 #' used.
