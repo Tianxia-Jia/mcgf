@@ -6,6 +6,8 @@
 <!-- badges: start -->
 
 [![R-CMD-check](https://github.com/tianxia-jia/mcgf/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tianxia-jia/mcgf/actions/workflows/R-CMD-check.yaml)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/mcgf)](https://CRAN.R-project.org/package=mcgf)
 <!-- badges: end -->
 
 The goal of `mcgf` is to provide easy-to-use functions for simulating
