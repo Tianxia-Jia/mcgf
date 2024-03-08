@@ -154,6 +154,9 @@
     <loc>https://tianxia-jia.github.io/mcgf/reference/dot-find_dists.html</loc>
   </url>
   <url>
+    <loc>https://tianxia-jia.github.io/mcgf/reference/dot-find_dists_new.html</loc>
+  </url>
+  <url>
     <loc>https://tianxia-jia.github.io/mcgf/reference/dot-mcgf_rs_sim.html</loc>
   </url>
   <url>
@@ -164,6 +167,9 @@
   </url>
   <url>
     <loc>https://tianxia-jia.github.io/mcgf/reference/find_dists.html</loc>
+  </url>
+  <url>
+    <loc>https://tianxia-jia.github.io/mcgf/reference/find_dists_new.html</loc>
   </url>
   <url>
     <loc>https://tianxia-jia.github.io/mcgf/reference/fit_base.html</loc>
@@ -203,6 +209,15 @@
   </url>
   <url>
     <loc>https://tianxia-jia.github.io/mcgf/reference/krige.mcgf_rs.html</loc>
+  </url>
+  <url>
+    <loc>https://tianxia-jia.github.io/mcgf/reference/krige_new.html</loc>
+  </url>
+  <url>
+    <loc>https://tianxia-jia.github.io/mcgf/reference/krige_new.mcgf.html</loc>
+  </url>
+  <url>
+    <loc>https://tianxia-jia.github.io/mcgf/reference/krige_new.mcgf_rs.html</loc>
   </url>
   <url>
     <loc>https://tianxia-jia.github.io/mcgf/reference/mat_inv.html</loc>

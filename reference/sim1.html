@@ -84,7 +84,10 @@ a = 0.5, \alpha = 0.8\), and those for the Lagrangian model are:
 <span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tianxia-jia/mcgf" class="external-link">mcgf</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu"><a href="rdists.html">rdists</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="op">-</span><span class="fl">110</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">50</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">locations</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">h</span> <span class="op">&lt;-</span> <span class="fu"><a href="find_dists.html">find_dists</a></span><span class="op">(</span><span class="va">locations</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">N</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span></span>
 <span class="r-in"><span><span class="va">lag</span> <span class="op">&lt;-</span> <span class="fl">5</span></span></span>
@@ -96,19 +99,14 @@ a = 0.5, \alpha = 0.8\), and those for the Lagrangian model are:
 <span class="r-in"><span><span class="va">par_lagr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>v1 <span class="op">=</span> <span class="fl">200</span>, v2 <span class="op">=</span> <span class="fl">200</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">sim1</span> <span class="op">&lt;-</span> <span class="fu"><a href="mcgf_sim.html">mcgf_sim</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>    N <span class="op">=</span> <span class="va">N</span>,</span></span>
-<span class="r-in"><span>    base <span class="op">=</span> <span class="st">"sep"</span>,</span></span>
-<span class="r-in"><span>    lagrangian <span class="op">=</span> <span class="st">"lagr_tri"</span>,</span></span>
-<span class="r-in"><span>    par_base <span class="op">=</span> <span class="va">par_base</span>,</span></span>
-<span class="r-in"><span>    par_lagr <span class="op">=</span> <span class="va">par_lagr</span>,</span></span>
-<span class="r-in"><span>    lambda <span class="op">=</span> <span class="fl">0.2</span>,</span></span>
-<span class="r-in"><span>    dists <span class="op">=</span> <span class="va">h</span>,</span></span>
-<span class="r-in"><span>    lag <span class="op">=</span> <span class="va">lag</span></span></span>
+<span class="r-in"><span>    N <span class="op">=</span> <span class="va">N</span>, base <span class="op">=</span> <span class="st">"sep"</span>, lagrangian <span class="op">=</span> <span class="st">"lagr_tri"</span>,</span></span>
+<span class="r-in"><span>    par_base <span class="op">=</span> <span class="va">par_base</span>, par_lagr <span class="op">=</span> <span class="va">par_lagr</span>, lambda <span class="op">=</span> <span class="fl">0.2</span>,</span></span>
+<span class="r-in"><span>    dists <span class="op">=</span> <span class="va">h</span>, lag <span class="op">=</span> <span class="va">lag</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sim1</span> <span class="op">&lt;-</span> <span class="va">sim1</span><span class="op">[</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="op">(</span><span class="va">lag</span> <span class="op">+</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>, <span class="op">]</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">sim1</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">sim1</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">sim1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sim1</span>, dists <span class="op">=</span> <span class="va">h</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sim1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">sim1</span>, locations <span class="op">=</span> <span class="va">locations</span>, dists <span class="op">=</span> <span class="va">h</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

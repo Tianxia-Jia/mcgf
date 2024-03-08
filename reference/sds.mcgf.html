@@ -111,33 +111,33 @@ element in the list corresponds to the sds for a regime.</p>
 <span class="r-in"><span><span class="va">sim1_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="mcgf.html">mcgf</a></span><span class="op">(</span><span class="va">sim1</span><span class="op">$</span><span class="va">data</span>, dists <span class="op">=</span> <span class="va">sim1</span><span class="op">$</span><span class="va">dists</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `time` is not provided, assuming rows are equally spaced temporally.</span>
 <span class="r-in"><span><span class="fu"><a href="sds.html">sds</a></span><span class="op">(</span><span class="va">sim1_mcgf</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      loc1      loc2      loc3      loc4      loc5      loc6      loc7      loc8 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9851390 0.9759124 0.9808839 0.9717271 0.9627218 0.9992935 0.9640735 0.9498991 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      loc9     loc10 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9906803 0.9812050 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         1         2         3         4         5         6         7         8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9862524 0.9748535 0.9770489 0.9698481 0.9599741 0.9994154 0.9646922 0.9475793 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         9        10 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9896725 0.9755944 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sim2_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="mcgf_rs.html">mcgf_rs</a></span><span class="op">(</span><span class="va">sim2</span><span class="op">$</span><span class="va">data</span>, dists <span class="op">=</span> <span class="va">sim2</span><span class="op">$</span><span class="va">dists</span>, label <span class="op">=</span> <span class="va">sim2</span><span class="op">$</span><span class="va">label</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `time` is not provided, assuming rows are equally spaced temporally.</span>
 <span class="r-in"><span><span class="fu"><a href="sds.html">sds</a></span><span class="op">(</span><span class="va">sim2_mcgf</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sds</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      loc1      loc2      loc3      loc4      loc5      loc6      loc7      loc8 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9199169 1.0698542 0.9206324 1.0232810 0.9811647 0.9087964 0.9931767 1.0542091 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      loc9     loc10 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9726674 0.9144110 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         1         2         3         4         5         6         7         8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9199169 0.9718708 0.9578172 1.0106254 0.9892897 0.9313063 0.9840552 1.0140940 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         9        10 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9373471 0.9417190 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sds_rs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sds_rs$`Regime 1`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      loc1      loc2      loc3      loc4      loc5      loc6      loc7      loc8 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9372674 1.0410025 0.8916340 1.0393791 0.9463280 0.8165009 1.0285441 1.0408619 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      loc9     loc10 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9618800 0.9063334 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         1         2         3         4         5         6         7         8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9372674 0.9505589 0.9772362 1.0009958 0.9598230 0.9064875 1.0216560 0.9744445 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         9        10 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9150342 0.9174999 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $sds_rs$`Regime 2`</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      loc1      loc2      loc3      loc4      loc5      loc6      loc7      loc8 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.8616473 1.1068999 0.9547834 0.9847940 0.9794145 1.0053082 0.9338493 1.0725529 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      loc9     loc10 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9690595 0.9249724 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         1         2         3         4         5         6         7         8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.8616473 0.9871250 0.9277415 1.0078708 0.9900082 0.9431703 0.9187674 1.0449593 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         9        10 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9381451 0.9527870 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim1</span><span class="op">)</span></span></span>

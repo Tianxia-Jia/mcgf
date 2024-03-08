@@ -171,7 +171,8 @@ sizes.</p>
 <code><a href="add_base.mcgf.html">add_base.mcgf</a>()</code>,
 <code><a href="add_lagr.mcgf.html">add_lagr.mcgf</a>()</code>,
 <code><a href="fit_lagr.mcgf.html">fit_lagr.mcgf</a>()</code>,
-<code><a href="krige.mcgf.html">krige.mcgf</a>()</code></p></div>
+<code><a href="krige.mcgf.html">krige.mcgf</a>()</code>,
+<code><a href="krige_new.mcgf.html">krige_new.mcgf</a>()</code></p></div>
     </div>
 
     <div class="section level2">
@@ -193,20 +194,20 @@ sizes.</p>
 <span class="r-in"><span><span class="va">fit_spatial</span><span class="op">$</span><span class="va">fit</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $par</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           c       gamma </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.001160802 0.500000000 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.001145202 0.500000000 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $objective</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.640593</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.385858</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $convergence</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $iterations</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $evaluations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function gradient </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       21       20 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       18       17 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $message</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "both X-convergence and relative convergence (5)"</span>
@@ -222,20 +223,20 @@ sizes.</p>
 <span class="r-in"><span><span class="va">fit_temporal</span><span class="op">$</span><span class="va">fit</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $par</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         a     alpha </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6528906 0.7560970 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.6534103 0.7572533 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $objective</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.004306706</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.004445797</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $convergence</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $iterations</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 16</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $evaluations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function gradient </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       23       43 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       18       38 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $message</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "relative convergence (4)"</span>
@@ -257,20 +258,20 @@ sizes.</p>
 <span class="r-in"><span><span class="va">fit_sep</span><span class="op">$</span><span class="va">fit</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $par</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           c       gamma           a       alpha </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.001154864 0.500000000 0.624551356 0.735490584 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.001139265 0.500000000 0.627518723 0.734384339 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $objective</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.488305</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.196857</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $convergence</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $iterations</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 24</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $evaluations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> function gradient </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       59      123 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       61      107 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $message</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "relative convergence (4)"</span>

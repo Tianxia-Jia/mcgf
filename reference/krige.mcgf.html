@@ -77,7 +77,7 @@ is missing the forecasts at the original data points are returned.</p></dd>
 
 
 <dt>model</dt>
-<dd><p>Which model to use. One of <code>all</code>, <code>base</code>, and <code>empirical</code>.</p></dd>
+<dd><p>Which model to use. One of <code>all</code>, <code>base</code>, or <code>empirical</code>.</p></dd>
 
 
 <dt>interval</dt>
@@ -115,7 +115,8 @@ horizon is given. Note that it does not compute confidence regions.</p>
 <code><a href="add_base.mcgf.html">add_base.mcgf</a>()</code>,
 <code><a href="add_lagr.mcgf.html">add_lagr.mcgf</a>()</code>,
 <code><a href="fit_base.mcgf.html">fit_base.mcgf</a>()</code>,
-<code><a href="fit_lagr.mcgf.html">fit_lagr.mcgf</a>()</code></p></div>
+<code><a href="fit_lagr.mcgf.html">fit_lagr.mcgf</a>()</code>,
+<code><a href="krige_new.mcgf.html">krige_new.mcgf</a>()</code></p></div>
     </div>
 
     <div class="section level2">
@@ -158,18 +159,18 @@ horizon is given. Note that it does not compute confidence regions.</p>
 <span class="r-in"><span><span class="co"># Calculate RMSE for each location</span></span></span>
 <span class="r-in"><span><span class="va">rmse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="op">(</span><span class="va">sim1_mcgf</span> <span class="op">-</span> <span class="va">sim1_krige</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">rmse</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      loc1      loc2      loc3      loc4      loc5      loc6      loc7      loc8 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.7302453 0.7322071 0.7365864 0.7332652 0.7327106 0.7374755 0.7363323 0.7334630 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      loc9     loc10 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.7363919 0.7466539 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         1         2         3         4         5         6         7         8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.7303479 0.7327715 0.7356233 0.7345239 0.7334886 0.7359824 0.7336118 0.7330756 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         9        10 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.7363259 0.7446221 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Calculate MAE for each location</span></span></span>
 <span class="r-in"><span><span class="va">mae</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">sim1_mcgf</span> <span class="op">-</span> <span class="va">sim1_krige</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mae</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      loc1      loc2      loc3      loc4      loc5      loc6      loc7      loc8 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5833973 0.5825907 0.5841900 0.5838613 0.5789169 0.5929662 0.5860738 0.5831386 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      loc9     loc10 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5839081 0.5835920 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         1         2         3         4         5         6         7         8 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5835318 0.5836250 0.5845314 0.5853081 0.5798049 0.5922688 0.5855237 0.5824134 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         9        10 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5843572 0.5825536 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Calculate POPI for each location</span></span></span>
 <span class="r-in"><span><span class="va">popi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span></span></span>
@@ -177,10 +178,10 @@ horizon is given. Note that it does not compute confidence regions.</p>
 <span class="r-in"><span>    na.rm <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">popi</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       loc1       loc2       loc3       loc4       loc5       loc6       loc7 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.04522613 0.04120603 0.05025126 0.04422111 0.05025126 0.04723618 0.04824121 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       loc8       loc9      loc10 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.04321608 0.04221106 0.04422111 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          1          2          3          4          5          6          7 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.04623116 0.04120603 0.05025126 0.04623116 0.05226131 0.04020101 0.04924623 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          8          9         10 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.04321608 0.04020101 0.04422111 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
