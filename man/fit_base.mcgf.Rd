@@ -125,6 +125,7 @@ Other functions on fitting an mcgf:
 \code{\link{add_base.mcgf}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{fit_lagr.mcgf}()},
-\code{\link{krige.mcgf}()}
+\code{\link{krige.mcgf}()},
+\code{\link{krige_new.mcgf}()}
 }
 \concept{functions on fitting an mcgf}

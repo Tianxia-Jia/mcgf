@@ -17,7 +17,7 @@ krige <- function(x, ...) {
 #' @param x An `mcgf` object.
 #' @param newdata A data.frame with the same column names as `x`. If `newdata`
 #' is missing the forecasts at the original data points are returned.
-#' @param model Which model to use. One of `all`, `base`, and `empirical`.
+#' @param model Which model to use. One of `all`, `base`, or `empirical`.
 #' @param interval Logical; if TRUE, prediction intervals are computed.
 #' @param level A numeric scalar between 0 and 1 giving the confidence level for
 #' the intervals (if any) to be calculated. Used when `interval = TRUE`
@@ -115,7 +115,7 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
         }
     } else if (model == "base") {
         if (is.null(attr(x, "base", exact = T))) {
-            stop("Base model missing from `x`.", call. = FALSE)
+            stop("base model missing from `x`.", call. = FALSE)
         }
     } else {
         if (is.null(attr(x, "lagr", exact = T))) {
@@ -148,12 +148,19 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
 
     dat <- rbind(as.matrix(x), matrix(nrow = horizon - 1, ncol = ncol(x)))
     dat <- stats::embed(dat, n_block)
-    pred <- dat[, -c(1:(horizon * n_var))] %*% t(cov_mat_res$weights)
+    pred <- tcrossprod(dat[, -c(1:(horizon * n_var))], cov_mat_res$weights)
+
+    locations_name <- colnames(x)
+
+    if (is.null(locations_name)) {
+        locations_name <- 1:n_var
+    }
+
     Y_pred <- array(NA,
         dim = c(dim(x), horizon),
         dimnames = list(
             rownames(x),
-            colnames(x),
+            locations_name,
             paste0("Horizon ", horizon:1)
         )
     )
@@ -178,7 +185,6 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
             lower[, , i] <- sweep(Y_pred[, , i], 2, moe_i)
             upper[, , i] <- sweep(Y_pred[, , i], 2, moe_i, "+")
         }
-
         Y_pred <- Y_pred[, , horizon:1]
         lower <- lower[, , horizon:1]
         upper <- upper[, , horizon:1]
@@ -195,7 +201,7 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
 #' @param newdata A data.frame with the same column names as `x`. If `newdata`
 #' is missing the forecasts at the original data points are returned.
 #' @param newlabel A vector of new regime labels.
-#' @param model Which model to use. One of `all`, `base`, and `empirical`.
+#' @param model Which model to use. One of `all`, `base`, or `empirical`.
 #' @param interval Logical; if TRUE, prediction intervals are computed.
 #' @param level A numeric scalar between 0 and 1 giving the confidence level for
 #' the intervals (if any) to be calculated. Used when `interval = TRUE`
@@ -235,7 +241,7 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
 #'     lag_ls = 5,
 #'     model_ls = "sep",
 #'     par_init_ls = list(list(
-#'         c = 0.000001,
+#'         c = 0.00005,
 #'         gamma = 0.5,
 #'         a = 0.5,
 #'         alpha = 0.5
@@ -270,6 +276,7 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
                           model = c("all", "base", "empirical"),
                           interval = FALSE, level = 0.95, ...) {
     model <- match.arg(model)
+    dots <- list(...)
 
     if (model == "base" && !attr(x, "base_rs", exact = TRUE)) {
         x_base <- x
@@ -292,8 +299,6 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
             interval = interval, level = level, ...
         ))
     }
-
-    dots <- list(...)
 
     lag_ls <- attr(x, "lag", exact = TRUE)
     horizon <- attr(x, "horizon", exact = TRUE)
@@ -330,11 +335,11 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
         }
     } else if (model == "base") {
         if (is.null(attr(x, "base", exact = T))) {
-            stop("Base model missing from `x`.")
+            stop("Base model missing from `x`.", call. = FALSE)
         }
     } else {
         if (is.null(attr(x, "lagr", exact = T))) {
-            stop("Lagrangian model missing from `x`.")
+            stop("Lagrangian model missing from `x`.", call. = FALSE)
         }
     }
 
@@ -402,13 +407,6 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
             }
         }
 
-        if (nrow(prob) != nrow(x)) {
-            stop("number of rows in `prob` must be the same as that of ",
-                "`x`.",
-                call. = FALSE
-            )
-        }
-
         new_lvs <- levels(label)
 
         prob[, which(!lvs %in% new_lvs)] <- 0
@@ -420,11 +418,17 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
         }
     }
 
+    locations_name <- colnames(x)
+
+    if (is.null(locations_name)) {
+        locations_name <- 1:n_var
+    }
+
     Y_pred <- array(NA,
         dim = c(dim(x), horizon),
         dimnames = list(
             rownames(x),
-            colnames(x),
+            locations_name,
             paste0("Horizon ", horizon:1)
         )
     )
@@ -450,8 +454,10 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
         )
         dat <- stats::embed(as.matrix(dat), n_block)
 
-        pred[[n]] <- dat[, -c(1:(horizon * n_var))] %*%
-            t(cov_mat_res[[n]]$weights)
+        pred[[n]] <- tcrossprod(
+            dat[, -c(1:(horizon * n_var))],
+            cov_mat_res[[n]]$weights
+        )
     }
 
     if (soft) {
@@ -518,14 +524,14 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
         }
     }
 
+    Y_pred <- Y_pred[, , horizon:1]
+
     if (interval) {
-        Y_pred <- Y_pred[, , horizon:1]
         lower <- lower[, , horizon:1]
         upper <- upper[, , horizon:1]
 
         return(list(fit = Y_pred, lower = lower, upper = upper))
     } else {
-        Y_pred <- Y_pred[, , horizon:1]
         return(Y_pred)
     }
 }

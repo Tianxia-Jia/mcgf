@@ -19,7 +19,7 @@
 \item{newdata}{A data.frame with the same column names as \code{x}. If \code{newdata}
 is missing the forecasts at the original data points are returned.}
 
-\item{model}{Which model to use. One of \code{all}, \code{base}, and \code{empirical}.}
+\item{model}{Which model to use. One of \code{all}, \code{base}, or \code{empirical}.}
 
 \item{interval}{Logical; if TRUE, prediction intervals are computed.}
 
@@ -99,6 +99,7 @@ Other functions on fitting an mcgf:
 \code{\link{add_base.mcgf}()},
 \code{\link{add_lagr.mcgf}()},
 \code{\link{fit_base.mcgf}()},
-\code{\link{fit_lagr.mcgf}()}
+\code{\link{fit_lagr.mcgf}()},
+\code{\link{krige_new.mcgf}()}
 }
 \concept{functions on fitting an mcgf}

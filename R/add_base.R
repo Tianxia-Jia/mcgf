@@ -184,6 +184,7 @@ add_base.mcgf <- function(x,
     cor_base <- do.call(base_fn, c(par_base, par_base_other))
 
     if (sep) {
+        fit_base_raw <- list(fit_s = fit_s, fit_t = fit_t)
         base_res <- list(
             par_base = par_base,
             fit_base = list(spatial = fit_s$fit, temporal = fit_t$fit),
@@ -205,7 +206,9 @@ add_base.mcgf <- function(x,
         attr(x, "lag") <- fit_t$lag
         attr(x, "scale_time") <- scale_time
         attr(x, "horizon") <- fit_t$horizon
+        attr(x, "fit_base_raw") <- fit_base_raw
     } else {
+        fit_base_raw <- fit_base
         base_res <- list(
             par_base = par_base,
             fit_base = fit_base$fit,
@@ -223,6 +226,7 @@ add_base.mcgf <- function(x,
         attr(x, "lag") <- fit_base$lag
         attr(x, "scale_time") <- scale_time
         attr(x, "horizon") <- fit_base$horizon
+        attr(x, "fit_base_raw") <- fit_base_raw
     }
     return(x)
 }
@@ -264,7 +268,7 @@ add_base.mcgf <- function(x,
 #'         sim2_mcgf,
 #'         lag_ls = 5,
 #'         model_ls = "spatial",
-#'         par_init_ls = list(c(c = 0.000001, gamma = 0.5)),
+#'         par_init_ls = list(c(c = 0.00005, gamma = 0.5)),
 #'         par_fixed_ls = list(c(nugget = 0))
 #'     )
 #'
@@ -276,7 +280,7 @@ add_base.mcgf <- function(x,
 #'         model_ls = "temporal",
 #'         par_init_ls = list(
 #'             list(a = 0.8, alpha = 0.8),
-#'             list(a = 0.5, alpha = 0.5)
+#'             list(a = 0.1, alpha = 0.1)
 #'         )
 #'     )
 #'
@@ -293,7 +297,7 @@ add_base.mcgf <- function(x,
 #'     lag_ls = 5,
 #'     model_ls = "sep",
 #'     par_init_ls = list(list(
-#'         c = 0.000001,
+#'         c = 0.00005,
 #'         gamma = 0.5,
 #'         a = 0.5,
 #'         alpha = 0.5
@@ -353,6 +357,7 @@ add_base.mcgf_rs <- function(x,
     n_regime <- length(lvs)
 
     if (sep) {
+        fit_base_raw <- list(fit_s_ls = fit_s_ls, fit_t_ls = fit_t_ls)
         if (!fit_s_ls$rs) {
             fit_s_ls <- c(rep(fit_s_ls[1], n_regime - 1), fit_s_ls)
         }
@@ -432,7 +437,9 @@ add_base.mcgf_rs <- function(x,
         attr(x, "lag") <- lag_ls
         attr(x, "scale_time") <- fit_t$scale_time
         attr(x, "horizon") <- horizon
+        attr(x, "fit_base_raw") <- fit_base_raw
     } else {
+        fit_base_raw <- fit_base_ls
         if (!fit_base_ls$rs) {
             fit_base_ls <- c(rep(fit_base_ls[1], n_regime - 1), fit_base_ls)
         }
@@ -501,6 +508,7 @@ add_base.mcgf_rs <- function(x,
         attr(x, "lag") <- lag_ls
         attr(x, "scale_time") <- fit_base$scale_time
         attr(x, "horizon") <- horizon
+        attr(x, "fit_base_raw") <- fit_base_raw
     }
     return(x)
 }
@@ -543,5 +551,6 @@ add_base.mcgf_rs <- function(x,
     attr(x, "lag") <- value$lag
     attr(x, "scale_time") <- value$scale_time
     attr(x, "horizon") <- value$horizon
+    attr(x, "fit_base_raw") <- value
     return(x)
 }

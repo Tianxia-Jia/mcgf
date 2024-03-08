@@ -30,18 +30,23 @@ estimate the regime-switching prevailing winds.
 \donttest{
 library(mcgf)
 set.seed(123)
-h <- rdists(10)
+x <- stats::rnorm(10, -110)
+y <- stats::rnorm(10, 50)
+locations <- cbind(x, y)
+h <- find_dists(locations)
 
 # simulate regimes
 K <- 2
 N <- 1000
 lag <- 5
 
-tran_mat <-
-    matrix(rnorm(K^2, mean = 0.06 / (K - 1), sd = 0.01), nrow = K)
+tran_mat <- matrix(rnorm(K^2, mean = 0.06 / (K - 1), sd = 0.01), nrow = K)
 diag(tran_mat) <- rnorm(K, mean = 0.94, sd = 0.1)
 tran_mat <- sweep(abs(tran_mat), 1, rowSums(tran_mat), `/`)
 tran_mat
+# [,1]       [,2]
+# [1,] 0.94635675 0.05364325
+# [2,] 0.06973429 0.93026571
 
 regime <- rep(NA, N)
 regime[1] <- 1
@@ -50,6 +55,9 @@ for (n in 2:(N)) {
     regime[n] <- sample(1:K, 1, prob = tran_mat[regime[n - 1], ])
 }
 table(regime)
+# regime
+#   1   2
+# 567 433
 
 # simulate RS MCGF
 par_base <- list(
@@ -61,10 +69,8 @@ par_lagr1 <- list(v1 = -100, v2 = 100, k = 2)
 par_lagr2 <- list(v1 = 200, v2 = 200, k = 2)
 
 sim3 <- mcgf_rs_sim(
-    N = N,
-    label = regime,
-    base_ls = list("sep"),
-    lagrangian_ls = list("lagr_tri"),
+    N = N, label = regime,
+    base_ls = list("sep"), lagrangian_ls = list("lagr_tri"),
     par_base_ls = list(par_base),
     par_lagr_ls = list(par_lagr1, par_lagr2),
     lambda_ls = list(0.2, 0.2),
@@ -75,8 +81,7 @@ sim3 <- sim3[-c(1:(lag + 1)), ]
 rownames(sim3) <- 1:nrow(sim3)
 
 sim3 <- list(
-    data = sim3[, -1],
-    dists = h,
+    data = sim3[, -1], locations = locations, dists = h,
     label = sim3[, 1]
 )
 }

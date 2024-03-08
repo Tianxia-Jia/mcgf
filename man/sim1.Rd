@@ -26,7 +26,10 @@ a = 0.5, \alpha = 0.8}, and those for the Lagrangian model are:
 \donttest{
 library(mcgf)
 set.seed(123)
-h <- rdists(10)
+x <- stats::rnorm(10, -110)
+y <- stats::rnorm(10, 50)
+locations <- cbind(x, y)
+h <- find_dists(locations)
 
 N <- 1000
 lag <- 5
@@ -38,19 +41,14 @@ par_base <- list(
 par_lagr <- list(v1 = 200, v2 = 200, k = 2)
 
 sim1 <- mcgf_sim(
-    N = N,
-    base = "sep",
-    lagrangian = "lagr_tri",
-    par_base = par_base,
-    par_lagr = par_lagr,
-    lambda = 0.2,
-    dists = h,
-    lag = lag
+    N = N, base = "sep", lagrangian = "lagr_tri",
+    par_base = par_base, par_lagr = par_lagr, lambda = 0.2,
+    dists = h, lag = lag
 )
 sim1 <- sim1[-c(1:(lag + 1)), ]
 rownames(sim1) <- 1:nrow(sim1)
 
-sim1 <- list(data = sim1, dists = h)
+sim1 <- list(data = sim1, locations = locations, dists = h)
 }
 }
 \seealso{

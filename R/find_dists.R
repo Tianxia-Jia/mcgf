@@ -71,6 +71,9 @@ find_dists <- function(locations, longlat = TRUE) {
     }
 
     names <- rownames(locations)
+    if (is.null(names)) {
+        names <- seq_len(nrow(locations))
+    }
     if (any(table(names) > 1)) {
         stop("duplicate row names found in `locations`", call. = FALSE)
     }

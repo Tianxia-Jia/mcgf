@@ -29,7 +29,7 @@ is missing the forecasts at the original data points are returned.}
 \item{prob}{Matrix with simplex rows. Number of columns must be the same as
 unique labels in \code{x}.}
 
-\item{model}{Which model to use. One of \code{all}, \code{base}, and \code{empirical}.}
+\item{model}{Which model to use. One of \code{all}, \code{base}, or \code{empirical}.}
 
 \item{interval}{Logical; if TRUE, prediction intervals are computed.}
 
@@ -72,7 +72,7 @@ fit_sep <- fit_base(
     lag_ls = 5,
     model_ls = "sep",
     par_init_ls = list(list(
-        c = 0.000001,
+        c = 0.00005,
         gamma = 0.5,
         a = 0.5,
         alpha = 0.5
@@ -106,6 +106,7 @@ Other functions on fitting an mcgf_rs:
 \code{\link{add_base.mcgf_rs}()},
 \code{\link{add_lagr.mcgf_rs}()},
 \code{\link{fit_base.mcgf_rs}()},
-\code{\link{fit_lagr.mcgf_rs}()}
+\code{\link{fit_lagr.mcgf_rs}()},
+\code{\link{krige_new.mcgf_rs}()}
 }
 \concept{functions on fitting an mcgf_rs}

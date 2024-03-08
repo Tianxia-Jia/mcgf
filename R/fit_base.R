@@ -463,7 +463,7 @@ fit_base.mcgf <- function(x,
 #'         sim2_mcgf,
 #'         lag_ls = 5,
 #'         model_ls = "spatial",
-#'         par_init_ls = list(c(c = 0.000001, gamma = 0.5)),
+#'         par_init_ls = list(c(c = 0.00005, gamma = 0.5)),
 #'         par_fixed_ls = list(c(nugget = 0))
 #'     )
 #' lapply(fit_spatial[1:2], function(x) x$fit)
@@ -476,7 +476,7 @@ fit_base.mcgf <- function(x,
 #'         model_ls = "temporal",
 #'         par_init_ls = list(
 #'             list(a = 0.8, alpha = 0.8),
-#'             list(a = 0.5, alpha = 0.5)
+#'             list(a = 0.1, alpha = 0.1)
 #'         )
 #'     )
 #' lapply(fit_temporal[1:2], function(x) x$fit)
@@ -487,7 +487,7 @@ fit_base.mcgf <- function(x,
 #'     lag_ls = 5,
 #'     model_ls = "sep",
 #'     par_init_ls = list(list(
-#'         c = 0.000001,
+#'         c = 0.00005,
 #'         gamma = 0.5,
 #'         a = 0.5,
 #'         alpha = 0.5

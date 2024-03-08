@@ -17,7 +17,10 @@
 #' \donttest{
 #' library(mcgf)
 #' set.seed(123)
-#' h <- rdists(10)
+#' x <- stats::rnorm(10, -110)
+#' y <- stats::rnorm(10, 50)
+#' locations <- cbind(x, y)
+#' h <- find_dists(locations)
 #'
 #' N <- 1000
 #' lag <- 5
@@ -29,19 +32,14 @@
 #' par_lagr <- list(v1 = 200, v2 = 200, k = 2)
 #'
 #' sim1 <- mcgf_sim(
-#'     N = N,
-#'     base = "sep",
-#'     lagrangian = "lagr_tri",
-#'     par_base = par_base,
-#'     par_lagr = par_lagr,
-#'     lambda = 0.2,
-#'     dists = h,
-#'     lag = lag
+#'     N = N, base = "sep", lagrangian = "lagr_tri",
+#'     par_base = par_base, par_lagr = par_lagr, lambda = 0.2,
+#'     dists = h, lag = lag
 #' )
 #' sim1 <- sim1[-c(1:(lag + 1)), ]
 #' rownames(sim1) <- 1:nrow(sim1)
 #'
-#' sim1 <- list(data = sim1, dists = h)
+#' sim1 <- list(data = sim1, locations = locations, dists = h)
 #' }
 #' @family (simulated) datasets
 "sim1"
@@ -65,18 +63,23 @@
 #' \donttest{
 #' library(mcgf)
 #' set.seed(123)
-#' h <- rdists(10)
+#' x <- stats::rnorm(10, -110)
+#' y <- stats::rnorm(10, 50)
+#' locations <- cbind(x, y)
+#' h <- find_dists(locations)
 #'
 #' # simulate regimes
 #' K <- 2
 #' N <- 1000
 #' lag <- 5
 #'
-#' tran_mat <-
-#'     matrix(rnorm(K^2, mean = 0.06 / (K - 1), sd = 0.01), nrow = K)
+#' tran_mat <- matrix(rnorm(K^2, mean = 0.06 / (K - 1), sd = 0.01), nrow = K)
 #' diag(tran_mat) <- rnorm(K, mean = 0.94, sd = 0.1)
 #' tran_mat <- sweep(abs(tran_mat), 1, rowSums(tran_mat), `/`)
 #' tran_mat
+#' #            [,1]       [,2]
+#' # [1,] 0.94635675 0.05364325
+#' # [2,] 0.06973429 0.93026571
 #'
 #' regime <- rep(NA, N)
 #' regime[1] <- 1
@@ -85,23 +88,24 @@
 #'     regime[n] <- sample(1:K, 1, prob = tran_mat[regime[n - 1], ])
 #' }
 #' table(regime)
+#' # regime
+#' #   1   2
+#' # 567 433
 #'
 #' # simulate RS MCGF
 #' par_base1 <- list(
-#'     par_s = list(nugget = 0, c = 0.01, gamma = 0.5),
+#'     par_s = list(nugget = 0, c = 0.001, gamma = 0.5),
 #'     par_t = list(a = 0.5, alpha = 0.2)
 #' )
 #'
 #' par_base2 <- list(
-#'     par_s = list(nugget = 0, c = 0.04, gamma = 0.5),
+#'     par_s = list(nugget = 0, c = 0.004, gamma = 0.5),
 #'     par_t = list(a = 0.3, alpha = 0.9)
 #' )
 #'
 #' sim2 <- mcgf_rs_sim(
-#'     N = N,
-#'     label = regime,
-#'     base_ls = list("sep"),
-#'     lagrangian_ls = list("none"),
+#'     N = N, label = regime,
+#'     base_ls = list("sep"), lagrangian_ls = list("none"),
 #'     par_base_ls = list(par_base1, par_base2),
 #'     lambda_ls = list(0.1, 0.3),
 #'     lag_ls = list(lag, lag),
@@ -111,8 +115,7 @@
 #' rownames(sim2) <- 1:nrow(sim2)
 #'
 #' sim2 <- list(
-#'     data = sim2[, -1],
-#'     dists = h,
+#'     data = sim2[, -1], locations = locations, dists = h,
 #'     label = sim2[, 1]
 #' )
 #' }
@@ -142,18 +145,23 @@
 #' \donttest{
 #' library(mcgf)
 #' set.seed(123)
-#' h <- rdists(10)
+#' x <- stats::rnorm(10, -110)
+#' y <- stats::rnorm(10, 50)
+#' locations <- cbind(x, y)
+#' h <- find_dists(locations)
 #'
 #' # simulate regimes
 #' K <- 2
 #' N <- 1000
 #' lag <- 5
 #'
-#' tran_mat <-
-#'     matrix(rnorm(K^2, mean = 0.06 / (K - 1), sd = 0.01), nrow = K)
+#' tran_mat <- matrix(rnorm(K^2, mean = 0.06 / (K - 1), sd = 0.01), nrow = K)
 #' diag(tran_mat) <- rnorm(K, mean = 0.94, sd = 0.1)
 #' tran_mat <- sweep(abs(tran_mat), 1, rowSums(tran_mat), `/`)
 #' tran_mat
+#' # [,1]       [,2]
+#' # [1,] 0.94635675 0.05364325
+#' # [2,] 0.06973429 0.93026571
 #'
 #' regime <- rep(NA, N)
 #' regime[1] <- 1
@@ -162,6 +170,9 @@
 #'     regime[n] <- sample(1:K, 1, prob = tran_mat[regime[n - 1], ])
 #' }
 #' table(regime)
+#' # regime
+#' #   1   2
+#' # 567 433
 #'
 #' # simulate RS MCGF
 #' par_base <- list(
@@ -173,10 +184,8 @@
 #' par_lagr2 <- list(v1 = 200, v2 = 200, k = 2)
 #'
 #' sim3 <- mcgf_rs_sim(
-#'     N = N,
-#'     label = regime,
-#'     base_ls = list("sep"),
-#'     lagrangian_ls = list("lagr_tri"),
+#'     N = N, label = regime,
+#'     base_ls = list("sep"), lagrangian_ls = list("lagr_tri"),
 #'     par_base_ls = list(par_base),
 #'     par_lagr_ls = list(par_lagr1, par_lagr2),
 #'     lambda_ls = list(0.2, 0.2),
@@ -187,8 +196,7 @@
 #' rownames(sim3) <- 1:nrow(sim3)
 #'
 #' sim3 <- list(
-#'     data = sim3[, -1],
-#'     dists = h,
+#'     data = sim3[, -1], locations = locations, dists = h,
 #'     label = sim3[, 1]
 #' )
 #' }

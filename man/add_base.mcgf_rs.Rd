@@ -49,7 +49,7 @@ fit_spatial <-
         sim2_mcgf,
         lag_ls = 5,
         model_ls = "spatial",
-        par_init_ls = list(c(c = 0.000001, gamma = 0.5)),
+        par_init_ls = list(c(c = 0.00005, gamma = 0.5)),
         par_fixed_ls = list(c(nugget = 0))
     )
 
@@ -61,7 +61,7 @@ fit_temporal <-
         model_ls = "temporal",
         par_init_ls = list(
             list(a = 0.8, alpha = 0.8),
-            list(a = 0.5, alpha = 0.5)
+            list(a = 0.1, alpha = 0.1)
         )
     )
 
@@ -78,7 +78,7 @@ fit_sep <- fit_base(
     lag_ls = 5,
     model_ls = "sep",
     par_init_ls = list(list(
-        c = 0.000001,
+        c = 0.00005,
         gamma = 0.5,
         a = 0.5,
         alpha = 0.5
@@ -95,6 +95,7 @@ Other functions on fitting an mcgf_rs:
 \code{\link{add_lagr.mcgf_rs}()},
 \code{\link{fit_base.mcgf_rs}()},
 \code{\link{fit_lagr.mcgf_rs}()},
-\code{\link{krige.mcgf_rs}()}
+\code{\link{krige.mcgf_rs}()},
+\code{\link{krige_new.mcgf_rs}()}
 }
 \concept{functions on fitting an mcgf_rs}

@@ -113,6 +113,7 @@ add_lagr.mcgf <- function(x, fit_lagr, ...) {
 
     attr(x, "lagr") <- fit_lagr$model
     attr(x, "lagr_res") <- lagr_res
+    attr(x, "fit_lagr_raw") <- fit_lagr
 
     return(x)
 }
@@ -265,6 +266,7 @@ add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
     attr(x, "lagr") <- lagr_model_ls
     attr(x, "lagr_res") <- lagr_res_ls
     attr(x, "lagr_rs") <- fit_lagr_ls$rs
+    attr(x, "fit_lagr_raw") <- fit_lagr_ls
 
     return(x)
 }
@@ -299,5 +301,6 @@ add_lagr.mcgf_rs <- function(x, fit_lagr_ls, ...) {
     attr(x, "lagr") <- value$model
     attr(x, "lagr_res") <- lagr_res
     attr(x, "lagr_rs") <- value$rs
+    attr(x, "fit_lagr_raw") <- value
     return(x)
 }

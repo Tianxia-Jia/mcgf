@@ -92,7 +92,7 @@ mcgf <- function(data, locations, dists, time) {
     }
 
     if (any(sapply(data, function(x) !is.numeric(x)))) {
-        stop("non numeric values found in `data`.", call. = FALSE)
+        stop("non-numeric values found in `data`.", call. = FALSE)
     }
 
     if (missing(locations) && missing(dists)) {
@@ -102,7 +102,7 @@ mcgf <- function(data, locations, dists, time) {
     }
 
     if (!missing(locations) && !missing(dists)) {
-        stop("do not provide both `locations` and `dists`.", call. = FALSE)
+        stop("do not provide both `locations` or `dists`.", call. = FALSE)
     }
 
     name_var <- colnames(data)
