@@ -6,12 +6,15 @@
 \alias{dists<-}
 \title{Calculating distance matrices for an \code{mcgf} object}
 \usage{
-\method{dists}{mcgf}(x, ...)
+\method{dists}{mcgf}(x, return_grid = FALSE, ...)
 
 dists(x) <- value
 }
 \arguments{
 \item{x}{An \code{mcgf} object.}
+
+\item{return_grid}{Logical; used when \code{locations} in \code{x} are longitudes and
+latitudes.}
 
 \item{...}{Additional parameters or attributes.}
 

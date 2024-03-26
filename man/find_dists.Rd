@@ -4,7 +4,7 @@
 \alias{find_dists}
 \title{Calculate (signed) distances between coordinates}
 \usage{
-find_dists(locations, longlat = TRUE)
+find_dists(locations, longlat = TRUE, origin = 1L, return_grid = FALSE)
 }
 \arguments{
 \item{locations}{A matrix or data.frame of 2D points, the first column is
@@ -12,17 +12,36 @@ x/longitude, and the second column is y/latitude.}
 
 \item{longlat}{Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
 if FALSE, Euclidean distance.}
+
+\item{origin}{Optional; used when \code{longlat} is TRUE. An integer index
+indicating the reference location which well be used as the origin.}
+
+\item{return_grid}{Logical; used when \code{longlat} is TRUE. If TRUE the mapped
+coordinates on a 2D plane is returned.}
 }
 \value{
-List of signed distances.
+A list of distance matrices. If \code{return_grid} is TRUE, a list
+consists of a list of distance matrices, the mapped 2D grid, and the origin
+is returned.
 }
 \description{
 Calculate (signed) distances between coordinates
 }
 \details{
 \code{locations} must be a matrix or data.frame containing 2 columns,
-first column x/longitude, and second column y/latitude.The row names of
+first column x/longitude, and second column y/latitude. The row names of
 \code{locations} are used as the names of the locations.
+
+If \code{longlat} is TRUE, the original coordinates are mapped to a 2D Euclidean
+plane given the reference location. First, the Great Circle (WGS84 ellipsoid)
+signed distance matrices are calculated, where the original latitudes are
+replaced by the the mean of them to find the signed longitudinal
+distances and the original longitudes are replaced by the the mean of them
+to find the signed latitudinal distances. Then given the index of a
+reference location \code{origin}, a new set of coordinates in a 2D plane is
+generated where the coordinates are determined by the signed distances
+between the locations and the reference location. Finally distance matrices
+of the new coordinates are outputted.
 }
 \examples{
 lon <- c(110, 120, 130)

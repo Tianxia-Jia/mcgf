@@ -309,7 +309,7 @@ krige_new.mcgf <- function(x, newdata, locations_new, dists_new, newdata_new,
     }
 
     dat <- rbind(
-        newdata_all,
+        as.matrix(newdata_all),
         matrix(nrow = horizon - 1, ncol = ncol(newdata_all))
     )
     dat <- stats::embed(dat, n_block)
@@ -394,6 +394,9 @@ krige_new.mcgf <- function(x, newdata, locations_new, dists_new, newdata_new,
 #' @param soft Logical; if true, soft forecasts (and bounds) are produced.
 #' @param prob Matrix with simplex rows. Number of columns must be the same as
 #' unique labels in `x`.
+#' @param dists_new_base Optional, list of distance matrices for the base
+#' model. Used when the base model is non-regime switching. Default is `h` from
+#' the first list of `dists_new_ls`.
 #' @param ... Additional arguments.
 #'
 #' @return A list of kriging forecasts (and prediction intervals) for all
@@ -460,7 +463,7 @@ krige_new.mcgf <- function(x, newdata, locations_new, dists_new, newdata_new,
 #' @family functions on fitting an mcgf_rs
 krige_new.mcgf_rs <- function(x, newdata, locations_new, dists_new_ls,
                               newdata_new, sds_new_ls = 1, newlabel,
-                              soft = FALSE, prob,
+                              soft = FALSE, prob, dists_new_base = NULL,
                               model = c("all", "base"),
                               interval = FALSE, level = 0.95, ...) {
     model <- match.arg(model)
@@ -800,20 +803,51 @@ krige_new.mcgf_rs <- function(x, newdata, locations_new, dists_new_ls,
     dists(x_new) <- dists_new_ls[[1]]
     sds(x_new) <- sds_new_ls
 
-    fit_base <- attr(x, "fit_base_raw", exact = TRUE)
-    for (i in 1:n_regime) {
-        fit_base[[i]]$dists_base <- dists_new_ls[[i]]$h
+    if (model == "base") {
+        if (!attr(x, "base_rs", exact = TRUE)) {
+            stop("`x` is not regime-switching, consider using an 'mcgf' object",
+                call. = FALSE
+            )
+        }
     }
-    x_new <- add_base(x_new, fit_base = fit_base)
+
+    if (!missing(dists_new_base)) {
+        if (any(dim(dists_new_base) != dim(dists_new_ls[[1]]$h))) {
+            stop("dimension of `dists_new_base` must be ",
+                paste(dim(dists_new_ls[[1]]$h), collapse = " x "), ".",
+                call. = FALSE
+            )
+        }
+    } else {
+        dists_new_base <- dists_new_ls[[1]]$h
+    }
+
+    fit_base <- attr(x, "fit_base_raw", exact = TRUE)
+    if (attr(x, "base_rs", exact = TRUE)) {
+        for (i in 1:n_regime) {
+            fit_base[[i]]$dists_base <- dists_new_ls[[i]]$h
+        }
+        x_new <- add_base(x_new, fit_base_ls = fit_base)
+    } else {
+        fit_base$dists_base <- dists_new_base
+        fit_base <- list(fit_base)
+        fit_base$rs <- FALSE
+        x_new <- add_base(x_new, fit_base_ls = fit_base)
+    }
 
     if (model == "all") {
+        if (!attr(x, "lagr_rs", exact = TRUE)) {
+            stop("`x` is not regime-switching, consider using an 'mcgf' object",
+                call. = FALSE
+            )
+        }
+
         fit_lagr <- attr(x, "fit_lagr_raw", exact = TRUE)
         for (i in 1:n_regime) {
             fit_lagr[[i]]$dists_lagr <- dists_new_ls[[i]]
         }
         x_new <- add_lagr(x_new, fit_lagr = fit_lagr)
     }
-
 
     n_var_all <- n_var + n_var_new
     cov_mat_ls <- ccov(x_new, model = model)
@@ -882,9 +916,8 @@ krige_new.mcgf_rs <- function(x, newdata, locations_new, dists_new_ls,
         lag_max <- lag_ls[[n]] + horizon - 1
         n_block <- lag_max + 1
 
-
         dat <- rbind(
-            newdata_all,
+            as.matrix(newdata_all),
             matrix(nrow = horizon - 1, ncol = ncol(newdata_all))
         )
         dat <- stats::embed(dat, n_block)

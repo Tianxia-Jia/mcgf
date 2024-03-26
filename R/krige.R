@@ -126,7 +126,7 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
     lag_max <- lag + horizon - 1
     n_block <- lag_max + 1
     n_var <- ncol(dists(x)$h)
-    cov_mat <- ccov.mcgf(x, model = model)
+    cov_mat <- ccov(x, model = model)
     cov_mat_res <- cov_par(cov_mat,
         horizon = horizon,
         n_var = n_var, joint = TRUE

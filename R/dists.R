@@ -18,6 +18,8 @@ dists <- function(x, ...) {
 #'
 #' @param x An `mcgf` object.
 #' @param ... Additional parameters or attributes.
+#' @param return_grid Logical; used when `locations` in `x` are longitudes and
+#' latitudes.
 #'
 #' @return A list of signed distance matrices: `h` (Euclidean), `h1`
 #' (horizontal), and `h2` (vertical).
@@ -37,12 +39,35 @@ dists <- function(x, ...) {
 #' dists(obj)
 #' dists(obj) <- dists(obj)
 #' obj
-dists.mcgf <- function(x, ...) {
-    dists <- attr(x, "dists", exact = TRUE)
+dists.mcgf <- function(x, return_grid = FALSE, ...) {
+    if (return_grid && attr(x, "longlat", exact = TRUE)) {
+        locations <- attr(x, "locations", exact = TRUE)
+        origin <- attr(x, "origin", exact = TRUE)
+
+        dists <- find_dists(locations,
+            longlat = TRUE, origin = origin,
+            return_grid = TRUE, ...
+        )
+    } else {
+        dists <- attr(x, "dists", exact = TRUE)
+    }
 
     if (is.null(dists)) {
         locations <- attr(x, "locations", exact = TRUE)
-        dists <- find_dists(locations, ...)
+        longlat <- attr(x, "longlat", exact = TRUE)
+        origin <- attr(x, "origin", exact = TRUE)
+
+        if (return_grid) {
+            dists <- find_dists(locations,
+                longlat = longlat, origin = origin,
+                return_grid = TRUE, ...
+            )
+        } else {
+            dists <- find_dists(locations,
+                longlat = longlat, origin = origin,
+                ...
+            )
+        }
     }
     return(dists)
 }

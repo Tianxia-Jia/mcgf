@@ -4,7 +4,15 @@
 \alias{.find_dists_new}
 \title{Calculate (signed) distances between coordinates}
 \usage{
-.find_dists_new(grid, grid_new, names = NULL, names_new = NULL, longlat = TRUE)
+.find_dists_new(
+  grid,
+  grid_new,
+  names = NULL,
+  names_new = NULL,
+  longlat = TRUE,
+  origin = 1L,
+  return_grid = FALSE
+)
 }
 \arguments{
 \item{grid}{A matrix of 2D points, first column x/longitude, second column

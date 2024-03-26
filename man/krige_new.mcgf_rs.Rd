@@ -14,6 +14,7 @@
   newlabel,
   soft = FALSE,
   prob,
+  dists_new_base = NULL,
   model = c("all", "base"),
   interval = FALSE,
   level = 0.95,
@@ -49,6 +50,10 @@ Default is 1 for all regimes.}
 
 \item{prob}{Matrix with simplex rows. Number of columns must be the same as
 unique labels in \code{x}.}
+
+\item{dists_new_base}{Optional, list of distance matrices for the base
+model. Used when the base model is non-regime switching. Default is \code{h} from
+the first list of \code{dists_new_ls}.}
 
 \item{model}{Which model to use. One of \code{all}, \code{base}, or \code{empirical}.}
 
