@@ -1,6 +1,39 @@
-# mcgf (development version)
+## version 1.1.0
 
-# mcgf 1.0.1
+---
+
+
+### Miscellaneous
+
+- New vignettes for regime-switching models
+- Updated description and modified reference
+- Updated simulated samples throughout the package to allow new locations
+
+
+### New functions
+
+- R/krige_new.R
+- R/find_dists_new.R
+- R/cor_lagr_exp.R
+
+
+### Function updates
+
+- added exponential function for the Lagrangian model
+- added two arguments to mcgf()
+
+
+### Bug fixes
+
+- `find_dists`: fixed bug for computing long/lat distnaces
+- `add_lagr`: `dists_base` -> `dists_lagr`
+
+
+### New features
+
+- Kriging for new locations are supported
+- Exponential Lagrangian correlation function added
+
 
 ## version 1.0.1
 
