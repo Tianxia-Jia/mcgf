@@ -17,7 +17,8 @@ fit_lagr <- function(x, ...) {
 #'
 #' @param x An `mcgf` object containing attributes `dists`, `acfs`, `ccfs`, and
 #' `sds`. `x` must have been passed to `add_base()` or `base<-`
-#' @param model Base model, one of `lagr_tri`, `lagr_askey`, or `none`.
+#' @param model Base model, one of `lagr_tri`, `lagr_askey`, `lagr_exp`, or
+#' `none`.
 #' If `none`, NULLs are returned.
 #' @param method Parameter estimation methods, weighted least square (`wls`) or
 #' maximum likelihood estimation (`mle`).
@@ -88,7 +89,10 @@ fit_lagr <- function(x, ...) {
 #' fit_lagr$fit
 #' @family functions on fitting an mcgf
 fit_lagr.mcgf <- function(x,
-                          model = c("lagr_tri", "lagr_askey", "none"),
+                          model = c(
+                              "lagr_tri", "lagr_askey", "lagr_exp",
+                              "none"
+                          ),
                           method = c("wls", "mle"),
                           optim_fn = c("nlminb", "optim", "other"),
                           par_fixed = NULL,
@@ -340,7 +344,7 @@ fit_lagr.mcgf <- function(x,
 #' @param x An `mcgf_rs` object containing attributes `dists`, `acfs`, `ccfs`,
 #' and `sds`. `x` must have been passed to `add_base()` or `base<-`
 #' @param model_ls List of base models, each element must be one of `lagr_tri`,
-#' `lagr_askey`, or `none`. If `none`, NULLs are returned.
+#' `lagr_askey`, `lagr_exp`, or `none`. If `none`, NULLs are returned.
 #' @param method_ls List of parameter estimation methods, weighted least square
 #' (`wls`) or maximum likelihood estimation (`mle`).
 #' @param optim_fn_ls List of optimization functions, each element must be one
