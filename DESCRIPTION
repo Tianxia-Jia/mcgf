@@ -7,10 +7,10 @@ Authors@R:
     role = c("aut", "cre", "cph"),
     comment = c(ORCID = "0000-0001-5430-5019"))
 Description: Simulating and estimating (regime-switching) Markov chain Gaussian 
-    fields with covariance functions of the Gneiting class. It supports 
-    parameter estimation by weighted least squares and maximum likelihood 
-    methods, and produces Kriging forecasts and intervals (Cressie 1993) 
-    <doi:10.1002/9781119115151>.
+    fields with covariance functions of the Gneiting class (Gneiting 2002) 
+    <doi:10.1198/016214502760047113>. It supports parameter estimation by 
+    weighted least squares and maximum likelihood methods, and produces Kriging 
+    forecasts and intervals for existing and new locations.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
