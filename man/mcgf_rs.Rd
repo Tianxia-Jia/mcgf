@@ -4,7 +4,7 @@
 \alias{mcgf_rs}
 \title{Create mcgf_rs object}
 \usage{
-mcgf_rs(data, locations, dists, label, time)
+mcgf_rs(data, locations, dists, label, time, longlat = TRUE, origin = 1L)
 }
 \arguments{
 \item{data}{Time series data set in space-wide format.}
@@ -20,6 +20,12 @@ not supplied.}
 the number rows in \code{data}.}
 
 \item{time}{Optional, a vector of equally spaced time stamps.}
+
+\item{longlat}{Logical, if TURE \code{locations} contains longitudes and
+latitudes.}
+
+\item{origin}{Optional; used when \code{longlat} is TRUE. An integer index
+indicating the reference location which well be used as the origin.}
 }
 \value{
 An S3 object of class \code{mcgf_rs}. As it inherits and extends the

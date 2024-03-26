@@ -2,17 +2,23 @@
 #'
 #' @param data Time series data set in space-wide format.
 #' @param locations  A matrix of data.frame of 2D points, first column
-#' longitude, second column latitude, both in decimal degrees. Required when
-#' `dists` is not supplied.
-#' @param dists List of signed distance matrices. Required when `locations` is
-#' not supplied.
+#' x/longitude, second column y/latitude. Required when `dists` is not supplied.
+#' If longitudes and latitudes are provided, they are mapped to a 2D Euclidean.
+#' See [`find_dists()`] for more details.
+#' @param dists List of signed distance matrices on a 2D Euclidean Plane.
+#' Required when `locations` is not supplied.
 #' @param time Optional, a vector of equally spaced time stamps.
+#' @param longlat Logical, if TURE `locations` contains longitudes and
+#' latitudes.
+#' @param origin Optional; used when `longlat` is TRUE. An integer index
+#' indicating the reference location which well be used as the origin.
 #'
 #' @keywords internal
 #' @return An S3 object of class `mcgf`. As it inherits and extends the
 #' `data.frame` class, all methods remain valid to the `data` part of the
 #' object. Additional attributes may be assigned and extracted.
-new_mcgf <- function(data, locations, dists, time) {
+new_mcgf <- function(data, locations, dists, time, longlat = TRUE,
+                     origin = 1L) {
     data <- as.data.frame(data)
     rownames(data) <- time
 
@@ -20,8 +26,8 @@ new_mcgf <- function(data, locations, dists, time) {
         structure(.Data = data, dists = dists, class = c("mcgf", "data.frame"))
     } else {
         structure(
-            .Data = data, locations = locations,
-            class = c("mcgf", "data.frame")
+            .Data = data, locations = locations, longlat = longlat,
+            origin = origin, class = c("mcgf", "data.frame")
         )
     }
 }
@@ -82,7 +88,7 @@ validate_mcgf <- function(x) {
 #' locations <- cbind(lon, lat)
 #' obj <- mcgf(data, locations = locations)
 #' print(obj, "locations")
-mcgf <- function(data, locations, dists, time) {
+mcgf <- function(data, locations, dists, time, longlat = TRUE, origin = 1L) {
     if (!is.data.frame(data) && !is.matrix(data)) {
         stop("`data` must be a matrix or data.frame.", call. = FALSE)
     }
@@ -151,9 +157,21 @@ mcgf <- function(data, locations, dists, time) {
             )
             rownames(locations) <- colnames(data)
         }
+
+        if (origin < 1) {
+            stop("`origin` must be a positive integer index.", call. = FALSE)
+        }
+
+        if (origin > nrow(locations)) {
+            stop("`origin` must an integer index less than ", nrow(locations),
+                ".",
+                call. = FALSE
+            )
+        }
+
         return(validate_mcgf(new_mcgf(
             data = data, locations = locations,
-            time = time
+            time = time, longlat = longlat, origin = origin
         )))
     } else {
         if (!is.list(dists)) {

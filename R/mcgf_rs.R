@@ -51,6 +51,10 @@ validate_mcgf_rs <- function(x) {
 #' @param dists List of signed distance matrices. Required when `locations` is
 #' not supplied.
 #' @param time Optional, a vector of equally spaced time stamps.
+#' @param longlat Logical, if TURE `locations` contains longitudes and
+#' latitudes.
+#' @param origin Optional; used when `longlat` is TRUE. An integer index
+#' indicating the reference location which well be used as the origin.
 #'
 #' @export
 #'
@@ -81,7 +85,8 @@ validate_mcgf_rs <- function(x) {
 #' obj <- mcgf_rs(data, locations = locations, label = label)
 #' print(obj, "locations")
 #' print(obj, "label")
-mcgf_rs <- function(data, locations, dists, label, time) {
+mcgf_rs <- function(data, locations, dists, label, time, longlat = TRUE,
+                    origin = 1L) {
     if (length(unique(label)) == 1) {
         message(
             "only 1 unique class found in `label`, consider using `mcgf()`",
@@ -90,8 +95,8 @@ mcgf_rs <- function(data, locations, dists, label, time) {
     }
 
     x_mcgf <- mcgf(
-        data = data, locations = locations, dists = dists,
-        time = time
+        data = data, locations = locations, dists = dists, time = time,
+        longlat = longlat, origin = origin
     )
 
     return(validate_mcgf_rs(new_mcgf_rs(x_mcgf, label)))
