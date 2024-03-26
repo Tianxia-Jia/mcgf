@@ -100,6 +100,7 @@ Other correlation functions:
 \code{\link{cor_exp}()},
 \code{\link{cor_fs}()},
 \code{\link{cor_lagr_askey}()},
+\code{\link{cor_lagr_exp}()},
 \code{\link{cor_lagr_tri}()},
 \code{\link{cor_sep}()},
 \code{\link{cor_stat_rs}()}

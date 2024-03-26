@@ -26,7 +26,7 @@ object.}
 and \code{sds}. \code{x} must have been passed to \code{add_base()} or \verb{base<-}}
 
 \item{model_ls}{List of base models, each element must be one of \code{lagr_tri},
-\code{lagr_askey}, or \code{none}. If \code{none}, NULLs are returned.}
+\code{lagr_askey}, \code{lagr_exp}, or \code{none}. If \code{none}, NULLs are returned.}
 
 \item{method_ls}{List of parameter estimation methods, weighted least square
 (\code{wls}) or maximum likelihood estimation (\code{mle}).}
