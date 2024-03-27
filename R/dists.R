@@ -34,9 +34,22 @@ dists <- function(x, ...) {
 #' lon <- c(110, 120, 130)
 #' lat <- c(50, 55, 60)
 #' locations <- cbind(lon, lat)
+#'
+#' # if locations are longitudes and latitudes
 #' obj <- mcgf(data = data, locations = locations)
 #' obj
 #' dists(obj)
+#' dists(obj) <- dists(obj)
+#' obj
+#'
+#' # if locations are just coordinates in a 2D plane:
+#' obj <- mcgf(data = data, locations = locations, longlat = FALSE)
+#' obj
+#'
+#' # calculate distances
+#' dists(obj)
+#'
+#' # add distances to the `mcgf` object
 #' dists(obj) <- dists(obj)
 #' obj
 dists.mcgf <- function(x, return_grid = FALSE, ...) {
