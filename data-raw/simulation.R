@@ -7,7 +7,7 @@ set.seed(123)
 x <- stats::rnorm(10, -110)
 y <- stats::rnorm(10, 50)
 locations <- cbind(x, y)
-h <- find_dists(locations)
+h <- find_dists(locations, longlat = TRUE)
 
 N <- 1000
 lag <- 5
@@ -41,10 +41,10 @@ fit_spatial <- fit_base(sim1_mcgf,
 fit_spatial$fit
 # $par
 #           c       gamma
-# 0.001145202 0.500000000
+# 0.001145201 0.500000000
 #
 # $objective
-# [1] 1.385858
+# [1] 1.385845
 #
 # $convergence
 # [1] 0
@@ -66,10 +66,10 @@ fit_temporal <- fit_base(sim1_mcgf,
 fit_temporal$fit
 # $par
 #         a     alpha
-# 0.6534103 0.7572533
+# 0.6534102 0.7572530
 #
 # $objective
-# [1] 0.004445797
+# [1] 0.004445817
 #
 # $convergence
 # [1] 0
@@ -97,20 +97,20 @@ fit_sep <- fit_base(sim1_mcgf,
 fit_sep$fit
 # $par
 #           c       gamma           a       alpha
-# 0.001139265 0.500000000 0.627518723 0.734384339
+# 0.001139264 0.500000000 0.627518829 0.734384140
 #
 # $objective
-# [1] 3.196857
+# [1] 3.196846
 #
 # $convergence
 # [1] 0
 #
 # $iterations
-# [1] 24
+# [1] 25
 #
 # $evaluations
 # function gradient
-#       61      107
+#       46      113
 #
 # $message
 # [1] "relative convergence (4)"
@@ -125,10 +125,10 @@ fit_lagr <- fit_lagr(sim1_mcgf,
 fit_lagr$fit
 # $par
 #      lambda          v1          v2
-#   0.1625909 224.5779867 188.5158715
+#   0.1625903 224.5776223 188.5158090
 #
 # $objective
-# [1] 1.533451
+# [1] 1.533448
 #
 # $convergence
 # [1] 0
@@ -157,7 +157,7 @@ model(sim1_mcgf_fitted, old = TRUE)
 # - Base-old model: sep
 # - Parameters:
 #           c       gamma      nugget           a       alpha
-# 0.001145202 0.500000000 0.000000000 0.653410292 0.757253254
+# 0.001145201 0.500000000 0.000000000 0.653410220 0.757253028
 #
 # - Fixed parameters:
 # nugget
@@ -172,7 +172,7 @@ model(sim1_mcgf_fitted, old = TRUE)
 # - Base model: sep
 # - Parameters:
 #           c       gamma           a       alpha      nugget
-# 0.001139265 0.500000000 0.627518723 0.734384339 0.000000000
+# 0.001139264 0.500000000 0.627518829 0.734384140 0.000000000
 #
 # - Fixed parameters:
 # nugget
@@ -187,7 +187,7 @@ model(sim1_mcgf_fitted, old = TRUE)
 # - Lagrangian model: lagr_tri
 # - Parameters:
 #      lambda          v1          v2           k
-#   0.1625909 224.5779867 188.5158715   2.0000000
+#   0.1625903 224.5776223 188.5158090   2.0000000
 #
 # - Fixed parameters:
 # k
@@ -204,7 +204,7 @@ set.seed(123)
 x <- stats::rnorm(10, -110)
 y <- stats::rnorm(10, 50)
 locations <- cbind(x, y)
-h <- find_dists(locations)
+h <- find_dists(locations, longlat = TRUE)
 
 # simulate regimes
 K <- 2
@@ -272,42 +272,42 @@ lapply(fit_spatial[1:2], function(x) x$fit)
 # $`Regime 1`
 # $`Regime 1`$par
 #           c       gamma
-# 0.001496695 0.500000000
+# 0.001496696 0.500000000
 #
 # $`Regime 1`$objective
-# [1] 3.325998
+# [1] 3.325991
 #
 # $`Regime 1`$convergence
 # [1] 0
 #
 # $`Regime 1`$iterations
-# [1] 59
+# [1] 60
 #
 # $`Regime 1`$evaluations
 # function gradient
-#       80      142
+#       81      144
 #
 # $`Regime 1`$message
-# [1] "X-convergence (3)"
+# [1] "both X-convergence and relative convergence (5)"
 #
 #
 # $`Regime 2`
 # $`Regime 2`$par
 #           c       gamma
-# 0.004074409 0.500000000
+# 0.004074408 0.500000000
 #
 # $`Regime 2`$objective
-# [1] 1.106693
+# [1] 1.106692
 #
 # $`Regime 2`$convergence
 # [1] 0
 #
 # $`Regime 2`$iterations
-# [1] 49
+# [1] 48
 #
 # $`Regime 2`$evaluations
 # function gradient
-#       62      120
+#       61      118
 #
 # $`Regime 2`$message
 # [1] "both X-convergence and relative convergence (5)"
@@ -323,10 +323,10 @@ lapply(fit_temporal[1:2], function(x) x$fit)
 # $`Regime 1`
 # $`Regime 1`$par
 #         a     alpha
-# 0.4375028 0.3020299
+# 0.4375028 0.3020300
 #
 # $`Regime 1`$objective
-# [1] 0.007620236
+# [1] 0.007620233
 #
 # $`Regime 1`$convergence
 # [1] 0
@@ -345,10 +345,10 @@ lapply(fit_temporal[1:2], function(x) x$fit)
 # $`Regime 2`
 # $`Regime 2`$par
 #         a     alpha
-# 0.3309063 0.8745089
+# 0.3309062 0.8745089
 #
 # $`Regime 2`$objective
-# [1] 0.005785558
+# [1] 0.005785562
 #
 # $`Regime 2`$convergence
 # [1] 0
@@ -384,7 +384,7 @@ model(sim2_mcgf, model = "base")
 # - Base model: sep
 # - Parameters:
 #           c       gamma      nugget           a       alpha
-# 0.001496695 0.500000000 0.000000000 0.437502784 0.302029919
+# 0.001496696 0.500000000 0.000000000 0.437502762 0.302029968
 #
 # - Fixed parameters:
 # nugget
@@ -399,7 +399,7 @@ model(sim2_mcgf, model = "base")
 # - Base model: sep
 # - Parameters:
 #           c       gamma      nugget           a       alpha
-# 0.004074409 0.500000000 0.000000000 0.330906287 0.874508926
+# 0.004074408 0.500000000 0.000000000 0.330906238 0.874508851
 #
 # - Fixed parameters:
 # nugget
@@ -421,20 +421,20 @@ lapply(fit_sep[1:2], function(x) x$fit)
 # $`Regime 1`
 # $`Regime 1`$par
 #           c       gamma           a       alpha
-# 0.001539942 0.500000000 0.452841737 0.345950083
+# 0.001539941 0.500000000 0.452841529 0.345950120
 #
 # $`Regime 1`$objective
-# [1] 7.62734
+# [1] 7.62732
 #
 # $`Regime 1`$convergence
 # [1] 0
 #
 # $`Regime 1`$iterations
-# [1] 60
+# [1] 62
 #
 # $`Regime 1`$evaluations
 # function gradient
-#       94      283
+#       90      290
 #
 # $`Regime 1`$message
 # [1] "relative convergence (4)"
@@ -442,21 +442,21 @@ lapply(fit_sep[1:2], function(x) x$fit)
 #
 # $`Regime 2`
 # $`Regime 2`$par
-#          c      gamma          a      alpha
-# 0.00410717 0.50000000 0.32838843 0.85389598
+#           c       gamma           a       alpha
+# 0.004107168 0.500000000 0.328388504 0.853896071
 #
 # $`Regime 2`$objective
-# [1] 3.302695
+# [1] 3.302677
 #
 # $`Regime 2`$convergence
 # [1] 0
 #
 # $`Regime 2`$iterations
-# [1] 55
+# [1] 60
 #
 # $`Regime 2`$evaluations
 # function gradient
-#       89      259
+#       80      279
 #
 # $`Regime 2`$message
 # [1] "relative convergence (4)"
@@ -479,7 +479,7 @@ model(sim2_mcgf_fitted, model = "base", old = TRUE)
 # - Base model: sep
 # - Parameters:
 #           c       gamma      nugget           a       alpha
-# 0.001496695 0.500000000 0.000000000 0.437502784 0.302029919
+# 0.001496696 0.500000000 0.000000000 0.437502762 0.302029968
 #
 # - Fixed parameters:
 # nugget
@@ -494,7 +494,7 @@ model(sim2_mcgf_fitted, model = "base", old = TRUE)
 # - Base model: sep
 # - Parameters:
 #           c       gamma      nugget           a       alpha
-# 0.004074409 0.500000000 0.000000000 0.330906287 0.874508926
+# 0.004074408 0.500000000 0.000000000 0.330906238 0.874508851
 #
 # - Fixed parameters:
 # nugget
@@ -513,7 +513,7 @@ model(sim2_mcgf_fitted, model = "base", old = TRUE)
 # - Base model: sep
 # - Parameters:
 #           c       gamma           a       alpha      nugget
-# 0.001539942 0.500000000 0.452841737 0.345950083 0.000000000
+# 0.001539941 0.500000000 0.452841529 0.345950120 0.000000000
 #
 # - Fixed parameters:
 # nugget
@@ -527,8 +527,8 @@ model(sim2_mcgf_fitted, model = "base", old = TRUE)
 # --------------------
 # - Base model: sep
 # - Parameters:
-#          c      gamma          a      alpha     nugget
-# 0.00410717 0.50000000 0.32838843 0.85389598 0.00000000
+#           c       gamma           a       alpha      nugget
+# 0.004107168 0.500000000 0.328388504 0.853896071 0.000000000
 #
 # - Fixed parameters:
 # nugget
@@ -544,7 +544,7 @@ set.seed(123)
 x <- stats::rnorm(10, -110)
 y <- stats::rnorm(10, 50)
 locations <- cbind(x, y)
-h <- find_dists(locations)
+h <- find_dists(locations, longlat = TRUE)
 
 # simulate regimes
 K <- 2
@@ -650,7 +650,7 @@ lapply(fit_lagr_rs[1:2], function(x) x$fit)
 # $`Regime 1`
 # $`Regime 1`$par
 #        v1        v2
-# -106.5180  119.4422
+# -106.5181  119.4434
 #
 # $`Regime 1`$objective
 # [1] 5.137749
@@ -672,10 +672,10 @@ lapply(fit_lagr_rs[1:2], function(x) x$fit)
 # $`Regime 2`
 # $`Regime 2`$par
 #       v1       v2
-# 210.1161 242.3075
+# 210.1156 242.3082
 #
 # $`Regime 2`$objective
-# [1] 5.902826
+# [1] 5.902847
 #
 # $`Regime 2`$convergence
 # [1] 0
@@ -724,7 +724,7 @@ model(sim3_mcgf_fitted)
 # - Lagrangian model: lagr_tri
 # - Parameters:
 #        v1        v2    lambda         k
-# -106.5180  119.4422    0.2000    2.0000
+# -106.5181  119.4434    0.2000    2.0000
 #
 # - Fixed parameters:
 # lambda      k
@@ -739,7 +739,7 @@ model(sim3_mcgf_fitted)
 # - Lagrangian model: lagr_tri
 # - Parameters:
 #       v1       v2   lambda        k
-# 210.1161 242.3075   0.2000   2.0000
+# 210.1156 242.3082   0.2000   2.0000
 #
 # - Fixed parameters:
 # lambda      k
@@ -762,10 +762,10 @@ lapply(fit_lagr_rs_mle[1:2], function(x) x$fit)
 # $`Regime 1`
 # $`Regime 1`$par
 #        v1        v2
-# -106.1747  101.4036
+# -106.1742  101.4039
 #
 # $`Regime 1`$objective
-# [1] 1144.105
+# [1] 1144.1
 #
 # $`Regime 1`$convergence
 # [1] 0
@@ -784,10 +784,10 @@ lapply(fit_lagr_rs_mle[1:2], function(x) x$fit)
 # $`Regime 2`
 # $`Regime 2`$par
 #       v1       v2
-# 215.6934 189.3392
+# 215.6930 189.3384
 #
 # $`Regime 2`$objective
-# [1] 973.9489
+# [1] 973.9486
 #
 # $`Regime 2`$convergence
 # [1] 0

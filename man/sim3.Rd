@@ -33,7 +33,7 @@ set.seed(123)
 x <- stats::rnorm(10, -110)
 y <- stats::rnorm(10, 50)
 locations <- cbind(x, y)
-h <- find_dists(locations)
+h <- find_dists(locations, longlat = TRUE)
 
 # simulate regimes
 K <- 2

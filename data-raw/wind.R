@@ -118,10 +118,10 @@ fit_spatial <- fit_base(
 fit_spatial$fit
 # $par
 #           c      nugget
-# 0.001326223 0.049124593
+# 0.001326192 0.049136042
 #
 # $objective
-# [1] 1.742004
+# [1] 1.742162
 #
 # $convergence
 # [1] 0
@@ -181,11 +181,11 @@ fit_fs <-
     )
 fit_fs$fit
 # $par
-#     beta
-# 0.623209
+#      beta
+# 0.6232458
 #
 # $objective
-# [1] 2.85823
+# [1] 2.858384
 #
 # $convergence
 # [1] 0
@@ -211,10 +211,10 @@ fit_lagr <- fit_lagr(wind_mcgf,
 fit_lagr$fit
 # $par
 #       lambda           v2
-#   0.03536489 329.00690820
+#   0.03535575 329.03455269
 #
 # $objective
-# [1] 2.798448
+# [1] 2.798634
 #
 # $convergence
 # [1] 0
@@ -237,10 +237,10 @@ fit_lagr2 <- fit_lagr(wind_mcgf,
 fit_lagr2$fit
 # $par
 #       lambda           v1           v2
-#   0.03919781 202.71141541 236.36610453
+#   0.03919917 202.74574080 236.28860761
 #
 # $objective
-# [1] 2.77891
+# [1] 2.779051
 #
 # $convergence
 # [1] 0
@@ -262,20 +262,20 @@ fit_lagr3 <- fit_lagr(wind_mcgf,
 fit_lagr3$fit
 # $par
 #       lambda           v1           v2            k
-#   0.04000362 194.43119035 255.36854413   1.94087345
+#   0.04000252 194.56772556 255.26984386   1.94074140
 #
 # $objective
-# [1] 2.778273
+# [1] 2.778418
 #
 # $convergence
 # [1] 0
 #
 # $iterations
-# [1] 103
+# [1] 96
 #
 # $evaluations
 # function gradient
-#      142      703
+#      141      648
 #
 # $message
 # [1] "relative convergence (4)"
