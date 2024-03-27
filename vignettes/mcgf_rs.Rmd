@@ -1,0 +1,272 @@
+---
+title: "Steps for fitting an `mcgf_rs` object"
+output: rmarkdown::html_vignette
+bibliography: mcgf.bib
+vignette: >
+  %\VignetteIndexEntry{mcgf_rs}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+```
+
+# Introduction
+The `mcgf` package contains useful functions to simulate Markov chain Gaussian fields (MCGF) and regime-switching Markov chain Gaussian fields (RS-MCGF) with covariance structures of the Gneiting class [@Gneiting2002]. It also provides useful tools to estimate the parameters by weighted least squares (WLS) and maximum likelihood estimation (MLE). The `mcgf_rs` function can used be to fit covariance models and obtain Kriging forecasts. A typical workflow for fitting a regime-switching mcgf is given below.
+
+1. Create an `mcgf_rs` object by providing a dataset and the corresponding locations/distances
+2. Calculate auto- and cross-correlations.
+3. Fit the base covariance model which is a fully symmetric model.
+4. Fit the Lagrangian model to account for asymmetry, if necessary.
+5. Obtain Kriging forecasts.
+6. Obtain Kriging forecasts for new locations given their coordinates.
+
+We will demonstrate the use of `mcgf_rs` by an example below.
+
+# Simulated Example
+Here we will generate a regime-switching MCGF process of size 10,000 with the general stationary covariance structure. More specifically, we suppose there are two regimes each with different prevailing winds but the same fully symmetric model. We will begin with simulating the regime process first.
+
+## Regime process
+We start with simulating a transition matrix for a two-stage Markov chain with high probabilities of staying in the current regime. The simulated transition matrix and regime process is given below.
+```{r regime}
+library(mcgf)
+K <- 2
+N <- 10000
+lag <- 5
+
+set.seed(123)
+tran_mat <- matrix(rnorm(K^2, mean = 0.06 / (K - 1), sd = 0.01), nrow = K)
+diag(tran_mat) <- rnorm(K, mean = 0.94, sd = 0.1)
+tran_mat <- sweep(abs(tran_mat), 1, rowSums(tran_mat), `/`)
+tran_mat
+
+regime <- rep(NA, N)
+regime[1] <- 1
+
+for (n in 2:(N)) {
+    regime[n] <- sample(1:K, 1, prob = tran_mat[regime[n - 1], ])
+}
+table(regime)
+```
+
+## Data Simulation
+
+### Locations
+We generate the coordinates of 25 locations below and treat the last 5 locations as unobserved locations.
+```{r locations}
+set.seed(123)
+x <- stats::rnorm(25, -110)
+y <- stats::rnorm(25, 50)
+locations_all <- cbind(lon = x, lat = y)
+locations <- locations_all[1:20, ]
+locations_new <- locations_all[-c(1:20), ]
+locations_all
+```
+
+### Data simulation
+To simulate the 5-th order RS-MCGF process, we calculate the distance matrices for all locations first and then use `mcgf_rs_sim` to simulate such process.
+```{r data}
+# simulate RS MCGF
+par_base <- list(
+    par_s = list(nugget = 0, c = 0.005, gamma = 0.5),
+    par_t = list(a = 0.5, alpha = 0.2)
+)
+par_lagr1 <- list(v1 = 200, v2 = 200, k = 2)
+par_lagr2 <- list(v1 = 50, v2 = 150, k = 2)
+
+h <- find_dists_new(locations, locations_new)
+
+set.seed(123)
+data_all <- mcgf_rs_sim(
+    N = N, label = regime,
+    base_ls = list("sep"),
+    lagrangian_ls = list("lagr_tri"),
+    par_base_ls = list(par_base),
+    par_lagr_ls = list(par_lagr1, par_lagr2),
+    lambda_ls = list(0.2, 0.2),
+    lag_ls = list(lag, lag),
+    dists_ls = list(h, h)
+)
+data_all <- data_all[-c(1:(lag + 1)), ]
+rownames(data_all) <- 1:nrow(data_all)
+head(data_all)
+```
+
+We will holdout the new locations for parameter estimation.
+```{r hold}
+data_old <- data_all[, 1:21]
+data_new <- data_all[, -c(1:21)]
+```
+
+## Fitting Covariance Models
+We will first fit pure spatial and temporal models, then the fully symmetric model, and finally the general stationary model. First, we will create an `mcgf_rs` object and calculate auto- and cross- correlations.
+```{r mcgf}
+data_mcgf <- mcgf_rs(data_old[, -1],
+    locations = locations, longlat = TRUE,
+    label = data_old[, 1]
+)
+data_mcgf <- add_acfs(data_mcgf, lag_max = lag)
+data_mcgf <- add_ccfs(data_mcgf, lag_max = lag)
+
+# If multiple cores are available
+# data_mcgf <- add_ccfs(data_mcgf, lag_max = lag, ncores = 8)
+```
+
+Here `acfs` actually refers to the mean auto-correlations across the stations for each time lag. To view the calculated `acfs`, we can run:
+```{r acfs}
+acfs(data_mcgf)
+```
+Similarly, we can view the `ccfs` by the `ccfs` function. Here we will present lag 1 regime-switching ccfs for the first 6 locations for the two regimes.
+```{r ccfs}
+# Regime 1
+ccfs(data_mcgf)$ccfs_rs$`Regime 1`[1:6, 1:6, 2]
+
+# Regime 2
+ccfs(data_mcgf)$ccfs_rs$`Regime 2`[1:6, 1:6, 2]
+```
+
+### Pure Spatial Model
+The pure spatial model can be fitted using the `fit_base` function. The results are actually obtained from the optimization function `nlminb`. Since the base model is the same for the two regimes, we set `rs = FALSE` to indicate this.
+```{r spatial, message=F}
+fit_spatial <- fit_base(
+    data_mcgf,
+    model_ls = "spatial",
+    lag_ls = lag,
+    par_init_ls = list(c(c = 0.000001, gamma = 0.5)),
+    par_fixed_ls = list(c(nugget = 0)),
+    rs = FALSE
+)
+fit_spatial[[1]]$fit
+```
+
+### Pure Temporal Model
+The pure temporal can also be fitted by `fit_base`:
+```{r temporal}
+fit_temporal <- fit_base(
+    data_mcgf,
+    model = "temporal",
+    lag_ls = lag,
+    par_init_ls = list(c(a = 1, alpha = 0.5)),
+    rs = FALSE
+)
+fit_temporal[[1]]$fit
+```
+
+We can store the fitted spatial and temporal models to `data_mcgf` using `add_base`:
+```{r sep}
+data_mcgf <- add_base(data_mcgf,
+    fit_s = fit_spatial,
+    fit_t = fit_temporal,
+    sep = T
+)
+```
+
+### Separable Model
+We can also calculate the WLS estimates all at once by fitting the separable model:
+```{r}
+fit_sep <- fit_base(
+    data_mcgf,
+    model_ls = "sep",
+    lag_ls = lag,
+    par_init_ls = list(c(c = 0.000001, gamma = 0.5, a = 1, alpha = 0.5)),
+    par_fixed_ls = list(c(nugget = 0)),
+    control = list(list(iter.max = 10000, eval.max = 10000)),
+    rs = FALSE
+)
+fit_sep[[1]]$fit
+```
+
+store the fully symmetric model as the base model and print the base model:
+```{r base}
+data_mcgf <- add_base(data_mcgf, fit_base = fit_sep, old = TRUE)
+model(data_mcgf, model = "base", old = TRUE)
+```
+The `old = TRUE` in `add_base` keeps the fitted pure spatial and temporal models for records, and they are not used for any further steps. It is recommended to keep the old model not only for reproducibility, but to keep a history of fitted models.
+
+
+### Lagrangian Model
+We will fit Lagrangian correlation functions to model the regime-dependent prevailing winds:
+```{r westerly}
+fit_lagr_rs <- fit_lagr(data_mcgf,
+    model_ls = list("lagr_tri"),
+    par_init_ls = list(
+        list(lambda = 0.2, v1 = 100, v2 = 100, k = 2),
+        list(lambda = 0.2, v1 = 100, v2 = 100, k = 2)
+    ),
+    control = list(list(iter.max = 10000, eval.max = 10000))
+)
+lapply(fit_lagr_rs[1:2], function(x) x$fit)
+```
+
+Finally we will store this model to `data_mcgf` using `add_lagr` and then print the final model:
+```{r stat}
+data_mcgf <- add_lagr(data_mcgf, fit_lagr = fit_lagr_rs)
+model(data_mcgf, old = TRUE)
+```
+
+## Simple Kriging for new locations
+We provide functionalists for computing simple Kriging forecasts for new locations. The associated function is `krige_new`, and users can either supply the coordinates for the new locations or the distance matrices for all locations. 
+```{r krige}
+krige_base_new <- krige_new(
+    x = data_mcgf,
+    locations_new = locations_new,
+    model = "base",
+    interval = TRUE
+)
+krige_stat_new <- krige_new(
+    x = data_mcgf,
+    locations_new = locations_new,
+    model = "all",
+    interval = TRUE
+)
+```
+Next, we can compute the root mean square error (RMSE), mean absolute error (MAE), and the realized percentage of observations falling outside the 95\% PI (POPI) for these models for the new locations.
+
+### RMSE
+```{r rmse}
+# RMSE
+rmse_base <-
+    sqrt(colMeans((data_new - krige_base_new$fit[, -c(1:20)])^2, na.rm = T))
+rmse_stat <-
+    sqrt(colMeans((data_new - krige_stat_new$fit[, -c(1:20)])^2, na.rm = T))
+rmse <- c(
+    "Base" = mean(rmse_base),
+    "STAT" = mean(rmse_stat)
+)
+rmse
+```
+### MAE
+```{r MAE}
+mae_base <- colMeans(abs(data_new - krige_base_new$fit[, -c(1:20)]), na.rm = T)
+mae_stat <- colMeans(abs(data_new - krige_stat_new$fit[, -c(1:20)]), na.rm = T)
+mae <- c(
+    "Base" = mean(mae_base),
+    "STAT" = mean(mae_stat)
+)
+mae
+```
+### POPI
+```{r popi}
+# POPI
+popi_base <- colMeans(
+    data_new < krige_base_new$lower[, -c(1:20)] | data_new > krige_base_new$upper[, -c(1:20)],
+    na.rm = T
+)
+popi_stat <- colMeans(
+    data_new < krige_stat_new$lower[, -c(1:20)] | data_new > krige_stat_new$upper[, -c(1:20)],
+    na.rm = T
+)
+popi <- c(
+    "Base" = mean(popi_base),
+    "STAT" = mean(popi_stat)
+)
+popi
+```
+
+# References
+
+<div id="refs"></div>
