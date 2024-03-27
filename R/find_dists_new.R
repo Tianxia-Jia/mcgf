@@ -144,6 +144,9 @@ find_dists_new <- function(locations, locations_new, longlat = TRUE,
         )
     }
 
+    locations_new <- as.data.frame(locations_new)
+    names(locations_new)[1:2] <- colnames(locations)[1:2]
+
     dists_ls <- .find_dists_new(
         grid = locations, grid_new = locations_new,
         names = names, names_new = names_new,
