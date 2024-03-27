@@ -86,7 +86,7 @@ krige <- function(x, ...) {
 #' )
 #' popi
 #' @family functions on fitting an mcgf
-krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
+krige.mcgf <- function(x, newdata = NULL, model = c("all", "base", "empirical"),
                        interval = FALSE, level = 0.95, ...) {
     model <- match.arg(model)
     dots <- list(...)
@@ -132,7 +132,7 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
         n_var = n_var, joint = TRUE
     )
 
-    if (!missing(newdata)) {
+    if (!is.null(newdata)) {
         if (NCOL(newdata) != ncol(x)) {
             stop("unmatching number of columns for `newdata`.", call. = FALSE)
         }
@@ -270,13 +270,15 @@ krige.mcgf <- function(x, newdata, model = c("all", "base", "empirical"),
 #' )
 #' popi
 #' @family functions on fitting an mcgf_rs
-krige.mcgf_rs <- function(x, newdata, newlabel,
+krige.mcgf_rs <- function(x, newdata = NULL, newlabel = NULL,
                           soft = FALSE,
                           prob,
                           model = c("all", "base", "empirical"),
                           interval = FALSE, level = 0.95, ...) {
     model <- match.arg(model)
     dots <- list(...)
+
+    no_newdata <- ifelse(is.null(newdata), TRUE, FALSE)
 
     if (model == "base" && !attr(x, "base_rs", exact = TRUE)) {
         x_base <- x
@@ -349,7 +351,7 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
         n_var = n_var, joint = TRUE
     )
 
-    if (!missing(newdata)) {
+    if (!no_newdata) {
         if (NCOL(newdata) != ncol(x)) {
             stop("unmatching number of columns for `newdata`.", call. = FALSE)
         }
@@ -394,7 +396,7 @@ krige.mcgf_rs <- function(x, newdata, newlabel,
         }
 
         if (nrow(prob) != nrow(x)) {
-            if (!missing(newdata)) {
+            if (!no_newdata) {
                 stop("number of rows in `prob` must be the same as that of ",
                     "`newdata`.",
                     call. = FALSE

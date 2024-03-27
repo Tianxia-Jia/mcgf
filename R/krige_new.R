@@ -100,11 +100,18 @@ krige_new <- function(x, ...) {
 #'     interval = TRUE
 #' )
 #' @family functions on fitting an mcgf
-krige_new.mcgf <- function(x, newdata, locations_new, dists_new, newdata_new,
+krige_new.mcgf <- function(x, newdata = NULL, locations_new = NULL,
+                           dists_new = NULL, newdata_new = NULL,
                            sds_new = 1, model = c("all", "base"),
                            interval = FALSE, level = 0.95, ...) {
     model <- match.arg(model)
     dots <- list(...)
+
+    no_newdata <- ifelse(is.null(newdata), TRUE, FALSE)
+    no_newdata_new <- ifelse(is.null(newdata_new), TRUE, FALSE)
+
+    no_locations_new <- ifelse(is.null(locations_new), TRUE, FALSE)
+    no_dists_new <- ifelse(is.null(dists_new), TRUE, FALSE)
 
     if (model == "base") {
         if (is.null(attr(x, "base", exact = T))) {
@@ -116,20 +123,27 @@ krige_new.mcgf <- function(x, newdata, locations_new, dists_new, newdata_new,
         }
     }
 
-    if (missing(locations_new) && missing(dists_new)) {
+    if (no_locations_new && no_dists_new) {
         stop("must provide either `locations_new` or `dists_new`.",
             call. = FALSE
         )
     }
 
-    if (!missing(locations_new) && !missing(dists_new)) {
+    if (!no_locations_new && !no_dists_new) {
         stop("do not provide both `locations_new` or `dists_new`.",
             call. = FALSE
         )
     }
 
-    if (!missing(locations_new)) {
+    if (!no_locations_new) {
         locations <- attr(x, "locations", exact = TRUE)
+
+        if (is.vector(locations_new)) {
+            if (length(locations_new) != 2) {
+                stop("incorrect dimension for `locations_new`", call. = FALSE)
+            }
+            locations_new <- matrix(locations_new, nrow = 1)
+        }
 
         if (min(locations_new[, 1]) < min(locations[, 1]) ||
             max(locations_new[, 1]) > max(locations[, 1])) {
@@ -146,16 +160,10 @@ krige_new.mcgf <- function(x, newdata, locations_new, dists_new, newdata_new,
             )
         }
 
-        if (is.vector(locations_new)) {
-            if (length(locations_new) != 2) {
-                stop("incorrect dimension for `locations_new`", call. = FALSE)
-            }
-            locations_new <- matrix(locations_new, nrow = 1)
-        }
         n_var_new <- nrow(locations_new)
         names_new <- rownames(locations_new)
 
-        if (!missing(newdata_new)) {
+        if (!no_newdata_new) {
             if (ncol(newdata_new) != n_var_new) {
                 stop("number of columns of `newdata_new` must be the same as ",
                     "the number of rows of `locations`",
@@ -164,7 +172,11 @@ krige_new.mcgf <- function(x, newdata, locations_new, dists_new, newdata_new,
             }
         }
 
-        dists_new <- find_dists_new(locations, locations_new[, 1:2])
+        longlat <- attr(x, "longlat", exact = TRUE)
+        origin <- attr(x, "origin", exact = TRUE)
+        dists_new <- find_dists_new(locations, locations_new[, 1:2],
+            longlat = longlat, origin = origin
+        )
     }
 
     lag <- attr(x, "lag", exact = TRUE)
@@ -173,7 +185,7 @@ krige_new.mcgf <- function(x, newdata, locations_new, dists_new, newdata_new,
     n_block <- lag_max + 1
     n_var <- ncol(dists(x)$h)
 
-    if (!missing(dists_new)) {
+    if (!no_dists_new) {
         if (!is.list(dists_new)) {
             stop("`dists_new` must be a list.", call. = FALSE)
         }
@@ -210,7 +222,7 @@ krige_new.mcgf <- function(x, newdata, locations_new, dists_new, newdata_new,
         sds_new <- rep(sds_new, n_var_new)
     }
 
-    if (!missing(newdata)) {
+    if (!no_newdata) {
         if (NCOL(newdata) != ncol(x)) {
             stop("unmatching number of columns for `newdata`.", call. = FALSE)
         }
@@ -224,14 +236,14 @@ krige_new.mcgf <- function(x, newdata, locations_new, dists_new, newdata_new,
         newdata <- as.matrix(x)
     }
 
-    if (!missing(newdata_new)) {
+    if (!no_newdata_new) {
         if (ncol(newdata_new) != n_var_new) {
             stop("number of columns of `newdata_new` does not math with ",
                 "`dists_new` or `locations_new`",
                 call. = FALSE
             )
         }
-        if (missing(newdata)) {
+        if (no_newdata) {
             if (nrow(newdata_new) != nrow(x)) {
                 stop("number of rows do not match for `newdata_new` and `x`.",
                     call. = FALSE
@@ -275,19 +287,19 @@ krige_new.mcgf <- function(x, newdata, locations_new, dists_new, newdata_new,
         )
     } else {
         fit_base$dists_base <- dists_new$h
-        x_new <- add_base(x_new, fit_base = fit_base)
+        x_new <- add_base.mcgf(x_new, fit_base = fit_base)
     }
 
     if (model == "all") {
         fit_lagr <- attr(x, "fit_lagr_raw", exact = TRUE)
         fit_lagr$dists_lagr <- dists_new
-        x_new <- add_lagr(x_new, fit_lagr = fit_lagr)
+        x_new <- add_lagr.mcgf(x_new, fit_lagr = fit_lagr)
     }
 
     n_var_all <- n_var + n_var_new
-    cov_mat <- ccov(x_new, model = model)
+    cov_mat <- ccov.mcgf(x_new, model = model)
 
-    if (!missing(newdata_new)) {
+    if (!no_newdata_new) {
         newdata_all <- cbind(newdata, newdata_new)
 
         cov_mat_res <- cov_par(cov_mat,
@@ -461,13 +473,20 @@ krige_new.mcgf <- function(x, newdata, locations_new, dists_new, newdata_new,
 #'     model = "base", interval = TRUE
 #' )
 #' @family functions on fitting an mcgf_rs
-krige_new.mcgf_rs <- function(x, newdata, locations_new, dists_new_ls,
-                              newdata_new, sds_new_ls = 1, newlabel,
-                              soft = FALSE, prob, dists_new_base = NULL,
+krige_new.mcgf_rs <- function(x, newdata = NULL, locations_new = NULL,
+                              dists_new_ls = NULL, newdata_new = NULL,
+                              sds_new_ls = 1, newlabel,
+                              soft = FALSE, prob, dists_new_base,
                               model = c("all", "base"),
                               interval = FALSE, level = 0.95, ...) {
     model <- match.arg(model)
     dots <- list(...)
+
+    no_newdata <- ifelse(is.null(newdata), TRUE, FALSE)
+    no_newdata_new <- ifelse(is.null(newdata_new), TRUE, FALSE)
+
+    no_locations_new <- ifelse(is.null(locations_new), TRUE, FALSE)
+    no_dists_new_ls <- ifelse(is.null(dists_new_ls), TRUE, FALSE)
 
     if (model == "base") {
         if (is.null(attr(x, "base", exact = T))) {
@@ -485,8 +504,10 @@ krige_new.mcgf_rs <- function(x, newdata, locations_new, dists_new_ls,
         attr(x_base, "sds") <- attr(x, "sds")$sds
 
         return(krige_new.mcgf(
-            x = x_base, newdata = newdata, locations_new = locations_new,
-            dists_new = dists_new_ls[[1]], newdata_new = newdata_new,
+            x = x_base, newdata = newdata,
+            locations_new = locations_new,
+            dists_new = dists_new_ls[[1]],
+            newdata_new = newdata_new,
             sds_new = sds_new_ls[[1]], model = model, interval = interval,
             level = level, ...
         ))
@@ -505,19 +526,19 @@ krige_new.mcgf_rs <- function(x, newdata, locations_new, dists_new_ls,
         ))
     }
 
-    if (missing(locations_new) && missing(dists_new_ls)) {
+    if (no_locations_new && no_dists_new_ls) {
         stop("must provide either `locations_new` or `dists_new_ls`.",
             call. = FALSE
         )
     }
 
-    if (!missing(locations_new) && !missing(dists_new_ls)) {
+    if (!no_locations_new && !no_dists_new_ls) {
         stop("do not provide both `locations_new` or `dists_new_ls`.",
             call. = FALSE
         )
     }
 
-    if (!missing(locations_new)) {
+    if (!no_locations_new) {
         locations <- attr(x, "locations", exact = TRUE)
 
         if (min(locations_new[, 1]) < min(locations[, 1]) ||
@@ -544,7 +565,7 @@ krige_new.mcgf_rs <- function(x, newdata, locations_new, dists_new_ls,
         n_var_new <- nrow(locations_new)
         names_new <- rownames(locations_new)
 
-        if (!missing(newdata_new)) {
+        if (!no_newdata_new) {
             if (ncol(newdata_new) != n_var_new) {
                 stop("number of columns of `newdata_new` must be the same as ",
                     "the number of rows of `locations`",
@@ -553,7 +574,11 @@ krige_new.mcgf_rs <- function(x, newdata, locations_new, dists_new_ls,
             }
         }
 
-        dists_new_ls <- list(find_dists_new(locations, locations_new[, 1:2]))
+        longlat <- attr(x, "longlat", exact = TRUE)
+        origin <- attr(x, "origin", exact = TRUE)
+        dists_new_ls <- list(find_dists_new(locations, locations_new[, 1:2],
+            longlat = longlat, origin = origin
+        ))
     }
 
     lag_ls <- attr(x, "lag", exact = TRUE)
@@ -564,7 +589,7 @@ krige_new.mcgf_rs <- function(x, newdata, locations_new, dists_new_ls,
     lvs <- levels(label)
     n_regime <- length(lvs)
 
-    if (!missing(dists_new_ls)) {
+    if (!no_dists_new_ls) {
         if (!is.list(dists_new_ls)) {
             stop("`dists_new_ls` must be a list.", call. = FALSE)
         }
@@ -694,7 +719,7 @@ krige_new.mcgf_rs <- function(x, newdata, locations_new, dists_new_ls,
         )
     }
 
-    if (!missing(newdata)) {
+    if (!no_newdata) {
         if (NCOL(newdata) != ncol(x)) {
             stop("unmatching number of columns for `newdata`.", call. = FALSE)
         }
@@ -722,14 +747,14 @@ krige_new.mcgf_rs <- function(x, newdata, locations_new, dists_new_ls,
         newdata <- as.matrix(x)
     }
 
-    if (!missing(newdata_new)) {
+    if (!no_newdata_new) {
         if (ncol(newdata_new) != n_var_new) {
             stop("number of columns of `newdata_new` does not math with ",
                 "`dists_new` or `locations_new`",
                 call. = FALSE
             )
         }
-        if (missing(newdata)) {
+        if (no_newdata) {
             if (nrow(newdata_new) != nrow(x)) {
                 stop("number of rows do not match for `newdata_new` and `x`.",
                     call. = FALSE
@@ -772,7 +797,7 @@ krige_new.mcgf_rs <- function(x, newdata, locations_new, dists_new_ls,
         }
 
         if (nrow(prob) != nrow(newdata)) {
-            if (!missing(newdata)) {
+            if (!no_newdata) {
                 stop("number of rows in `prob` must be the same as that of ",
                     "`newdata`.",
                     call. = FALSE
@@ -852,7 +877,7 @@ krige_new.mcgf_rs <- function(x, newdata, locations_new, dists_new_ls,
     n_var_all <- n_var + n_var_new
     cov_mat_ls <- ccov(x_new, model = model)
 
-    if (!missing(newdata_new)) {
+    if (!no_newdata_new) {
         newdata_all <- cbind(newdata, newdata_new)
 
         cov_mat_res <- lapply(cov_mat_ls, cov_par,
