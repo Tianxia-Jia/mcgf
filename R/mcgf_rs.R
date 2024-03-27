@@ -64,14 +64,15 @@ validate_mcgf_rs <- function(x) {
 #' For inputs, `data` must be in space-wide format where rows correspond to
 #' different time stamps and columns refer to spatial locations. Supply either
 #' `locations` or `dists`. `locations` is a matrix or data.frame of 2D points
-#' with first column longitude and second column latitude. Both columns must be
-#' in decimal degrees. Number of rows in `locations` must be the same as the
-#' number of columns of `data`. `dists` must be a list of signed distance
-#' matrices with names `h1`, `h2`, and `h`. If `h` is not given, it will be
-#' calculated as the Euclidean distance of `h1` and `h2`. `time` is a vector of
-#' equally spaced time stamps. If it is not supplied then `data` is assumed to
-#' be temporally equally spaced. `label` must be a vector containing regime
-#' labels, and its length must be the same as the number of rows in `x`.
+#' with first column x/longitude and second column y/latitude. By default it is
+#' treated as a matrix of Earth's coordinates in decimal degrees. Number of rows
+#' in `locations` must be the same as the number of columns of `data`. `dists`
+#' must be a list of signed distance matrices with names `h1`, `h2`, and `h`.
+#' If `h` is not given, it will be calculated as the Euclidean distance of `h1`
+#' and `h2`. `time` is a vector of equally spaced time stamps. If it is not
+#' supplied then `data` is assumed to be temporally equally spaced. `label` must
+#' be a vector containing regime labels, and its length must be the same as the
+#' number of rows in `x`.
 #'
 #' An `mcgf_rs` object extends the S3 classes `mcgf` and `data.frame`, all
 #' methods remain valid to the `data` part of the object.
