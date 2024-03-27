@@ -6,7 +6,7 @@
 \usage{
 \method{krige}{mcgf}(
   x,
-  newdata,
+  newdata = NULL,
   model = c("all", "base", "empirical"),
   interval = FALSE,
   level = 0.95,

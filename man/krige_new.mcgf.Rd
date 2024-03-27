@@ -6,10 +6,10 @@
 \usage{
 \method{krige_new}{mcgf}(
   x,
-  newdata,
-  locations_new,
-  dists_new,
-  newdata_new,
+  newdata = NULL,
+  locations_new = NULL,
+  dists_new = NULL,
+  newdata_new = NULL,
   sds_new = 1,
   model = c("all", "base"),
   interval = FALSE,

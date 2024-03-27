@@ -6,8 +6,8 @@
 \usage{
 \method{krige}{mcgf_rs}(
   x,
-  newdata,
-  newlabel,
+  newdata = NULL,
+  newlabel = NULL,
   soft = FALSE,
   prob,
   model = c("all", "base", "empirical"),
