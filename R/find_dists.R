@@ -6,23 +6,30 @@
 #' @param longlat Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
 #' if FALSE, Euclidean distance.
 #' @param origin Optional; used when `longlat` is TRUE. An integer index
-#' indicating the reference location which well be used as the origin.
+#' indicating the reference location which will be used as the origin.
 #' @param return_grid Logical; used when `longlat` is TRUE. If TRUE the mapped
 #' coordinates on a 2D plane is returned.
+#' @param lon_ref Reference longitude when computing the longitudinal distances.
+#' Default is the mean of longitudes in `grid`.
+#' @param lat_ref Reference latitude when computing the latitudinal distances.
+#' Default is the mean of latitudes in `grid`.
 #'
 #' @keywords internal
 #' @return List of signed distances.
 .find_dists <- function(grid, names = NULL, longlat = TRUE, origin = 1L,
-                        return_grid = FALSE) {
+                        return_grid = FALSE, lon_ref = NULL, lat_ref = NULL) {
     n_var <- nrow(grid)
 
-    lat <- cbind(mean(grid[, 1]), grid[, 2])
-    lat_dists <- sp::spDists(lat, longlat = longlat)
-    rownames(lat_dists) <- colnames(lat_dists) <- names
+    lon_ref <- ifelse(is.null(lon_ref), mean(grid[, 1]), lon_ref)
+    lat_ref <- ifelse(is.null(lat_ref), mean(grid[, 2]), lat_ref)
 
-    lon <- cbind(grid[, 1], mean(grid[, 2]))
+    lon <- cbind(grid[, 1], lat_ref)
     lon_dists <- sp::spDists(lon, longlat = longlat)
     rownames(lon_dists) <- colnames(lon_dists) <- names
+
+    lat <- cbind(lon_ref, grid[, 2])
+    lat_dists <- sp::spDists(lat, longlat = longlat)
+    rownames(lat_dists) <- colnames(lat_dists) <- names
 
     h <- sqrt(lon_dists^2 + lat_dists^2)
     rownames(h) <- colnames(h) <- names
@@ -70,9 +77,10 @@
 #' @param longlat Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
 #' if FALSE, Euclidean distance.
 #' @param origin Optional; used when `longlat` is TRUE. An integer index
-#' indicating the reference location which well be used as the origin.
+#' indicating the reference location which will be used as the origin.
 #' @param return_grid Logical; used when `longlat` is TRUE. If TRUE the mapped
 #' coordinates on a 2D plane is returned.
+#' @param ... Optional arguments passed to [`.find_dists()`].
 #'
 #' @return A list of distance matrices. If `return_grid` is TRUE, a list
 #' consists of a list of distance matrices, the mapped 2D grid, and the origin
@@ -103,7 +111,7 @@
 #' rownames(locations) <- paste("Site", 1:3)
 #' find_dists(locations)
 find_dists <- function(locations, longlat = TRUE, origin = 1L,
-                       return_grid = FALSE) {
+                       return_grid = FALSE, ...) {
     if (NCOL(locations) != 2) {
         stop("`locations` must contain 2 columns", call. = FALSE)
     }
@@ -130,7 +138,7 @@ find_dists <- function(locations, longlat = TRUE, origin = 1L,
 
     dists_ls <- .find_dists(locations,
         names = names, longlat = longlat,
-        origin = origin, return_grid = return_grid
+        origin = origin, return_grid = return_grid, ...
     )
     return(dists_ls)
 }

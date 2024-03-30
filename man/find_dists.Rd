@@ -4,7 +4,7 @@
 \alias{find_dists}
 \title{Calculate (signed) distances between coordinates}
 \usage{
-find_dists(locations, longlat = TRUE, origin = 1L, return_grid = FALSE)
+find_dists(locations, longlat = TRUE, origin = 1L, return_grid = FALSE, ...)
 }
 \arguments{
 \item{locations}{A matrix or data.frame of 2D points, the first column is
@@ -14,10 +14,12 @@ x/longitude, and the second column is y/latitude.}
 if FALSE, Euclidean distance.}
 
 \item{origin}{Optional; used when \code{longlat} is TRUE. An integer index
-indicating the reference location which well be used as the origin.}
+indicating the reference location which will be used as the origin.}
 
 \item{return_grid}{Logical; used when \code{longlat} is TRUE. If TRUE the mapped
 coordinates on a 2D plane is returned.}
+
+\item{...}{Optional arguments passed to \code{\link[=.find_dists]{.find_dists()}}.}
 }
 \value{
 A list of distance matrices. If \code{return_grid} is TRUE, a list

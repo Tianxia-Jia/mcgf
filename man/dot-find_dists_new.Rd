@@ -11,7 +11,9 @@
   names_new = NULL,
   longlat = TRUE,
   origin = 1L,
-  return_grid = FALSE
+  return_grid = FALSE,
+  lon_ref = NULL,
+  lat_ref = NULL
 )
 }
 \arguments{
@@ -21,10 +23,24 @@ y/latitude.}
 \item{grid_new}{A matrix of 2D points, first column x/longitude, second column
 y/latitude.}
 
+\item{names}{Names of locations.}
+
 \item{names_new}{Names of new locations.}
 
 \item{longlat}{Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
 if FALSE, Euclidean distance.}
+
+\item{origin}{Optional; used when \code{longlat} is TRUE. An integer index
+indicating the reference location which will be used as the origin.}
+
+\item{return_grid}{Logical; used when \code{longlat} is TRUE. If TRUE the mapped
+coordinates on a 2D plane is returned.}
+
+\item{lon_ref}{Reference longitude when computing the longitudinal distances.
+Default is the mean of longitudes in \code{grid}.}
+
+\item{lat_ref}{Reference latitude when computing the latitudinal distances.
+Default is the mean of latitudes in \code{grid}.}
 }
 \value{
 List of signed distances between the new locations and the old grid.
