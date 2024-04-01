@@ -17,11 +17,11 @@
 #' @keywords internal
 #' @return List of signed distances.
 .find_dists <- function(grid, names = NULL, longlat = TRUE, origin = 1L,
-                        return_grid = FALSE, lon_ref = NULL, lat_ref = NULL) {
+                        return_grid = FALSE, lon_ref, lat_ref) {
     n_var <- nrow(grid)
 
-    lon_ref <- ifelse(is.null(lon_ref), mean(grid[, 1]), lon_ref)
-    lat_ref <- ifelse(is.null(lat_ref), mean(grid[, 2]), lat_ref)
+    lon_ref <- ifelse(missing(lon_ref), mean(grid[, 1]), lon_ref)
+    lat_ref <- ifelse(missing(lat_ref), mean(grid[, 2]), lat_ref)
 
     lon <- cbind(grid[, 1], lat_ref)
     lon_dists <- sp::spDists(lon, longlat = longlat)

@@ -21,13 +21,13 @@
 #' @return List of signed distances between the new locations and the old grid.
 .find_dists_new <- function(grid, grid_new, names = NULL, names_new = NULL,
                             longlat = TRUE, origin = 1L, return_grid = FALSE,
-                            lon_ref = NULL, lat_ref = NULL) {
+                            lon_ref, lat_ref) {
     grid_all <- rbind(grid, grid_new)
     n_var <- nrow(grid_all)
     names_all <- c(names, names_new)
 
-    lon_ref <- ifelse(is.null(lon_ref), mean(grid[, 1]), lon_ref)
-    lat_ref <- ifelse(is.null(lat_ref), mean(grid[, 2]), lat_ref)
+    lon_ref <- ifelse(missing(lon_ref), mean(grid[, 1]), lon_ref)
+    lat_ref <- ifelse(missing(lat_ref), mean(grid[, 2]), lat_ref)
 
     lon <- cbind(grid_all[, 1], lat_ref)
     lon_dists <- sp::spDists(lon, longlat = longlat)

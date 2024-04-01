@@ -12,8 +12,8 @@
   longlat = TRUE,
   origin = 1L,
   return_grid = FALSE,
-  lon_ref = NULL,
-  lat_ref = NULL
+  lon_ref,
+  lat_ref
 )
 }
 \arguments{
