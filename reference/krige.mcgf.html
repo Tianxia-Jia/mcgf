@@ -24,6 +24,12 @@
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/mcgf_rs.html">Steps for fitting an `mcgf_rs` object</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -57,7 +63,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for mcgf</span></span>
 <span><span class="fu"><a href="krige.html">krige</a></span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
-<span>  <span class="va">newdata</span>,</span>
+<span>  newdata <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"all"</span>, <span class="st">"base"</span>, <span class="st">"empirical"</span><span class="op">)</span>,</span>
 <span>  interval <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  level <span class="op">=</span> <span class="fl">0.95</span>,</span>
@@ -160,17 +166,17 @@ horizon is given. Note that it does not compute confidence regions.</p>
 <span class="r-in"><span><span class="va">rmse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="op">(</span><span class="va">sim1_mcgf</span> <span class="op">-</span> <span class="va">sim1_krige</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">rmse</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         1         2         3         4         5         6         7         8 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.7303479 0.7327715 0.7356233 0.7345239 0.7334886 0.7359824 0.7336118 0.7330756 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.7303482 0.7327718 0.7356240 0.7345241 0.7334888 0.7359809 0.7336117 0.7330753 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         9        10 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.7363259 0.7446221 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.7363262 0.7446223 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Calculate MAE for each location</span></span></span>
 <span class="r-in"><span><span class="va">mae</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">sim1_mcgf</span> <span class="op">-</span> <span class="va">sim1_krige</span><span class="op">$</span><span class="va">fit</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mae</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         1         2         3         4         5         6         7         8 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5835318 0.5836250 0.5845314 0.5853081 0.5798049 0.5922688 0.5855237 0.5824134 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5835321 0.5836252 0.5845320 0.5853083 0.5798051 0.5922677 0.5855238 0.5824134 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         9        10 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5843572 0.5825536 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.5843573 0.5825537 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Calculate POPI for each location</span></span></span>
 <span class="r-in"><span><span class="va">popi</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span></span></span>

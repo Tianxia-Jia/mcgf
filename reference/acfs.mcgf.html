@@ -28,6 +28,12 @@ mcgf_rs object"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/l
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/mcgf_rs.html">Steps for fitting an `mcgf_rs` object</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -122,13 +128,13 @@ a regime.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `time` is not provided, assuming rows are equally spaced temporally.</span>
 <span class="r-in"><span><span class="fu"><a href="acfs.html">acfs</a></span><span class="op">(</span><span class="va">sim1_mcgf</span>, lag_max <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      lag0      lag1      lag2      lag3      lag4      lag5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.6109552 0.3140734 0.2401462 0.1781786 0.1351681 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.6109553 0.3140734 0.2401463 0.1781788 0.1351682 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Add acfs to 'sim1_mcgf'</span></span></span>
 <span class="r-in"><span><span class="va">sim1_mcgf</span> <span class="op">&lt;-</span> <span class="fu">add_acfs</span><span class="op">(</span><span class="va">sim1_mcgf</span>, lag_max <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sim1_mcgf</span>, <span class="st">"acfs"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      lag0      lag1      lag2      lag3      lag4      lag5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.6109552 0.3140734 0.2401462 0.1781786 0.1351681 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.6109553 0.3140734 0.2401463 0.1781788 0.1351682 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Calculate acfs for 'sim2'</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">sim2</span><span class="op">)</span></span></span>
@@ -137,7 +143,7 @@ a regime.</p>
 <span class="r-in"><span><span class="fu"><a href="acfs.html">acfs</a></span><span class="op">(</span><span class="va">sim2_mcgf</span>, lag_max <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $acfs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      lag0      lag1      lag2      lag3      lag4      lag5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.7195535 0.5364965 0.4539327 0.3834479 0.3308474 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.7195535 0.5364966 0.4539327 0.3834479 0.3308474 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $acfs_rs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $acfs_rs$`Regime 1`</span>
@@ -146,7 +152,7 @@ a regime.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $acfs_rs$`Regime 2`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      lag0      lag1      lag2      lag3      lag4      lag5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.7558502 0.4491319 0.2978407 0.2379950 0.1911653 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.7558502 0.4491320 0.2978408 0.2379951 0.1911654 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
@@ -155,7 +161,7 @@ a regime.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sim2_mcgf</span>, <span class="st">"acfs"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $acfs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      lag0      lag1      lag2      lag3      lag4      lag5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.7195535 0.5364965 0.4539327 0.3834479 0.3308474 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.7195535 0.5364966 0.4539327 0.3834479 0.3308474 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $acfs_rs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $acfs_rs$`Regime 1`</span>
@@ -164,7 +170,7 @@ a regime.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $acfs_rs$`Regime 2`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      lag0      lag1      lag2      lag3      lag4      lag5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.7558502 0.4491319 0.2978407 0.2379950 0.1911653 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.0000000 0.7558502 0.4491320 0.2978408 0.2379951 0.1911654 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>

@@ -28,6 +28,12 @@ object."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mat
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/mcgf_rs.html">Steps for fitting an `mcgf_rs` object</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -87,7 +93,7 @@ and <code>sds</code>. <code>x</code> must have been passed to <code><a href="add
 
 <dt>model_ls</dt>
 <dd><p>List of base models, each element must be one of <code>lagr_tri</code>,
-<code>lagr_askey</code>, or <code>none</code>. If <code>none</code>, NULLs are returned.</p></dd>
+<code>lagr_askey</code>, <code>lagr_exp</code>, or <code>none</code>. If <code>none</code>, NULLs are returned.</p></dd>
 
 
 <dt>method_ls</dt>
@@ -216,7 +222,7 @@ fitted all at once.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Regime 1`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Regime 1`$par</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        v1        v2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -106.5180  119.4422 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -106.5181  119.4434 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Regime 1`$objective</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.137749</span>
@@ -238,10 +244,10 @@ fitted all at once.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Regime 2`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Regime 2`$par</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       v1       v2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 210.1161 242.3075 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 210.1156 242.3082 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Regime 2`$objective</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.902826</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.902847</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`Regime 2`$convergence</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>

@@ -24,6 +24,12 @@
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/mcgf_rs.html">Steps for fitting an `mcgf_rs` object</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -54,7 +60,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mcgf_rs</span><span class="op">(</span><span class="va">data</span>, <span class="va">locations</span>, <span class="va">dists</span>, <span class="va">label</span>, <span class="va">time</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mcgf_rs</span><span class="op">(</span><span class="va">data</span>, <span class="va">locations</span>, <span class="va">dists</span>, <span class="va">label</span>, <span class="va">time</span>, longlat <span class="op">=</span> <span class="cn">TRUE</span>, origin <span class="op">=</span> <span class="fl">1L</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -82,6 +88,16 @@ the number rows in <code>data</code>.</p></dd>
 <dt>time</dt>
 <dd><p>Optional, a vector of equally spaced time stamps.</p></dd>
 
+
+<dt>longlat</dt>
+<dd><p>Logical, if TURE <code>locations</code> contains longitudes and
+latitudes.</p></dd>
+
+
+<dt>origin</dt>
+<dd><p>Optional; used when <code>longlat</code> is TRUE. An integer index
+indicating the reference location which well be used as the origin.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -98,14 +114,15 @@ extracted.</p>
 <p>For inputs, <code>data</code> must be in space-wide format where rows correspond to
 different time stamps and columns refer to spatial locations. Supply either
 <code>locations</code> or <code>dists</code>. <code>locations</code> is a matrix or data.frame of 2D points
-with first column longitude and second column latitude. Both columns must be
-in decimal degrees. Number of rows in <code>locations</code> must be the same as the
-number of columns of <code>data</code>. <code>dists</code> must be a list of signed distance
-matrices with names <code>h1</code>, <code>h2</code>, and <code>h</code>. If <code>h</code> is not given, it will be
-calculated as the Euclidean distance of <code>h1</code> and <code>h2</code>. <code>time</code> is a vector of
-equally spaced time stamps. If it is not supplied then <code>data</code> is assumed to
-be temporally equally spaced. <code>label</code> must be a vector containing regime
-labels, and its length must be the same as the number of rows in <code>x</code>.</p>
+with first column x/longitude and second column y/latitude. By default it is
+treated as a matrix of Earth's coordinates in decimal degrees. Number of rows
+in <code>locations</code> must be the same as the number of columns of <code>data</code>. <code>dists</code>
+must be a list of signed distance matrices with names <code>h1</code>, <code>h2</code>, and <code>h</code>.
+If <code>h</code> is not given, it will be calculated as the Euclidean distance of <code>h1</code>
+and <code>h2</code>. <code>time</code> is a vector of equally spaced time stamps. If it is not
+supplied then <code>data</code> is assumed to be temporally equally spaced. <code>label</code> must
+be a vector containing regime labels, and its length must be the same as the
+number of rows in <code>x</code>.</p>
 <p>An <code>mcgf_rs</code> object extends the S3 classes <code>mcgf</code> and <code>data.frame</code>, all
 methods remain valid to the <code>data</code> part of the object.</p>
     </div>

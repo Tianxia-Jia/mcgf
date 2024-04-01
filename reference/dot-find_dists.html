@@ -24,6 +24,12 @@
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/mcgf_rs.html">Steps for fitting an `mcgf_rs` object</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -54,7 +60,15 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">.find_dists</span><span class="op">(</span><span class="va">grid</span>, names <span class="op">=</span> <span class="cn">NULL</span>, longlat <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">.find_dists</span><span class="op">(</span></span>
+<span>  <span class="va">grid</span>,</span>
+<span>  names <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  longlat <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  origin <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  return_grid <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">lon_ref</span>,</span>
+<span>  <span class="va">lat_ref</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -71,6 +85,26 @@ y/latitude.</p></dd>
 <dt>longlat</dt>
 <dd><p>Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
 if FALSE, Euclidean distance.</p></dd>
+
+
+<dt>origin</dt>
+<dd><p>Optional; used when <code>longlat</code> is TRUE. An integer index
+indicating the reference location which will be used as the origin.</p></dd>
+
+
+<dt>return_grid</dt>
+<dd><p>Logical; used when <code>longlat</code> is TRUE. If TRUE the mapped
+coordinates on a 2D plane is returned.</p></dd>
+
+
+<dt>lon_ref</dt>
+<dd><p>Reference longitude when computing the longitudinal distances.
+Default is the mean of longitudes in <code>grid</code>.</p></dd>
+
+
+<dt>lat_ref</dt>
+<dd><p>Reference latitude when computing the latitudinal distances.
+Default is the mean of latitudes in <code>grid</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

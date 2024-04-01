@@ -24,6 +24,12 @@
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/mcgf_rs.html">Steps for fitting an `mcgf_rs` object</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -54,7 +60,14 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">find_dists_new</span><span class="op">(</span><span class="va">locations</span>, <span class="va">locations_new</span>, longlat <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">find_dists_new</span><span class="op">(</span></span>
+<span>  <span class="va">locations</span>,</span>
+<span>  <span class="va">locations_new</span>,</span>
+<span>  longlat <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  origin <span class="op">=</span> <span class="fl">1L</span>,</span>
+<span>  return_grid <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -73,18 +86,48 @@ x/longitude, and the second column is y/latitude.</p></dd>
 <dd><p>Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
 if FALSE, Euclidean distance.</p></dd>
 
+
+<dt>origin</dt>
+<dd><p>Optional; used when <code>longlat</code> is TRUE. An integer index
+indicating the reference location from <code>locations</code> which will be used as
+the origin. Same <code>origin</code> from <code>find_dists</code> must be used to ensure
+consistancy between outputs from <code>find_dists</code> and <code>find_dists_new</code>.</p></dd>
+
+
+<dt>return_grid</dt>
+<dd><p>Logical; used when <code>longlat</code> is TRUE. If TRUE the mapped
+coordinates on a 2D plane for all locations is returned.</p></dd>
+
+
+<dt>...</dt>
+<dd><p>Optional arguments passed to <code><a href="dot-find_dists_new.html">.find_dists_new()</a></code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>List of signed distances between the new locations and the old grid.</p>
+<p>A list of distance matrices for all locations. If <code>return_grid</code> is
+TRUE, a list consists of a list of distance matrices for all locations,
+the mapped 2D grid for all locations, and the origin is returned.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>locations</code> must be a matrix or data.frame containing 2 columns,
-first column x/longitude, and second column y/latitude.The row names of
-<code>locations</code> are used as the names of the locations.</p>
+    <p><code>locations</code> and <code>locations_new</code> must be matrices or data.frames containing
+2 columns, first column x/longitude, and second column y/latitude. The row
+names of <code>locations</code> and <code>locations_new</code> are used as the names of the
+locations.</p>
+<p>If <code>longlat</code> is TRUE, the original coordinates are mapped to a 2D Euclidean
+plane given the reference location from <code>locations</code>. First, the Great Circle
+(WGS84 ellipsoid) signed distance matrices are calculated, where the original
+latitudes are replaced by the the mean of latitudes in <code>locations</code> to find
+the signed longitudinal distances and the original longitudes are replaced by
+the the mean of longitudes in <code>locations</code> to find the signed latitudinal
+distances. Then given the index of a reference location <code>origin</code>, a new set
+of coordinates in a 2D plane is generated where the coordinates are
+determined by the signed distances between the locations and the reference
+location. Finally distance matrices of the new coordinates for all stations
+are outputted.</p>
     </div>
 
     <div class="section level2">
@@ -95,16 +138,16 @@ first column x/longitude, and second column y/latitude.The row names of
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">locations</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="st">"Site"</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="find_dists.html">find_dists</a></span><span class="op">(</span><span class="va">locations</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $h</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           Site 1   Site 2    Site 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Site 1    0.0000 847.5798 1692.9859</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Site 2  847.5798   0.0000  847.8805</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Site 3 1692.9859 847.8805    0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           Site 1   Site 2   Site 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Site 1    0.0000 847.5798 1692.986</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Site 2  847.5798   0.0000  845.408</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Site 3 1692.9859 845.4080    0.000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $h1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           Site 1    Site 2     Site 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Site 1    0.0000 -639.3934 -1275.5045</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Site 2  639.3934    0.0000  -639.3934</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Site 3 1275.5045  639.3934     0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Site 2  639.3934    0.0000  -636.1111</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Site 3 1275.5045  636.1111     0.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $h2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Site 1    Site 2     Site 3</span>
@@ -116,18 +159,18 @@ first column x/longitude, and second column y/latitude.The row names of
 <span class="r-in"><span><span class="va">locations_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">115</span>, <span class="fl">55</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">find_dists_new</span><span class="op">(</span><span class="va">locations</span>, <span class="va">locations_new</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $h</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           Site 1   Site 2    Site 3     New_1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Site 1    0.0000 847.5798 1692.9859  641.7978</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Site 2  847.5798   0.0000  847.8805  319.9013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Site 3 1692.9859 847.8805    0.0000 1108.1369</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> New_1   641.7978 319.9013 1108.1369    0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           Site 1   Site 2   Site 3     New_1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Site 1    0.0000 847.5798 1692.986  641.7978</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Site 2  847.5798   0.0000  845.408  319.4921</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Site 3 1692.9859 845.4080    0.000 1106.0085</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> New_1   641.7978 319.4921 1106.009    0.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $h1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           Site 1    Site 2     Site 3     New_1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Site 1    0.0000 -639.3934 -1275.5045 -319.9013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Site 2  639.3934    0.0000  -639.3934  319.9013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Site 3 1275.5045  639.3934     0.0000  958.0657</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> New_1   319.9013 -319.9013  -958.0657    0.0000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Site 2  639.3934    0.0000  -636.1111  319.4921</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Site 3 1275.5045  636.1111     0.0000  955.6032</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> New_1   319.9013 -319.4921  -955.6032    0.0000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $h2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Site 1    Site 2     Site 3     New_1</span>

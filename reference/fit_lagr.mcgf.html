@@ -28,6 +28,12 @@ object."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mat
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="../articles/mcgf_rs.html">Steps for fitting an `mcgf_rs` object</a>
+  </div>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
 </li>
@@ -63,7 +69,7 @@ object.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for mcgf</span></span>
 <span><span class="fu"><a href="fit_lagr.html">fit_lagr</a></span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
-<span>  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lagr_tri"</span>, <span class="st">"lagr_askey"</span>, <span class="st">"none"</span><span class="op">)</span>,</span>
+<span>  model <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lagr_tri"</span>, <span class="st">"lagr_askey"</span>, <span class="st">"lagr_exp"</span>, <span class="st">"none"</span><span class="op">)</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"wls"</span>, <span class="st">"mle"</span><span class="op">)</span>,</span>
 <span>  optim_fn <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nlminb"</span>, <span class="st">"optim"</span>, <span class="st">"other"</span><span class="op">)</span>,</span>
 <span>  par_fixed <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -85,7 +91,8 @@ object.</p>
 
 
 <dt>model</dt>
-<dd><p>Base model, one of <code>lagr_tri</code>, <code>lagr_askey</code>, or <code>none</code>.
+<dd><p>Base model, one of <code>lagr_tri</code>, <code>lagr_askey</code>, <code>lagr_exp</code>, or
+<code>none</code>.
 If <code>none</code>, NULLs are returned.</p></dd>
 
 
@@ -201,10 +208,10 @@ fitted all at once.</p>
 <span class="r-in"><span><span class="va">fit_lagr</span><span class="op">$</span><span class="va">fit</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $par</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      lambda          v1          v2 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0.1625909 224.5779865 188.5158715 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.1625903 224.5776224 188.5158088 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $objective</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.533451</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.533448</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $convergence</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>

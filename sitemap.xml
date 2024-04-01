@@ -16,6 +16,9 @@
     <loc>https://tianxia-jia.github.io/mcgf/articles/mcgf.html</loc>
   </url>
   <url>
+    <loc>https://tianxia-jia.github.io/mcgf/articles/mcgf_rs.html</loc>
+  </url>
+  <url>
     <loc>https://tianxia-jia.github.io/mcgf/authors.html</loc>
   </url>
   <url>
@@ -103,6 +106,9 @@
     <loc>https://tianxia-jia.github.io/mcgf/reference/cor_lagr_askey.html</loc>
   </url>
   <url>
+    <loc>https://tianxia-jia.github.io/mcgf/reference/cor_lagr_exp.html</loc>
+  </url>
+  <url>
     <loc>https://tianxia-jia.github.io/mcgf/reference/cor_lagr_tri.html</loc>
   </url>
   <url>
@@ -140,6 +146,9 @@
   </url>
   <url>
     <loc>https://tianxia-jia.github.io/mcgf/reference/dot-cor_lagr_askey.html</loc>
+  </url>
+  <url>
+    <loc>https://tianxia-jia.github.io/mcgf/reference/dot-cor_lagr_exp.html</loc>
   </url>
   <url>
     <loc>https://tianxia-jia.github.io/mcgf/reference/dot-cor_lagr_tri.html</loc>

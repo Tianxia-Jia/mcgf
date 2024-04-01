@@ -3,7 +3,8 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   mcgf: mcgf.html
-last_built: 2024-03-08T00:53Z
+  mcgf_rs: mcgf_rs.html
+last_built: 2024-04-01T04:00Z
 urls:
   reference: https://tianxia-jia.github.io/mcgf/reference
   article: https://tianxia-jia.github.io/mcgf/articles
