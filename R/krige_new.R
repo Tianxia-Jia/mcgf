@@ -648,12 +648,6 @@ krige_new.mcgf_rs <- function(x, newdata = NULL, locations_new = NULL,
         names_new <- paste0("New_", seq_len(n_var_new))
     }
 
-    if (!length(sds_new_ls) %in% c(1, n_regime)) {
-        stop("`sds_new_ls` must be a list of length 1 or ", n_regime, ".",
-            call. = FALSE
-        )
-    }
-
     if (!is.list(sds_new_ls)) {
         if (length(sds_new_ls) == 1) {
             sds_new_ls <- rep(sds_new_ls, n_var_new)
