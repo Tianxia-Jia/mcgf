@@ -1,10 +1,10 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
-  mcgf: mcgf.html
   mcgf_rs: mcgf_rs.html
-last_built: 2024-04-04T00:10Z
+  mcgf: mcgf.html
+last_built: 2024-04-22T07:13Z
 urls:
   reference: https://tianxia-jia.github.io/mcgf/reference
   article: https://tianxia-jia.github.io/mcgf/articles
