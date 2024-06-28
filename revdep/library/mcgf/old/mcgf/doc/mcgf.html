@@ -12,7 +12,7 @@
 
 
 
-<title>mcgf</title>
+<title>Steps for fitting an mcgf object</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -358,7 +358,8 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<h1 class="title toc-ignore">mcgf</h1>
+<h1 class="title toc-ignore">Steps for fitting an <code>mcgf</code>
+object</h1>
 
 
 
@@ -369,17 +370,20 @@ Markov chain Gaussian fields (MCGF) and regime-switching Markov chain
 Gaussian fields (RS-MCGF) with covariance structures of the Gneiting
 class <span class="citation">(Gneiting 2002)</span>. It also provides
 useful tools to estimate the parameters by weighted least squares (WLS)
-and maximum likelihood estimation (MLE). The <code>mcgf</code> can used
-to fit covariance models and obtain Kriging forecasts. A typical
-workflow is given below.</p>
+and maximum likelihood estimation (MLE). The <code>mcgf</code> function
+can be used to fit covariance models and obtain Kriging forecasts. A
+typical workflow for fitting a non-regime-switching mcgf is given
+below.</p>
 <ol style="list-style-type: decimal">
 <li>Create an <code>mcgf</code> object by providing a dataset and the
 corresponding locations/distances</li>
-<li>Calculate auto- and cross- correlations.</li>
+<li>Calculate auto- and cross-correlations.</li>
 <li>Fit the base covariance model which is a fully symmetric model.</li>
 <li>Fit the Lagrangian model to account for asymmetry, if
 necessary.</li>
 <li>Obtain Kriging forecasts.</li>
+<li>Obtain Kriging forecasts for new locations given their
+coordinates.</li>
 </ol>
 <p>We will demonstrate the use of <code>mcgf</code> by an example
 below.</p>
@@ -409,14 +413,19 @@ speeds data as well as the locations of the stations.</p>
 <span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="co">#&gt; 4 5.597156 2.356156 3.024933 4.439656</span></span>
 <span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a><span class="co">#&gt; 5 6.085878 3.174122 5.319356 6.132178</span></span>
 <span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a><span class="co">#&gt; 6 6.775233 3.431344 3.858333 5.489122</span></span>
-<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a><span class="fu">head</span>(wind<span class="sc">$</span>locations)</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>wind<span class="sc">$</span>locations</span>
 <span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="co">#&gt;            lon      lat</span></span>
 <span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="co">#&gt; VAL -10.250000 51.93333</span></span>
 <span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a><span class="co">#&gt; BEL -10.000000 54.23333</span></span>
 <span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a><span class="co">#&gt; CLA  -8.983333 53.71667</span></span>
 <span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a><span class="co">#&gt; SHA  -8.916667 52.70000</span></span>
 <span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a><span class="co">#&gt; ROC  -8.250000 51.80000</span></span>
-<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="co">#&gt; BIR  -7.883333 53.08333</span></span></code></pre></div>
+<span id="cb1-25"><a href="#cb1-25" tabindex="-1"></a><span class="co">#&gt; BIR  -7.883333 53.08333</span></span>
+<span id="cb1-26"><a href="#cb1-26" tabindex="-1"></a><span class="co">#&gt; MUL  -7.366667 53.53333</span></span>
+<span id="cb1-27"><a href="#cb1-27" tabindex="-1"></a><span class="co">#&gt; MAL  -7.333333 55.36667</span></span>
+<span id="cb1-28"><a href="#cb1-28" tabindex="-1"></a><span class="co">#&gt; KIL  -7.266667 52.66667</span></span>
+<span id="cb1-29"><a href="#cb1-29" tabindex="-1"></a><span class="co">#&gt; CLO  -7.233333 54.18333</span></span>
+<span id="cb1-30"><a href="#cb1-30" tabindex="-1"></a><span class="co">#&gt; DUB  -6.250000 53.43333</span></span></code></pre></div>
 <div id="data-de-treding" class="section level2">
 <h2>Data De-treding</h2>
 <p>To fit covariance models on <code>wind</code>, the first step is to
@@ -489,7 +498,7 @@ from the test dataset.</li>
 symmetric model, and finally the general stationary model. First, we
 will create an <code>mcgf</code> object and calculate auto- and cross-
 correlations.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>wind_mcgf <span class="ot">&lt;-</span> <span class="fu">mcgf</span>(wind_train[, <span class="sc">-</span><span class="dv">1</span>], <span class="at">locations =</span> wind<span class="sc">$</span>locations)</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>wind_mcgf <span class="ot">&lt;-</span> <span class="fu">mcgf</span>(wind_train[, <span class="sc">-</span><span class="dv">1</span>], <span class="at">locations =</span> wind<span class="sc">$</span>locations, <span class="at">longlat =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="co">#&gt; `time` is not provided, assuming rows are equally spaced temporally.</span></span>
 <span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>wind_mcgf <span class="ot">&lt;-</span> <span class="fu">add_acfs</span>(wind_mcgf, <span class="at">lag_max =</span> <span class="dv">3</span>)</span>
 <span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>wind_mcgf <span class="ot">&lt;-</span> <span class="fu">add_ccfs</span>(wind_mcgf, <span class="at">lag_max =</span> <span class="dv">3</span>)</span></code></pre></div>
@@ -623,10 +632,10 @@ function <code>nlminb</code>.</p>
 <span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a>fit_spatial<span class="sc">$</span>fit</span>
 <span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a><span class="co">#&gt; $par</span></span>
 <span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a><span class="co">#&gt;           c      nugget </span></span>
-<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt; 0.001326223 0.049124593 </span></span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co">#&gt; 0.001326192 0.049136042 </span></span>
 <span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a><span class="co">#&gt; $objective</span></span>
-<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="co">#&gt; [1] 1.742004</span></span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a><span class="co">#&gt; [1] 1.742162</span></span>
 <span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a><span class="co">#&gt; $convergence</span></span>
 <span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
@@ -664,39 +673,39 @@ them.</p>
 <span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a>    <span class="at">other_optim_fn =</span> <span class="st">&quot;solnp2&quot;</span></span>
 <span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>)</span>
 <span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a><span class="co">#&gt; </span></span>
-<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">#&gt; Iter: 1 fn: 1.7420    Pars:  0.001326 0.049130</span></span>
-<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="co">#&gt; Iter: 2 fn: 1.7420    Pars:  0.001326 0.049131</span></span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a><span class="co">#&gt; Iter: 1 fn: 1.7422    Pars:  0.001326 0.049164</span></span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a><span class="co">#&gt; Iter: 2 fn: 1.7422    Pars:  0.001326 0.049164</span></span>
 <span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a><span class="co">#&gt; solnp--&gt; Completed in 2 iterations</span></span>
 <span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a>fit_spatial2<span class="sc">$</span>fit</span>
 <span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a><span class="co">#&gt; $pars</span></span>
 <span id="cb11-20"><a href="#cb11-20" tabindex="-1"></a><span class="co">#&gt;           c      nugget </span></span>
-<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a><span class="co">#&gt; 0.001326108 0.049130989 </span></span>
+<span id="cb11-21"><a href="#cb11-21" tabindex="-1"></a><span class="co">#&gt; 0.001325958 0.049163635 </span></span>
 <span id="cb11-22"><a href="#cb11-22" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb11-23"><a href="#cb11-23" tabindex="-1"></a><span class="co">#&gt; $convergence</span></span>
 <span id="cb11-24"><a href="#cb11-24" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
 <span id="cb11-25"><a href="#cb11-25" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb11-26"><a href="#cb11-26" tabindex="-1"></a><span class="co">#&gt; $values</span></span>
-<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a><span class="co">#&gt; [1] 2.539093 1.742004 1.742004</span></span>
+<span id="cb11-27"><a href="#cb11-27" tabindex="-1"></a><span class="co">#&gt; [1] 2.539010 1.742162 1.742162</span></span>
 <span id="cb11-28"><a href="#cb11-28" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb11-29"><a href="#cb11-29" tabindex="-1"></a><span class="co">#&gt; $lagrange</span></span>
 <span id="cb11-30"><a href="#cb11-30" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
 <span id="cb11-31"><a href="#cb11-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb11-32"><a href="#cb11-32" tabindex="-1"></a><span class="co">#&gt; $hessian</span></span>
 <span id="cb11-33"><a href="#cb11-33" tabindex="-1"></a><span class="co">#&gt;            [,1]       [,2]</span></span>
-<span id="cb11-34"><a href="#cb11-34" tabindex="-1"></a><span class="co">#&gt; [1,] 58426689.3 390846.623</span></span>
-<span id="cb11-35"><a href="#cb11-35" tabindex="-1"></a><span class="co">#&gt; [2,]   390846.6   3318.261</span></span>
+<span id="cb11-34"><a href="#cb11-34" tabindex="-1"></a><span class="co">#&gt; [1,] 58504086.2 391216.053</span></span>
+<span id="cb11-35"><a href="#cb11-35" tabindex="-1"></a><span class="co">#&gt; [2,]   391216.1   3319.584</span></span>
 <span id="cb11-36"><a href="#cb11-36" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb11-37"><a href="#cb11-37" tabindex="-1"></a><span class="co">#&gt; $ineqx0</span></span>
 <span id="cb11-38"><a href="#cb11-38" tabindex="-1"></a><span class="co">#&gt; NULL</span></span>
 <span id="cb11-39"><a href="#cb11-39" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb11-40"><a href="#cb11-40" tabindex="-1"></a><span class="co">#&gt; $nfuneval</span></span>
-<span id="cb11-41"><a href="#cb11-41" tabindex="-1"></a><span class="co">#&gt; [1] 65</span></span>
+<span id="cb11-41"><a href="#cb11-41" tabindex="-1"></a><span class="co">#&gt; [1] 62</span></span>
 <span id="cb11-42"><a href="#cb11-42" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb11-43"><a href="#cb11-43" tabindex="-1"></a><span class="co">#&gt; $outer.iter</span></span>
 <span id="cb11-44"><a href="#cb11-44" tabindex="-1"></a><span class="co">#&gt; [1] 2</span></span>
 <span id="cb11-45"><a href="#cb11-45" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb11-46"><a href="#cb11-46" tabindex="-1"></a><span class="co">#&gt; $elapsed</span></span>
-<span id="cb11-47"><a href="#cb11-47" tabindex="-1"></a><span class="co">#&gt; Time difference of 0.008136034 secs</span></span>
+<span id="cb11-47"><a href="#cb11-47" tabindex="-1"></a><span class="co">#&gt; Time difference of 0.02971911 secs</span></span>
 <span id="cb11-48"><a href="#cb11-48" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb11-49"><a href="#cb11-49" tabindex="-1"></a><span class="co">#&gt; $vscale</span></span>
 <span id="cb11-50"><a href="#cb11-50" tabindex="-1"></a><span class="co">#&gt; [1] 1 1 1</span></span></code></pre></div>
@@ -753,10 +762,10 @@ fitting a separable model:</p>
 <span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>fit_sep<span class="sc">$</span>fit</span>
 <span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a><span class="co">#&gt; $par</span></span>
 <span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a><span class="co">#&gt;           c      nugget           a       alpha </span></span>
-<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt; 0.001309516 0.050551635 0.877172554 0.869117694 </span></span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a><span class="co">#&gt; 0.001309486 0.050562930 0.877171418 0.869117992 </span></span>
 <span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a><span class="co">#&gt; $objective</span></span>
-<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt; [1] 2.838544</span></span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a><span class="co">#&gt; [1] 2.838695</span></span>
 <span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a><span class="co">#&gt; $convergence</span></span>
 <span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
@@ -791,11 +800,11 @@ temporal models to estimate the interaction parameter
 <span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>    )</span>
 <span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>fit_fs<span class="sc">$</span>fit</span>
 <span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a><span class="co">#&gt; $par</span></span>
-<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a><span class="co">#&gt;     beta </span></span>
-<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a><span class="co">#&gt; 0.623209 </span></span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a><span class="co">#&gt;      beta </span></span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a><span class="co">#&gt; 0.6232458 </span></span>
 <span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a><span class="co">#&gt; $objective</span></span>
-<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a><span class="co">#&gt; [1] 2.85823</span></span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a><span class="co">#&gt; [1] 2.858384</span></span>
 <span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a><span class="co">#&gt; $convergence</span></span>
 <span id="cb15-19"><a href="#cb15-19" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
@@ -825,7 +834,7 @@ fully symmetric model as the base model and print the base model:</p>
 <span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a><span class="co">#&gt; - Base-old model: sep </span></span>
 <span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a><span class="co">#&gt; - Parameters:</span></span>
 <span id="cb16-14"><a href="#cb16-14" tabindex="-1"></a><span class="co">#&gt;           c      nugget       gamma           a       alpha </span></span>
-<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="co">#&gt; 0.001326223 0.049124593 0.500000000 0.977415717 0.805336266 </span></span>
+<span id="cb16-15"><a href="#cb16-15" tabindex="-1"></a><span class="co">#&gt; 0.001326192 0.049136042 0.500000000 0.977415717 0.805336266 </span></span>
 <span id="cb16-16"><a href="#cb16-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb16-17"><a href="#cb16-17" tabindex="-1"></a><span class="co">#&gt; - Fixed parameters:</span></span>
 <span id="cb16-18"><a href="#cb16-18" tabindex="-1"></a><span class="co">#&gt; gamma </span></span>
@@ -840,11 +849,11 @@ fully symmetric model as the base model and print the base model:</p>
 <span id="cb16-27"><a href="#cb16-27" tabindex="-1"></a><span class="co">#&gt; - Base model: fs </span></span>
 <span id="cb16-28"><a href="#cb16-28" tabindex="-1"></a><span class="co">#&gt; - Parameters:</span></span>
 <span id="cb16-29"><a href="#cb16-29" tabindex="-1"></a><span class="co">#&gt;        beta           c      nugget           a       alpha       gamma </span></span>
-<span id="cb16-30"><a href="#cb16-30" tabindex="-1"></a><span class="co">#&gt; 0.623209028 0.001326223 0.049124593 0.977415717 0.805336266 0.500000000 </span></span>
+<span id="cb16-30"><a href="#cb16-30" tabindex="-1"></a><span class="co">#&gt; 0.623245823 0.001326192 0.049136042 0.977415717 0.805336266 0.500000000 </span></span>
 <span id="cb16-31"><a href="#cb16-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb16-32"><a href="#cb16-32" tabindex="-1"></a><span class="co">#&gt; - Fixed parameters:</span></span>
 <span id="cb16-33"><a href="#cb16-33" tabindex="-1"></a><span class="co">#&gt;           c      nugget           a       alpha       gamma </span></span>
-<span id="cb16-34"><a href="#cb16-34" tabindex="-1"></a><span class="co">#&gt; 0.001326223 0.049124593 0.977415717 0.805336266 0.500000000 </span></span>
+<span id="cb16-34"><a href="#cb16-34" tabindex="-1"></a><span class="co">#&gt; 0.001326192 0.049136042 0.977415717 0.805336266 0.500000000 </span></span>
 <span id="cb16-35"><a href="#cb16-35" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb16-36"><a href="#cb16-36" tabindex="-1"></a><span class="co">#&gt; - Parameter estimation method: wls </span></span>
 <span id="cb16-37"><a href="#cb16-37" tabindex="-1"></a><span class="co">#&gt; </span></span>
@@ -866,10 +875,10 @@ wind:</p>
 <span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>fit_lagr<span class="sc">$</span>fit</span>
 <span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a><span class="co">#&gt; $par</span></span>
 <span id="cb17-8"><a href="#cb17-8" tabindex="-1"></a><span class="co">#&gt;       lambda           v1 </span></span>
-<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="co">#&gt;   0.05594261 212.31609001 </span></span>
+<span id="cb17-9"><a href="#cb17-9" tabindex="-1"></a><span class="co">#&gt;   0.05595016 212.29485855 </span></span>
 <span id="cb17-10"><a href="#cb17-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb17-11"><a href="#cb17-11" tabindex="-1"></a><span class="co">#&gt; $objective</span></span>
-<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a><span class="co">#&gt; [1] 2.66224</span></span>
+<span id="cb17-12"><a href="#cb17-12" tabindex="-1"></a><span class="co">#&gt; [1] 2.662327</span></span>
 <span id="cb17-13"><a href="#cb17-13" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb17-14"><a href="#cb17-14" tabindex="-1"></a><span class="co">#&gt; $convergence</span></span>
 <span id="cb17-15"><a href="#cb17-15" tabindex="-1"></a><span class="co">#&gt; [1] 0</span></span>
@@ -899,7 +908,7 @@ wind:</p>
 <span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a><span class="co">#&gt; - Base-old model: sep </span></span>
 <span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a><span class="co">#&gt; - Parameters:</span></span>
 <span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a><span class="co">#&gt;           c      nugget       gamma           a       alpha </span></span>
-<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="co">#&gt; 0.001326223 0.049124593 0.500000000 0.977415717 0.805336266 </span></span>
+<span id="cb18-15"><a href="#cb18-15" tabindex="-1"></a><span class="co">#&gt; 0.001326192 0.049136042 0.500000000 0.977415717 0.805336266 </span></span>
 <span id="cb18-16"><a href="#cb18-16" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb18-17"><a href="#cb18-17" tabindex="-1"></a><span class="co">#&gt; - Fixed parameters:</span></span>
 <span id="cb18-18"><a href="#cb18-18" tabindex="-1"></a><span class="co">#&gt; gamma </span></span>
@@ -914,11 +923,11 @@ wind:</p>
 <span id="cb18-27"><a href="#cb18-27" tabindex="-1"></a><span class="co">#&gt; - Base model: fs </span></span>
 <span id="cb18-28"><a href="#cb18-28" tabindex="-1"></a><span class="co">#&gt; - Parameters:</span></span>
 <span id="cb18-29"><a href="#cb18-29" tabindex="-1"></a><span class="co">#&gt;        beta           c      nugget           a       alpha       gamma </span></span>
-<span id="cb18-30"><a href="#cb18-30" tabindex="-1"></a><span class="co">#&gt; 0.623209028 0.001326223 0.049124593 0.977415717 0.805336266 0.500000000 </span></span>
+<span id="cb18-30"><a href="#cb18-30" tabindex="-1"></a><span class="co">#&gt; 0.623245823 0.001326192 0.049136042 0.977415717 0.805336266 0.500000000 </span></span>
 <span id="cb18-31"><a href="#cb18-31" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb18-32"><a href="#cb18-32" tabindex="-1"></a><span class="co">#&gt; - Fixed parameters:</span></span>
 <span id="cb18-33"><a href="#cb18-33" tabindex="-1"></a><span class="co">#&gt;           c      nugget           a       alpha       gamma </span></span>
-<span id="cb18-34"><a href="#cb18-34" tabindex="-1"></a><span class="co">#&gt; 0.001326223 0.049124593 0.977415717 0.805336266 0.500000000 </span></span>
+<span id="cb18-34"><a href="#cb18-34" tabindex="-1"></a><span class="co">#&gt; 0.001326192 0.049136042 0.977415717 0.805336266 0.500000000 </span></span>
 <span id="cb18-35"><a href="#cb18-35" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb18-36"><a href="#cb18-36" tabindex="-1"></a><span class="co">#&gt; - Parameter estimation method: wls </span></span>
 <span id="cb18-37"><a href="#cb18-37" tabindex="-1"></a><span class="co">#&gt; </span></span>
@@ -929,7 +938,7 @@ wind:</p>
 <span id="cb18-42"><a href="#cb18-42" tabindex="-1"></a><span class="co">#&gt; - Lagrangian model: lagr_tri </span></span>
 <span id="cb18-43"><a href="#cb18-43" tabindex="-1"></a><span class="co">#&gt; - Parameters:</span></span>
 <span id="cb18-44"><a href="#cb18-44" tabindex="-1"></a><span class="co">#&gt;       lambda           v1           v2            k </span></span>
-<span id="cb18-45"><a href="#cb18-45" tabindex="-1"></a><span class="co">#&gt;   0.05594261 212.31609001   0.00000000   2.00000000 </span></span>
+<span id="cb18-45"><a href="#cb18-45" tabindex="-1"></a><span class="co">#&gt;   0.05595016 212.29485855   0.00000000   2.00000000 </span></span>
 <span id="cb18-46"><a href="#cb18-46" tabindex="-1"></a><span class="co">#&gt; </span></span>
 <span id="cb18-47"><a href="#cb18-47" tabindex="-1"></a><span class="co">#&gt; - Fixed parameters:</span></span>
 <span id="cb18-48"><a href="#cb18-48" tabindex="-1"></a><span class="co">#&gt; v2  k </span></span>
@@ -975,11 +984,11 @@ the 95% PI (POPI) for these models on the test dataset.</p>
 <span id="cb20-5"><a href="#cb20-5" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
 <span id="cb20-6"><a href="#cb20-6" tabindex="-1"></a>    <span class="st">&quot;Empirical&quot;</span> <span class="ot">=</span> <span class="fu">mean</span>(rmse_emp),</span>
 <span id="cb20-7"><a href="#cb20-7" tabindex="-1"></a>    <span class="st">&quot;Base&quot;</span> <span class="ot">=</span> <span class="fu">mean</span>(rmse_base),</span>
-<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a>    <span class="st">&quot;STAT&quot;</span> <span class="ot">=</span> <span class="fu">mean</span>(rmse_emp)</span>
+<span id="cb20-8"><a href="#cb20-8" tabindex="-1"></a>    <span class="st">&quot;STAT&quot;</span> <span class="ot">=</span> <span class="fu">mean</span>(rmse_stat)</span>
 <span id="cb20-9"><a href="#cb20-9" tabindex="-1"></a>)</span>
 <span id="cb20-10"><a href="#cb20-10" tabindex="-1"></a>rmse</span>
 <span id="cb20-11"><a href="#cb20-11" tabindex="-1"></a><span class="co">#&gt; Empirical      Base      STAT </span></span>
-<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a><span class="co">#&gt; 0.4778542 0.4890463 0.4778542</span></span></code></pre></div>
+<span id="cb20-12"><a href="#cb20-12" tabindex="-1"></a><span class="co">#&gt; 0.4778542 0.4890462 0.4852207</span></span></code></pre></div>
 </div>
 <div id="mae" class="section level3">
 <h3>MAE</h3>
@@ -993,7 +1002,7 @@ the 95% PI (POPI) for these models on the test dataset.</p>
 <span id="cb21-8"><a href="#cb21-8" tabindex="-1"></a>)</span>
 <span id="cb21-9"><a href="#cb21-9" tabindex="-1"></a>mae</span>
 <span id="cb21-10"><a href="#cb21-10" tabindex="-1"></a><span class="co">#&gt; Empirical      Base      STAT </span></span>
-<span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a><span class="co">#&gt; 0.3776108 0.3890039 0.3851624</span></span></code></pre></div>
+<span id="cb21-11"><a href="#cb21-11" tabindex="-1"></a><span class="co">#&gt; 0.3776108 0.3890038 0.3851617</span></span></code></pre></div>
 </div>
 <div id="popi" class="section level3">
 <h3>POPI</h3>
@@ -1019,6 +1028,42 @@ the 95% PI (POPI) for these models on the test dataset.</p>
 <span id="cb22-20"><a href="#cb22-20" tabindex="-1"></a><span class="co">#&gt;  Empirical       Base       STAT </span></span>
 <span id="cb22-21"><a href="#cb22-21" tabindex="-1"></a><span class="co">#&gt; 0.06962321 0.06473026 0.06326550</span></span></code></pre></div>
 </div>
+</div>
+<div id="simple-kriging-for-new-locations" class="section level2">
+<h2>Simple Kriging for new locations</h2>
+<p>We provide functionalists for computing simple Kriging forecasts for
+new locations. The associated function is <code>krige_new</code>, and
+users can either supply the coordinates for the new locations or the
+distance matrices for all locations. Hypotheticaly, suppose a new
+location is at (<span class="math inline">\(9^\circ\)</span>W, <span class="math inline">\(52^\circ\)</span>N), then its kriging forecasts
+along with forecasts for the rest of the stations for the general
+stationary model can be obtained as follows.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a>krige_stat_new <span class="ot">&lt;-</span> <span class="fu">krige_new</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>    <span class="at">x =</span> wind_mcgf,</span>
+<span id="cb23-3"><a href="#cb23-3" tabindex="-1"></a>    <span class="at">newdata =</span> wind_test[, <span class="sc">-</span><span class="dv">1</span>],</span>
+<span id="cb23-4"><a href="#cb23-4" tabindex="-1"></a>    <span class="at">locations_new =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">9</span>, <span class="dv">52</span>),</span>
+<span id="cb23-5"><a href="#cb23-5" tabindex="-1"></a>    <span class="at">model =</span> <span class="st">&quot;all&quot;</span>,</span>
+<span id="cb23-6"><a href="#cb23-6" tabindex="-1"></a>    <span class="at">interval =</span> <span class="cn">TRUE</span></span>
+<span id="cb23-7"><a href="#cb23-7" tabindex="-1"></a>)</span>
+<span id="cb23-8"><a href="#cb23-8" tabindex="-1"></a><span class="fu">head</span>(krige_stat_new<span class="sc">$</span>fit)</span>
+<span id="cb23-9"><a href="#cb23-9" tabindex="-1"></a><span class="co">#&gt;             VAL        BEL        CLA        SHA        ROC        BIR</span></span>
+<span id="cb23-10"><a href="#cb23-10" tabindex="-1"></a><span class="co">#&gt; 3653         NA         NA         NA         NA         NA         NA</span></span>
+<span id="cb23-11"><a href="#cb23-11" tabindex="-1"></a><span class="co">#&gt; 3654         NA         NA         NA         NA         NA         NA</span></span>
+<span id="cb23-12"><a href="#cb23-12" tabindex="-1"></a><span class="co">#&gt; 3655         NA         NA         NA         NA         NA         NA</span></span>
+<span id="cb23-13"><a href="#cb23-13" tabindex="-1"></a><span class="co">#&gt; 3656 -0.1447040 -0.3018214 -0.5758966 -0.4693314 -0.1046231 -0.5499500</span></span>
+<span id="cb23-14"><a href="#cb23-14" tabindex="-1"></a><span class="co">#&gt; 3657  0.5307650  0.1531176  0.2150980  0.3479844  0.4910715  0.3157901</span></span>
+<span id="cb23-15"><a href="#cb23-15" tabindex="-1"></a><span class="co">#&gt; 3658  0.1632995  0.1648983  0.1734723  0.1751080  0.1567910  0.3091076</span></span>
+<span id="cb23-16"><a href="#cb23-16" tabindex="-1"></a><span class="co">#&gt;             MUL        MAL        KIL        CLO        DUB      New_1</span></span>
+<span id="cb23-17"><a href="#cb23-17" tabindex="-1"></a><span class="co">#&gt; 3653         NA         NA         NA         NA         NA         NA</span></span>
+<span id="cb23-18"><a href="#cb23-18" tabindex="-1"></a><span class="co">#&gt; 3654         NA         NA         NA         NA         NA         NA</span></span>
+<span id="cb23-19"><a href="#cb23-19" tabindex="-1"></a><span class="co">#&gt; 3655         NA         NA         NA         NA         NA         NA</span></span>
+<span id="cb23-20"><a href="#cb23-20" tabindex="-1"></a><span class="co">#&gt; 3656 -0.5196208 -0.2799845 -0.4627520 -0.7397430 -0.4240240 -0.4152704</span></span>
+<span id="cb23-21"><a href="#cb23-21" tabindex="-1"></a><span class="co">#&gt; 3657  0.2576929  0.1404444  0.1013024  0.1157068  0.2114298  0.8410688</span></span>
+<span id="cb23-22"><a href="#cb23-22" tabindex="-1"></a><span class="co">#&gt; 3658  0.3274626  0.3504309  0.1426461  0.1006568  0.4521153  0.2792891</span></span></code></pre></div>
+<p>Below is a time-series plot for the first 100 forecasts for
+<code>New_1</code>:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a><span class="fu">plot.ts</span>(krige_stat_new<span class="sc">$</span>fit[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="dv">12</span>], <span class="at">ylab =</span> <span class="st">&quot;Wind Speed for New_1&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 </div>
 <div id="references" class="section level1">

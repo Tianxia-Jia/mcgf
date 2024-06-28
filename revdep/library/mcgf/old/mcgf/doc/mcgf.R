@@ -8,7 +8,7 @@ knitr::opts_chunk$set(
 library(mcgf)
 data(wind)
 head(wind$data)
-head(wind$locations)
+wind$locations
 
 ## ----leap, message = F--------------------------------------------------------
 # install.packages("lubridate")
@@ -59,7 +59,7 @@ wind_test[, -1] <- wind_test[, -1] - trend_train3
 wind_test[, -1] <- sweep(wind_test[, -1], 2, mean_train)
 
 ## ----mcgf---------------------------------------------------------------------
-wind_mcgf <- mcgf(wind_train[, -1], locations = wind$locations)
+wind_mcgf <- mcgf(wind_train[, -1], locations = wind$locations, longlat = TRUE)
 wind_mcgf <- add_acfs(wind_mcgf, lag_max = 3)
 wind_mcgf <- add_ccfs(wind_mcgf, lag_max = 3)
 
@@ -177,7 +177,7 @@ rmse_stat <- sqrt(colMeans((wind_test[, -1] - krige_stat$fit)^2, na.rm = T))
 rmse <- c(
     "Empirical" = mean(rmse_emp),
     "Base" = mean(rmse_base),
-    "STAT" = mean(rmse_emp)
+    "STAT" = mean(rmse_stat)
 )
 rmse
 
@@ -212,4 +212,17 @@ popi <- c(
     "STAT" = mean(popi_stat)
 )
 popi
+
+## ----krige_new----------------------------------------------------------------
+krige_stat_new <- krige_new(
+    x = wind_mcgf,
+    newdata = wind_test[, -1],
+    locations_new = c(-9, 52),
+    model = "all",
+    interval = TRUE
+)
+head(krige_stat_new$fit)
+
+## ----krige_plot, fig.width=6, fig.height = 4----------------------------------
+plot.ts(krige_stat_new$fit[1:100, 12], ylab = "Wind Speed for New_1")
 

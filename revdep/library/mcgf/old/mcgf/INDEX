@@ -32,6 +32,8 @@ cor_exp                 Calculate exponential correlation
 cor_fs                  Calculate correlation for fully symmetric model
 cor_lagr_askey          Calculate Lagrangian correlation of the Askey
                         form
+cor_lagr_exp            Calculate Lagrangian correlation of the
+                        exponential form
 cor_lagr_tri            Calculate Lagrangian correlation of the
                         triangular form
 cor_sep                 Calculate correlation for separable model
@@ -42,6 +44,8 @@ dists                   Generic function for calculating distance
 dists.mcgf              Calculating distance matrices for an 'mcgf'
                         object
 find_dists              Calculate (signed) distances between
+                        coordinates
+find_dists_new          Calculate (signed) distances between
                         coordinates
 fit_base                Fit correlation base models
 fit_base.mcgf           Parameter estimation for symmetric correlation
@@ -60,6 +64,12 @@ krige                   Generic function for computing kriging
 krige.mcgf              Obtain kriging forecasts for an 'mcgf' object.
 krige.mcgf_rs           Obtain kriging forecasts for an 'mcgf_rs'
                         object.
+krige_new               Generic function for computing kriging
+                        forecasts for new locations
+krige_new.mcgf          Obtain kriging forecasts for new locations for
+                        an 'mcgf' object.
+krige_new.mcgf_rs       Obtain kriging forecasts for new locations for
+                        an 'mcgf_rs' object.
 mcgf                    Create mcgf object
 mcgf_rs                 Create mcgf_rs object
 mcgf_rs_sim             Simulate regime-switching Markov chain Gaussian

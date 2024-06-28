@@ -4,10 +4,12 @@
 .cor_exp	dot-cor_exp
 .cor_fs	dot-cor_fs
 .cor_lagr_askey	dot-cor_lagr_askey
+.cor_lagr_exp	dot-cor_lagr_exp
 .cor_lagr_tri	dot-cor_lagr_tri
 .cor_sep	dot-cor_sep
 .cor_stat	dot-cor_stat
 .find_dists	dot-find_dists
+.find_dists_new	dot-find_dists_new
 .mcgf_rs_sim	dot-mcgf_rs_sim
 .mcgf_sim	dot-mcgf_sim
 acfs	acfs
@@ -45,6 +47,7 @@ cor_cauchy	cor_cauchy
 cor_exp	cor_exp
 cor_fs	cor_fs
 cor_lagr_askey	cor_lagr_askey
+cor_lagr_exp	cor_lagr_exp
 cor_lagr_tri	cor_lagr_tri
 cor_sep	cor_sep
 cor_stat	cor_stat
@@ -56,6 +59,7 @@ dists.mcgf	dists.mcgf
 dists<-	dists.mcgf
 estimate	estimate
 find_dists	find_dists
+find_dists_new	find_dists_new
 fit_base	fit_base
 fit_base.mcgf	fit_base.mcgf
 fit_base.mcgf_rs	fit_base.mcgf_rs
@@ -68,6 +72,9 @@ is_numeric_scalar	is_numeric_scalar
 krige	krige
 krige.mcgf	krige.mcgf
 krige.mcgf_rs	krige.mcgf_rs
+krige_new	krige_new
+krige_new.mcgf	krige_new.mcgf
+krige_new.mcgf_rs	krige_new.mcgf_rs
 lagr<-	add_lagr.mcgf
 mat_inv	mat_inv
 mcgf	mcgf
