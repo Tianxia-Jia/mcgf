@@ -31,7 +31,9 @@ krige_new <- function(x, ...) {
 #' @param model Which model to use. One of `all` or `base`.
 #' @param interval Logical; if TRUE, prediction intervals are computed.
 #' @param level A numeric scalar between 0 and 1 giving the confidence level for
-#' the intervals (if any) to be calculated. Used when `interval = TRUE`
+#' the intervals (if any) to be calculated. Used when `interval = TRUE`.
+#' @param dists_new_base Optional; a distance array for all locations for the
+#' base model, with new locations in the end. Used for the base model.
 #' @param ... Additional arguments. Not in use.
 #'
 #' @return A list of kriging forecasts (and prediction intervals) for all
@@ -103,7 +105,9 @@ krige_new <- function(x, ...) {
 krige_new.mcgf <- function(x, newdata = NULL, locations_new = NULL,
                            dists_new = NULL, newdata_new = NULL,
                            sds_new = 1, model = c("all", "base"),
-                           interval = FALSE, level = 0.95, ...) {
+                           interval = FALSE, level = 0.95,
+                           dists_new_base,
+                           ...) {
     model <- match.arg(model)
     dots <- list(...)
 
@@ -166,7 +170,7 @@ krige_new.mcgf <- function(x, newdata = NULL, locations_new = NULL,
         if (!no_newdata_new) {
             if (ncol(newdata_new) != n_var_new) {
                 stop("number of columns of `newdata_new` must be the same as ",
-                    "the number of rows of `locations`",
+                    "the number of rows of `locations_new`",
                     call. = FALSE
                 )
             }
@@ -269,6 +273,17 @@ krige_new.mcgf <- function(x, newdata = NULL, locations_new = NULL,
         names_new <- paste0(names_new, "_", names_new)
     }
 
+    if (!missing(dists_new_base)) {
+        if (any(dim(dists_new_base) != dim(dists_new$h))) {
+            stop("dimensions of `dists_new_base` must be ",
+                 paste0(dim(dists_new$h), collapse = " x "), ".",
+                 call. = FALSE
+            )
+        }
+    } else {
+        dists_new_base <- dists_new$h
+    }
+
     x_new <- x[1, ]
     for (i in 1:length(names_new)) {
         x_new[names_new[i]] <- 0
@@ -286,7 +301,7 @@ krige_new.mcgf <- function(x, newdata = NULL, locations_new = NULL,
             sep = TRUE
         )
     } else {
-        fit_base$dists_base <- dists_new$h
+        fit_base$dists_base <- dists_new_base
         x_new <- add_base.mcgf(x_new, fit_base = fit_base)
     }
 
@@ -832,7 +847,7 @@ krige_new.mcgf_rs <- function(x, newdata = NULL, locations_new = NULL,
 
     if (!missing(dists_new_base)) {
         if (any(dim(dists_new_base) != dim(dists_new_ls[[1]]$h))) {
-            stop("dimension of `dists_new_base` must be ",
+            stop("dimensions of `dists_new_base` must be ",
                 paste(dim(dists_new_ls[[1]]$h), collapse = " x "), ".",
                 call. = FALSE
             )
