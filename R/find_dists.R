@@ -53,10 +53,11 @@
     rownames(h2) <- colnames(h2) <- names
 
     dists <- list(h = h, h1 = h1, h2 = h2)
+    names_old <- names
 
     if (longlat) {
         grid_2d <- cbind(h1[, origin], h2[, origin])
-        dists <- .find_dists(grid_2d, names = names, longlat = FALSE)
+        dists <- .find_dists(grid_2d, names = names_old, longlat = FALSE)
 
         if (return_grid) {
             return(list(dists = dists, grid = grid_2d, origin = origin))
