@@ -64,12 +64,12 @@ obj_mle <- function(par, cor_fn, x, lag, par_fixed) {
         if (det_cov_curr == 0) {
             llike <- -sum(apply(mu_diff, 1, function(x, y) {
                 crossprod(x, y) %*% x
-            }, cov_curr_inv))
+            }, cov_curr_inv), na.rm = TRUE)
         } else {
             llike <- -nrow(x_ts) * log(det_cov_curr) -
                 sum(apply(mu_diff, 1, function(x, y) {
                     crossprod(x, y) %*% x
-                }, cov_curr_inv))
+                }, cov_curr_inv), na.rm = TRUE)
         }
         return(-llike)
     }
