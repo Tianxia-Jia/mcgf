@@ -136,8 +136,9 @@ simulated transition matrix and regime process is given below.</p>
 <span><span class="va">tran_mat</span></span>
 <span><span class="co">#&gt;            [,1]       [,2]</span></span>
 <span><span class="co">#&gt; [1,] 0.92650859 0.07349141</span></span>
-<span><span class="co">#&gt; [2,] 0.04934827 0.95065173</span></span>
-<span></span>
+<span><span class="co">#&gt; [2,] 0.04934827 0.95065173</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="va">regime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="va">N</span><span class="op">)</span></span>
 <span><span class="va">regime</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span></span>
@@ -157,7 +158,7 @@ simulated transition matrix and regime process is given below.</p>
 </h4>
 <p>We generate the coordinates of 25 locations below and treat the last
 5 locations as unobserved locations.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">25</span>, <span class="op">-</span><span class="fl">110</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">50</span><span class="op">)</span></span>
@@ -198,7 +199,7 @@ simulated transition matrix and regime process is given below.</p>
 <p>To simulate the 5-th order RS-MCGF process, we calculate the distance
 matrices for all locations first and then use <code>mcgf_rs_sim</code>
 to simulate such process.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># simulate RS MCGF</span></span>
 <span><span class="va">par_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    par_s <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>nugget <span class="op">=</span> <span class="fl">0</span>, c <span class="op">=</span> <span class="fl">0.005</span>, gamma <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
@@ -252,7 +253,7 @@ to simulate such process.</p>
 <span><span class="co">#&gt; 5 -0.38518119 -0.9982079 -0.59390388 -0.8748418 -0.61917135 -0.1031998</span></span>
 <span><span class="co">#&gt; 6 -0.48971901 -1.9617002 -1.33014481 -1.4159325 -0.20824058 -1.3501761</span></span></code></pre></div>
 <p>We will holdout the new locations for parameter estimation.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_old</span> <span class="op">&lt;-</span> <span class="va">data_all</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">21</span><span class="op">]</span></span>
 <span><span class="va">data_new</span> <span class="op">&lt;-</span> <span class="va">data_all</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">21</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 </div>
@@ -264,13 +265,14 @@ to simulate such process.</p>
 symmetric model, and finally the general stationary model. First, we
 will create an <code>mcgf_rs</code> object and calculate auto- and
 cross- correlations.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcgf_rs.html">mcgf_rs</a></span><span class="op">(</span><span class="va">data_old</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>,</span>
 <span>    locations <span class="op">=</span> <span class="va">locations</span>, longlat <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    label <span class="op">=</span> <span class="va">data_old</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; `time` is not provided, assuming rows are equally spaced temporally.</span></span>
-<span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/acfs.mcgf.html">add_acfs</a></span><span class="op">(</span><span class="va">data_mcgf</span>, lag_max <span class="op">=</span> <span class="va">lag</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `time` is not provided, assuming rows are equally spaced temporally.</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/acfs.mcgf.html">add_acfs</a></span><span class="op">(</span><span class="va">data_mcgf</span>, lag_max <span class="op">=</span> <span class="va">lag</span><span class="op">)</span></span>
 <span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ccfs.mcgf.html">add_ccfs</a></span><span class="op">(</span><span class="va">data_mcgf</span>, lag_max <span class="op">=</span> <span class="va">lag</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># If multiple cores are available</span></span>
@@ -278,7 +280,7 @@ cross- correlations.</p>
 <p>Here <code>acfs</code> actually refers to the mean auto-correlations
 across the stations for each time lag. To view the calculated
 <code>acfs</code>, we can run:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/acfs.html">acfs</a></span><span class="op">(</span><span class="va">data_mcgf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $acfs</span></span>
 <span><span class="co">#&gt;      lag0      lag1      lag2      lag3      lag4      lag5 </span></span>
@@ -295,7 +297,7 @@ across the stations for each time lag. To view the calculated
 <p>Similarly, we can view the <code>ccfs</code> by the <code>ccfs</code>
 function. Here we will present lag 1 regime-switching ccfs for the first
 6 locations for the two regimes.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Regime 1</span></span>
 <span><span class="fu"><a href="../reference/ccfs.html">ccfs</a></span><span class="op">(</span><span class="va">data_mcgf</span><span class="op">)</span><span class="op">$</span><span class="va">ccfs_rs</span><span class="op">$</span><span class="va">`Regime 1`</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">2</span><span class="op">]</span></span>
 <span><span class="co">#&gt;           1         2          3         4         5          6</span></span>
@@ -304,8 +306,9 @@ function. Here we will present lag 1 regime-switching ccfs for the first
 <span><span class="co">#&gt; 3 0.2293202 0.3347340 0.58222643 0.3837498 0.2952973 0.46537082</span></span>
 <span><span class="co">#&gt; 4 0.5256692 0.1564803 0.12938351 0.6003370 0.1701296 0.11145141</span></span>
 <span><span class="co">#&gt; 5 0.2602507 0.5444454 0.32282783 0.3751226 0.6132754 0.30494395</span></span>
-<span><span class="co">#&gt; 6 0.1959693 0.3710529 0.53421219 0.3193299 0.3348082 0.56379838</span></span>
-<span></span>
+<span><span class="co">#&gt; 6 0.1959693 0.3710529 0.53421219 0.3193299 0.3348082 0.56379838</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="co"># Regime 2</span></span>
 <span><span class="fu"><a href="../reference/ccfs.html">ccfs</a></span><span class="op">(</span><span class="va">data_mcgf</span><span class="op">)</span><span class="op">$</span><span class="va">ccfs_rs</span><span class="op">$</span><span class="va">`Regime 2`</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">2</span><span class="op">]</span></span>
 <span><span class="co">#&gt;           1         2         3         4         5         6</span></span>
@@ -322,7 +325,7 @@ function. Here we will present lag 1 regime-switching ccfs for the first
 function. The results are actually obtained from the optimization
 function <code>nlminb</code>. Since the base model is the same for the
 two regimes, we set <code>rs = FALSE</code> to indicate this.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_spatial</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_base.html">fit_base</a></span><span class="op">(</span></span>
 <span>    <span class="va">data_mcgf</span>,</span>
 <span>    model_ls <span class="op">=</span> <span class="st">"spatial"</span>,</span>
@@ -356,7 +359,7 @@ two regimes, we set <code>rs = FALSE</code> to indicate this.</p>
 <h4 id="pure-temporal-model">Pure Temporal Model<a class="anchor" aria-label="anchor" href="#pure-temporal-model"></a>
 </h4>
 <p>The pure temporal can also be fitted by <code>fit_base</code>:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_temporal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_base.html">fit_base</a></span><span class="op">(</span></span>
 <span>    <span class="va">data_mcgf</span>,</span>
 <span>    model <span class="op">=</span> <span class="st">"temporal"</span>,</span>
@@ -386,7 +389,7 @@ two regimes, we set <code>rs = FALSE</code> to indicate this.</p>
 <span><span class="co">#&gt; [1] "relative convergence (4)"</span></span></code></pre></div>
 <p>We can store the fitted spatial and temporal models to
 <code>data_mcgf</code> using <code>add_base</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_base.html">add_base</a></span><span class="op">(</span><span class="va">data_mcgf</span>,</span>
 <span>    fit_s <span class="op">=</span> <span class="va">fit_spatial</span>,</span>
 <span>    fit_t <span class="op">=</span> <span class="va">fit_temporal</span>,</span>
@@ -398,7 +401,7 @@ two regimes, we set <code>rs = FALSE</code> to indicate this.</p>
 </h4>
 <p>We can also calculate the WLS estimates all at once by fitting the
 separable model:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_sep</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_base.html">fit_base</a></span><span class="op">(</span></span>
 <span>    <span class="va">data_mcgf</span>,</span>
 <span>    model_ls <span class="op">=</span> <span class="st">"sep"</span>,</span>
@@ -430,7 +433,7 @@ separable model:</p>
 <span><span class="co">#&gt; [1] "relative convergence (4)"</span></span></code></pre></div>
 <p>store the fully symmetric model as the base model and print the base
 model:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_base.html">add_base</a></span><span class="op">(</span><span class="va">data_mcgf</span>, fit_base <span class="op">=</span> <span class="va">fit_sep</span>, old <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/model.html">model</a></span><span class="op">(</span><span class="va">data_mcgf</span>, model <span class="op">=</span> <span class="st">"base"</span>, old <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ----------------------------------------</span></span>
@@ -481,7 +484,7 @@ reproducibility, but to keep a history of fitted models.</p>
 </h4>
 <p>We will fit Lagrangian correlation functions to model the
 regime-dependent prevailing winds:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_lagr_rs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_lagr.html">fit_lagr</a></span><span class="op">(</span><span class="va">data_mcgf</span>,</span>
 <span>    model_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"lagr_tri"</span><span class="op">)</span>,</span>
 <span>    par_init_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>lambda <span class="op">=</span> <span class="fl">0.1</span>, v1 <span class="op">=</span> <span class="fl">100</span>, v2 <span class="op">=</span> <span class="fl">100</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
@@ -531,7 +534,7 @@ regime-dependent prevailing winds:</p>
 <span><span class="co">#&gt; [1] "relative convergence (4)"</span></span></code></pre></div>
 <p>Finally we will store this model to <code>data_mcgf</code> using
 <code>add_lagr</code> and then print the final model:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_lagr.html">add_lagr</a></span><span class="op">(</span><span class="va">data_mcgf</span>, fit_lagr <span class="op">=</span> <span class="va">fit_lagr_rs</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/model.html">model</a></span><span class="op">(</span><span class="va">data_mcgf</span>, old <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ----------------------------------------</span></span>
@@ -613,7 +616,7 @@ regime-dependent prevailing winds:</p>
 new locations. The associated function is <code>krige_new</code>, and
 users can either supply the coordinates for the new locations or the
 distance matrices for all locations.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">krige_base_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/krige_new.html">krige_new</a></span><span class="op">(</span></span>
 <span>    x <span class="op">=</span> <span class="va">data_mcgf</span>,</span>
 <span>    locations_new <span class="op">=</span> <span class="va">locations_new</span>,</span>
@@ -632,7 +635,7 @@ the 95% PI (POPI) for these models for the new locations.</p>
 <div class="section level4">
 <h4 id="rmse">RMSE<a class="anchor" aria-label="anchor" href="#rmse"></a>
 </h4>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># RMSE</span></span>
 <span><span class="va">rmse_base</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="op">(</span><span class="va">data_new</span> <span class="op">-</span> <span class="va">krige_base_new</span><span class="op">$</span><span class="va">fit</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
@@ -649,7 +652,7 @@ the 95% PI (POPI) for these models for the new locations.</p>
 <div class="section level4">
 <h4 id="mae">MAE<a class="anchor" aria-label="anchor" href="#mae"></a>
 </h4>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mae_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">data_new</span> <span class="op">-</span> <span class="va">krige_base_new</span><span class="op">$</span><span class="va">fit</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="va">mae_stat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">data_new</span> <span class="op">-</span> <span class="va">krige_stat_new</span><span class="op">$</span><span class="va">fit</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="va">mae</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -663,7 +666,7 @@ the 95% PI (POPI) for these models for the new locations.</p>
 <div class="section level4">
 <h4 id="popi">POPI<a class="anchor" aria-label="anchor" href="#popi"></a>
 </h4>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># POPI</span></span>
 <span><span class="va">popi_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span></span>
 <span>    <span class="va">data_new</span> <span class="op">&lt;</span> <span class="va">krige_base_new</span><span class="op">$</span><span class="va">lower</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">]</span> <span class="op">|</span> <span class="va">data_new</span> <span class="op">&gt;</span> <span class="va">krige_base_new</span><span class="op">$</span><span class="va">upper</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">]</span>,</span>
