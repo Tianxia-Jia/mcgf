@@ -276,8 +276,8 @@ krige_new.mcgf <- function(x, newdata = NULL, locations_new = NULL,
     if (!missing(dists_new_base)) {
         if (any(dim(dists_new_base) != dim(dists_new$h))) {
             stop("dimensions of `dists_new_base` must be ",
-                 paste0(dim(dists_new$h), collapse = " x "), ".",
-                 call. = FALSE
+                paste0(dim(dists_new$h), collapse = " x "), ".",
+                call. = FALSE
             )
         }
     } else {

@@ -14,6 +14,7 @@
   model = c("all", "base"),
   interval = FALSE,
   level = 0.95,
+  dists_new_base,
   ...
 )
 }
@@ -43,7 +44,10 @@ not supplied.}
 \item{interval}{Logical; if TRUE, prediction intervals are computed.}
 
 \item{level}{A numeric scalar between 0 and 1 giving the confidence level for
-the intervals (if any) to be calculated. Used when \code{interval = TRUE}}
+the intervals (if any) to be calculated. Used when \code{interval = TRUE}.}
+
+\item{dists_new_base}{Optional; a distance array for all locations for the
+base model, with new locations in the end. Used for the base model.}
 
 \item{...}{Additional arguments. Not in use.}
 }

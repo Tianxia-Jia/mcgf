@@ -1,4 +1,8 @@
 ## 2024-02-17
+This is a minor submission, where some bugs have been fixed and new 
+functionalities have been added.
+
+## 2024-02-17
 This is a patch submission, where some bugs have been fixed.
 
 ## 2023-10-30

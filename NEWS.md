@@ -1,6 +1,18 @@
-# mcgf (development version)
+## version 1.1.1
 
-# mcgf 1.1.0
+---
+
+
+### Function updates
+
+- added `dists_new_base` argument to `krige_new.mcgf`
+
+
+### Bug fixes
+
+- `.find_dists`: fixed an argument bug for `names`
+- `obj_mle`: NA values are removed in llike
+
 
 ## version 1.1.0
 

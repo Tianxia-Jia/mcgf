@@ -75,3 +75,19 @@ my_news$add_bullet(c("New vignettes for regime-switching models"))
 
 my_news$get_text()
 my_news$write()
+
+#------------------------------------------------------------------------------#
+# version 1.1.1
+#------------------------------------------------------------------------------#
+
+my_news$add_version("1.1.1")
+
+my_news$add_subtitle("Bug fixes")
+my_news$add_bullet(c("`obj_mle`: NA values are removed in llike"))
+my_news$add_bullet(c("`.find_dists`: fixed an argument bug for `names`"))
+
+my_news$add_subtitle("Function updates")
+my_news$add_bullet(c("added `dists_new_base` argument to `krige_new.mcgf`"))
+
+my_news$get_text()
+my_news$write()

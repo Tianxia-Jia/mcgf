@@ -1,19 +1,19 @@
 Package: mcgf
 Title: Markov Chain Gaussian Fields Simulation and Parameter Estimation
-Version: 1.0.0.9000
+Version: 1.0.1.9000
 Authors@R: 
     person("Tianxia", "Jia", , "tianxia.jia@ucalgary.ca", 
     role = c("aut", "cre", "cph"),
     comment = c(ORCID = "0000-0001-5430-5019"))
 Description: Simulating and estimating (regime-switching) Markov chain Gaussian 
-    fields with covariance functions of the Gneiting class. It supports 
-    parameter estimation by weighted least squares and maximum likelihood 
-    methods, and produces Kriging forecasts and intervals (Cressie 1993) 
-    <doi:10.1002/9781119115151>.
+    fields with covariance functions of the Gneiting class (Gneiting 2002) 
+    <doi:10.1198/016214502760047113>. It supports parameter estimation by 
+    weighted least squares and maximum likelihood methods, and produces Kriging 
+    forecasts and intervals for existing and new locations.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Suggests: testthat (>= 3.0.0), doParallel (>= 1.0.17), foreach (>=
         1.5.2), parallel (>= 4.3.1), knitr, rmarkdown, lubridate,
         dplyr, Rsolnp
@@ -28,7 +28,7 @@ VignetteBuilder: knitr
 RemoteType: local
 RemoteUrl: D:\OneDrive - University of Calgary\R Package\mcgf
 NeedsCompilation: no
-Packaged: 2024-02-18 03:38:25 UTC; tylar
+Packaged: 2024-04-04 00:00:31 UTC; tylar
 Author: Tianxia Jia [aut, cre, cph] (<https://orcid.org/0000-0001-5430-5019>)
 Maintainer: Tianxia Jia <tianxia.jia@ucalgary.ca>
-Built: R 4.3.2; ; 2024-02-18 03:38:26 UTC; windows
+Built: R 4.3.2; ; 2024-04-04 00:00:32 UTC; windows
