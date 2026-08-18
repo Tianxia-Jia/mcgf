@@ -1,7 +1,7 @@
 Package: mcgf
 Title: Markov Chain Gaussian Fields Simulation and Parameter 
     Estimation
-Version: 1.1.1.9000
+Version: 1.2.0
 Authors@R: 
     person("Tianxia", "Jia", , "tylarjia@outlook.com", 
     role = c("aut", "cre", "cph"),
