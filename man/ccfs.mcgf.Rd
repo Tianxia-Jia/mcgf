@@ -46,7 +46,7 @@ lag. The output is an array of matrices where each matrix corresponds to the
 cross-correlation for a time lag.
 
 For \code{mcgf_rs} objects, \code{\link[=ccfs]{ccfs()}} computes regime-switching
-cross-correlations for each time lag. The output is a list of array of
+cross-correlations for each time lag. The output is a list of arrays of
 matrices where each array in the list corresponds to the cross-correlation
 for a regime.
 

@@ -32,6 +32,6 @@ where the \eqn{i}th matrix slice correspond to the \eqn{(i-1)}th time lag.
 For example, \code{cov[, , 1]} is the cross-covariance matrix for time lag 0. All
 matrices in \code{cov} are used to construct the joint covariance matrix.
 
-\code{cov_par} gives weights and covariance matrix for the current values..
+\code{cov_par} gives weights and covariance matrix for the current values.
 }
 \keyword{internal}

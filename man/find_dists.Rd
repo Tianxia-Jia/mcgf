@@ -10,7 +10,7 @@ find_dists(locations, longlat = TRUE, origin = 1L, return_grid = FALSE, ...)
 \item{locations}{A matrix or data.frame of 2D points, the first column is
 x/longitude, and the second column is y/latitude.}
 
-\item{longlat}{Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
+\item{longlat}{Logical, if TRUE Great Circle (WGS84 ellipsoid) distance;
 if FALSE, Euclidean distance.}
 
 \item{origin}{Optional; used when \code{longlat} is TRUE. An integer index

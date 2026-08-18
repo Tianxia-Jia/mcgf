@@ -15,7 +15,7 @@ obj_wls <- function(par, cor_fn, cor_emp, par_fixed) {
     return(wls)
 }
 
-#' Title
+#' Compute the objective for mle method
 #'
 #' @param par Parameters of `cor_fn`.
 #' @param cor_fn Correlation function
@@ -24,8 +24,8 @@ obj_wls <- function(par, cor_fn, cor_emp, par_fixed) {
 #' @param par_fixed Fixed parameters of `cor_fn`.
 #'
 #' @keywords internal
-#' @return The objective of maximum likelihood: the additive inverse of
-#' log-likelihood.
+#' @return A numeric value proportional to the negative approximate conditional
+#' log-likelihood, to be minimized during parameter estimation.
 obj_mle <- function(par, cor_fn, x, lag, par_fixed) {
     sds <- sds(x)
     n_var <- length(sds)

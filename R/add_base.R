@@ -233,7 +233,7 @@ add_base.mcgf <- function(x,
 
 #' Add base model outputted from [`fit_base()`] to an `mcgf_rs` object.
 #'
-#' @param x An mcgf_rs` object.
+#' @param x An `mcgf_rs` object.
 #' @param fit_base_ls Output from the [`fit_base()`] function.
 #' @param fit_s_ls Pure spatial model outputted from the [`fit_base()`] function.
 #' Used only when `sep = TRUE`.
@@ -249,7 +249,7 @@ add_base.mcgf <- function(x,
 #' @export
 #'
 #' @details
-# ‘ This function is equivalent to [`add_base.mcgf()`] for `mcgf_rs` objects.
+#' This function is equivalent to [`add_base.mcgf()`] for `mcgf_rs` objects.
 #'
 #' After fitting the base model by [`fit_base()`], the results can be added to
 #' `x` by [`add_base()`]. To supply the base model directly, use [`base<-`] to

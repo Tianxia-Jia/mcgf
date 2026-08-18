@@ -17,6 +17,6 @@ Validate an mcgf object
 }
 \details{
 It validates an \code{mcgf} object by checking if \code{dists} contains valid
-distance matrics/arrays.
+distance matrices/arrays.
 }
 \keyword{internal}

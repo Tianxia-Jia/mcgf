@@ -9,9 +9,9 @@
 \arguments{
 \item{x}{A numeric vector, matrix, or array.}
 
-\item{a}{Smooth parameter, \eqn{a>0}.}
+\item{a}{Scale parameter, \eqn{a>0}.}
 
-\item{alpha}{Scale parameter, \eqn{\alpha\in(0, 1]}.}
+\item{alpha}{Smooth parameter, \eqn{\alpha\in(0, 1]}.}
 
 \item{nu}{Power parameter, \eqn{\nu>0}. Default is 1.}
 

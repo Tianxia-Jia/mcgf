@@ -29,7 +29,8 @@ mcgf_rs_sim(
 
 \item{base_ls}{List of base model, \code{sep} or \code{fs} for now.}
 
-\item{lagrangian_ls}{List of Lagrangian model, "none" or \code{lagr_tri} for now.}
+\item{lagrangian_ls}{List of Lagrangian models. Each element can be \code{none},
+\code{lagr_tri}, \code{lagr_askey}, or \code{lagr_exp}.}
 
 \item{par_base_ls}{List of parameters for the base model.}
 
@@ -92,7 +93,7 @@ X <- mcgf_rs_sim(
 
 }
 \seealso{
-Other simulations of Markov chain Gaussian fields: 
-\code{\link{mcgf_sim}()}
+Other simulations of Markov chain Gaussian fields:
+\code{\link[=mcgf_sim]{mcgf_sim()}}
 }
 \concept{simulations of Markov chain Gaussian fields}

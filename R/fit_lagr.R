@@ -138,7 +138,7 @@ fit_lagr.mcgf <- function(x,
         par_fixed_nm <- names(par_fixed)
 
         if (is.null(par_fixed_nm) || any(!par_fixed_nm %in% par_model)) {
-            stop("unknow parameters in `par_fixed`.")
+            stop("unknown parameters in `par_fixed`.")
         }
 
         ind_not_fixed <- which(!par_model %in% par_fixed_nm)
@@ -193,7 +193,7 @@ fit_lagr.mcgf <- function(x,
 
     par_init_nm <- names(par_init)
     if (is.null(par_init_nm) || any(!par_init_nm %in% par_model)) {
-        stop("unknow parameters in `par_init`.", call. = FALSE)
+        stop("unknown parameters in `par_init`.", call. = FALSE)
     }
 
     if (any(!par_model %in% par_init_nm)) {
@@ -210,7 +210,7 @@ fit_lagr.mcgf <- function(x,
     optim_fn <- match.arg(optim_fn)
     if (optim_fn == "other") {
         if (is.null(other_optim_fn)) {
-            stop("specify a optimization function.", call. = FALSE)
+            stop("specify an optimization function.", call. = FALSE)
         }
         optim_fn <- other_optim_fn
     }
@@ -274,7 +274,7 @@ fit_lagr.mcgf <- function(x,
 
     if (!is.matrix(lagr_h)) {
         if (dim(lagr_h)[3] < lag_max + 1) {
-            stop("third dims from `dists_lagr` must be greater or ",
+            stop("third dimension of `dists_lagr` must be greater or ",
                 "equal to ", lag_max + 1, ".",
                 call. = FALSE
             )
@@ -286,6 +286,13 @@ fit_lagr.mcgf <- function(x,
     }
 
     cor_base <- attr(x, "base_res", exact = TRUE)$cor_base
+
+    if (is.null(cor_base)) {
+        stop("correlations for base model not found.",
+            call. = FALSE
+        )
+    }
+
     u_ar <- to_ar(h = lagr_h, lag_max = lag_max)$u_ar
     h1_ar <- to_ar(h = lagr_h1, lag_max = lag_max, u = FALSE)
     h2_ar <- to_ar(h = lagr_h2, lag_max = lag_max, u = FALSE)
@@ -505,7 +512,7 @@ fit_lagr.mcgf_rs <- function(x,
         return(res_lagr_ls)
     } else {
         if (base_rs) {
-            stop("the base model cannot be regime-switching if the Lagragian",
+            stop("the base model cannot be regime-switching if the Lagrangian",
                 " model is not regime-switching.",
                 call. = FALSE
             )

@@ -2,11 +2,11 @@
 #'
 #' @param x An mcgf object.
 #' @param label A vector of regime labels. Its length must be the same as
-#' the number rows in `data`.
+#' the number of rows in `data`.
 #'
 #' @keywords internal
 #' @return An S3 object of class `mcgf_rs`. As it inherits and extends the
-#' `mcgf` and then the`data.frame` class, all methods remain valid to the
+#' `mcgf` and then the `data.frame` class, all methods remain valid to the
 #' `data` part of the object. Additional attributes may be assigned and
 #' extracted.
 new_mcgf_rs <- function(x, label) {
@@ -51,10 +51,10 @@ validate_mcgf_rs <- function(x) {
 #' @param dists List of signed distance matrices. Required when `locations` is
 #' not supplied.
 #' @param time Optional, a vector of equally spaced time stamps.
-#' @param longlat Logical, if TURE `locations` contains longitudes and
+#' @param longlat Logical, if  `locations` contains longitudes and
 #' latitudes.
 #' @param origin Optional; used when `longlat` is TRUE. An integer index
-#' indicating the reference location which well be used as the origin.
+#' indicating the reference location which will be used as the origin.
 #'
 #' @export
 #'
@@ -103,12 +103,12 @@ mcgf_rs <- function(data, locations, dists, label, time, longlat = TRUE,
     return(validate_mcgf_rs(new_mcgf_rs(x_mcgf, label)))
 }
 
-#' Check if an object is an `mcgf_rs` object..
+#' Check if an object is an `mcgf_rs` object.
 #'
 #' @name is.mcgf_rs
 #' @param x An Object.
 #'
-#' @return `is.mcgf_rs` returns a logical valud; TRUE if `x` is of the `mcgf_rs`
+#' @return `is.mcgf_rs` returns a logical value; TRUE if `x` is of the `mcgf_rs`
 #' class. `as.mcgf_rs` coerces an `mcgf` object to an `mcgf_rs` object by adding
 #' regime labels. Fitted base or Lagrangian models in `x` are kept.
 #' @export
@@ -127,7 +127,7 @@ is.mcgf_rs <- function(x) {
 
 #' @rdname is.mcgf_rs
 #' @param label A vector of regime labels. Its length must be the same as
-#' the number rows in `data`.
+#' the number of rows in `data`.
 #' @param ncores Number of cpu cores used for computing in `[ccfs()]`.
 #' @export
 #'

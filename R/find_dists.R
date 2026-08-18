@@ -3,7 +3,7 @@
 #' @param grid A matrix of 2D points, first column x/longitude, second column
 #' y/latitude.
 #' @param names Names of locations.
-#' @param longlat Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
+#' @param longlat Logical, if TRUE Great Circle (WGS84 ellipsoid) distance;
 #' if FALSE, Euclidean distance.
 #' @param origin Optional; used when `longlat` is TRUE. An integer index
 #' indicating the reference location which will be used as the origin.
@@ -75,7 +75,7 @@
 #'
 #' @param locations A matrix or data.frame of 2D points, the first column is
 #' x/longitude, and the second column is y/latitude.
-#' @param longlat Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
+#' @param longlat Logical, if TRUE Great Circle (WGS84 ellipsoid) distance;
 #' if FALSE, Euclidean distance.
 #' @param origin Optional; used when `longlat` is TRUE. An integer index
 #' indicating the reference location which will be used as the origin.

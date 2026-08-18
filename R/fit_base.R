@@ -178,7 +178,7 @@ fit_base.mcgf <- function(x,
     if (!is.null(par_fixed)) {
         par_fixed_nm <- names(par_fixed)
         if (any(!par_fixed_nm %in% par_model)) {
-            stop("unknow parameters in `par_fixed`.", call. = FALSE)
+            stop("unknown parameters in `par_fixed`.", call. = FALSE)
         }
 
         ind_not_fixed <- which(!par_model %in% par_fixed_nm)
@@ -232,7 +232,7 @@ fit_base.mcgf <- function(x,
 
     par_init_nm <- names(par_init)
     if (any(!par_init_nm %in% par_model)) {
-        stop("unknow parameters in `par_init`.", call. = FALSE)
+        stop("unknown parameters in `par_init`.", call. = FALSE)
     }
 
     if (any(!par_model %in% par_init_nm)) {
@@ -248,7 +248,7 @@ fit_base.mcgf <- function(x,
     optim_fn <- match.arg(optim_fn)
     if (optim_fn == "other") {
         if (is.null(other_optim_fn)) {
-            stop("specify a optimization function.", call. = FALSE)
+            stop("specify an optimization function.", call. = FALSE)
         }
         optim_fn <- other_optim_fn
     }

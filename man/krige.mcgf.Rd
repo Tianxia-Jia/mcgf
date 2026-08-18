@@ -41,7 +41,7 @@ kriging for the \code{empirical} model, the \code{base} model, and the \code{all
 which is the general stationary model with the base and Lagrangian model
 from \code{x}.
 
-When \code{interval = TRUE}, confidence interval for each forecasts and each
+When \code{interval = TRUE}, a confidence interval for each forecasts and each
 horizon is given. Note that it does not compute confidence regions.
 }
 \examples{
@@ -95,11 +95,11 @@ popi <- colMeans(
 popi
 }
 \seealso{
-Other functions on fitting an mcgf: 
-\code{\link{add_base.mcgf}()},
-\code{\link{add_lagr.mcgf}()},
-\code{\link{fit_base.mcgf}()},
-\code{\link{fit_lagr.mcgf}()},
-\code{\link{krige_new.mcgf}()}
+Other functions on fitting an mcgf:
+\code{\link[=add_base.mcgf]{add_base.mcgf()}},
+\code{\link[=add_lagr.mcgf]{add_lagr.mcgf()}},
+\code{\link[=fit_base.mcgf]{fit_base.mcgf()}},
+\code{\link[=fit_lagr.mcgf]{fit_lagr.mcgf()}},
+\code{\link[=krige_new.mcgf]{krige_new.mcgf()}}
 }
 \concept{functions on fitting an mcgf}

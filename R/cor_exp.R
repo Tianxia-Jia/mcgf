@@ -1,8 +1,8 @@
 #' Calculate exponential correlation
 #'
 #' @param x A numeric vector, matrix, or array.
-#' @param c Smooth parameter, \eqn{c>0}.
-#' @param gamma Scale parameter, \eqn{\gamma\in(0, 1/2]}. Default is 1/2.
+#' @param c Scale parameter, \eqn{c>0}.
+#' @param gamma Smooth parameter, \eqn{\gamma\in(0, 1/2]}. Default is 1/2.
 #' @param nugget The nugget effect \eqn{\in[0, 1]}.
 #'
 #' @keywords internal
@@ -54,8 +54,6 @@ cor_exp <- function(x, c, gamma = 1 / 2, nugget = 0, is.dist = FALSE) {
     if (!is_numeric_scalar(gamma) || gamma <= 0 || gamma > 1 / 2) {
         stop("`gamma` must be in (0, 1/2].", call. = FALSE)
     }
-
-    corr <- .cor_exp(c = c, gamma = gamma, x = x)
 
     if (nugget > 0 && is.dist == F) {
         stop("nugget effect used only when `is.dist = TRUE`.", call. = FALSE)

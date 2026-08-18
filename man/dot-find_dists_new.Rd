@@ -27,7 +27,7 @@ y/latitude.}
 
 \item{names_new}{Names of new locations.}
 
-\item{longlat}{Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
+\item{longlat}{Logical, if TRUE Great Circle (WGS84 ellipsoid) distance;
 if FALSE, Euclidean distance.}
 
 \item{origin}{Optional; used when \code{longlat} is TRUE. An integer index

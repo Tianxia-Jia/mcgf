@@ -15,7 +15,7 @@
 #' For example, `cov[, , 1]` is the cross-covariance matrix for time lag 0. All
 #' matrices in `cov` are used to construct the joint covariance matrix.
 #'
-#' `cov_par` gives weights and covariance matrix for the current values..
+#' `cov_par` gives weights and covariance matrix for the current values.
 cov_joint <- function(cov) {
     n_var <- dim(cov)[1]
     lag_max <- dim(cov)[3] - 1

@@ -72,6 +72,10 @@ cor_fs <- function(nugget = 0, c, gamma = 1 / 2, a, alpha, beta = 0, h, u) {
         stop("`alpha` must be in (0, 1].", call. = FALSE)
     }
 
+    if (!is_numeric_scalar(beta) || beta < 0 || beta > 1) {
+        stop("`beta` must be a finite numeric scalar in [0, 1].")
+    }
+
     check_dist(x = h, name = "h")
 
     if (is.null(dim(h)) != is.null(dim(u)) || any(dim(h) != dim(u))) {

@@ -9,7 +9,8 @@
 \arguments{
 \item{base}{Base model, \code{sep} or \code{fs} for now. Or correlation matrix/array.}
 
-\item{lagrangian}{Lagrangian model, \code{none}, \code{lagr_tri}, or \code{lagr_askey}.}
+\item{lagrangian}{Lagrangian model, \code{none}, \code{lagr_tri}, \code{lagr_askey}, or
+\code{lagr_exp}.}
 
 \item{par_base}{Parameters for the base model (symmetric), used only when
 \code{base_fixed = FALSE}.}

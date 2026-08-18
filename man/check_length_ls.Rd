@@ -20,8 +20,8 @@ check_length_ls(x_ls, length, name)
 Check if valid input length
 }
 \details{
-Check if elements in \code{x_ls} have approprate length. If length of any elements
-in \code{x_ls} is 1 then they are replicated to match \code{length}. If length of any
-elements is neither 1 or \code{length} then an error is signaled.
+Check if elements in \code{x_ls} have appropriate length. If length of any
+elements in \code{x_ls} is 1 then they are replicated to match \code{length}. If
+length of any elements is neither 1 or \code{length} then an error is signaled.
 }
 \keyword{internal}

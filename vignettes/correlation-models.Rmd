@@ -1,0 +1,249 @@
+---
+title: "Choosing and Building Covariance Models"
+output: rmarkdown::html_vignette
+bibliography: mcgf.bib
+vignette: >
+  %\VignetteIndexEntry{correlation-models}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+```
+
+# Why this vignette?
+
+The main modelling decision in `mcgf` is the covariance structure. The package
+separates it into:
+
+1. a **symmetric base model**, and
+2. an optional **Lagrangian component** for directional space-time asymmetry.
+
+The combined model is
+
+\[
+C(\mathbf h,u)
+=
+(1-\lambda)C_{\mathrm{base}}(\mathbf h,u)
++
+\lambda C_{\mathrm{Lagr}}(\mathbf h,u).
+\]
+
+This vignette shows how the available functions fit together.
+
+```{r setup}
+library(mcgf)
+
+h1 <- array(
+    c(0, -1, 1, 0),
+    dim = c(2, 2, 3)
+)
+h2 <- array(
+    c(0, -2, 2, 0),
+    dim = c(2, 2, 3)
+)
+h <- sqrt(h1^2 + h2^2)
+u <- array(
+    rep(0:2, each = 4),
+    dim = c(2, 2, 3)
+)
+```
+
+# Pure spatial and temporal kernels
+
+`cor_exp()` implements the powered exponential correlation.
+
+```{r exp}
+c_exp <- cor_exp(
+    h,
+    c = 0.2,
+    gamma = 0.5,
+    nugget = 0.05,
+    is.dist = TRUE
+)
+```
+
+`cor_cauchy()` implements the Cauchy correlation and is commonly used for the
+temporal component.
+
+```{r cauchy}
+c_time <- cor_cauchy(
+    u,
+    a = 0.4,
+    alpha = 0.5
+)
+```
+
+# Separable covariance
+
+A separable model multiplies the spatial and temporal components:
+
+```{r sep}
+par_s <- list(
+    nugget = 0.05,
+    c = 0.2,
+    gamma = 0.5
+)
+
+par_t <- list(
+    a = 0.4,
+    alpha = 0.5
+)
+
+c_sep <- cor_sep(
+    spatial = "exp",
+    temporal = "cauchy",
+    par_s = par_s,
+    par_t = par_t,
+    h = h,
+    u = u
+)
+```
+
+This is a good baseline because it is simple and easy to interpret.
+
+# Fully symmetric Gneiting model
+
+`cor_fs()` introduces the space-time interaction parameter `beta`
+[@Gneiting2002].
+
+```{r fs}
+c_fs <- cor_fs(
+    nugget = 0.05,
+    c = 0.2,
+    gamma = 0.5,
+    a = 0.4,
+    alpha = 0.5,
+    beta = 0.5,
+    h = h,
+    u = u
+)
+```
+
+When `beta = 0`, this formulation reduces to the corresponding separable model.
+
+Use the fully symmetric model when the strength or scale of spatial dependence
+changes with temporal lag but you do not yet need directional asymmetry.
+
+# Lagrangian covariance functions
+
+The Lagrangian functions use signed distances and a prevailing velocity
+\(\mathbf v=(v_1,v_2)^\top\).
+
+## Triangular
+
+```{r tri}
+c_tri <- cor_lagr_tri(
+    v1 = 2,
+    v2 = 1,
+    k = 3,
+    h1 = h1,
+    h2 = h2,
+    u = u
+)
+```
+
+The triangular form has compact support: correlations become exactly zero
+outside its support.
+
+## Askey
+
+```{r askey}
+c_askey <- cor_lagr_askey(
+    v1 = 2,
+    v2 = 1,
+    k = 3,
+    h1 = h1,
+    h2 = h2,
+    u = u
+)
+```
+
+The Askey form also has compact support but uses a smoother \(3/2\) power.
+
+## Exponential
+
+```{r lagr-exp}
+c_lagr_exp <- cor_lagr_exp(
+    v1 = 2,
+    v2 = 1,
+    k = 3,
+    h1 = h1,
+    h2 = h2,
+    u = u
+)
+```
+
+The exponential Lagrangian model decays continuously rather than being
+truncated at zero.
+
+# Combine the base and Lagrangian terms
+
+`cor_stat()` constructs the general stationary model.
+
+```{r stat}
+par_base_fs <- list(
+    nugget = 0.05,
+    c = 0.2,
+    gamma = 0.5,
+    a = 0.4,
+    alpha = 0.5,
+    beta = 0.3
+)
+
+par_lagr <- list(
+    v1 = 2,
+    v2 = 1,
+    k = 3
+)
+
+c_stat <- cor_stat(
+    base = "fs",
+    lagrangian = "lagr_exp",
+    par_base = par_base_fs,
+    par_lagr = par_lagr,
+    lambda = 0.2,
+    h = h,
+    h1 = h1,
+    h2 = h2,
+    u = u
+)
+```
+
+# A practical model-selection sequence
+
+For a new dataset, the following progression is usually easiest to diagnose:
+
+1. Fit a separable model (`model = "sep"`).
+2. Fit a fully symmetric model (`model = "fs"`).
+3. Compare their errors and fitted correlations.
+4. Inspect empirical lagged cross-correlations for directional asymmetry.
+5. If asymmetry is scientifically meaningful, fit a Lagrangian component with
+   `fit_lagr()`.
+6. For known atmospheric or operating regimes, move to `mcgf_rs()` and allow
+   selected parameters to vary by regime.
+
+The Lagrangian regime-switching framework is used for short-term wind
+forecasting in @Jia2025.
+
+# Parameter interpretation
+
+| Parameter | Role |
+|---|---|
+| `nugget` | spatial nugget effect |
+| `c` | spatial scale |
+| `gamma` | spatial smoothness/power parameter |
+| `a` | temporal scale |
+| `alpha` | temporal smoothness/power parameter |
+| `beta` | space-time interaction in the fully symmetric model |
+| `v1`, `v2` | components of prevailing velocity |
+| `k` | Lagrangian scale |
+| `lambda` | weight of the Lagrangian component |
+
+# References
+
+<div id="refs"></div>

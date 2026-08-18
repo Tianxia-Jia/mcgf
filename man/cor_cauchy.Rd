@@ -9,9 +9,9 @@ cor_cauchy(x, a, alpha, nu = 1, nugget = 0, is.dist = FALSE)
 \arguments{
 \item{x}{A numeric vector, matrix, or array.}
 
-\item{a}{Smooth parameter, \eqn{a>0}.}
+\item{a}{Scale parameter, \eqn{a>0}.}
 
-\item{alpha}{Scale parameter, \eqn{\alpha\in(0, 1]}.}
+\item{alpha}{Smooth parameter, \eqn{\alpha\in(0, 1]}.}
 
 \item{nu}{Power parameter, \eqn{\nu>0}. Default is 1.}
 
@@ -45,14 +45,14 @@ Gneiting, T., and Schlather, M. (2004). Stochastic Models That Separate
 Fractal Dimension and the Hurst Effect. SIAM Review, 46(2), 269–282.
 }
 \seealso{
-Other correlation functions: 
-\code{\link{cor_exp}()},
-\code{\link{cor_fs}()},
-\code{\link{cor_lagr_askey}()},
-\code{\link{cor_lagr_exp}()},
-\code{\link{cor_lagr_tri}()},
-\code{\link{cor_sep}()},
-\code{\link{cor_stat}()},
-\code{\link{cor_stat_rs}()}
+Other correlation functions:
+\code{\link[=cor_exp]{cor_exp()}},
+\code{\link[=cor_fs]{cor_fs()}},
+\code{\link[=cor_lagr_askey]{cor_lagr_askey()}},
+\code{\link[=cor_lagr_exp]{cor_lagr_exp()}},
+\code{\link[=cor_lagr_tri]{cor_lagr_tri()}},
+\code{\link[=cor_sep]{cor_sep()}},
+\code{\link[=cor_stat]{cor_stat()}},
+\code{\link[=cor_stat_rs]{cor_stat_rs()}}
 }
 \concept{correlation functions}

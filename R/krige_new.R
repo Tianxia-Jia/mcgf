@@ -47,7 +47,7 @@ krige_new <- function(x, ...) {
 #' the base and Lagrangian model from `x`.
 #'
 #' Users can either supply the coordinates via `locations_new`, or a list of
-#' distance for all locations via `dists_new`, with new locations at the
+#' distances for all locations via `dists_new`, with new locations at the
 #' end. `dists_new` will be used to calculate the new covariance matrices.
 #' When `locations_new` is used, make sure `x` contains the attribute
 #' `locations` of the coordinates of the old locations. When `dists_new` is
@@ -60,7 +60,7 @@ krige_new <- function(x, ...) {
 #' locations; otherwise only data of the old locations will be used via
 #' `newdata`.
 #'
-#' When `interval = TRUE`, confidence interval for each forecasts and each
+#' When `interval = TRUE`, a confidence interval for each forecasts and each
 #' horizon is given. Note that it does not compute confidence regions.
 #'
 #' @examples
@@ -432,12 +432,12 @@ krige_new.mcgf <- function(x, newdata = NULL, locations_new = NULL,
 #'
 #' @details
 #' It produces simple kriging forecasts for a zero-mean mcgf for new locations
-#' given theri coordinates or relative distances. It supports kriging for the
+#' given their coordinates or relative distances. It supports kriging for the
 #' `base` model and the `all` model which is the general stationary model with
 #' the base and Lagrangian model from `x`.
 #'
 #' Users can either supply the coordinates via `locations_new`, or a list of
-#' distance for all locations via `dists_new_ls`, with new locations at the
+#' distances for all locations via `dists_new_ls`, with new locations at the
 #' end. `dists_new_ls` will be used to calculate the new covariance matrices.
 #' When `locations_new` is used, make sure `x` contains the attribute
 #' `locations` of the coordinates of the old locations. When `dists_new_ls` is
@@ -740,7 +740,7 @@ krige_new.mcgf_rs <- function(x, newdata = NULL, locations_new = NULL,
         }
 
         if (length(newlabel) != NROW(newdata)) {
-            stop("lenght of `newlabel` must equal to `nrow(newdata)`.",
+            stop("length of `newlabel` must equal to `nrow(newdata)`.",
                 call. = FALSE
             )
         }
@@ -748,7 +748,7 @@ krige_new.mcgf_rs <- function(x, newdata = NULL, locations_new = NULL,
         newlabel <- as.factor(newlabel)
 
         if (any(!(levels(newlabel) %in% lvs))) {
-            stop("unknown levels in `newlabel.`", call. = FALSE)
+            stop("unknown levels in `newlabel`.", call. = FALSE)
         }
 
         label <- newlabel
@@ -758,7 +758,7 @@ krige_new.mcgf_rs <- function(x, newdata = NULL, locations_new = NULL,
 
     if (!no_newdata_new) {
         if (ncol(newdata_new) != n_var_new) {
-            stop("number of columns of `newdata_new` does not math with ",
+            stop("number of columns of `newdata_new` does not match ",
                 "`dists_new` or `locations_new`",
                 call. = FALSE
             )

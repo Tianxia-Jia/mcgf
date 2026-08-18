@@ -2,7 +2,8 @@
 #'
 #' @param N Sample size.
 #' @param base Base model, `sep` or `fs` for now.
-#' @param lagrangian Lagrangian model, "none" or `lagr_tri` for now.
+#' @param lagrangian Lagrangian model, `none`, `lagr_tri`, `lagr_askey`,
+#' or `lagr_exp`.
 #' @param par_base Parameters for the base model (symmetric).
 #' @param par_lagr Parameters for the Lagrangian model.
 #' @param lambda Weight of the Lagrangian term, \eqn{\lambda\in[0, 1]}.
@@ -105,7 +106,7 @@
             u = u_ar
         )
 
-        if (lagrangian == "lagr_tri") {
+        if (lagrangian != "none") {
             par$dists <- list(h = h_ar, h1 = h1_ar, h2 = h2_ar)
         }
 
@@ -140,7 +141,7 @@
 #' @family simulations of Markov chain Gaussian fields
 mcgf_sim <- function(N,
                      base = c("sep", "fs"),
-                     lagrangian = c("none", "lagr_tri", "lagr_askey"),
+                     lagrangian = c("none", "lagr_tri", "lagr_askey", "lagr_exp"),
                      par_base,
                      par_lagr,
                      lambda,
@@ -153,6 +154,9 @@ mcgf_sim <- function(N,
                      mu_c = 0,
                      mu_p = 0,
                      return_all = FALSE) {
+    base <- match.arg(base)
+    lagrangian <- match.arg(lagrangian)
+
     if (N < horizon) {
         stop("`N` must be no less than `horizon`", call. = FALSE)
     }

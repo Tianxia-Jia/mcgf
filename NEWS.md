@@ -1,4 +1,29 @@
-# mcgf 1.1.1
+## version 1.2.0
+
+---
+
+
+### Miscellaneous
+
+- Updated package documentation and vignettes for consistency and clarity
+- Added the reference to Jia and Sezer (2025) for regime-switching spatio-temporal covariance models
+- Corrected typographical, grammatical, and terminology errors throughout the package
+
+
+### Function updates
+
+- Standardized support and documentation for the exponential Lagrangian correlation function
+- Updated documentation for weighted least squares and approximate conditional maximum likelihood estimation
+- Improved documentation and argument descriptions for covariance, fitting, and Kriging functions
+
+
+### Bug fixes
+
+- `mcgf_sim`: fixed handling of the default Lagrangian model argument
+- Improved covariance-matrix validation for maximum likelihood estimation
+- Fixed issues in distance assignment and Kriging functions for existing and new locations
+- Improved input validation and error handling across model fitting and forecasting functions
+
 
 ## version 1.1.1
 

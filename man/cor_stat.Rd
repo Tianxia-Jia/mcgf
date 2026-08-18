@@ -6,7 +6,7 @@
 \usage{
 cor_stat(
   base = c("sep", "fs"),
-  lagrangian = c("none", "lagr_tri", "lagr_askey"),
+  lagrangian = c("none", "lagr_tri", "lagr_askey", "lagr_exp"),
   par_base,
   par_lagr,
   lambda,
@@ -20,7 +20,8 @@ cor_stat(
 \arguments{
 \item{base}{Base model, \code{sep} or \code{fs} for now. Or correlation matrix/array.}
 
-\item{lagrangian}{Lagrangian model, \code{none}, \code{lagr_tri}, or \code{lagr_askey}.}
+\item{lagrangian}{Lagrangian model, \code{none}, \code{lagr_tri}, \code{lagr_askey}, or
+\code{lagr_exp}.}
 
 \item{par_base}{Parameters for the base model (symmetric), used only when
 \code{base_fixed = FALSE}.}
@@ -95,14 +96,14 @@ cor_stat(
 
 }
 \seealso{
-Other correlation functions: 
-\code{\link{cor_cauchy}()},
-\code{\link{cor_exp}()},
-\code{\link{cor_fs}()},
-\code{\link{cor_lagr_askey}()},
-\code{\link{cor_lagr_exp}()},
-\code{\link{cor_lagr_tri}()},
-\code{\link{cor_sep}()},
-\code{\link{cor_stat_rs}()}
+Other correlation functions:
+\code{\link[=cor_cauchy]{cor_cauchy()}},
+\code{\link[=cor_exp]{cor_exp()}},
+\code{\link[=cor_fs]{cor_fs()}},
+\code{\link[=cor_lagr_askey]{cor_lagr_askey()}},
+\code{\link[=cor_lagr_exp]{cor_lagr_exp()}},
+\code{\link[=cor_lagr_tri]{cor_lagr_tri()}},
+\code{\link[=cor_sep]{cor_sep()}},
+\code{\link[=cor_stat_rs]{cor_stat_rs()}}
 }
 \concept{correlation functions}

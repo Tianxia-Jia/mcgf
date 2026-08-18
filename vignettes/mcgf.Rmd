@@ -36,7 +36,7 @@ head(wind$data)
 wind$locations
 ```
 
-## Data De-treding
+## Data De-trending
 
 To fit covariance models on `wind`, the first step is to load the data set and de-trend the data to have a mean-zero time series. We will follow the data de-trending procedure in @Gneiting2006a.
 
@@ -100,7 +100,7 @@ wind_test[, -1] <- sweep(wind_test[, -1], 2, mean_train)
 
 ## Fitting Covariance Models
 
-We will first fit pure spatial and temporal models, then the fully symmetric model, and finally the general stationary model. First, we will create an `mcgf` object and calculate auto- and cross- correlations.
+We will first fit pure spatial and temporal models, then the separable model, and finally the general stationary model. First, we will create an `mcgf` object and calculate auto- and cross-correlations.
 ```{r mcgf}
 wind_mcgf <- mcgf(wind_train[, -1], locations = wind$locations, longlat = TRUE)
 wind_mcgf <- add_acfs(wind_mcgf, lag_max = 3)
@@ -148,7 +148,7 @@ fit_spatial2$fit
 
 ### Pure Temporal Model
 
-The pure temporal can also be fitted by `fit_base`:
+The pure temporal model can also be fitted by `fit_base`:
 ```{r temporal}
 fit_temporal <- fit_base(
     wind_mcgf,
@@ -180,7 +180,7 @@ fit_sep <- fit_base(
 )
 fit_sep$fit
 ```
-Once can also store this model to `wind_mcgf`, but to be consistent with @Gneiting2006a, we will just use the estimates from the pure spatial and temporal models to estimate the interaction parameter `beta`.
+One can also store this model to `wind_mcgf`, but to be consistent with @Gneiting2006a, we will just use the estimates from the pure spatial and temporal models to estimate the interaction parameter `beta`.
 
 ### Fully Symmetric Model
 When holding other parameters constant, the parameter `beta` can be estimated by:
@@ -293,7 +293,7 @@ popi
 ```
 
 ## Simple Kriging for new locations
-We provide functionalists for computing simple Kriging forecasts for new locations. The associated function is `krige_new`, and users can either supply the coordinates for the new locations or the distance matrices for all locations. Hypotheticaly, suppose a new location is at ($9^\circ$W,	$52^\circ$N), then its kriging forecasts along with forecasts for the rest of the stations for the general stationary model can be obtained as follows.
+We provide functions for computing simple Kriging forecasts for new locations. The associated function is `krige_new`, and users can either supply the coordinates for the new locations or the distance matrices for all locations. Hypothetically, suppose a new location is at ($9^\circ$W,	$52^\circ$N), then its kriging forecasts along with forecasts for the rest of the stations for the general stationary model can be obtained as follows.
 ```{r krige_new}
 krige_stat_new <- krige_new(
     x = wind_mcgf,

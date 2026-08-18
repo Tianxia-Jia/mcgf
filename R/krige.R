@@ -33,7 +33,7 @@ krige <- function(x, ...) {
 #' which is the general stationary model with the base and Lagrangian model
 #' from `x`.
 #'
-#' When `interval = TRUE`, confidence interval for each forecasts and each
+#' When `interval = TRUE`, a confidence interval for each forecasts and each
 #' horizon is given. Note that it does not compute confidence regions.
 #'
 #' @examples
@@ -357,14 +357,14 @@ krige.mcgf_rs <- function(x, newdata = NULL, newlabel = NULL,
         }
 
         if (NROW(newdata) < max(unlist(lag_ls))) {
-            stop("number of rows in `newdata` must be higher than `lag` ",
+            stop("number of rows in `newdata` must be at least `lag` ",
                 max(unlist(lag_ls)), ".",
                 call. = FALSE
             )
         }
 
         if (length(newlabel) != NROW(newdata)) {
-            stop("lenght of `newlabel` must equal to `nrow(newdata)`.",
+            stop("length of `newlabel` must equal to `nrow(newdata)`.",
                 call. = FALSE
             )
         }
@@ -372,7 +372,7 @@ krige.mcgf_rs <- function(x, newdata = NULL, newlabel = NULL,
         newlabel <- as.factor(newlabel)
 
         if (any(!(levels(newlabel) %in% lvs))) {
-            stop("unknown levels in `newlabel.`", call. = FALSE)
+            stop("unknown levels in `newlabel`.", call. = FALSE)
         }
 
         x <- newdata

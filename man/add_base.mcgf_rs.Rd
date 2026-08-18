@@ -7,7 +7,7 @@
 \method{add_base}{mcgf_rs}(x, fit_base_ls, fit_s_ls, fit_t_ls, sep = FALSE, old = FALSE, ...)
 }
 \arguments{
-\item{x}{An mcgf_rs` object.}
+\item{x}{An \code{mcgf_rs} object.}
 
 \item{fit_base_ls}{Output from the \code{\link[=fit_base]{fit_base()}} function.}
 
@@ -32,6 +32,8 @@ horizon of the new model are assumed to be the same as that of the old model.}
 Add base model outputted from \code{\link[=fit_base]{fit_base()}} to an \code{mcgf_rs} object.
 }
 \details{
+This function is equivalent to \code{\link[=add_base.mcgf]{add_base.mcgf()}} for \code{mcgf_rs} objects.
+
 After fitting the base model by \code{\link[=fit_base]{fit_base()}}, the results can be added to
 \code{x} by \code{\link[=add_base]{add_base()}}. To supply the base model directly, use \code{\link{base<-}} to
 add the base model; the value must contain the same output as
@@ -91,11 +93,11 @@ sim2_mcgf <- add_base(sim2_mcgf, fit_base_ls = fit_sep, old = TRUE)
 model(sim2_mcgf, model = "base", old = TRUE)
 }
 \seealso{
-Other functions on fitting an mcgf_rs: 
-\code{\link{add_lagr.mcgf_rs}()},
-\code{\link{fit_base.mcgf_rs}()},
-\code{\link{fit_lagr.mcgf_rs}()},
-\code{\link{krige.mcgf_rs}()},
-\code{\link{krige_new.mcgf_rs}()}
+Other functions on fitting an mcgf_rs:
+\code{\link[=add_lagr.mcgf_rs]{add_lagr.mcgf_rs()}},
+\code{\link[=fit_base.mcgf_rs]{fit_base.mcgf_rs()}},
+\code{\link[=fit_lagr.mcgf_rs]{fit_lagr.mcgf_rs()}},
+\code{\link[=krige.mcgf_rs]{krige.mcgf_rs()}},
+\code{\link[=krige_new.mcgf_rs]{krige_new.mcgf_rs()}}
 }
 \concept{functions on fitting an mcgf_rs}

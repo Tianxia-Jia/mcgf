@@ -20,8 +20,10 @@
 Add lagr model outputted from \code{\link[=fit_lagr]{fit_lagr()}} to a \code{mcgf_rs} object.
 }
 \details{
+This function is equivalent to \code{\link[=add_lagr.mcgf]{add_lagr.mcgf()}} for \code{mcgf_rs} objects.
+
 After fitting the Lagrangian model by \code{\link[=fit_lagr]{fit_lagr()}}, the results can be
-added to \code{x} by \code{\link[=add_base]{add_base()}}. To supply the Lagrangian model directly,
+added to \code{x} by \code{\link[=add_lagr]{add_lagr()}}. To supply the Lagrangian model directly,
 use \code{\link{lagr<-}} to add the Lagrangian model; the value must contain the same
 output as \code{\link[=add_lagr.mcgf]{add_lagr.mcgf()}} or \code{\link[=add_lagr.mcgf_rs]{add_lagr.mcgf_rs()}}.
 }
@@ -69,11 +71,11 @@ sim3_mcgf <- add_lagr(sim3_mcgf, fit_lagr_ls = fit_lagr_rs)
 model(sim3_mcgf)
 }
 \seealso{
-Other functions on fitting an mcgf_rs: 
-\code{\link{add_base.mcgf_rs}()},
-\code{\link{fit_base.mcgf_rs}()},
-\code{\link{fit_lagr.mcgf_rs}()},
-\code{\link{krige.mcgf_rs}()},
-\code{\link{krige_new.mcgf_rs}()}
+Other functions on fitting an mcgf_rs:
+\code{\link[=add_base.mcgf_rs]{add_base.mcgf_rs()}},
+\code{\link[=fit_base.mcgf_rs]{fit_base.mcgf_rs()}},
+\code{\link[=fit_lagr.mcgf_rs]{fit_lagr.mcgf_rs()}},
+\code{\link[=krige.mcgf_rs]{krige.mcgf_rs()}},
+\code{\link[=krige_new.mcgf_rs]{krige_new.mcgf_rs()}}
 }
 \concept{functions on fitting an mcgf_rs}

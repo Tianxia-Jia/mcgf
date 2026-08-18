@@ -79,7 +79,7 @@ sds.mcgf_rs <- function(x, replace = FALSE, ...) {
 #'
 #' @param x A `data.frame` or `matrix`.
 #' @param label A vector of regime labels. Its length must be the same as
-#' the number rows in `x`.
+#' the number of rows in `x`.
 #'
 #' @return A list of standard deviations for each regime.
 #' @export

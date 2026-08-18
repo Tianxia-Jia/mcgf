@@ -6,7 +6,7 @@
 #' y/latitude.
 #' @param names Names of locations.
 #' @param names_new Names of new locations.
-#' @param longlat Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
+#' @param longlat Logical, if TRUE Great Circle (WGS84 ellipsoid) distance;
 #' if FALSE, Euclidean distance.
 #' @param origin Optional; used when `longlat` is TRUE. An integer index
 #' indicating the reference location which will be used as the origin.
@@ -82,18 +82,18 @@
 #' x/longitude, and the second column is y/latitude.
 #' @param locations_new A matrix or data.frame of 2D points, the first column is
 #' x/longitude, and the second column is y/latitude.
-#' @param longlat Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
+#' @param longlat Logical, if TRUE Great Circle (WGS84 ellipsoid) distance;
 #' if FALSE, Euclidean distance.
 #' @param origin Optional; used when `longlat` is TRUE. An integer index
 #' indicating the reference location from `locations` which will be used as
 #' the origin. Same `origin` from `find_dists` must be used to ensure
-#' consistancy between outputs from `find_dists` and `find_dists_new`.
+#' consistency between outputs from `find_dists` and `find_dists_new`.
 #' @param return_grid Logical; used when `longlat` is TRUE. If TRUE the mapped
 #' coordinates on a 2D plane for all locations is returned.
 #' @param ... Optional arguments passed to [`.find_dists_new()`].
 #'
 #' @return A list of distance matrices for all locations. If `return_grid` is
-#' TRUE, a list consists of a list of distance matrices for all locations,
+#' TRUE, a list consisting of a list of distance matrices for all locations,
 #' the mapped 2D grid for all locations, and the origin is returned.
 #'
 #' @export

@@ -8,10 +8,10 @@
 #' @param dists List of signed distance matrices on a 2D Euclidean Plane.
 #' Required when `locations` is not supplied.
 #' @param time Optional, a vector of equally spaced time stamps.
-#' @param longlat Logical, if TURE `locations` contains longitudes and
+#' @param longlat Logical, if TRUE `locations` contains longitudes and
 #' latitudes.
 #' @param origin Optional; used when `longlat` is TRUE. An integer index
-#' indicating the reference location which well be used as the origin.
+#' indicating the reference location which will be used as the origin.
 #'
 #' @keywords internal
 #' @return An S3 object of class `mcgf`. As it inherits and extends the
@@ -41,7 +41,7 @@ new_mcgf <- function(data, locations, dists, time, longlat = TRUE,
 #'
 #' @details
 #' It validates an `mcgf` object by checking if `dists` contains valid
-#' distance matrics/arrays.
+#' distance matrices/arrays.
 validate_mcgf <- function(x) {
     data <- x
     n_var <- ncol(x)

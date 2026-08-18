@@ -102,7 +102,7 @@ check_dist_sign <- function(x, name, check_sym = TRUE) {
                     for (i in 1:dim(x)[3]) {
                         if (!isSymmetric.matrix(abs(x)[, , i])) {
                             stop("not all matrix slices in array `", name,
-                                "`` is symmetric in absolute values.",
+                                "` is symmetric in absolute values.",
                                 call. = FALSE
                             )
                         }
@@ -116,7 +116,7 @@ check_dist_sign <- function(x, name, check_sym = TRUE) {
 
 #' Check if valid input length
 #'
-#' @param x Scaler or vector
+#' @param x Scalar or vector
 #' @param length Length of `x`.
 #' @param name Name of `x` for displaying errors.
 #'
@@ -124,9 +124,9 @@ check_dist_sign <- function(x, name, check_sym = TRUE) {
 #' @keywords internal
 #'
 #' @details
-#' Check if `x` has approprate length. If length of `x` is 1 then `x` is
-#' replicated to match `length`. If length of `x` is neither 1 or `length` then
-#' an error is signaled.
+#' Check if `x` has appropriate length. If length of `x` is 1 then `x` is
+#' replicated to match `length`. If length of `x` is neither 1 nor `length`
+#' then an error is signaled.
 check_length <- function(x, length, name) {
     if (length(x) == 1) {
         x <- rep(x, length)
@@ -150,9 +150,9 @@ check_length <- function(x, length, name) {
 #' @keywords internal
 #'
 #' @details
-#' Check if elements in `x_ls` have approprate length. If length of any elements
-#' in `x_ls` is 1 then they are replicated to match `length`. If length of any
-#' elements is neither 1 or `length` then an error is signaled.
+#' Check if elements in `x_ls` have appropriate length. If length of any
+#' elements in `x_ls` is 1 then they are replicated to match `length`. If
+#' length of any elements is neither 1 or `length` then an error is signaled.
 check_length_ls <- function(x_ls, length, name) {
     for (k in 1:length(x_ls)) {
         if (length(x_ls[[k]]) == 1) {
@@ -172,7 +172,7 @@ check_length_ls <- function(x_ls, length, name) {
 #' Check if valid dists attribute for an `mcgf` object
 #'
 #' @param dists List of scaler or vector
-#' @param n_var Scaler, number of variables.
+#' @param n_var Scalar, number of variables.
 #' @param names column and row names of matrices in `dists`.
 #' @param name_dists name_dists of `dists`.
 #'

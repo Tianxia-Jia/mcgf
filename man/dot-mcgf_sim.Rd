@@ -27,7 +27,8 @@
 
 \item{base}{Base model, \code{sep} or \code{fs} for now.}
 
-\item{lagrangian}{Lagrangian model, "none" or \code{lagr_tri} for now.}
+\item{lagrangian}{Lagrangian model, \code{none}, \code{lagr_tri}, \code{lagr_askey},
+or \code{lagr_exp}.}
 
 \item{par_base}{Parameters for the base model (symmetric).}
 

@@ -7,7 +7,7 @@
 check_length(x, length, name)
 }
 \arguments{
-\item{x}{Scaler or vector}
+\item{x}{Scalar or vector}
 
 \item{length}{Length of \code{x}.}
 
@@ -20,8 +20,8 @@ check_length(x, length, name)
 Check if valid input length
 }
 \details{
-Check if \code{x} has approprate length. If length of \code{x} is 1 then \code{x} is
-replicated to match \code{length}. If length of \code{x} is neither 1 or \code{length} then
-an error is signaled.
+Check if \code{x} has appropriate length. If length of \code{x} is 1 then \code{x} is
+replicated to match \code{length}. If length of \code{x} is neither 1 nor \code{length}
+then an error is signaled.
 }
 \keyword{internal}

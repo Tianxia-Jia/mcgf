@@ -35,7 +35,7 @@ Monographs on Statistics & Applied Probability (pp. 151–175).
 Chapman and Hall/CRC.
 }
 \seealso{
-Other (simulated) datasets: 
+Other (simulated) datasets:
 \code{\link{sim1}},
 \code{\link{sim2}},
 \code{\link{sim3}}

@@ -10,7 +10,7 @@
 #' @return Correlations of the same dimension as `x`.
 #'
 #' @details
-#' To adjust spatial nugget effect, enery entry of `x` is first multipled by
+#' To adjust spatial nugget effect, every entry of `x` is first multiplied by
 #' by \eqn{(1-\text{nugget})}; Then `add_nugget` adds `nugget` to the diagonals
 #' (or the diagonals of each matrix slice) of `x`, and `set_nugget` set the
 #' diagonals (or the diagonals of each matrix slice) to the corresponding
@@ -26,7 +26,7 @@ add_nugget <- function(x, nugget) {
     } else if (length(dim_x) == 2) {
         diag(corr) <- diag(corr) + nugget
     } else {
-        stop("invalid dimention for 'x'.")
+        stop("invalid dimension for 'x'.")
     }
     return(corr)
 }
@@ -48,7 +48,7 @@ set_nugget <- function(x, nugget, set_to) {
     } else if (length(dim_x) == 2) {
         diag(corr) <- diag(set_to)
     } else {
-        stop("invalid dimention for `x`.")
+        stop("invalid dimension for `x`.")
     }
     return(corr)
 }

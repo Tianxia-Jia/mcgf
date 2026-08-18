@@ -17,19 +17,19 @@ longitude, second column latitude, both in decimal degrees. Required when
 not supplied.}
 
 \item{label}{A vector of regime labels. Its length must be the same as
-the number rows in \code{data}.}
+the number of rows in \code{data}.}
 
 \item{time}{Optional, a vector of equally spaced time stamps.}
 
-\item{longlat}{Logical, if TURE \code{locations} contains longitudes and
+\item{longlat}{Logical, if  \code{locations} contains longitudes and
 latitudes.}
 
 \item{origin}{Optional; used when \code{longlat} is TRUE. An integer index
-indicating the reference location which well be used as the origin.}
+indicating the reference location which will be used as the origin.}
 }
 \value{
 An S3 object of class \code{mcgf_rs}. As it inherits and extends the
-\code{mcgf} and then the\code{data.frame} class, all methods remain valid to the
+\code{mcgf} and then the \code{data.frame} class, all methods remain valid to the
 \code{data} part of the object. Additional attributes may be assigned and
 extracted.
 }

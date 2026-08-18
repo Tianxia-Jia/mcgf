@@ -63,6 +63,14 @@ cor_lagr_tri <- function(v1, v2, k = 2, h1, h2, u) {
     check_dist_sign(h1, name = "h1")
     check_dist_sign(h2, name = "h2")
 
+    if (!is_numeric_scalar(v1) || !is_numeric_scalar(v2)) {
+        stop("`v1` and `v2` must be finite numeric scalars.")
+    }
+
+    if (sqrt(v1^2 + v2^2) == 0) {
+        stop("The prevailing-wind velocity cannot be zero.")
+    }
+
     corr <- .cor_lagr_tri(v1 = v1, v2 = v2, k = k, h1 = h1, h2 = h2, u = u)
 
     return(corr)

@@ -1,0 +1,217 @@
+---
+title: "Simulating MCGF and RS-MCGF Processes"
+output: rmarkdown::html_vignette
+bibliography: mcgf.bib
+vignette: >
+  %\VignetteIndexEntry{simulation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>"
+)
+```
+
+# Overview
+
+`mcgf` can simulate Markov chain Gaussian fields (MCGF) and
+regime-switching Markov chain Gaussian fields (RS-MCGF) directly from
+user-specified covariance parameters. Simulation is useful for method
+validation, sensitivity analysis, and learning the package workflow before
+working with observed data.
+
+This vignette focuses on the arguments that are most important in practice.
+
+# Distances
+
+Start by defining the spatial locations and their signed distance matrices.
+
+```{r distances}
+library(mcgf)
+
+locations <- matrix(
+    c(0, 0, 2, 0, 1, 1.5),
+    ncol = 2,
+    byrow = TRUE,
+    dimnames = list(paste0("S", 1:3), c("x", "y"))
+)
+
+d <- find_dists(locations, longlat = FALSE)
+d
+```
+
+`d$h` is Euclidean distance, while `d$h1` and `d$h2` retain horizontal and
+vertical signs. The signed distances are needed by the Lagrangian models.
+
+# Simulate an MCGF
+
+We first define a separable base covariance model.
+
+```{r base-parameters}
+par_base <- list(
+    par_s = list(
+        nugget = 0.05,
+        c = 0.1,
+        gamma = 0.5
+    ),
+    par_t = list(
+        a = 0.2,
+        alpha = 0.5
+    )
+)
+```
+
+A base-only first-order MCGF can be simulated by setting
+`lagrangian = "none"` and `lambda = 0`.
+
+```{r simulate-base}
+set.seed(1)
+
+x_base <- mcgf_sim(
+    N = 200,
+    base = "sep",
+    lagrangian = "none",
+    par_base = par_base,
+    par_lagr = NULL,
+    lambda = 0,
+    dists = d,
+    lag = 1
+)
+
+dim(x_base)
+```
+
+The first `lag + horizon` rows are initialization rows. If you want a sample
+containing only generated observations, remove them before analysis.
+
+```{r remove-init}
+lag <- 1
+horizon <- 1
+
+x_base_use <- x_base[-seq_len(lag + horizon), , drop = FALSE]
+```
+
+# Add a Lagrangian component
+
+The Lagrangian term models directional space-time asymmetry. For example:
+
+```{r lagr-parameters}
+par_lagr <- list(v1 = 2, v2 = 1, k = 3)
+```
+
+```{r simulate-lagr}
+set.seed(2)
+
+x_lagr <- mcgf_sim(
+    N = 200,
+    base = "sep",
+    lagrangian = "lagr_tri",
+    par_base = par_base,
+    par_lagr = par_lagr,
+    lambda = 0.2,
+    dists = d,
+    lag = 2
+)
+
+dim(x_lagr)
+```
+
+`lambda` controls the contribution of the Lagrangian term. A value close to
+zero gives a model dominated by the symmetric base covariance; a larger value
+places more weight on directional advection.
+
+# Simulate an RS-MCGF
+
+For a regime-switching process, first supply a regime label for every generated
+time point.
+
+```{r regimes}
+N <- 200
+label <- rep(c(1, 2), each = N / 2)
+table(label)
+```
+
+Model arguments ending in `_ls` are lists. A length-one list can often be
+reused across regimes; use one element per regime when parameters differ.
+
+```{r rs-parameters}
+par_base_1 <- par_base
+par_base_2 <- list(
+    par_s = list(
+        nugget = 0.05,
+        c = 0.2,
+        gamma = 0.5
+    ),
+    par_t = list(
+        a = 0.5,
+        alpha = 0.7
+    )
+)
+```
+
+```{r simulate-rs}
+set.seed(3)
+
+x_rs <- mcgf_rs_sim(
+    N = N,
+    label = label,
+    base_ls = list("sep"),
+    lagrangian_ls = list("none"),
+    par_base_ls = list(par_base_1, par_base_2),
+    par_lagr_ls = list(NULL),
+    lambda_ls = list(0),
+    dists_ls = list(d),
+    lag_ls = list(1, 1)
+)
+
+head(x_rs)
+```
+
+The first column contains the regime label and the remaining columns contain
+the simulated spatial process.
+
+# Returning covariance details
+
+Set `return_all = TRUE` when you also want the covariance matrices and lag
+arrays used internally:
+
+```{r return-all}
+set.seed(4)
+
+out <- mcgf_sim(
+    N = 50,
+    base = "sep",
+    lagrangian = "none",
+    par_base = par_base,
+    par_lagr = NULL,
+    lambda = 0,
+    dists = d,
+    lag = 1,
+    return_all = TRUE
+)
+
+names(out)
+names(out$par)
+```
+
+This is particularly useful when checking a simulation design or comparing the
+implied covariance with an empirical estimate.
+
+# Common choices
+
+- `lag` determines the Markov order.
+- `horizon` controls how many steps are generated jointly at each update.
+- `sd` controls marginal standard deviations by location.
+- `scale_time` rescales temporal lags before evaluating the covariance.
+- `mu_c` and `mu_p` allow nonzero conditional means.
+- `init` can supply explicit starting values.
+
+For the covariance functions themselves, see
+`vignette("correlation-models", package = "mcgf")`.
+
+# References
+
+<div id="refs"></div>

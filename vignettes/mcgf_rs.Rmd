@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 ```
 
 # Introduction
-The `mcgf` package contains useful functions to simulate Markov chain Gaussian fields (MCGF) and regime-switching Markov chain Gaussian fields (RS-MCGF) with covariance structures of the Gneiting class [@Gneiting2002]. It also provides useful tools to estimate the parameters by weighted least squares (WLS) and maximum likelihood estimation (MLE). The `mcgf_rs` function can used be to fit covariance models and obtain Kriging forecasts. A typical workflow for fitting a regime-switching mcgf is given below.
+The `mcgf` package contains useful functions to simulate Markov chain Gaussian fields (MCGF) and regime-switching Markov chain Gaussian fields (RS-MCGF) with covariance structures of the Gneiting class [@Gneiting2002], including regime-switching spatio-temporal covariance models developed for short-term wind forecasting [@Jia2025]. It also provides useful tools to estimate the parameters by weighted least squares (WLS) and maximum likelihood estimation (MLE). The `mcgf_rs` function can be used to fit covariance models and obtain Kriging forecasts. A typical workflow for fitting a regime-switching MCGF is given below.
 
 1. Create an `mcgf_rs` object by providing a dataset and the corresponding locations/distances
 2. Calculate auto- and cross-correlations.
@@ -31,7 +31,7 @@ We will demonstrate the use of `mcgf_rs` by an example below.
 Here we will generate a regime-switching MCGF process of size 5,000 with the general stationary covariance structure. More specifically, we suppose there are two regimes each with different prevailing winds but the same fully symmetric model. We will begin with simulating the regime process first.
 
 ## Regime process
-We start with simulating a transition matrix for a two-stage Markov chain with high probabilities of staying in the current regime. The simulated transition matrix and regime process is given below.
+We start with simulating a transition matrix for a two-state Markov chain with high probabilities of staying in the current regime. The simulated transition matrix and regime process are given below.
 ```{r regime}
 library(mcgf)
 K <- 2
@@ -68,7 +68,7 @@ locations_all
 ```
 
 ### Data simulation
-To simulate the 5-th order RS-MCGF process, we calculate the distance matrices for all locations first and then use `mcgf_rs_sim` to simulate such process.
+To simulate the 5th-order RS-MCGF process, we calculate the distance matrices for all locations first and then use `mcgf_rs_sim` to simulate such process.
 ```{r data}
 # simulate RS MCGF
 par_base <- list(
@@ -96,14 +96,14 @@ rownames(data_all) <- 1:nrow(data_all)
 head(data_all)
 ```
 
-We will holdout the new locations for parameter estimation.
+We will hold out the new locations for parameter estimation.
 ```{r hold}
 data_old <- data_all[, 1:21]
 data_new <- data_all[, -c(1:21)]
 ```
 
 ## Fitting Covariance Models
-We will first fit pure spatial and temporal models, then the fully symmetric model, and finally the general stationary model. First, we will create an `mcgf_rs` object and calculate auto- and cross- correlations.
+We will first fit pure spatial and temporal models, then the fully symmetric model, and finally the general stationary model. First, we will create an `mcgf_rs` object and calculate auto- and cross-correlations.
 ```{r mcgf}
 data_mcgf <- mcgf_rs(data_old[, -1],
     locations = locations, longlat = TRUE,
@@ -144,7 +144,7 @@ fit_spatial[[1]]$fit
 ```
 
 ### Pure Temporal Model
-The pure temporal can also be fitted by `fit_base`:
+The pure temporal model can also be fitted by `fit_base`:
 ```{r temporal}
 fit_temporal <- fit_base(
     data_mcgf,
@@ -205,7 +205,7 @@ model(data_mcgf, old = TRUE)
 ```
 
 ## Simple Kriging for new locations
-We provide functionalists for computing simple Kriging forecasts for new locations. The associated function is `krige_new`, and users can either supply the coordinates for the new locations or the distance matrices for all locations. 
+We provide functions for computing simple Kriging forecasts for new locations. The associated function is `krige_new`, and users can either supply the coordinates for the new locations or the distance matrices for all locations. 
 ```{r krige}
 krige_base_new <- krige_new(
     x = data_mcgf,

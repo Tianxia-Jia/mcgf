@@ -37,7 +37,7 @@ ccfs <- function(x, ...) {
 #' cross-correlation for a time lag.
 #'
 #' For `mcgf_rs` objects, [`ccfs()`] computes regime-switching
-#' cross-correlations for each time lag. The output is a list of array of
+#' cross-correlations for each time lag. The output is a list of arrays of
 #' matrices where each array in the list corresponds to the cross-correlation
 #' for a regime.
 #'

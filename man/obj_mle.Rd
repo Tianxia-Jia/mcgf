@@ -2,7 +2,7 @@
 % Please edit documentation in R/estimate.R
 \name{obj_mle}
 \alias{obj_mle}
-\title{Title}
+\title{Compute the objective for mle method}
 \usage{
 obj_mle(par, cor_fn, x, lag, par_fixed)
 }
@@ -18,10 +18,10 @@ obj_mle(par, cor_fn, x, lag, par_fixed)
 \item{par_fixed}{Fixed parameters of \code{cor_fn}.}
 }
 \value{
-The objective of maximum likelihood: the additive inverse of
-log-likelihood.
+A numeric value proportional to the negative approximate conditional
+log-likelihood, to be minimized during parameter estimation.
 }
 \description{
-Title
+Compute the objective for mle method
 }
 \keyword{internal}

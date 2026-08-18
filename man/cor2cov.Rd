@@ -17,7 +17,7 @@ cor2cov_ar(V, sd, empirical = FALSE)
 \item{empirical}{Logical; TRUE if V is empirical correlation.}
 }
 \value{
-A correlation matrix.
+A covariance matrix or covariance array.
 }
 \description{
 Convert correlation to covariance

@@ -11,7 +11,7 @@
 #' @param sd A vector of standard deviations.
 #' @param empirical Logical; TRUE if V is empirical correlation.
 #'
-#' @return A correlation matrix.
+#' @return A covariance matrix or covariance array.
 #' @export
 #'
 #' @details

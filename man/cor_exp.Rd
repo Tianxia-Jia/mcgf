@@ -9,9 +9,9 @@ cor_exp(x, c, gamma = 1/2, nugget = 0, is.dist = FALSE)
 \arguments{
 \item{x}{A numeric vector, matrix, or array.}
 
-\item{c}{Smooth parameter, \eqn{c>0}.}
+\item{c}{Scale parameter, \eqn{c>0}.}
 
-\item{gamma}{Scale parameter, \eqn{\gamma\in(0, 1/2]}. Default is 1/2.}
+\item{gamma}{Smooth parameter, \eqn{\gamma\in(0, 1/2]}. Default is 1/2.}
 
 \item{nugget}{The nugget effect \eqn{\in[0, 1]}.}
 
@@ -44,14 +44,14 @@ Geostatistics. Journal of the Royal Statistical Society. Series C (Applied
 Statistics), 47(3), 299–350.
 }
 \seealso{
-Other correlation functions: 
-\code{\link{cor_cauchy}()},
-\code{\link{cor_fs}()},
-\code{\link{cor_lagr_askey}()},
-\code{\link{cor_lagr_exp}()},
-\code{\link{cor_lagr_tri}()},
-\code{\link{cor_sep}()},
-\code{\link{cor_stat}()},
-\code{\link{cor_stat_rs}()}
+Other correlation functions:
+\code{\link[=cor_cauchy]{cor_cauchy()}},
+\code{\link[=cor_fs]{cor_fs()}},
+\code{\link[=cor_lagr_askey]{cor_lagr_askey()}},
+\code{\link[=cor_lagr_exp]{cor_lagr_exp()}},
+\code{\link[=cor_lagr_tri]{cor_lagr_tri()}},
+\code{\link[=cor_sep]{cor_sep()}},
+\code{\link[=cor_stat]{cor_stat()}},
+\code{\link[=cor_stat_rs]{cor_stat_rs()}}
 }
 \concept{correlation functions}

@@ -52,7 +52,7 @@ sim1 <- list(data = sim1, locations = locations, dists = h)
 }
 }
 \seealso{
-Other (simulated) datasets: 
+Other (simulated) datasets:
 \code{\link{sim2}},
 \code{\link{sim3}},
 \code{\link{wind}}

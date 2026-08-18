@@ -20,13 +20,13 @@ x/longitude, and the second column is y/latitude.}
 \item{locations_new}{A matrix or data.frame of 2D points, the first column is
 x/longitude, and the second column is y/latitude.}
 
-\item{longlat}{Logical, if TURE Great Circle (WGS84 ellipsoid) distance;
+\item{longlat}{Logical, if TRUE Great Circle (WGS84 ellipsoid) distance;
 if FALSE, Euclidean distance.}
 
 \item{origin}{Optional; used when \code{longlat} is TRUE. An integer index
 indicating the reference location from \code{locations} which will be used as
 the origin. Same \code{origin} from \code{find_dists} must be used to ensure
-consistancy between outputs from \code{find_dists} and \code{find_dists_new}.}
+consistency between outputs from \code{find_dists} and \code{find_dists_new}.}
 
 \item{return_grid}{Logical; used when \code{longlat} is TRUE. If TRUE the mapped
 coordinates on a 2D plane for all locations is returned.}
@@ -35,7 +35,7 @@ coordinates on a 2D plane for all locations is returned.}
 }
 \value{
 A list of distance matrices for all locations. If \code{return_grid} is
-TRUE, a list consists of a list of distance matrices for all locations,
+TRUE, a list consisting of a list of distance matrices for all locations,
 the mapped 2D grid for all locations, and the origin is returned.
 }
 \description{

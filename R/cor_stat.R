@@ -1,7 +1,8 @@
 #' Calculate correlation for the general stationary model
 #'
 #' @param cor_base An array of base cross-correlation matrices.
-#' @param lagrangian Lagrangian model, `none`, `lagr_tri`, or `lagr_askey`.
+#' @param lagrangian Lagrangian model, `none`, `lagr_tri`, `lagr_askey`, or
+#' `lagr_exp`.
 #' @param lambda Weight of the Lagrangian term, \eqn{\lambda\in[0, 1]}.
 #' @param v1 Prevailing wind, u-component.
 #' @param v2 Prevailing wind, v-component.
@@ -26,7 +27,8 @@
 #' Calculate general stationary correlation.
 #'
 #' @param base Base model, `sep` or `fs` for now. Or correlation matrix/array.
-#' @param lagrangian Lagrangian model, `none`, `lagr_tri`, or `lagr_askey`.
+#' @param lagrangian Lagrangian model, `none`, `lagr_tri`, `lagr_askey`, or
+#' `lagr_exp`.
 #' @param par_base Parameters for the base model (symmetric), used only when
 #' `base_fixed = FALSE`.
 #' @param par_lagr Parameters for the Lagrangian model. Used only when
@@ -121,7 +123,7 @@
 #'
 #' @family correlation functions
 cor_stat <- function(base = c("sep", "fs"),
-                     lagrangian = c("none", "lagr_tri", "lagr_askey"),
+                     lagrangian = c("none", "lagr_tri", "lagr_askey", "lagr_exp"),
                      par_base,
                      par_lagr,
                      lambda,
@@ -134,7 +136,7 @@ cor_stat <- function(base = c("sep", "fs"),
 
     if (lagrangian == "none") {
         if (base_fixed) {
-            stop("cannot supply `base` when `lagragian = 'none'`",
+            stop("cannot supply `base` when `lagrangian = 'none'`",
                 call. = FALSE
             )
         } else {

@@ -102,11 +102,11 @@ popi <- colMeans(
 popi
 }
 \seealso{
-Other functions on fitting an mcgf_rs: 
-\code{\link{add_base.mcgf_rs}()},
-\code{\link{add_lagr.mcgf_rs}()},
-\code{\link{fit_base.mcgf_rs}()},
-\code{\link{fit_lagr.mcgf_rs}()},
-\code{\link{krige_new.mcgf_rs}()}
+Other functions on fitting an mcgf_rs:
+\code{\link[=add_base.mcgf_rs]{add_base.mcgf_rs()}},
+\code{\link[=add_lagr.mcgf_rs]{add_lagr.mcgf_rs()}},
+\code{\link[=fit_base.mcgf_rs]{fit_base.mcgf_rs()}},
+\code{\link[=fit_lagr.mcgf_rs]{fit_lagr.mcgf_rs()}},
+\code{\link[=krige_new.mcgf_rs]{krige_new.mcgf_rs()}}
 }
 \concept{functions on fitting an mcgf_rs}

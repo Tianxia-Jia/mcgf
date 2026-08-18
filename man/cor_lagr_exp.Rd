@@ -53,14 +53,14 @@ Geostatistics. Journal of the Royal Statistical Society. Series C (Applied
 Statistics), 47(3), 299–350.
 }
 \seealso{
-Other correlation functions: 
-\code{\link{cor_cauchy}()},
-\code{\link{cor_exp}()},
-\code{\link{cor_fs}()},
-\code{\link{cor_lagr_askey}()},
-\code{\link{cor_lagr_tri}()},
-\code{\link{cor_sep}()},
-\code{\link{cor_stat}()},
-\code{\link{cor_stat_rs}()}
+Other correlation functions:
+\code{\link[=cor_cauchy]{cor_cauchy()}},
+\code{\link[=cor_exp]{cor_exp()}},
+\code{\link[=cor_fs]{cor_fs()}},
+\code{\link[=cor_lagr_askey]{cor_lagr_askey()}},
+\code{\link[=cor_lagr_tri]{cor_lagr_tri()}},
+\code{\link[=cor_sep]{cor_sep()}},
+\code{\link[=cor_stat]{cor_stat()}},
+\code{\link[=cor_stat_rs]{cor_stat_rs()}}
 }
 \concept{correlation functions}

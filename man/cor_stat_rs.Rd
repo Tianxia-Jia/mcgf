@@ -24,8 +24,8 @@ cor_stat_rs(
 \item{base_ls}{List of base model, \code{sep} or \code{fs} for now. Or list of
 correlation matrices/arrays.}
 
-\item{lagrangian_ls}{List of Lagrangian model, \code{lagr_tri} or \code{lagr_askey}
-for now.}
+\item{lagrangian_ls}{List of Lagrangian models. Each element can be
+\code{none}, \code{lagr_tri}, \code{lagr_askey}, or \code{lagr_exp}.}
 
 \item{par_base_ls}{List of parameters for the base model, used only when
 \code{base_fixed = FALSE}.}
@@ -103,20 +103,20 @@ cor_stat_rs(
     u_ls = list(u, u + 1),
     lambda_ls = list(0, 0.8),
     base_ls = list(fit_base),
-    lagrangian = list("lagr_tri", "lagr_askey"),
+    lagrangian_ls = list("lagr_tri", "lagr_askey"),
     base_fixed = TRUE
 )
 
 }
 \seealso{
-Other correlation functions: 
-\code{\link{cor_cauchy}()},
-\code{\link{cor_exp}()},
-\code{\link{cor_fs}()},
-\code{\link{cor_lagr_askey}()},
-\code{\link{cor_lagr_exp}()},
-\code{\link{cor_lagr_tri}()},
-\code{\link{cor_sep}()},
-\code{\link{cor_stat}()}
+Other correlation functions:
+\code{\link[=cor_cauchy]{cor_cauchy()}},
+\code{\link[=cor_exp]{cor_exp()}},
+\code{\link[=cor_fs]{cor_fs()}},
+\code{\link[=cor_lagr_askey]{cor_lagr_askey()}},
+\code{\link[=cor_lagr_exp]{cor_lagr_exp()}},
+\code{\link[=cor_lagr_tri]{cor_lagr_tri()}},
+\code{\link[=cor_sep]{cor_sep()}},
+\code{\link[=cor_stat]{cor_stat()}}
 }
 \concept{correlation functions}

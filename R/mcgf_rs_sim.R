@@ -3,7 +3,8 @@
 #' @param N Sample size.
 #' @param label Vector of regime labels of the same length as `N`.
 #' @param base_ls List of base model, `sep` or `fs` for now.
-#' @param lagrangian_ls List of Lagrangian model, "none" or `lagr_tri` for now.
+#' @param lagrangian_ls List of Lagrangian models. Each element can be `none`,
+#' `lagr_tri`, `lagr_askey`, or `lagr_exp`.
 #' @param par_base_ls List of parameters for the base model.
 #' @param par_lagr_ls List of parameters for the Lagrangian model.
 #' @param lambda_ls List of weight of the Lagrangian term,

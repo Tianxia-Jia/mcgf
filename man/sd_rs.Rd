@@ -10,7 +10,7 @@ sd_rs(x, label)
 \item{x}{A \code{data.frame} or \code{matrix}.}
 
 \item{label}{A vector of regime labels. Its length must be the same as
-the number rows in \code{x}.}
+the number of rows in \code{x}.}
 }
 \value{
 A list of standard deviations for each regime.

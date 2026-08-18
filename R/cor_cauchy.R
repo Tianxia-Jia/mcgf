@@ -1,8 +1,8 @@
 #' Calculate Cauchy correlation
 #'
 #' @param x A numeric vector, matrix, or array.
-#' @param a Smooth parameter, \eqn{a>0}.
-#' @param alpha Scale parameter, \eqn{\alpha\in(0, 1]}.
+#' @param a Scale parameter, \eqn{a>0}.
+#' @param alpha Smooth parameter, \eqn{\alpha\in(0, 1]}.
 #' @param nu Power parameter, \eqn{\nu>0}. Default is 1.
 #' @param nugget The nugget effect \eqn{\in[0, 1]}.
 #'

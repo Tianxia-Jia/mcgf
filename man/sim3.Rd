@@ -87,7 +87,7 @@ sim3 <- list(
 }
 }
 \seealso{
-Other (simulated) datasets: 
+Other (simulated) datasets:
 \code{\link{sim1}},
 \code{\link{sim2}},
 \code{\link{wind}}

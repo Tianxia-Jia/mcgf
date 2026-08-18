@@ -7,7 +7,7 @@
 mcgf_sim(
   N,
   base = c("sep", "fs"),
-  lagrangian = c("none", "lagr_tri", "lagr_askey"),
+  lagrangian = c("none", "lagr_tri", "lagr_askey", "lagr_exp"),
   par_base,
   par_lagr,
   lambda,
@@ -27,7 +27,8 @@ mcgf_sim(
 
 \item{base}{Base model, \code{sep} or \code{fs} for now.}
 
-\item{lagrangian}{Lagrangian model, "none" or \code{lagr_tri} for now.}
+\item{lagrangian}{Lagrangian model, \code{none}, \code{lagr_tri}, \code{lagr_askey},
+or \code{lagr_exp}.}
 
 \item{par_base}{Parameters for the base model (symmetric).}
 
@@ -83,7 +84,7 @@ plot.ts(X)
 
 }
 \seealso{
-Other simulations of Markov chain Gaussian fields: 
-\code{\link{mcgf_rs_sim}()}
+Other simulations of Markov chain Gaussian fields:
+\code{\link[=mcgf_rs_sim]{mcgf_rs_sim()}}
 }
 \concept{simulations of Markov chain Gaussian fields}

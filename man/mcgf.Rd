@@ -19,11 +19,11 @@ Required when \code{locations} is not supplied.}
 
 \item{time}{Optional, a vector of equally spaced time stamps.}
 
-\item{longlat}{Logical, if TURE \code{locations} contains longitudes and
+\item{longlat}{Logical, if TRUE \code{locations} contains longitudes and
 latitudes.}
 
 \item{origin}{Optional; used when \code{longlat} is TRUE. An integer index
-indicating the reference location which well be used as the origin.}
+indicating the reference location which will be used as the origin.}
 }
 \value{
 An S3 object of class \code{mcgf}. As it inherits and extends the

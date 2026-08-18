@@ -9,7 +9,7 @@ check_dists(dists, n_var, names, name_dists = "dists")
 \arguments{
 \item{dists}{List of scaler or vector}
 
-\item{n_var}{Scaler, number of variables.}
+\item{n_var}{Scalar, number of variables.}
 
 \item{names}{column and row names of matrices in \code{dists}.}
 

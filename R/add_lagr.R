@@ -128,10 +128,10 @@ add_lagr.mcgf <- function(x, fit_lagr, ...) {
 #' @export
 #'
 #' @details
-# ‘ This function is equivalent to [`add_lagr.mcgf()`] for `mcgf_rs` objects.
-# ‘
+#' This function is equivalent to [`add_lagr.mcgf()`] for `mcgf_rs` objects.
+#'
 #' After fitting the Lagrangian model by [`fit_lagr()`], the results can be
-#' added to `x` by [`add_base()`]. To supply the Lagrangian model directly,
+#' added to `x` by [`add_lagr()`]. To supply the Lagrangian model directly,
 #' use [`lagr<-`] to add the Lagrangian model; the value must contain the same
 #' output as [`add_lagr.mcgf()`] or [`add_lagr.mcgf_rs()`].
 #'

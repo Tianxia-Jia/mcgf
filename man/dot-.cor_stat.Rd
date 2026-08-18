@@ -9,7 +9,8 @@
 \arguments{
 \item{cor_base}{An array of base cross-correlation matrices.}
 
-\item{lagrangian}{Lagrangian model, \code{none}, \code{lagr_tri}, or \code{lagr_askey}.}
+\item{lagrangian}{Lagrangian model, \code{none}, \code{lagr_tri}, \code{lagr_askey}, or
+\code{lagr_exp}.}
 
 \item{lambda}{Weight of the Lagrangian term, \eqn{\lambda\in[0, 1]}.}
 

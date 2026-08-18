@@ -23,7 +23,7 @@ Correlations of the same dimension as \code{x}.
 Adjust for nugget effect for correlations
 }
 \details{
-To adjust spatial nugget effect, enery entry of \code{x} is first multipled by
+To adjust spatial nugget effect, every entry of \code{x} is first multiplied by
 by \eqn{(1-\text{nugget})}; Then \code{add_nugget} adds \code{nugget} to the diagonals
 (or the diagonals of each matrix slice) of \code{x}, and \code{set_nugget} set the
 diagonals (or the diagonals of each matrix slice) to the corresponding

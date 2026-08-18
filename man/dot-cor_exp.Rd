@@ -9,9 +9,9 @@
 \arguments{
 \item{x}{A numeric vector, matrix, or array.}
 
-\item{c}{Smooth parameter, \eqn{c>0}.}
+\item{c}{Scale parameter, \eqn{c>0}.}
 
-\item{gamma}{Scale parameter, \eqn{\gamma\in(0, 1/2]}. Default is 1/2.}
+\item{gamma}{Smooth parameter, \eqn{\gamma\in(0, 1/2]}. Default is 1/2.}
 
 \item{nugget}{The nugget effect \eqn{\in[0, 1]}.}
 }

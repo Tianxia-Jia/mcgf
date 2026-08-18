@@ -3,8 +3,8 @@
 #' @param n_regime Integer, number of regimes.
 #' @param base_ls List of base model, `sep` or `fs` for now. Or list of
 #' correlation matrices/arrays.
-#' @param lagrangian_ls List of Lagrangian model, `lagr_tri` or `lagr_askey`
-#' for now.
+#' @param lagrangian_ls List of Lagrangian models. Each element can be
+#' `none`, `lagr_tri`, `lagr_askey`, or `lagr_exp`.
 #' @param par_base_ls List of parameters for the base model, used only when
 #' `base_fixed = FALSE`.
 #' @param par_lagr_ls List of parameters for the Lagrangian model.  Used only
@@ -70,7 +70,7 @@
 #'     u_ls = list(u, u + 1),
 #'     lambda_ls = list(0, 0.8),
 #'     base_ls = list(fit_base),
-#'     lagrangian = list("lagr_tri", "lagr_askey"),
+#'     lagrangian_ls = list("lagr_tri", "lagr_askey"),
 #'     base_fixed = TRUE
 #' )
 #'
@@ -105,14 +105,14 @@ cor_stat_rs <- function(n_regime,
 
         if (missing(lambda_ls) || length(lambda_ls) != n_regime) {
             stop("length of `lambda_ls` must be ", n_regime,
-                " if `lambda_ls`` contains 'none'.",
+                " if `lambda_ls` contains 'none'.",
                 call. = FALSE
             )
         }
 
         if (missing(h1_ls) || length(h1_ls) != n_regime) {
             stop("length of `h1_ls` must be ", n_regime,
-                " if `h1_ls`` contains 'none'.",
+                " if `h1_ls` contains 'none'.",
                 call. = FALSE
             )
         }

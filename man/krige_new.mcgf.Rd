@@ -65,7 +65,7 @@ given their coordinates or relative distances. It supports kriging for the
 the base and Lagrangian model from \code{x}.
 
 Users can either supply the coordinates via \code{locations_new}, or a list of
-distance for all locations via \code{dists_new}, with new locations at the
+distances for all locations via \code{dists_new}, with new locations at the
 end. \code{dists_new} will be used to calculate the new covariance matrices.
 When \code{locations_new} is used, make sure \code{x} contains the attribute
 \code{locations} of the coordinates of the old locations. When \code{dists_new} is
@@ -78,7 +78,7 @@ them and they will be used to calculate the kriging forecasts for the new
 locations; otherwise only data of the old locations will be used via
 \code{newdata}.
 
-When \code{interval = TRUE}, confidence interval for each forecasts and each
+When \code{interval = TRUE}, a confidence interval for each forecasts and each
 horizon is given. Note that it does not compute confidence regions.
 }
 \examples{
@@ -121,11 +121,11 @@ sim1_krige <- krige_new(sim1_mcgf,
 )
 }
 \seealso{
-Other functions on fitting an mcgf: 
-\code{\link{add_base.mcgf}()},
-\code{\link{add_lagr.mcgf}()},
-\code{\link{fit_base.mcgf}()},
-\code{\link{fit_lagr.mcgf}()},
-\code{\link{krige.mcgf}()}
+Other functions on fitting an mcgf:
+\code{\link[=add_base.mcgf]{add_base.mcgf()}},
+\code{\link[=add_lagr.mcgf]{add_lagr.mcgf()}},
+\code{\link[=fit_base.mcgf]{fit_base.mcgf()}},
+\code{\link[=fit_lagr.mcgf]{fit_lagr.mcgf()}},
+\code{\link[=krige.mcgf]{krige.mcgf()}}
 }
 \concept{functions on fitting an mcgf}

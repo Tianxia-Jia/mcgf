@@ -15,8 +15,8 @@ and fitting covariance models. It provides functions for simulating
 (regime-switching) Markov chain Gaussian fields with covariance
 functions of the Gneiting class by simple kriging. Parameter estimation
 methods such as weighted least squares and maximum likelihood estimation
-are available. Below is an example of simulating and estimation
-parameters for an MCGF.
+are available. Below is an example of simulating an MCGF and estimating
+its parameters for an MCGF.
 
 ## Installation
 
@@ -41,8 +41,8 @@ h <- rdists(10)
 
 Next, we simulate an MCGF with the general stationary covariance
 structure. In this example the covariance structure is a convex
-combination of a base separable model and a Lagrangian model account for
-asymmetry.
+combination of a base separable model and a Lagrangian model that
+accounts for asymmetry.
 
 ``` r
 N <- 1000
