@@ -5,67 +5,52 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="mcgf">
 <title>Steps for fitting an `mcgf_rs` object • mcgf</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.11/clipboard.min.js" integrity="sha512-7O5pXpc0oCRrxk8RUfDYFgn0nO1t+jLuIOQdOMRp4APB7uZ4vSjspzp5y6YDtDs4VzUSTbWzBFZ/LKJhnyFOKw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Steps for fitting an `mcgf_rs` object">
-<meta property="og:description" content="mcgf">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Steps for fitting an `mcgf_rs` object">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light" data-bs-theme="light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">mcgf</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.1.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.0</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../articles/mcgf.html">Get started</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../articles/mcgf.html">Get started</a></li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/mcgf_rs.html">Steps for fitting an `mcgf_rs` object</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="../articles/correlation-models.html">Choosing and Building Covariance Models</a></li>
+    <li><a class="dropdown-item" href="../articles/forecasting-new-locations.html">Forecasting at New Locations</a></li>
+    <li><a class="dropdown-item" href="../articles/mcgf_rs.html">Steps for fitting an `mcgf_rs` object</a></li>
+    <li><a class="dropdown-item" href="../articles/simulation.html">Simulating MCGF and RS-MCGF Processes</a></li>
+  </ul>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">Changelog</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/tianxia-jia/mcgf/" aria-label="github">
-    <span class="fab fa fab fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><form class="form-inline" role="search">
+ <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
+</form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/tianxia-jia/mcgf/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -74,10 +59,11 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Steps for fitting an `mcgf_rs` object</h1>
+
+      <h1>Steps for fitting an `mcgf_rs` object</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/tianxia-jia/mcgf/blob/HEAD/vignettes/mcgf_rs.Rmd" class="external-link"><code>vignettes/mcgf_rs.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tianxia-jia/mcgf/blob/master/vignettes/mcgf_rs.Rmd" class="external-link"><code>vignettes/mcgf_rs.Rmd</code></a></small>
       <div class="d-none name"><code>mcgf_rs.Rmd</code></div>
     </div>
 
@@ -89,12 +75,14 @@
 <p>The <code>mcgf</code> package contains useful functions to simulate
 Markov chain Gaussian fields (MCGF) and regime-switching Markov chain
 Gaussian fields (RS-MCGF) with covariance structures of the Gneiting
-class <span class="citation">(Gneiting 2002)</span>. It also provides
-useful tools to estimate the parameters by weighted least squares (WLS)
-and maximum likelihood estimation (MLE). The <code>mcgf_rs</code>
-function can used be to fit covariance models and obtain Kriging
-forecasts. A typical workflow for fitting a regime-switching mcgf is
-given below.</p>
+class <span class="citation">(Gneiting 2002)</span>, including
+regime-switching spatio-temporal covariance models developed for
+short-term wind forecasting <span class="citation">(Jia and Sezer
+2025)</span>. It also provides useful tools to estimate the parameters
+by weighted least squares (WLS) and maximum likelihood estimation (MLE).
+The <code>mcgf_rs</code> function can be used to fit covariance models
+and obtain Kriging forecasts. A typical workflow for fitting a
+regime-switching MCGF is given below.</p>
 <ol style="list-style-type: decimal">
 <li>Create an <code>mcgf_rs</code> object by providing a dataset and the
 corresponding locations/distances</li>
@@ -120,9 +108,9 @@ process first.</p>
 <div class="section level3">
 <h3 id="regime-process">Regime process<a class="anchor" aria-label="anchor" href="#regime-process"></a>
 </h3>
-<p>We start with simulating a transition matrix for a two-stage Markov
+<p>We start with simulating a transition matrix for a two-state Markov
 chain with high probabilities of staying in the current regime. The
-simulated transition matrix and regime process is given below.</p>
+simulated transition matrix and regime process are given below.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tianxia-jia/mcgf" class="external-link">mcgf</a></span><span class="op">)</span></span>
 <span><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
@@ -136,9 +124,8 @@ simulated transition matrix and regime process is given below.</p>
 <span><span class="va">tran_mat</span></span>
 <span><span class="co">#&gt;            [,1]       [,2]</span></span>
 <span><span class="co">#&gt; [1,] 0.92650859 0.07349141</span></span>
-<span><span class="co">#&gt; [2,] 0.04934827 0.95065173</span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; [2,] 0.04934827 0.95065173</span></span>
+<span></span>
 <span><span class="va">regime</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="va">N</span><span class="op">)</span></span>
 <span><span class="va">regime</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span></span>
@@ -158,7 +145,7 @@ simulated transition matrix and regime process is given below.</p>
 </h4>
 <p>We generate the coordinates of 25 locations below and treat the last
 5 locations as unobserved locations.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">25</span>, <span class="op">-</span><span class="fl">110</span><span class="op">)</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">25</span>, <span class="fl">50</span><span class="op">)</span></span>
@@ -196,10 +183,10 @@ simulated transition matrix and regime process is given below.</p>
 <div class="section level4">
 <h4 id="data-simulation-1">Data simulation<a class="anchor" aria-label="anchor" href="#data-simulation-1"></a>
 </h4>
-<p>To simulate the 5-th order RS-MCGF process, we calculate the distance
+<p>To simulate the 5th-order RS-MCGF process, we calculate the distance
 matrices for all locations first and then use <code>mcgf_rs_sim</code>
 to simulate such process.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># simulate RS MCGF</span></span>
 <span><span class="va">par_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>    par_s <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>nugget <span class="op">=</span> <span class="fl">0</span>, c <span class="op">=</span> <span class="fl">0.005</span>, gamma <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
@@ -252,8 +239,8 @@ to simulate such process.</p>
 <span><span class="co">#&gt; 4 -0.31026289 -0.3648568 -0.20992439  0.1999604 -0.81191510 -0.8132315</span></span>
 <span><span class="co">#&gt; 5 -0.38518119 -0.9982079 -0.59390388 -0.8748418 -0.61917135 -0.1031998</span></span>
 <span><span class="co">#&gt; 6 -0.48971901 -1.9617002 -1.33014481 -1.4159325 -0.20824058 -1.3501761</span></span></code></pre></div>
-<p>We will holdout the new locations for parameter estimation.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p>We will hold out the new locations for parameter estimation.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_old</span> <span class="op">&lt;-</span> <span class="va">data_all</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">21</span><span class="op">]</span></span>
 <span><span class="va">data_new</span> <span class="op">&lt;-</span> <span class="va">data_all</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">21</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
 </div>
@@ -264,15 +251,14 @@ to simulate such process.</p>
 <p>We will first fit pure spatial and temporal models, then the fully
 symmetric model, and finally the general stationary model. First, we
 will create an <code>mcgf_rs</code> object and calculate auto- and
-cross- correlations.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+cross-correlations.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mcgf_rs.html">mcgf_rs</a></span><span class="op">(</span><span class="va">data_old</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span>,</span>
 <span>    locations <span class="op">=</span> <span class="va">locations</span>, longlat <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>    label <span class="op">=</span> <span class="va">data_old</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; `time` is not provided, assuming rows are equally spaced temporally.</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/acfs.mcgf.html">add_acfs</a></span><span class="op">(</span><span class="va">data_mcgf</span>, lag_max <span class="op">=</span> <span class="va">lag</span><span class="op">)</span></span>
+<span><span class="co">#&gt; `time` is not provided, assuming rows are equally spaced temporally.</span></span>
+<span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/acfs.mcgf.html">add_acfs</a></span><span class="op">(</span><span class="va">data_mcgf</span>, lag_max <span class="op">=</span> <span class="va">lag</span><span class="op">)</span></span>
 <span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ccfs.mcgf.html">add_ccfs</a></span><span class="op">(</span><span class="va">data_mcgf</span>, lag_max <span class="op">=</span> <span class="va">lag</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># If multiple cores are available</span></span>
@@ -280,7 +266,7 @@ cross- correlations.</p>
 <p>Here <code>acfs</code> actually refers to the mean auto-correlations
 across the stations for each time lag. To view the calculated
 <code>acfs</code>, we can run:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/acfs.html">acfs</a></span><span class="op">(</span><span class="va">data_mcgf</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $acfs</span></span>
 <span><span class="co">#&gt;      lag0      lag1      lag2      lag3      lag4      lag5 </span></span>
@@ -297,7 +283,7 @@ across the stations for each time lag. To view the calculated
 <p>Similarly, we can view the <code>ccfs</code> by the <code>ccfs</code>
 function. Here we will present lag 1 regime-switching ccfs for the first
 6 locations for the two regimes.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Regime 1</span></span>
 <span><span class="fu"><a href="../reference/ccfs.html">ccfs</a></span><span class="op">(</span><span class="va">data_mcgf</span><span class="op">)</span><span class="op">$</span><span class="va">ccfs_rs</span><span class="op">$</span><span class="va">`Regime 1`</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">2</span><span class="op">]</span></span>
 <span><span class="co">#&gt;           1         2          3         4         5          6</span></span>
@@ -306,9 +292,8 @@ function. Here we will present lag 1 regime-switching ccfs for the first
 <span><span class="co">#&gt; 3 0.2293202 0.3347340 0.58222643 0.3837498 0.2952973 0.46537082</span></span>
 <span><span class="co">#&gt; 4 0.5256692 0.1564803 0.12938351 0.6003370 0.1701296 0.11145141</span></span>
 <span><span class="co">#&gt; 5 0.2602507 0.5444454 0.32282783 0.3751226 0.6132754 0.30494395</span></span>
-<span><span class="co">#&gt; 6 0.1959693 0.3710529 0.53421219 0.3193299 0.3348082 0.56379838</span></span></code></pre></div>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; 6 0.1959693 0.3710529 0.53421219 0.3193299 0.3348082 0.56379838</span></span>
+<span></span>
 <span><span class="co"># Regime 2</span></span>
 <span><span class="fu"><a href="../reference/ccfs.html">ccfs</a></span><span class="op">(</span><span class="va">data_mcgf</span><span class="op">)</span><span class="op">$</span><span class="va">ccfs_rs</span><span class="op">$</span><span class="va">`Regime 2`</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, <span class="fl">2</span><span class="op">]</span></span>
 <span><span class="co">#&gt;           1         2         3         4         5         6</span></span>
@@ -325,7 +310,7 @@ function. Here we will present lag 1 regime-switching ccfs for the first
 function. The results are actually obtained from the optimization
 function <code>nlminb</code>. Since the base model is the same for the
 two regimes, we set <code>rs = FALSE</code> to indicate this.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_spatial</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_base.html">fit_base</a></span><span class="op">(</span></span>
 <span>    <span class="va">data_mcgf</span>,</span>
 <span>    model_ls <span class="op">=</span> <span class="st">"spatial"</span>,</span>
@@ -358,8 +343,9 @@ two regimes, we set <code>rs = FALSE</code> to indicate this.</p>
 <div class="section level4">
 <h4 id="pure-temporal-model">Pure Temporal Model<a class="anchor" aria-label="anchor" href="#pure-temporal-model"></a>
 </h4>
-<p>The pure temporal can also be fitted by <code>fit_base</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<p>The pure temporal model can also be fitted by
+<code>fit_base</code>:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_temporal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_base.html">fit_base</a></span><span class="op">(</span></span>
 <span>    <span class="va">data_mcgf</span>,</span>
 <span>    model <span class="op">=</span> <span class="st">"temporal"</span>,</span>
@@ -389,7 +375,7 @@ two regimes, we set <code>rs = FALSE</code> to indicate this.</p>
 <span><span class="co">#&gt; [1] "relative convergence (4)"</span></span></code></pre></div>
 <p>We can store the fitted spatial and temporal models to
 <code>data_mcgf</code> using <code>add_base</code>:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_base.html">add_base</a></span><span class="op">(</span><span class="va">data_mcgf</span>,</span>
 <span>    fit_s <span class="op">=</span> <span class="va">fit_spatial</span>,</span>
 <span>    fit_t <span class="op">=</span> <span class="va">fit_temporal</span>,</span>
@@ -401,7 +387,7 @@ two regimes, we set <code>rs = FALSE</code> to indicate this.</p>
 </h4>
 <p>We can also calculate the WLS estimates all at once by fitting the
 separable model:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_sep</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_base.html">fit_base</a></span><span class="op">(</span></span>
 <span>    <span class="va">data_mcgf</span>,</span>
 <span>    model_ls <span class="op">=</span> <span class="st">"sep"</span>,</span>
@@ -433,7 +419,7 @@ separable model:</p>
 <span><span class="co">#&gt; [1] "relative convergence (4)"</span></span></code></pre></div>
 <p>store the fully symmetric model as the base model and print the base
 model:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_base.html">add_base</a></span><span class="op">(</span><span class="va">data_mcgf</span>, fit_base <span class="op">=</span> <span class="va">fit_sep</span>, old <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/model.html">model</a></span><span class="op">(</span><span class="va">data_mcgf</span>, model <span class="op">=</span> <span class="st">"base"</span>, old <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ----------------------------------------</span></span>
@@ -484,7 +470,7 @@ reproducibility, but to keep a history of fitted models.</p>
 </h4>
 <p>We will fit Lagrangian correlation functions to model the
 regime-dependent prevailing winds:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit_lagr_rs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fit_lagr.html">fit_lagr</a></span><span class="op">(</span><span class="va">data_mcgf</span>,</span>
 <span>    model_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"lagr_tri"</span><span class="op">)</span>,</span>
 <span>    par_init_ls <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>lambda <span class="op">=</span> <span class="fl">0.1</span>, v1 <span class="op">=</span> <span class="fl">100</span>, v2 <span class="op">=</span> <span class="fl">100</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
@@ -493,20 +479,20 @@ regime-dependent prevailing winds:</p>
 <span><span class="co">#&gt; $`Regime 1`</span></span>
 <span><span class="co">#&gt; $`Regime 1`$par</span></span>
 <span><span class="co">#&gt;     lambda         v1         v2          k </span></span>
-<span><span class="co">#&gt;  0.1703142 74.4859663 65.8446145  1.3401565 </span></span>
+<span><span class="co">#&gt;  0.1702415 74.3744096 65.6736958  1.3422782 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $`Regime 1`$objective</span></span>
-<span><span class="co">#&gt; [1] 12.76542</span></span>
+<span><span class="co">#&gt; [1] 12.76536</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $`Regime 1`$convergence</span></span>
 <span><span class="co">#&gt; [1] 0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $`Regime 1`$iterations</span></span>
-<span><span class="co">#&gt; [1] 31</span></span>
+<span><span class="co">#&gt; [1] 87</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $`Regime 1`$evaluations</span></span>
 <span><span class="co">#&gt; function gradient </span></span>
-<span><span class="co">#&gt;       38      147 </span></span>
+<span><span class="co">#&gt;      116      513 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $`Regime 1`$message</span></span>
 <span><span class="co">#&gt; [1] "relative convergence (4)"</span></span>
@@ -534,7 +520,7 @@ regime-dependent prevailing winds:</p>
 <span><span class="co">#&gt; [1] "relative convergence (4)"</span></span></code></pre></div>
 <p>Finally we will store this model to <code>data_mcgf</code> using
 <code>add_lagr</code> and then print the final model:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">data_mcgf</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_lagr.html">add_lagr</a></span><span class="op">(</span><span class="va">data_mcgf</span>, fit_lagr <span class="op">=</span> <span class="va">fit_lagr_rs</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/model.html">model</a></span><span class="op">(</span><span class="va">data_mcgf</span>, old <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ----------------------------------------</span></span>
@@ -585,7 +571,7 @@ regime-dependent prevailing winds:</p>
 <span><span class="co">#&gt; - Lagrangian model: lagr_tri </span></span>
 <span><span class="co">#&gt; - Parameters:</span></span>
 <span><span class="co">#&gt;     lambda         v1         v2          k </span></span>
-<span><span class="co">#&gt;  0.1703142 74.4859663 65.8446145  1.3401565 </span></span>
+<span><span class="co">#&gt;  0.1702415 74.3744096 65.6736958  1.3422782 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; - Fixed parameters:</span></span>
 <span><span class="co">#&gt; NULL</span></span>
@@ -612,11 +598,11 @@ regime-dependent prevailing winds:</p>
 <div class="section level3">
 <h3 id="simple-kriging-for-new-locations">Simple Kriging for new locations<a class="anchor" aria-label="anchor" href="#simple-kriging-for-new-locations"></a>
 </h3>
-<p>We provide functionalists for computing simple Kriging forecasts for
-new locations. The associated function is <code>krige_new</code>, and
-users can either supply the coordinates for the new locations or the
-distance matrices for all locations.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<p>We provide functions for computing simple Kriging forecasts for new
+locations. The associated function is <code>krige_new</code>, and users
+can either supply the coordinates for the new locations or the distance
+matrices for all locations.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">krige_base_new</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/krige_new.html">krige_new</a></span><span class="op">(</span></span>
 <span>    x <span class="op">=</span> <span class="va">data_mcgf</span>,</span>
 <span>    locations_new <span class="op">=</span> <span class="va">locations_new</span>,</span>
@@ -635,7 +621,7 @@ the 95% PI (POPI) for these models for the new locations.</p>
 <div class="section level4">
 <h4 id="rmse">RMSE<a class="anchor" aria-label="anchor" href="#rmse"></a>
 </h4>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># RMSE</span></span>
 <span><span class="va">rmse_base</span> <span class="op">&lt;-</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="op">(</span><span class="va">data_new</span> <span class="op">-</span> <span class="va">krige_base_new</span><span class="op">$</span><span class="va">fit</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">]</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span><span class="op">)</span></span>
@@ -647,12 +633,12 @@ the 95% PI (POPI) for these models for the new locations.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">rmse</span></span>
 <span><span class="co">#&gt;      Base      STAT </span></span>
-<span><span class="co">#&gt; 0.8117693 0.7621844</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.8117693 0.7622198</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="mae">MAE<a class="anchor" aria-label="anchor" href="#mae"></a>
 </h4>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mae_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">data_new</span> <span class="op">-</span> <span class="va">krige_base_new</span><span class="op">$</span><span class="va">fit</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="va">mae_stat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">data_new</span> <span class="op">-</span> <span class="va">krige_stat_new</span><span class="op">$</span><span class="va">fit</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
 <span><span class="va">mae</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -661,12 +647,12 @@ the 95% PI (POPI) for these models for the new locations.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">mae</span></span>
 <span><span class="co">#&gt;      Base      STAT </span></span>
-<span><span class="co">#&gt; 0.6451738 0.6060982</span></span></code></pre></div>
+<span><span class="co">#&gt; 0.6451738 0.6061245</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="popi">POPI<a class="anchor" aria-label="anchor" href="#popi"></a>
 </h4>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># POPI</span></span>
 <span><span class="va">popi_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/colSums.html" class="external-link">colMeans</a></span><span class="op">(</span></span>
 <span>    <span class="va">data_new</span> <span class="op">&lt;</span> <span class="va">krige_base_new</span><span class="op">$</span><span class="va">lower</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">]</span> <span class="op">|</span> <span class="va">data_new</span> <span class="op">&gt;</span> <span class="va">krige_base_new</span><span class="op">$</span><span class="va">upper</span><span class="op">[</span>, <span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">]</span>,</span>
@@ -689,15 +675,21 @@ the 95% PI (POPI) for these models for the new locations.</p>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
+<div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-Gneiting2002" class="csl-entry">
 Gneiting, Tilmann. 2002. <span>“Nonseparable, Stationary Covariance
 Functions for Space–Time Data.”</span> <em>Journal of the American
 Statistical Association</em> 97 (458): 590–600. <a href="https://doi.org/10.1198/016214502760047113" class="external-link">https://doi.org/10.1198/016214502760047113</a>.
 </div>
+<div id="ref-Jia2025" class="csl-entry">
+Jia, Tianxia, and Deniz Sezer. 2025. <span>“Improving Short-Term Wind
+Speed Forecasts Using Regime-Switching Spatio-Temporal Covariance
+Models.”</span> <em>Journal of Renewable and Sustainable Energy</em> 17
+(5): 053304. <a href="https://doi.org/10.1063/5.0285012" class="external-link">https://doi.org/10.1063/5.0285012</a>.
 </div>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+</div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
@@ -708,15 +700,15 @@ Statistical Association</em> 97 (458): 590–600. <a href="https://doi.org/10.11
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>

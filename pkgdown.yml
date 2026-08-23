@@ -1,11 +1,13 @@
-pandoc: 3.1.11
-pkgdown: 2.0.9
+pandoc: 3.8.3
+pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
+  correlation-models: correlation-models.html
+  forecasting-new-locations: forecasting-new-locations.html
   mcgf_rs: mcgf_rs.html
   mcgf: mcgf.html
-last_built: 2024-06-28T23:02Z
+  simulation: simulation.html
+last_built: 2026-08-23T19:45Z
 urls:
   reference: https://tianxia-jia.github.io/mcgf/reference
   article: https://tianxia-jia.github.io/mcgf/articles
-
