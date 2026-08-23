@@ -11,13 +11,13 @@ Source:
 [`DESCRIPTION`](https://github.com/tianxia-jia/mcgf/blob/master/DESCRIPTION)
 
 Jia T (2026). *mcgf: Markov Chain Gaussian Fields Simulation and
-Parameter Estimation*. R package version 1.2.0,
+Parameter Estimation*. R package version 1.2.0.9000,
 <https://github.com/tianxia-jia/mcgf>.
 
     @Manual{,
       title = {mcgf: Markov Chain Gaussian Fields Simulation and Parameter Estimation},
       author = {Tianxia Jia},
       year = {2026},
-      note = {R package version 1.2.0},
+      note = {R package version 1.2.0.9000},
       url = {https://github.com/tianxia-jia/mcgf},
     }

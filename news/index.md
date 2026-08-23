@@ -1,5 +1,7 @@
 # Changelog
 
+## mcgf (development version)
+
 ## mcgf 1.2.0
 
 CRAN release: 2026-08-21

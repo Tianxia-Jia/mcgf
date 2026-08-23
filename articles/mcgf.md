@@ -375,7 +375,7 @@ fit_spatial2$fit
 #> [1] 2
 #> 
 #> $elapsed
-#> Time difference of 0.008444071 secs
+#> Time difference of 0.00940299 secs
 #> 
 #> $vscale
 #> [1] 1 1 1
